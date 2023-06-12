@@ -104,7 +104,7 @@ export default async function handler(
     // Get request method (GET by default)
     const httpMethod: string = req.method || "GET";
 
-    if (validHTTPMethods.includes(httpMethod)) {
+    if (!validHTTPMethods.includes(httpMethod)) {
       status = 405;
       throw new Error("Invalid HTTP method");
     }
