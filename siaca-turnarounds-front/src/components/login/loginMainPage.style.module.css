@@ -1,4 +1,5 @@
-.main {
-    color: white;
-    background-color: red;
+.mainContainerLoginMainPage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
