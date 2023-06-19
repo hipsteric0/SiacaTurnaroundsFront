@@ -5,7 +5,7 @@ const inter = Inter({ subsets: ["latin"] });
 import AcUnitIcon from '@mui/icons-material/AcUnit';
 import AddHomeWorkIcon from '@mui/icons-material/AddHomeWork';
 import styles from "./index.style.module.css";
-
+import loginMainPage from "../components/login/loginMainPage"
 type MaquinariaData = {
   id: number;
   identificador: string;
@@ -53,27 +53,8 @@ export default function Home() {
   return (
     <main className={styles.main}>
       <div>
-        <AddHomeWorkIcon htmlColor="#00A75D"/>
-        pantalla de login
-        <button>llamada API</button>
+        {loginMainPage()}
       </div>
-      <div className="clase1">
-        <h1>Maquinarias</h1>
-        {maquinarias.length > 0 ? (
-          <div>
-            {maquinarias.map((maquinaria: MaquinariaData) => (
-              <div key={maquinaria.id}>
-                {maquinaria.modelo}
-                {maquinaria.combustible}
-              {maquinaria.identificador}</div>
-            ))}
-          </div>
-        ) : (
-          <div>No data</div>
-        )}
-      </div>
-      {isMobile? (<>esto solo sale mobile</>):(<>esto solo sale desktop</>)}
-      {isMobile && <><br/>esto solo sale mobile y no hay un else <AcUnitIcon/></>}
     </main>
   );
 }
