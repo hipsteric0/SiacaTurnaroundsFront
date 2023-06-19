@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { Inter } from "next/font/google";
-import { makeStyles, useMediaQuery } from "@mui/material";
+import { useMediaQuery } from "@mui/material";
 const inter = Inter({ subsets: ["latin"] });
 import AcUnitIcon from '@mui/icons-material/AcUnit';
 import AddHomeWorkIcon from '@mui/icons-material/AddHomeWork';
-import styles from "./index.style.module.css";
+
 
 type MaquinariaData = {
   id: number;
@@ -51,7 +51,7 @@ export default function Home() {
 }, []); // If nothing on dependencies, this will run only first render
 
   return (
-    <main className={styles.main}>
+    <main>
       <div>
         <AddHomeWorkIcon htmlColor="#00A75D"/>
         pantalla de login
