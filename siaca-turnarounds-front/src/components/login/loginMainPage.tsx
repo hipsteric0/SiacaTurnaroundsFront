@@ -1,10 +1,12 @@
 import styles from "./index.style.module.css";
 
-export default function loginMainPage() {
 
+function LoginMainPage({}){
     return (
         <div>
             hola
         </div>
       );
 }
+
+export default LoginMainPage;

@@ -5,7 +5,7 @@ const inter = Inter({ subsets: ["latin"] });
 import AcUnitIcon from '@mui/icons-material/AcUnit';
 import AddHomeWorkIcon from '@mui/icons-material/AddHomeWork';
 import styles from "./index.style.module.css";
-import loginMainPage from "../components/login/loginMainPage"
+import LoginMainPage from "../components/login/loginMainPage"
 type MaquinariaData = {
   id: number;
   identificador: string;
@@ -53,7 +53,7 @@ export default function Home() {
   return (
     <main className={styles.main}>
       <div>
-        {loginMainPage()}
+        <LoginMainPage/>
       </div>
     </main>
   );
