@@ -1,5 +1,79 @@
 .mainContainerLoginMainPage {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 128px;
+}
+.mainContainerLoginMainPageMobile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 35px;
+}
+.welcomeBackText {
+  margin-top: 28px;
+  font-size: 20px;
+}
+.inputsContainer {
+  padding-top: 30px;
+  margin-bottom: 42px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+.inputsContainerMobile {
+  padding-top: 30px;
+  margin-bottom: 42px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: 100%;
+}
+.singleInput {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.singleInputMobile {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  width: 100%;
+  align-items: center;
+}
+.singleInputContainer {
+  border-radius: 5px;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+  border: solid 0.5px #bbb;
+  height: 30px;
+  width: 375px;
+  outline: none;
+  padding-left: 10px;
+}
+.singleInputContainerMobile {
+  border-radius: 5px;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+  border: solid 0.5px #bbb;
+  height: 30px;
+  width: 95%;
+  outline: none;
+  padding-left: 10px;
+}
+.ingresarButton {
+  width: 275px;
+  height: 42px;
+  border-radius: 12px;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+  background-color: #08a75a;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+}
+.forgotPasswordText {
+  color: #98989a;
+  font-size: 14px;
+  margin-top: 40px;
+  text-decoration: underline;
+  cursor: pointer;
+}

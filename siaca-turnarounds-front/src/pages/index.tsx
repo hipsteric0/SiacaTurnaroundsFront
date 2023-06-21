@@ -5,7 +5,7 @@ const inter = Inter({ subsets: ["latin"] });
 import AcUnitIcon from '@mui/icons-material/AcUnit';
 import AddHomeWorkIcon from '@mui/icons-material/AddHomeWork';
 import styles from "./index.style.module.css";
-import LoginMainPage from "../components/login/loginMainPage"
+import LoginMainPage from "../components/login/LoginMainPage"
 type MaquinariaData = {
   id: number;
   identificador: string;
@@ -50,11 +50,12 @@ export default function Home() {
   fetchData().catch(console.error);
 }, []); // If nothing on dependencies, this will run only first render
 
+  const [step, setStep] = useState(0);
   return (
     <main className={styles.main}>
-      <div>
-        <LoginMainPage/>
-      </div>
+      {step === 0 && <><LoginMainPage/></>}
+      {step === 1 && <>step1</>}
+      {step === 2 && <>step2</>}
     </main>
   );
 }
