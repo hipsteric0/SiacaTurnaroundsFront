@@ -1,5 +1,4 @@
-import styles from "./loginMainPage.style.module.css";
-import SiacaLogo from "../../images/logos/siacaLogo.png";
+import styles from "./RecoverPasswordStep3.style.module.css";
 import Image from "next/image";
 import { useMediaQuery } from "@mui/material";
 
