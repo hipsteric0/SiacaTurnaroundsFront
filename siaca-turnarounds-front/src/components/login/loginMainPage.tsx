@@ -60,6 +60,9 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
       <div className={styles.forgotPasswordText} onClick={() => setStep(1)}>
         ¿Olvidaste tu contraseña?
       </div>
+      <div className={styles.forgotPasswordText} onClick={() => setStep(4)}>
+        Registrarse
+      </div>
     </div>
   );
 };
