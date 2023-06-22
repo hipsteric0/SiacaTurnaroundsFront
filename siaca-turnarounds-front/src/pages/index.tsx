@@ -6,11 +6,11 @@ import AcUnitIcon from "@mui/icons-material/AcUnit";
 import AddHomeWorkIcon from "@mui/icons-material/AddHomeWork";
 import styles from "./index.style.module.css";
 import LoginMainPage from "../components/login/LoginMainPage";
-import RecoverPasswordStep1 from "@/components/login/recoverPassword/recoverPasswordStep1";
-import RecoverPasswordStep2 from "@/components/login/recoverPassword/recoverPasswordStep2";
+import RecoverPasswordStep1 from "@/components/login/recoverPassword/RecoverPasswordStep1";
+import RecoverPasswordStep2 from "@/components/login/recoverPassword/RecoverPasswordStep2";
 import RecoverPasswordStep3 from "@/components/login/recoverPassword/RecoverPasswordStep3";
-import RegisterStep1 from "@/components/login/register/registerStep1";
-import RegisterStep2 from "@/components/login/register/registerStep2";
+import RegisterStep1 from "@/components/login/register/RegisterStep1";
+import RegisterStep2 from "@/components/login/register/RegisterStep2";
 type MaquinariaData = {
   id: number;
   identificador: string;
