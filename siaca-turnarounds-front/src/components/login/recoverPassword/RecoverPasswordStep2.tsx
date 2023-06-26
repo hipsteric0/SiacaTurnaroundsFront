@@ -15,8 +15,8 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
     <div
       className={
         isMobile
-          ? styles.mainContainerRecoverPassword1Mobile
-          : styles.mainContainerRecoverPassword1
+          ? styles.mainContainerRecoverPassword2Mobile
+          : styles.mainContainerRecoverPassword2
       }
     >
       <BackArrow executableFunction={() => setStep(1)} />

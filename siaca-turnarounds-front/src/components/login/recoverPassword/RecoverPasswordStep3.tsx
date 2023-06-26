@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useMediaQuery } from "@mui/material";
 import PasswordIcon from "@mui/icons-material/Password";
 import { ClassNames } from "@emotion/react";
-import BackArrow from "@/components/Reusables/BackArrow";
+import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
 import LockResetRoundedIcon from "@mui/icons-material/LockResetRounded";
 interface PageProps {
   setStep: (value: number) => void;
@@ -15,12 +15,12 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
     <div
       className={
         isMobile
-          ? styles.mainContainerRecoverPassword1Mobile
-          : styles.mainContainerRecoverPassword1
+          ? styles.mainContainerRecoverPassword3Mobile
+          : styles.mainContainerRecoverPassword3
       }
     >
       <div className={styles.icon}>
-        <LockResetRoundedIcon fontSize="inherit" />
+        <CheckCircleOutlineRoundedIcon fontSize="inherit" />
       </div>
 
       <p
