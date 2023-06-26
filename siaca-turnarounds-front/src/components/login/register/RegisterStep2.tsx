@@ -5,6 +5,7 @@ import { useMediaQuery } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { Dropdown } from "@nextui-org/react";
 import { Input, Grid } from "@nextui-org/react";
+import BackArrow from "@/components/Reusables/BackArrow";
 
 interface PageProps {
   setStep: (value: number) => void;
@@ -25,6 +26,7 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
           : styles.mainContainerLoginMainPage
       }
     >
+      <BackArrow executableFunction={() => setStep(4)} />
       <AccountCircleIcon sx={{ fontSize: 100 }}></AccountCircleIcon>
       <div
         className={
