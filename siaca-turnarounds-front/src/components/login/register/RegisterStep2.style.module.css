@@ -9,6 +9,7 @@
   flex-direction: column;
   align-items: center;
   padding-top: 35px;
+  padding-bottom: 20px;
 }
 .welcomeBackText {
   margin-top: 28px;
@@ -45,7 +46,7 @@
   width: auto;
 }
 .inputTextMobile {
-  width: 95%;
+  width: 85%;
 }
 .singleInputContainer {
   border-radius: 5px;
@@ -61,7 +62,7 @@
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
   border: solid 0.5px #bbb;
   height: 30px;
-  width: 95%;
+  width: 85%;
   outline: none;
   padding-left: 10px;
 }
@@ -82,4 +83,18 @@
   margin-top: 40px;
   text-decoration: underline;
   cursor: pointer;
+}
+
+.titulo {
+  color: #08a75a;
+  padding-left: 10px;
+}
+
+.tituloMobile {
+  color: #08a75a;
+  padding-left: 30px;
+}
+
+.Input{
+  color: #08a75a;
 }
