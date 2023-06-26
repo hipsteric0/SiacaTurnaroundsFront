@@ -1,7 +1,10 @@
 import styles from "./RecoverPasswordStep3.style.module.css";
 import Image from "next/image";
 import { useMediaQuery } from "@mui/material";
-
+import PasswordIcon from "@mui/icons-material/Password";
+import { ClassNames } from "@emotion/react";
+import BackArrow from "@/components/Reusables/BackArrow";
+import LockResetRoundedIcon from "@mui/icons-material/LockResetRounded";
 interface PageProps {
   setStep: (value: number) => void;
 }
@@ -12,53 +15,27 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
     <div
       className={
         isMobile
-          ? styles.mainContainerLoginMainPageMobile
-          : styles.mainContainerLoginMainPage
+          ? styles.mainContainerRecoverPassword1Mobile
+          : styles.mainContainerRecoverPassword1
       }
     >
-      <Image src={SiacaLogo} alt="Logo" />
-      <p className={styles.welcomeBackText}>¡Bienvenido de vuelta!</p>
-      <div
-        className={
-          isMobile ? styles.inputsContainerMobile : styles.inputsContainer
-        }
-      >
-        <div
-          className={isMobile ? styles.singleInputMobile : styles.singleInput}
-        >
-          <p className={isMobile ? styles.inputTextMobile : styles.inputText}>
-            Correo Electrónico
-          </p>
-          <input
-            className={
-              isMobile
-                ? styles.singleInputContainerMobile
-                : styles.singleInputContainer
-            }
-            type="email"
-          />
-        </div>
-        <div
-          className={isMobile ? styles.singleInputMobile : styles.singleInput}
-        >
-          <p className={isMobile ? styles.inputTextMobile : styles.inputText}>
-            Contraseña
-          </p>
-          <input
-            className={
-              isMobile
-                ? styles.singleInputContainerMobile
-                : styles.singleInputContainer
-            }
-            type="password"
-          />
-        </div>
+      <div className={styles.icon}>
+        <LockResetRoundedIcon fontSize="inherit" />
       </div>
 
-      <button className={styles.ingresarButton}>INGRESAR</button>
-      <div className={styles.forgotPasswordText} onClick={() => setStep(1)}>
-        ¿Olvidaste tu contraseña?
-      </div>
+      <p
+        className={
+          isMobile
+            ? styles.recoverPasswordTextMobile
+            : styles.recoverPasswordText
+        }
+      >
+        ¡Tu contraseña ha sido cambiada con éxito!
+      </p>
+
+      <button className={styles.ingresarButton} onClick={() => setStep(0)}>
+        REGRESAR
+      </button>
     </div>
   );
 };
