@@ -41,40 +41,50 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
         <div
           className={isMobile ? styles.singleInputMobile : styles.singleInput}
         >
-          <Grid>
-            <Input bordered labelLeft="Nombres" color="success" width="375px" />
-          </Grid>
+
+            <Input 
+            bordered 
+            labelLeft="Nombres" 
+            color="success" 
+            width="85%" 
+            />
+
         </div>
         <div
           className={isMobile ? styles.singleInputMobile : styles.singleInput}
         >
-          <Grid>
+
             <Input
               bordered
               labelLeft="Apellidos"
               color="success"
-              width="375px"
+              width="85%"
             />
-          </Grid>
+
         </div>
         <div
           className={isMobile ? styles.singleInputMobile : styles.singleInput}
         >
-          <Grid>
-            <Input bordered labelLeft="Cédula" color="success" width="375px" />
-          </Grid>
+
+            <Input 
+            bordered 
+            labelLeft="Cédula" 
+            color="success" 
+            width="85%" 
+            />
+
         </div>
         <div
           className={isMobile ? styles.singleInputMobile : styles.singleInput}
         >
-          <Grid>
+
             <Input
               bordered
               labelLeft="Teléfono"
               color="success"
-              width="375px"
+              width="85%"
             />
-          </Grid>
+
         </div>
 
         <strong>

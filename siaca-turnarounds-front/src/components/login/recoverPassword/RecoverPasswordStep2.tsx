@@ -5,6 +5,8 @@ import PasswordIcon from "@mui/icons-material/Password";
 import { ClassNames } from "@emotion/react";
 import BackArrow from "@/components/Reusables/BackArrow";
 import LockResetRoundedIcon from "@mui/icons-material/LockResetRounded";
+import { Input, Grid, Spacer } from "@nextui-org/react";
+
 interface PageProps {
   setStep: (value: number) => void;
 }
@@ -26,43 +28,31 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
 
       <p className={styles.recoverPasswordText}>Recuperación de contraseña</p>
       <div className={isMobile ? styles.singleInputMobile : styles.singleInput}>
-        <p className={isMobile ? styles.inputTextMobile : styles.inputText}>
-          Código recibido
-        </p>
-        <input
-          className={
-            isMobile
-              ? styles.singleInputContainerMobile
-              : styles.singleInputContainer
-          }
-          type="password"
-        />
+      <Spacer y={0.1} />
+            <Input
+              type="text"
+              bordered
+              labelPlaceholder="Código recibido"
+              color="success"
+            />
       </div>
       <div className={isMobile ? styles.singleInputMobile : styles.singleInput}>
-        <p className={isMobile ? styles.inputTextMobile : styles.inputText}>
-          Nueva contraseña
-        </p>
-        <input
-          className={
-            isMobile
-              ? styles.singleInputContainerMobile
-              : styles.singleInputContainer
-          }
-          type="password"
-        />
+      <Spacer y={0.1} />
+            <Input
+              type="password"
+              bordered
+              labelPlaceholder="Nueva contraseña"
+              color="success"
+            />
       </div>
       <div className={isMobile ? styles.singleInputMobile : styles.singleInput}>
-        <p className={isMobile ? styles.inputTextMobile : styles.inputText}>
-          Confirme nueva contraseña
-        </p>
-        <input
-          className={
-            isMobile
-              ? styles.singleInputContainerMobile
-              : styles.singleInputContainer
-          }
-          type="password"
-        />
+      <Spacer y={0.1} />
+            <Input
+              type="password"
+              bordered
+              labelPlaceholder="Confirmar contraseña"
+              color="success"
+            />
       </div>
 
       <button className={styles.ingresarButton} onClick={() => setStep(3)}>

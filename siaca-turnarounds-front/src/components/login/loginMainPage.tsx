@@ -2,6 +2,7 @@ import styles from "./loginMainPage.style.module.css";
 import SiacaLogo from "../../images/logos/siacaLogo.png";
 import Image from "next/image";
 import { useMediaQuery } from "@mui/material";
+import { Input, Grid, Spacer } from "@nextui-org/react";
 
 interface PageProps {
   setStep: (value: number) => void;
@@ -27,31 +28,25 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
         <div
           className={isMobile ? styles.singleInputMobile : styles.singleInput}
         >
-          <p className={isMobile ? styles.inputTextMobile : styles.inputText}>
-            Correo Electrónico
-          </p>
-          <input
-            className={
-              isMobile
-                ? styles.singleInputContainerMobile
-                : styles.singleInputContainer
-            }
-            type="email"
-          />
+          <Spacer y={0.1} />
+            <Input
+              type="email"
+              bordered
+              labelPlaceholder="Correo Electrónico"
+              color="success"
+              width="85%"
+            />
         </div>
         <div
           className={isMobile ? styles.singleInputMobile : styles.singleInput}
         >
-          <p className={isMobile ? styles.inputTextMobile : styles.inputText}>
-            Contraseña
-          </p>
-          <input
-            className={
-              isMobile
-                ? styles.singleInputContainerMobile
-                : styles.singleInputContainer
-            }
+          <Spacer y={0.1} />
+          <Input
             type="password"
+            bordered
+            labelPlaceholder="Contraseña"
+            color="success"
+            width="85%"
           />
         </div>
       </div>

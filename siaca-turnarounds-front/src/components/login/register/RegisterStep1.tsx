@@ -33,35 +33,35 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
           className={isMobile ? styles.singleInputMobile : styles.singleInput}
         >
           <Spacer y={1} />
-          <Grid>
             <Input
               bordered
               labelPlaceholder="Correo Electrónico"
               color="success"
-              width="375px"
+              width="85%"
             />
-          </Grid>
         </div>
         <div
           className={isMobile ? styles.singleInputMobile : styles.singleInput}
         >
           <Spacer y={0.1} />
-          <Input.Password
+          <Input
+            type="password"
             bordered
             labelPlaceholder="Contraseña"
             color="success"
-            width="375px"
+            width="85%"
           />
         </div>
         <div
           className={isMobile ? styles.singleInputMobile : styles.singleInput}
         >
           <Spacer y={0.1} />
-          <Input.Password
+          <Input
+            type="password"
             bordered
             labelPlaceholder="Confirmar contraseña"
             color="success"
-            width="375px"
+            width="85%"
           />
         </div>
       </div>

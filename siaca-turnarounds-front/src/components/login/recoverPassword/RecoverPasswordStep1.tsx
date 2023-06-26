@@ -4,6 +4,7 @@ import { useMediaQuery } from "@mui/material";
 import PasswordIcon from "@mui/icons-material/Password";
 import { ClassNames } from "@emotion/react";
 import BackArrow from "@/components/Reusables/BackArrow";
+import { Input, Grid, Spacer } from "@nextui-org/react";
 
 interface PageProps {
   setStep: (value: number) => void;
@@ -26,17 +27,13 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
 
       <p className={styles.recoverPasswordText}>Recuperación de contraseña</p>
       <div className={isMobile ? styles.singleInputMobile : styles.singleInput}>
-        <p className={isMobile ? styles.inputTextMobile : styles.inputText}>
-          Correo Electrónico
-        </p>
-        <input
-          className={
-            isMobile
-              ? styles.singleInputContainerMobile
-              : styles.singleInputContainer
-          }
-          type="email"
-        />
+      <Spacer y={0.1} />
+            <Input
+              type="email"
+              bordered
+              labelPlaceholder="Correo Electrónico"
+              color="success"
+            />
       </div>
 
       <p
