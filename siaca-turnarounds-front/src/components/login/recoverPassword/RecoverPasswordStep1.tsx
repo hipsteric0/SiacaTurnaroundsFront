@@ -27,13 +27,14 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
 
       <p className={styles.recoverPasswordText}>Recuperación de contraseña</p>
       <div className={isMobile ? styles.singleInputMobile : styles.singleInput}>
-      <Spacer y={0.1} />
-            <Input
-              type="email"
-              bordered
-              labelPlaceholder="Correo Electrónico"
-              color="success"
-            />
+        <Spacer y={0.1} />
+        <Input
+          type="email"
+          bordered
+          labelPlaceholder="Correo Electrónico"
+          color="success"
+          width={isMobile ? "85%" : "335px"}
+        />
       </div>
 
       <p

@@ -29,13 +29,13 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
           className={isMobile ? styles.singleInputMobile : styles.singleInput}
         >
           <Spacer y={0.1} />
-            <Input
-              type="email"
-              bordered
-              labelPlaceholder="Correo Electrónico"
-              color="success"
-              width="85%"
-            />
+          <Input
+            type="email"
+            bordered
+            labelPlaceholder="Correo Electrónico"
+            color="success"
+            width={isMobile ? "85%" : "335px"}
+          />
         </div>
         <div
           className={isMobile ? styles.singleInputMobile : styles.singleInput}
@@ -46,7 +46,7 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
             bordered
             labelPlaceholder="Contraseña"
             color="success"
-            width="85%"
+            width={isMobile ? "85%" : "335px"}
           />
         </div>
       </div>
