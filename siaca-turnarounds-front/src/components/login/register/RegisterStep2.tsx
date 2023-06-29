@@ -9,9 +9,15 @@ import BackArrow from "@/components/Reusables/BackArrow";
 
 interface PageProps {
   setStep: (value: number) => void;
+  emailValue: string;
+  passwordValue: string;
 }
 
-const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
+const LoginMainPage: React.FC<PageProps> = ({
+  setStep,
+  emailValue, //el email que introdujo el user en el paso anterior
+  passwordValue, //el password  que introdujo el user en el paso anterior
+}) => {
   const isMobile = useMediaQuery("(max-width: 1270px)");
   const [selected, setSelected] = React.useState(new Set([" "]));
   const selectedValue = React.useMemo(

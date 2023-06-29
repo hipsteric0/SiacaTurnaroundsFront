@@ -35,7 +35,12 @@ export default function Home() {
     const fetchData = async () => {
       try {
         const url = "/api/maquinaria";
-        const response = await fetch(url);
+        const requestOptions = {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ title: "React POST Request Example" }),
+        };
+        const response = await fetch(url, requestOptions);
         if (!response.ok) {
           throw new Error("Error in response getting maquinarias");
         }
@@ -56,6 +61,8 @@ export default function Home() {
   }, []); // If nothing on dependencies, this will run only first render
 
   const [step, setStep] = useState(0);
+  const [emailValue, setEmailValue] = useState("");
+  const [passwordValue, setPasswordValue] = useState("");
   return (
     <main className={styles.main}>
       {
@@ -89,14 +96,22 @@ export default function Home() {
       {
         step === 4 && (
           <>
-            <RegisterStep1 setStep={setStep} />
+            <RegisterStep1
+              setStep={setStep}
+              setEmailValue={setEmailValue}
+              setPasswordValue={setPasswordValue}
+            />
           </>
         ) /*el step 4 es el paso 1 de registrarse*/
       }
       {
         step === 5 && (
           <>
-            <RegisterStep2 setStep={setStep} />
+            <RegisterStep2
+              setStep={setStep}
+              emailValue={emailValue}
+              passwordValue={passwordValue}
+            />
           </>
         ) /*el step 5 es el paso 2 de registrarse*/
       }
