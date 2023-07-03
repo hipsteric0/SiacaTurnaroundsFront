@@ -99,6 +99,7 @@ export default async function handler(
 ) {
   let status = 500;
   let statusText = "INTERNAL";
+
   try {
     // Get request method (GET by default)
     const httpMethod: string = req.method || "GET";
@@ -144,7 +145,7 @@ export default async function handler(
           "Content-Type": "application/json", // Add body content-type
           // Any additional headers here only related to request body...
         },
-        body: body,
+
         /*body: JSON.stringify({
           username: "hola9",
           password: "hola",
@@ -153,7 +154,8 @@ export default async function handler(
     }
 
     // Backend URL
-    const url = `${BACKEND_BASE_URL}/usuarios/registro/`;
+    console.log("req.body", req.body);
+    const url = `${BACKEND_BASE_URL}/usuarios/listado/user?search=aleromerosurf@hotmail.com `;
 
     // Make the actual request to backend
     const response = await fetch(url, fetchOptions);
@@ -192,10 +194,10 @@ export default async function handler(
     res.status(status).json(result);
   } catch (error) {
     if (error instanceof Error) {
-      console.error(`Error usuarios/registro/.ts:`, error.message, error.name);
+      console.error(`Error api/user/.ts:`, error.message, error.name);
       statusText = error.message;
     } else {
-      console.error(`Error usuarios/registro/.ts:`, error);
+      console.error(`Error api/user/.ts:`, error);
     }
     // the httpsError function transform the provided data into the expected error form (go to helpers for reference)
     res.status(status).json(httpsError(status, statusText));

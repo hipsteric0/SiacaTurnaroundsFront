@@ -27,7 +27,6 @@ const LoginMainPage: React.FC<PageProps> = ({
     const fetchData = async () => {
       try {
         const url = "/api/register";
-        console.log(email);
         const requestOptions = {
           method: "POST",
           body: JSON.stringify({

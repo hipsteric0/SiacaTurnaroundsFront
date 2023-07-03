@@ -77,6 +77,17 @@
   cursor: pointer;
   font-size: 14px;
 }
+.ingresarButtonDisabled {
+  width: 275px;
+  height: 42px;
+  border-radius: 12px;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+  background-color: #bbbbbb;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+}
 .forgotPasswordText {
   color: #98989a;
   font-size: 14px;
