@@ -56,10 +56,14 @@ const LoginMainPage: React.FC<PageProps> = ({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const url = "/api/user?search=" + emailValue;
+        const url = "/api/user";
         console.log("url", url);
+        console.log("emailValue", emailValue);
         const requestOptions = {
-          method: "GET",
+          method: "POST",
+          body: JSON.stringify({
+            searchValue: emailValue,
+          }),
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => setResponseJson(result))

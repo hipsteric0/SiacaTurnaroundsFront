@@ -89,7 +89,6 @@ type Data =
   | HttpsError; // This is the response that will be send when any error
 
 // List of HTTP methods that DOES NOT allow to send a body in request (this could be in a different setup file)
-const methodsThatDontRequireBody: string[] = ["GET", "DELETE"];
 // List of valid HTTP methods for THIS endpoint
 const validHTTPMethods: string[] = ["GET", "POST", "PUT", "DELETE"];
 
@@ -102,7 +101,7 @@ export default async function handler(
 
   try {
     // Get request method (GET by default)
-    const httpMethod: string = req.method || "GET";
+    const httpMethod: string = "GET";
 
     if (!validHTTPMethods.includes(httpMethod)) {
       status = 405;
@@ -121,41 +120,33 @@ export default async function handler(
     };
 
     // if provided HTTP method requires a body
-    const currentHTTPMethodRequiresBody = !methodsThatDontRequireBody.includes(
-      String(httpMethod)
-    );
 
     // Verify if provided body is JSON (only for valid methods)
-    if (currentHTTPMethodRequiresBody && !isValidJson(req.body)) {
-      // If NOT valid, cancel request with a 400 status
-      status = 400;
-      throw new Error("Invalid JSON Body has been provided.");
-    }
 
-    if (currentHTTPMethodRequiresBody) {
-      // Use the received body
-      const body = req.body;
+    // Use the received body
+    let body = JSON.parse(req.body);
 
-      // Update options to the request with any additional related to body (for example, content-type)
-      fetchOptions = {
-        ...fetchOptions, // Stay with the previous options
-        // Update the new ones
-        headers: {
-          ...regularHeaders, // Include the regular headers
-          "Content-Type": "application/json", // Add body content-type
-          // Any additional headers here only related to request body...
-        },
+    // Update options to the request with any additional related to body (for example, content-type)
+    fetchOptions = {
+      ...fetchOptions, // Stay with the previous options
+      // Update the new ones
+      headers: {
+        ...regularHeaders, // Include the regular headers
+        "Content-Type": "application/json", // Add body content-type
+        // Any additional headers here only related to request body...
+      },
 
-        /*body: JSON.stringify({
+      /*body: JSON.stringify({
           username: "hola9",
           password: "hola",
         }),*/
-      };
-    }
+    };
 
     // Backend URL
-    console.log("req.body", req.body);
-    const url = `${BACKEND_BASE_URL}/usuarios/listado/user?search=aleromerosurf@hotmail.com `;
+    console.log("req.body", body?.["searchValue"]);
+    const url =
+      `${BACKEND_BASE_URL}/usuarios/listado/user?search=` +
+      body?.["searchValue"];
 
     // Make the actual request to backend
     const response = await fetch(url, fetchOptions);

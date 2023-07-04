@@ -22,8 +22,13 @@ const LoginMainPage: React.FC<PageProps> = ({
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [allowContinue, setAllowContinue] = useState(false);
-  const [validateEmailText, setValidateEmailText] = useState(false);
+  const [response, setResponse] = useState(false);
+  const [continueIsClicked, setContinueIsClicked] = useState(false);
+
+  let responseValue = false;
+
   const registerStep1request = () => {
+    let response2;
     const fetchData = async () => {
       try {
         const url = "/api/register";
@@ -34,17 +39,22 @@ const LoginMainPage: React.FC<PageProps> = ({
             password: password,
           }),
         };
-        const response = await fetch(url, requestOptions);
-        if (!response.ok) {
+        response2 = await fetch(url, requestOptions).then(() => {
+          console.log("response antes de set", responseValue);
+          //setResponse(true);
+          responseValue = true;
+          console.log("response despues de seet", responseValue);
+        });
+        /*if (!response2) {
+          setResponse(false);
+
           throw new Error("Error in response registering user");
         } else {
-          console.log(response);
-        }
-
-        // Update maquinarias state
+          setResponse(true);
+        }*/
       } catch (error) {
         console.error("Error registering user", error);
-        return;
+        //mostrar mensaje de no se pudo validasr usuario, ya existe o su conexion es limitada
       }
     };
     fetchData().catch(console.error);
@@ -66,7 +76,22 @@ const LoginMainPage: React.FC<PageProps> = ({
     setEmailValue(email);
     setPasswordValue(password);
     registerStep1request();
-    setStep(5);
+    console.log("response luego de ejecutar", responseValue);
+    setTimeout(() => {
+      console.log("response1 luego del timeourt", responseValue);
+      if (responseValue) {
+        setStep(5);
+      } else {
+        if (responseValue) {
+          setTimeout(() => {
+            console.log("response2", responseValue);
+            if (responseValue) {
+              setStep(5);
+            }
+          }, 5000);
+        }
+      }
+    }, 5000);
   };
 
   const isMobile = useMediaQuery("(max-width: 1270px)");
