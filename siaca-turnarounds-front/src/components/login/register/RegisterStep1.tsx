@@ -39,15 +39,11 @@ const LoginMainPage: React.FC<PageProps> = ({
           }),
         };
         const response = await fetch(url, requestOptions).then((value) => {
-          console.log("response antes de set", responseValue);
-          console.log("value", value?.status);
           if (value?.status === 400) {
             responseValue = false;
           } else {
             responseValue = true;
           }
-
-          console.log("response despues de seet", responseValue);
           return true;
         });
         if (!response) {
@@ -57,7 +53,6 @@ const LoginMainPage: React.FC<PageProps> = ({
         }
       } catch (error) {
         responseValue = false;
-        console.error("Error registering user", error);
         //mostrar mensaje de no se pudo validasr usuario, ya existe o su conexion es limitada
       }
     };
@@ -80,15 +75,12 @@ const LoginMainPage: React.FC<PageProps> = ({
     setEmailValue(email);
     setPasswordValue(password);
     registerStep1request();
-    console.log("response luego de ejecutar", responseValue);
     setTimeout(() => {
-      console.log("response1 luego del timeourt", responseValue);
       if (responseValue) {
         setStep(5);
       } else {
         if (responseValue) {
           setTimeout(() => {
-            console.log("response2", responseValue);
             if (responseValue) {
               setStep(5);
             }
