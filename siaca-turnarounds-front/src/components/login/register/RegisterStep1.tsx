@@ -28,7 +28,6 @@ const LoginMainPage: React.FC<PageProps> = ({
   let responseValue = false;
 
   const registerStep1request = () => {
-    let response2;
     const fetchData = async () => {
       try {
         const url = "/api/register";
@@ -39,20 +38,25 @@ const LoginMainPage: React.FC<PageProps> = ({
             password: password,
           }),
         };
-        response2 = await fetch(url, requestOptions).then(() => {
+        const response = await fetch(url, requestOptions).then((value) => {
           console.log("response antes de set", responseValue);
-          //setResponse(true);
-          responseValue = true;
+          console.log("value", value?.status);
+          if (value?.status === 400) {
+            responseValue = false;
+          } else {
+            responseValue = true;
+          }
+
           console.log("response despues de seet", responseValue);
+          return true;
         });
-        /*if (!response2) {
-          setResponse(false);
+        if (!response) {
+          responseValue = false;
 
           throw new Error("Error in response registering user");
-        } else {
-          setResponse(true);
-        }*/
+        }
       } catch (error) {
+        responseValue = false;
         console.error("Error registering user", error);
         //mostrar mensaje de no se pudo validasr usuario, ya existe o su conexion es limitada
       }
