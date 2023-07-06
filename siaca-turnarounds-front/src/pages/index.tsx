@@ -119,7 +119,8 @@ export default function Home() {
       {
         step === 6 && (
           <>
-            <RegisterStep3 />
+            <RegisterStep3
+            setStep={setStep} />
           </>
         ) /*el step 6 es el paso 3 de registrarse*/
       }
