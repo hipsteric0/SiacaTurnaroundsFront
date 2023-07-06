@@ -50,15 +50,13 @@ const LoginMainPage: React.FC<PageProps> = ({
   const [cedula, setCedula] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
 
-  const [userID, setUserID] = useState(-1);
-  const [responseJson, setResponseJson] = useState("");
+  const [userID, setUserID] = useState("");
+  let userIDValue;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const url = "/api/user";
-        console.log("url", url);
-        console.log("emailValue", emailValue);
         const requestOptions = {
           method: "POST",
           body: JSON.stringify({
@@ -66,7 +64,9 @@ const LoginMainPage: React.FC<PageProps> = ({
           }),
         };
         const response = await fetch(url, requestOptions).then((res) =>
-          res.json().then((result) => setResponseJson(result))
+          res.json().then((result) => {
+            setUserID(result[0].id);
+          })
         );
       } catch (error) {
         console.error("Error geting user", error);
@@ -76,8 +76,60 @@ const LoginMainPage: React.FC<PageProps> = ({
     fetchData().catch(console.error);
   }, []);
 
+  const registerStep2requestFirst = () => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/registerStep2Part1";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            searchValue: parseInt(userID),
+            first_name: firstName,
+            last_name: lastName,
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            setUserID(result);
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+        return;
+      }
+    };
+    fetchData().catch(console.error);
+  };
+
+  const registerStep2requestSecond = () => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/registerStep2Part2";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            cedula: cedula,
+            cargo: selectedPositionValue,
+            departamento: selectedDepartmentValue,
+            telefono: phoneNumber,
+            turno: selectedWorkshiftValue,
+            fk_user: userID.toString(),
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            setUserID(result);
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+        return;
+      }
+    };
+    fetchData().catch(console.error);
+  };
+
   const validateContinueButton = () => {
-    console.log("responseJson", responseJson);
     if ((firstName && lastName && cedula && phoneNumber) === "") {
       if (allowContinue === true) setAllowContinue(false);
     } else if (
@@ -92,38 +144,13 @@ const LoginMainPage: React.FC<PageProps> = ({
     return <></>;
   };
 
-  const registerStep2request = () => {
-    const fetchData = async () => {
-      try {
-        const url = "/api/register";
-        const requestOptions = {
-          method: "POST",
-          body: JSON.stringify({
-            username: email,
-            password: password,
-          }),
-        };
-        const response = await fetch(url, requestOptions);
-        if (!response.ok) {
-          throw new Error("Error in response registering user");
-        } else {
-          console.log(response);
-        }
-
-        // Update maquinarias state
-      } catch (error) {
-        console.error("Error registering user", error);
-        return;
-      }
-    };
-    fetchData().catch(console.error);
-  };
-
   const continueButton = () => {
     //setEmailValue(email);
     //setPasswordValue(password);
     //registerStep2request();
-    setStep(6);
+    registerStep2requestFirst();
+    registerStep2requestSecond();
+    setStep(0);
   };
 
   return (
