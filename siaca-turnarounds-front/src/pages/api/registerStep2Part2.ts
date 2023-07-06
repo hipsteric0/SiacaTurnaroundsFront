@@ -125,7 +125,6 @@ export default async function handler(
 
     // Use the received body
     let bodyJSON = JSON.parse(req.body);
-    console.log("body", bodyJSON);
     // Update options to the request with any additional related to body (for example, content-type)
     fetchOptions = {
       ...fetchOptions, // Stay with the previous options
@@ -139,9 +138,7 @@ export default async function handler(
     };
 
     // Backend URL
-    console.log("req.body", bodyJSON);
     const url = `${BACKEND_BASE_URL}/usuarios/registro2usuario/`;
-    console.log(url, "urlback");
     // Make the actual request to backend
     const response = await fetch(url, fetchOptions);
 
