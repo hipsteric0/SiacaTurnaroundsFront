@@ -1,0 +1,28 @@
+.mainContainerLoginMainPage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 128px 0 20px 0;
+  }
+  .mainContainerLoginMainPageMobile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 35px;
+    padding-bottom: 20px;
+  }
+  .welcomeBackText {
+    margin-top: 28px;
+    font-size: 20px;
+  }
+  .ingresarButton {
+    width: 275px;
+    height: 42px;
+    border-radius: 12px;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+    background-color: #08a75a;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+  }
