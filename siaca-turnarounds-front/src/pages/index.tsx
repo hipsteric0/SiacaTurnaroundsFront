@@ -11,6 +11,7 @@ import RecoverPasswordStep3 from "@/components/login/recoverPassword/RecoverPass
 import RegisterStep1 from "@/components/login/register/RegisterStep1";
 import RegisterStep2 from "@/components/login/register/RegisterStep2";
 import LoginMainPage from "@/components/login/loginMainPage";
+import RegisterStep3 from "@/components/login/register/RegisterStep3";
 type MaquinariaData = {
   id: number;
   identificador: string;
@@ -114,6 +115,13 @@ export default function Home() {
             />
           </>
         ) /*el step 5 es el paso 2 de registrarse*/
+      }
+      {
+        step === 6 && (
+          <>
+            <RegisterStep3 />
+          </>
+        ) /*el step 6 es el paso 3 de registrarse*/
       }
     </main>
   );

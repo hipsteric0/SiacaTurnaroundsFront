@@ -150,7 +150,7 @@ const LoginMainPage: React.FC<PageProps> = ({
     //registerStep2request();
     registerStep2requestFirst();
     registerStep2requestSecond();
-    setStep(0);
+    setStep(6);
   };
 
   return (
