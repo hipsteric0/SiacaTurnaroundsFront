@@ -73,27 +73,7 @@ export default function Home() {
           </>
         ) /*el step 0 es la pagina principal del login*/
       }
-      {
-        step === 1 && (
-          <>
-            <RecoverPasswordStep1 setStep={setStep} />
-          </>
-        ) /*el step 1 es el paso 1 de recuperar contrasena*/
-      }
-      {
-        step === 2 && (
-          <>
-            <RecoverPasswordStep2 setStep={setStep} />
-          </>
-        ) /*el step 2 es el paso 2 de recuperar contrasena*/
-      }
-      {
-        step === 3 && (
-          <>
-            <RecoverPasswordStep3 setStep={setStep} />
-          </>
-        ) /*el step 3 es el paso 3 de recuperar contrasena*/
-      }
+
       {
         step === 4 && (
           <>
@@ -119,8 +99,7 @@ export default function Home() {
       {
         step === 6 && (
           <>
-            <RegisterStep3
-            setStep={setStep} />
+            <RegisterStep3 setStep={setStep} />
           </>
         ) /*el step 6 es el paso 3 de registrarse*/
       }

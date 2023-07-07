@@ -6,6 +6,7 @@ import { ClassNames } from "@emotion/react";
 import BackArrow from "@/components/Reusables/BackArrow";
 import { Input, Grid, Spacer } from "@nextui-org/react";
 import { useState } from "react";
+import router from "next/router";
 
 interface PageProps {
   setStep: (value: number) => void;
@@ -23,7 +24,7 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
           : styles.mainContainerRecoverPassword1
       }
     >
-      <BackArrow executableFunction={() => setStep(0)} />
+      <BackArrow executableFunction={() => router.push("/")} />
       <div className={styles.icon}>
         <PasswordIcon fontSize="inherit" />
       </div>

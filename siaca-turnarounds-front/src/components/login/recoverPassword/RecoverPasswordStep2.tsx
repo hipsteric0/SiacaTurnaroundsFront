@@ -28,31 +28,22 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
 
       <p className={styles.recoverPasswordText}>Recuperación de contraseña</p>
       <div className={isMobile ? styles.singleInputMobile : styles.singleInput}>
-      <Spacer y={0.1} />
-            <Input
-              type="text"
-              bordered
-              labelPlaceholder="Código recibido"
-              color="success"
-            />
+        <Spacer y={0.1} />
+        <Input
+          type="password"
+          bordered
+          labelPlaceholder="Nueva contraseña"
+          color="success"
+        />
       </div>
       <div className={isMobile ? styles.singleInputMobile : styles.singleInput}>
-      <Spacer y={0.1} />
-            <Input
-              type="password"
-              bordered
-              labelPlaceholder="Nueva contraseña"
-              color="success"
-            />
-      </div>
-      <div className={isMobile ? styles.singleInputMobile : styles.singleInput}>
-      <Spacer y={0.1} />
-            <Input
-              type="password"
-              bordered
-              labelPlaceholder="Confirmar contraseña"
-              color="success"
-            />
+        <Spacer y={0.1} />
+        <Input
+          type="password"
+          bordered
+          labelPlaceholder="Confirmar contraseña"
+          color="success"
+        />
       </div>
 
       <button className={styles.ingresarButton} onClick={() => setStep(3)}>
