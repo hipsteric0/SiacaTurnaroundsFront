@@ -16,6 +16,28 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
   const isMobile = useMediaQuery("(max-width: 1270px)");
   const [email, setEmail] = useState("");
   let inputEmail = "";
+
+  const sendEmailRecoverPassword = () => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/recoverPasswordStep1";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            email: email,
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {})
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+        return;
+      }
+    };
+    fetchData().catch(console.error);
+  };
+
   return (
     <div
       className={
@@ -50,7 +72,13 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
         Le enviaremos un correo electrónico con un código para restablecer su
         contraseña.
       </p>
-      <button className={styles.ingresarButton} onClick={() => setStep(2)}>
+      <button
+        className={styles.ingresarButton}
+        onClick={() => {
+          sendEmailRecoverPassword();
+          setStep(2);
+        }}
+      >
         ENVIAR
       </button>
     </div>

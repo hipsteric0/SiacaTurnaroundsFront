@@ -21,11 +21,15 @@ export default function Flights() {
   const [emailValue, setEmailValue] = useState("");
   const [passwordValue, setPasswordValue] = useState("");
   return (
-    <main>
+    <main className={styles.main}>
       {
         step === 1 && (
           <>
-            <RecoverPasswordStep2 setStep={setStep} />
+            <RecoverPasswordStep2
+              setStep={setStep}
+              token={token?.toString()}
+              email={email?.toString()}
+            />
           </>
         ) /*el step 2 es el paso 2 de recuperar contrasena*/
       }

@@ -24,7 +24,6 @@ export default function Flights() {
   const [passwordValue, setPasswordValue] = useState("");
   return (
     <main className={styles.main}>
-      ¨
       {
         step === 1 && (
           <>
