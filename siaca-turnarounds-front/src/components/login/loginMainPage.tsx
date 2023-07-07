@@ -5,6 +5,7 @@ import { useMediaQuery } from "@mui/material";
 import { Input, Grid, Spacer } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import router from "next/router";
+import { useState } from "react";
 
 interface PageProps {
   setStep: (value: number) => void;
@@ -12,13 +13,44 @@ interface PageProps {
 
 const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
   const isMobile = useMediaQuery("(max-width: 1270px)");
-  let validLogin = true;
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  let validLogin = false;
   const validateLogin = () => {
-    if (validLogin) {
-      router.push("/Flights");
-    } else {
-      //mostrar pop up de que login invalido
-    }
+    registerStep2requestSecond();
+
+    setTimeout(() => {
+      if (validLogin) {
+        router.push("/Flights");
+      } else {
+        //mostrar pop up de que login invalido
+      }
+    }, 5000);
+  };
+
+  const registerStep2requestSecond = () => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/login";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            username: email,
+            password: password,
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            validLogin = result.value;
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+        return;
+      }
+    };
+    fetchData().catch(console.error);
   };
   return (
     <div
@@ -45,6 +77,7 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
             labelPlaceholder="Correo Electrónico"
             color="success"
             width={isMobile ? "85%" : "335px"}
+            onChange={({ target: { value } }) => setEmail(value)}
           />
         </div>
         <div
@@ -57,6 +90,7 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
             labelPlaceholder="Contraseña"
             color="success"
             width={isMobile ? "85%" : "335px"}
+            onChange={({ target: { value } }) => setPassword(value)}
           />
         </div>
       </div>

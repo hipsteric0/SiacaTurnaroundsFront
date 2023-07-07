@@ -29,38 +29,7 @@ type MaquinariaResponse = {
 const intialMaquinarias: MaquinariaData[] = [];
 
 export default function Home() {
-  const [maquinarias, setMaquinarias] =
-    useState<MaquinariaData[]>(intialMaquinarias);
   const isMobile = useMediaQuery("(max-width: 1270px)");
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const url = "/api/maquinaria";
-        const requestOptions = {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ title: "React POST Request Example" }),
-        };
-        const response = await fetch(url, requestOptions);
-        if (!response.ok) {
-          throw new Error("Error in response getting maquinarias");
-        }
-        // Get and parse JSON response
-        const responseJson = (await response.json()) as MaquinariaResponse;
-
-        // Get maquinarias from JSON response
-        const { maquinarias: obtainedMaquinarias } = responseJson; //This is equivalent to "const obtainedMaquinarias = responseJson.maquinarias"
-
-        // Update maquinarias state
-        setMaquinarias(obtainedMaquinarias);
-      } catch (error) {
-        console.error("Error fetching maquinarias", error);
-        return;
-      }
-    };
-    fetchData().catch(console.error);
-  }, []); // If nothing on dependencies, this will run only first render
-
   const [step, setStep] = useState(0);
   const [emailValue, setEmailValue] = useState("");
   const [passwordValue, setPasswordValue] = useState("");

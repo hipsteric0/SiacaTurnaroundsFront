@@ -5,7 +5,6 @@ import MailLockIcon from "@mui/icons-material/MailLock";
 import { Input, Grid, Spacer } from "@nextui-org/react";
 import BackArrow from "@/components/Reusables/BackArrow";
 import { useEffect, useState } from "react";
-import handler from "@/pages/api/login";
 
 interface PageProps {
   setStep: (value: number) => void;

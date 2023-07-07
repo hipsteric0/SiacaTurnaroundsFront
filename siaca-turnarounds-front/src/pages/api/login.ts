@@ -89,7 +89,6 @@ type Data =
   | HttpsError; // This is the response that will be send when any error
 
 // List of HTTP methods that DOES NOT allow to send a body in request (this could be in a different setup file)
-const methodsThatDontRequireBody: string[] = ["GET", "DELETE"];
 // List of valid HTTP methods for THIS endpoint
 const validHTTPMethods: string[] = ["GET", "POST", "PUT", "DELETE"];
 
@@ -102,7 +101,7 @@ export default async function handler(
 
   try {
     // Get request method (GET by default)
-    const httpMethod: string = req.method || "POST";
+    const httpMethod: string = "POST";
 
     if (!validHTTPMethods.includes(httpMethod)) {
       status = 405;
@@ -116,47 +115,31 @@ export default async function handler(
 
     // Headers to be included in request regardless of the HTTP method
     const regularHeaders: Record<string, any> = {
-      ...req.headers, // Include any received headers on the request
-
+      //...req.headers, // Include any received headers on the request
       // Add any other custom headers here...
-      Authorization: `Bearer bearer_token_xd`,
-      "X-CUSTOM-HEADER": "holiwis",
     };
 
     // if provided HTTP method requires a body
-    const currentHTTPMethodRequiresBody = !methodsThatDontRequireBody.includes(
-      String(httpMethod)
-    );
 
     // Verify if provided body is JSON (only for valid methods)
-    if (currentHTTPMethodRequiresBody && !isValidJson(req.body)) {
-      // If NOT valid, cancel request with a 400 status
-      status = 400;
-      throw new Error("Invalid JSON Body has been provided.");
-    }
 
-    if (currentHTTPMethodRequiresBody) {
-      // Use the received body
-      const body = req.body as BodyBackend;
-
-      // Update options to the request with any additional related to body (for example, content-type)
-      fetchOptions = {
-        ...fetchOptions, // Stay with the previous options
-        // Update the new ones
-        headers: {
-          ...regularHeaders, // Include the regular headers
-          "Content-Type": "application/json", // Add body content-type
-          // Any additional headers here only related to request body...
-        },
-        body: JSON.stringify(body),
-      };
-    }
+    // Use the received body
+    let bodyJSON = JSON.parse(req.body);
+    // Update options to the request with any additional related to body (for example, content-type)
+    fetchOptions = {
+      ...fetchOptions, // Stay with the previous options
+      // Update the new ones
+      headers: {
+        ...regularHeaders, // Include the regular headers
+        "Content-Type": "application/json", // Add body content-type
+        // Any additional headers here only related to request body...
+      },
+      body: JSON.stringify(bodyJSON),
+    };
 
     // Backend URL
-    const url = `${BACKEND_BASE_URL}/usuarios/listado/`;
-
+    const url = `${BACKEND_BASE_URL}/usuarios/login/`;
     // Make the actual request to backend
-    console.log(fetchOptions);
     const response = await fetch(url, fetchOptions);
 
     status = response.status;
@@ -193,10 +176,10 @@ export default async function handler(
     res.status(status).json(result);
   } catch (error) {
     if (error instanceof Error) {
-      console.error(`Error usuarios/listado/.ts:`, error.message, error.name);
+      console.error(`Error api/login/.ts:`, error.message, error.name);
       statusText = error.message;
     } else {
-      console.error(`Error usuarios/listado/.ts:`, error);
+      console.error(`Error api/login/.ts:`, error);
     }
     // the httpsError function transform the provided data into the expected error form (go to helpers for reference)
     res.status(status).json(httpsError(status, statusText));
