@@ -142,12 +142,6 @@ export default async function handler(
     };
 
     // Backend URL
-    console.log(
-      "req.body",
-      JSON.stringify({
-        password: body?.["password"],
-      })
-    );
     const url =
       `${BACKEND_BASE_URL}usuarios/password-reset` +
       "/" +
