@@ -17,7 +17,18 @@ interface PageProps {
 
 const LoginMainPage: React.FC<PageProps> = ({ setStep, email, token }) => {
   const isMobile = useMediaQuery("(max-width: 1270px)");
+  const [allowContinue, setAllowContinue] = useState(false);
 
+  const validateContinueButton = () => {
+    if ((password && confirmPassword) === "") {
+      if (allowContinue === true) setAllowContinue(false);
+    } else if (password != confirmPassword) {
+      if (allowContinue === true) setAllowContinue(false);
+    } else {
+      if (allowContinue === false) setAllowContinue(true);
+    }
+    return <></>;
+  };
   const sendNewPassword = () => {
     const fetchData = async () => {
       try {
@@ -44,6 +55,11 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep, email, token }) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  const continueButton = () => {
+    sendNewPassword();
+    setStep(2);
+  };
+
   return (
     <div
       className={
@@ -52,6 +68,7 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep, email, token }) => {
           : styles.mainContainerRecoverPassword2
       }
     >
+      {validateContinueButton()}
       <div className={styles.icon}>
         <LockResetRoundedIcon fontSize="inherit" />
       </div>
@@ -79,11 +96,10 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep, email, token }) => {
       </div>
 
       <button
-        className={styles.ingresarButton}
-        onClick={() => {
-          sendNewPassword();
-          setStep(2);
-        }}
+        className={
+          allowContinue ? styles.ingresarButton : styles.ingresarButtonDisabled
+        }
+        onClick={allowContinue ? () => continueButton() : undefined}
       >
         ENVIAR
       </button>
