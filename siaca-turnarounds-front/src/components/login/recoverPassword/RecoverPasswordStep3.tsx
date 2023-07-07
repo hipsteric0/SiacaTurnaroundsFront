@@ -5,6 +5,7 @@ import PasswordIcon from "@mui/icons-material/Password";
 import { ClassNames } from "@emotion/react";
 import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
 import LockResetRoundedIcon from "@mui/icons-material/LockResetRounded";
+import router from "next/router";
 interface PageProps {
   setStep: (value: number) => void;
 }
@@ -33,7 +34,10 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
         ¡Tu contraseña ha sido cambiada con éxito!
       </p>
 
-      <button className={styles.ingresarButton} onClick={() => setStep(0)}>
+      <button
+        className={styles.ingresarButton}
+        onClick={() => router.push("/")}
+      >
         REGRESAR
       </button>
     </div>
