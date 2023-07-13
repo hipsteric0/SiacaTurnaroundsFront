@@ -17,44 +17,59 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep }) => {
   //if token exists show regular html else show not signed in screen
   const [aerolinea, setAerolinea] = useState("");
   const [codigo, setCodigo] = useState("");
-  const [correo, setCorreo] = useState("");
-  const [telefono, setTelefono] = useState("");
+  const [correoPrincipal, setCorreoPrincipal] = useState("");
+  const [correoSecundario, setCorreoSecundario] = useState("");
+  const [telefonoPrincipal, setTelefonoPrincipal] = useState("");
+  const [telefonoSecundario, setTelefonoSecundario] = useState("");
   const [pais, setPais] = useState("");
-  const [ciduad, setCiudad] = useState("");
+  const [ciudad, setCiudad] = useState("");
   return (
     <main className={styles.RegisterAirlineContainer}>
       <div className={styles.airlinesListContainer}>
         <span className={styles.titleText}>Datos</span>
         <div className={styles.inputsList}>
           <StandardInput setValue={setAerolinea} inputText="Aerolínea" />
-          <StandardInput setValue={setAerolinea} inputText="Código" />
+          <StandardInput setValue={setCodigo} inputText="Código" />
         </div>
         <span className={styles.titleText}>Contacto</span>
         <div className={styles.inputsList}>
-          <StandardInput setValue={setAerolinea} inputText="Correo principal" />
           <StandardInput
-            setValue={setAerolinea}
+            setValue={setCorreoPrincipal}
+            inputText="Correo principal"
+          />
+          <StandardInput
+            setValue={setCorreoSecundario}
             inputText="Correo secundario"
           />
           <StandardInput
-            setValue={setAerolinea}
+            setValue={setTelefonoPrincipal}
             inputText="Teléfono principal"
           />
           <StandardInput
-            setValue={setAerolinea}
+            setValue={setTelefonoSecundario}
             inputText="Teléfono secundario"
           />
         </div>
         <span className={styles.titleText}>Localización</span>
         <div className={styles.inputsList}>
-          <StandardInput setValue={setAerolinea} inputText="Pais" />
-          <StandardInput setValue={setAerolinea} inputText="Ciudad" />
+          <StandardInput setValue={setPais} inputText="Pais" />
+          <StandardInput setValue={setCiudad} inputText="Ciudad" />
         </div>
       </div>
       <div className={styles.registerbuttoncontainer}>
         <GreenButton
-          executableFunction={() => setStep(1)}
+          executableFunction={() => setStep(0)}
           buttonText="Registrar"
+          disabled={
+            aerolinea === "" ||
+            codigo === "" ||
+            correoPrincipal === "" ||
+            correoSecundario === "" ||
+            telefonoPrincipal === "" ||
+            telefonoSecundario === "" ||
+            pais === "" ||
+            ciudad === ""
+          }
         />
       </div>
     </main>
