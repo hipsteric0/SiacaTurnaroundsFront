@@ -11,6 +11,7 @@ import StandardInput from "@/components/Reusables/StandardInput";
 import DriveFolderUploadRoundedIcon from "@mui/icons-material/DriveFolderUploadRounded";
 import FileUploadRoundedIcon from "@mui/icons-material/FileUploadRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
+import SiacaNavbar from "@/components/Reusables/Navbar/SiacaNavbar";
 interface PageProps {
   setStep: (value: number) => void;
 }

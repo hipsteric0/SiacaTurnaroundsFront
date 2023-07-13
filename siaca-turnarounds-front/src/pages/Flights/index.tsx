@@ -1,3 +1,4 @@
+import SiacaNavbar from "@/components/Reusables/Navbar/SiacaNavbar";
 import styles from "./index.style.module.css";
 import KeyboardArrowLeftRoundedIcon from "@mui/icons-material/KeyboardArrowLeftRounded";
 import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRightRounded";
@@ -36,17 +37,19 @@ export default function Flights() {
     getDateForCalendar();
   };
   return (
-    <main>
+    <main className={styles.mainFlightsContainer}>
+      <SiacaNavbar activeFlightsValue={true} />
       <div className={styles.calendarAndFilterContainer}>
         <div className={styles.calendarContainer}>
           <KeyboardArrowLeftRoundedIcon onClick={backDateButton} />
-          {dateState}
+          fecha{dateState}
           <KeyboardArrowRightRoundedIcon onClick={frontDateButton} />
         </div>
         <div className={styles.filterButton}></div>
         <div className={styles.createFlightButton}></div>
       </div>
       <div className={styles.flightsListContainer}></div>
+      asd
     </main>
   );
 }
