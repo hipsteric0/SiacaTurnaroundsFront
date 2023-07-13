@@ -1,3 +1,24 @@
 .RegisterAirlineContainer {
-  padding: 0;
+  padding: 93px 115px;
+}
+.airlinesListContainer {
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.25);
+  padding: 16px;
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+}
+.inputsList {
+  display: flex;
+  flex-direction: row;
+  gap: 35px;
+  padding: 40px 0px 40px 10px;
+  border-top: 1px solid #bbb;
+}
+.titleText {
+  font-size: 14px;
+  font-weight: bold;
+  color: #08a75a;
 }
