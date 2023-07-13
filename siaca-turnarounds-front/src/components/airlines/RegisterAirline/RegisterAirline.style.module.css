@@ -17,6 +17,14 @@
   padding: 40px 0px 40px 10px;
   border-top: 1px solid #bbb;
 }
+.inputsListImage {
+  display: flex;
+  flex-direction: row;
+  gap: 35px;
+  padding: 40px 0px 40px 10px;
+  border-top: 1px solid #bbb;
+  justify-content: center;
+}
 .titleText {
   font-size: 14px;
   font-weight: bold;
@@ -27,4 +35,17 @@
   display: flex;
   justify-content: right;
   margin: 35px 0px;
+}
+.uploadContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 140px;
+}
+.uploadCancelButtons {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+  gap: 30px;
 }

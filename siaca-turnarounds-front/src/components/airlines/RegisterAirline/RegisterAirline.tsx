@@ -8,7 +8,9 @@ import router from "next/router";
 import { Table } from "@nextui-org/react";
 import { TableBody } from "@mui/material";
 import StandardInput from "@/components/Reusables/StandardInput";
-
+import DriveFolderUploadRoundedIcon from "@mui/icons-material/DriveFolderUploadRounded";
+import FileUploadRoundedIcon from "@mui/icons-material/FileUploadRounded";
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 interface PageProps {
   setStep: (value: number) => void;
 }
@@ -26,6 +28,16 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep }) => {
   return (
     <main className={styles.RegisterAirlineContainer}>
       <div className={styles.airlinesListContainer}>
+        <span className={styles.titleText}>Logo</span>
+        <div className={styles.inputsListImage}>
+          <div className={styles.uploadContainer}>
+            <DriveFolderUploadRoundedIcon fontSize="inherit" />
+            <div className={styles.uploadCancelButtons}>
+              <FileUploadRoundedIcon htmlColor="#08a75a" />
+              <CloseRoundedIcon htmlColor="red" />
+            </div>
+          </div>
+        </div>
         <span className={styles.titleText}>Datos</span>
         <div className={styles.inputsList}>
           <StandardInput setValue={setAerolinea} inputText="Aerolínea" />
