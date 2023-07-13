@@ -51,6 +51,12 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep }) => {
           <StandardInput setValue={setAerolinea} inputText="Ciudad" />
         </div>
       </div>
+      <div className={styles.registerbuttoncontainer}>
+        <GreenButton
+          executableFunction={() => setStep(1)}
+          buttonText="Registrar"
+        />
+      </div>
     </main>
   );
 };

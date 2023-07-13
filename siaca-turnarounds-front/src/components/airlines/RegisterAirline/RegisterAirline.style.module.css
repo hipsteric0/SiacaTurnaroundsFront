@@ -22,3 +22,9 @@
   font-weight: bold;
   color: #08a75a;
 }
+.registerbuttoncontainer {
+  width: 100%;
+  display: flex;
+  justify-content: right;
+  margin: 35px 0px;
+}
