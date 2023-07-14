@@ -1,0 +1,14 @@
+.containerAirlinesMainPage {
+  padding: 0px 115px 50px 115px;
+}
+.registerbuttoncontainer {
+  width: 100%;
+  display: flex;
+  justify-content: right;
+  margin-bottom: 35px;
+}
+.airlinesListContainer {
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.25);
+}
