@@ -5,13 +5,15 @@ import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRigh
 import { log } from "console";
 import { useEffect, useState } from "react";
 import router from "next/router";
-import { Table } from "@nextui-org/react";
+import { Input, Table } from "@nextui-org/react";
 import { TableBody } from "@mui/material";
 import StandardInput from "@/components/Reusables/StandardInput";
 import DriveFolderUploadRoundedIcon from "@mui/icons-material/DriveFolderUploadRounded";
 import FileUploadRoundedIcon from "@mui/icons-material/FileUploadRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import SiacaNavbar from "@/components/Reusables/Navbar/SiacaNavbar";
+import DoNotDisturbOnRoundedIcon from "@mui/icons-material/DoNotDisturbOnRounded";
+import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
 interface PageProps {
   setStep: (value: number) => void;
 }
@@ -26,94 +28,256 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
   const [telefonoSecundario, setTelefonoSecundario] = useState("");
   const [pais, setPais] = useState("");
   const [ciudad, setCiudad] = useState("");
+
+  const [savedTemplateTitle, setSavedTemplateTitle] = useState(false);
+  const [templateTitle, setTemplateTitle] = useState("");
+  const [handleMachineryQuantities, sethandleMachineryQuantities] = useState(0);
+  const [handleMachineryAvailable, sethhandleMachineryAvailable] = useState(0);
+  const [inputTitleAux, setinputTitleAux] = useState("");
+  const [inputIdAux, setinputIdAux] = useState(-1);
+
+  const handleSavingTitle = () => {
+    setSavedTemplateTitle(true);
+  };
+
+  const handleAddOtherItem = async () => {
+    machinesArray.push({
+      id: machinesArray.length,
+      name: "Otro",
+      quantity: 0,
+      hasInput: true,
+    });
+    sethhandleMachineryAvailable(machinesArray.length);
+    //console.log("machinesArray", machinesArray);
+  };
+
+  const handleAddMachineryItem = async (index: number) => {
+    machinesArray[index].quantity++;
+    await sethandleMachineryQuantities(machinesArray[index].quantity + 1);
+    await sethandleMachineryQuantities(-10);
+  };
+
+  const handleRemoveMachineryItem = async (index: number) => {
+    if (machinesArray[index].quantity > 0) {
+      machinesArray[index].quantity--;
+      await sethandleMachineryQuantities(machinesArray[index].quantity - 1);
+      await sethandleMachineryQuantities(-10);
+    }
+  };
+
+  const getMachineRegularItems = () => {
+    let y: any = [];
+    machinesArray.map((value: any) => {
+      let currentArrayPosition = value.id;
+      if (value.hasInput === false) {
+        return (y[value.id] = (
+          <div className={styles.machineryItemContainer}>
+            <h4 className={styles.machineryItemText}>{value.name}</h4>
+            <div className={styles.counterContainer}>
+              <div className={styles.addMachineryButtonIcon}>
+                <DoNotDisturbOnRoundedIcon
+                  onClick={() => {
+                    {
+                      handleRemoveMachineryItem(value.id);
+                    }
+                  }}
+                />
+              </div>
+              <div className={styles.itemCount}>{value.quantity}</div>
+              <div className={styles.addMachineryButtonIcon}>
+                <AddCircleRoundedIcon
+                  onClick={() => {
+                    handleAddMachineryItem(value.id);
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        ));
+      } else {
+        return (y[value.id] = (
+          <div className={styles.machineryOtherItemContainer}>
+            <div className={styles.singleInput}>
+              <Input
+                bordered
+                labelPlaceholder={"otro"}
+                color={"success"}
+                width={"125px"}
+                height={"10px"}
+                onChange={({ target: { value } }) => {
+                  machinesArray[currentArrayPosition].name = value;
+                }}
+              />
+            </div>
+
+            <div className={styles.counterContainer}>
+              <div className={styles.addMachineryButtonIcon}>
+                <DoNotDisturbOnRoundedIcon
+                  onClick={() => {
+                    {
+                      handleRemoveMachineryItem(value.id);
+                    }
+                  }}
+                />
+              </div>
+
+              <div className={styles.itemCount}>{value.quantity}</div>
+              <div className={styles.addMachineryButtonIcon}>
+                <AddCircleRoundedIcon
+                  onClick={() => {
+                    handleAddMachineryItem(value.id);
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        ));
+      }
+    });
+
+    return y;
+  };
+
   return (
     <main className={styles.RegisterAirlineContainer}>
+      <div className={styles.titleInputContainer}>
+        <StandardInput setValue={setTemplateTitle} inputText="Título" />
+        <GreenButton
+          executableFunction={() => handleSavingTitle()}
+          buttonText="Guardar"
+          disabled={templateTitle === ""}
+        />
+      </div>
+
       <div className={styles.airlinesListContainer}>
-        <span className={styles.titleText}>Logo</span>
-        <div className={styles.inputsListImage}>
-          <div className={styles.uploadContainer}>
-            <DriveFolderUploadRoundedIcon fontSize="inherit" />
-            <div className={styles.uploadCancelButtons}>
-              <FileUploadRoundedIcon htmlColor="#08a75a" />
-              <CloseRoundedIcon htmlColor="red" />
+        <span className={styles.titleText}>Tareas</span>
+        <div className={styles.inputsList}>
+          <div className={styles.inputColumn}>
+            {
+              <div
+                className={
+                  !savedTemplateTitle
+                    ? styles.dissappearingMessage
+                    : styles.hiddenDissappearingMessage
+                }
+              >
+                Guarda el titulo de la plantilla para poder rellenar estos
+                campos
+              </div>
+            }
+            <div className={styles.messageAndInput}>
+              <StandardInput
+                setValue={setCorreoPrincipal}
+                inputText="Tarea Principal"
+                inputDisabled={!savedTemplateTitle}
+              />
+            </div>
+            <div className={styles.messageAndInput}>
+              <div className={styles.inputRow}>
+                <StandardInput
+                  setValue={setCorreoPrincipal}
+                  inputText="Subtarea"
+                  inputDisabled={!savedTemplateTitle}
+                />
+                <StandardInput
+                  setValue={setCorreoPrincipal}
+                  inputText="Tipo de Subtarea"
+                  inputDisabled={!savedTemplateTitle}
+                />
+              </div>
             </div>
           </div>
         </div>
-        <span className={styles.titleText}>Datos</span>
-        <div className={styles.inputsList}>
-          <StandardInput setValue={setAerolinea} inputText="Aerolínea" />
-          <StandardInput setValue={setCodigo} inputText="Código" />
+        <div className={styles.addTaskContainer}>
+          <div className={styles.addTaskButton}>
+            <GreenButton
+              executableFunction={() => {}}
+              buttonText="Agregar Tarea"
+            />
+          </div>
         </div>
-        <span className={styles.titleText}>Contacto</span>
-        <div className={styles.inputsList}>
-          <StandardInput
-            setValue={setCorreoPrincipal}
-            inputText="Correo principal"
-          />
-          <StandardInput
-            setValue={setCorreoSecundario}
-            inputText="Correo secundario"
-          />
-          <StandardInput
-            setValue={setTelefonoPrincipal}
-            inputText="Teléfono principal"
-          />
-          <StandardInput
-            setValue={setTelefonoSecundario}
-            inputText="Teléfono secundario"
-          />
+
+        <span className={styles.titleText}>Maquinaria</span>
+        <div className={styles.machineryInputsList}>
+          {getMachineRegularItems()}
         </div>
-        <span className={styles.titleText}>Localización</span>
-        <div className={styles.inputsList}>
-          <StandardInput setValue={setPais} inputText="Pais" />
-          <StandardInput setValue={setCiudad} inputText="Ciudad" />
+        <div className={styles.addMachineryButton}>
+          <div className={styles.addMachineryButtonIcon}>
+            <AddCircleRoundedIcon
+              onClick={() => handleAddOtherItem()}
+              htmlColor="#bbbbbb"
+              fontSize="inherit"
+            />
+          </div>
         </div>
       </div>
       <div className={styles.registerbuttoncontainer}>
         <GreenButton
           executableFunction={() => setStep(0)}
           buttonText="Registrar"
-          disabled={
-            aerolinea === "" ||
-            codigo === "" ||
-            correoPrincipal === "" ||
-            correoSecundario === "" ||
-            telefonoPrincipal === "" ||
-            telefonoSecundario === "" ||
-            pais === "" ||
-            ciudad === ""
-          }
+          disabled={true}
         />
       </div>
+      <div className={styles.hidden}>{handleMachineryQuantities}</div>
     </main>
   );
 };
 
 export default RegisterTemplate;
 
-let arrayAux = [
+let machinesArray = [
   {
     id: 0,
-    nombre: "Aerolinea 1",
-    correo: "corre1@gmail.com",
-    telefono: "48374783784",
-    codigo: "123",
-    imagen: "link",
+    name: "Aguas servidas",
+    quantity: 0,
+    hasInput: false,
   },
   {
     id: 1,
-    nombre: "Aerolinea 2",
-    correo: "correo2@gmail.com",
-    telefono: "48374783784",
-    codigo: "123",
-    imagen: "link",
+    name: "Cinta transportadora",
+    quantity: 0,
+    hasInput: false,
   },
   {
     id: 2,
-    nombre: "Aerolinea 3",
-    correo: "correo3@gmail.com",
-    telefono: "48374783784",
-    codigo: "123",
-    imagen: "link",
+    name: "Aire acondicionado",
+    quantity: 0,
+    hasInput: false,
+  },
+  {
+    id: 3,
+    name: "Tractor de arrastre",
+    quantity: 0,
+    hasInput: false,
+  },
+  {
+    id: 4,
+    name: "Loader",
+    quantity: 0,
+    hasInput: false,
+  },
+  {
+    id: 5,
+    name: "Planta neumática",
+    quantity: 0,
+    hasInput: false,
+  },
+  {
+    id: 6,
+    name: "Escalera",
+    quantity: 0,
+    hasInput: false,
+  },
+  {
+    id: 7,
+    name: "Tractor de empuje",
+    quantity: 0,
+    hasInput: false,
+  },
+  {
+    id: 8,
+    name: "Otro",
+    quantity: 0,
+    hasInput: true,
   },
 ];
