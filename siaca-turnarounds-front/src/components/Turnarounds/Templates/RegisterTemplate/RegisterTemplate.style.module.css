@@ -157,3 +157,11 @@
   outline: none;
   padding-left: 10px;
 }
+.addSubtaskButtonIcon {
+  cursor: pointer;
+}
+.addSubtaskButtonIconContainer {
+  font-size: 25px;
+  padding-left: 290px;
+  display: flex;
+}

@@ -32,6 +32,8 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
   const [savedTemplateTitle, setSavedTemplateTitle] = useState(false);
   const [templateTitle, setTemplateTitle] = useState("");
   const [handleMachineryQuantities, sethandleMachineryQuantities] = useState(0);
+  const [handleTasksQuantities, sethandleTasksQuantities] = useState(0);
+  const [handleSubTasksQuantities, sethandleSubTasksQuantities] = useState(0);
   const [handleMachineryAvailable, sethhandleMachineryAvailable] = useState(0);
   const [inputTitleAux, setinputTitleAux] = useState("");
   const [inputIdAux, setinputIdAux] = useState(-1);
@@ -137,7 +139,99 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
 
     return y;
   };
+  const addTask = () => {
+    tasksArray.push({
+      id: tasksArray.length,
+      title: "",
+      subtasks: [
+        {
+          key: 0,
+          title: "",
+          type: "",
+        },
+      ],
+    });
+    sethandleTasksQuantities(tasksArray.length);
+  };
 
+  const addSubTask = async (index: number) => {
+    await sethandleSubTasksQuantities(0);
+    tasksArray[index].subtasks.push({
+      key: tasksArray[index].subtasks.length,
+      title: "",
+      type: "",
+    });
+    sethandleSubTasksQuantities(tasksArray[index].subtasks.length);
+  };
+
+  const getTareasArray = () => {
+    let y: any = [];
+    console.log("tasksArray", tasksArray);
+    tasksArray.map((value: any) => {
+      let currentArrayPosition = value.id;
+
+      return (y[value.id] = (
+        <>
+          <div className={styles.inputsList}>
+            <div className={styles.inputColumn}>
+              {
+                <div
+                  className={
+                    !savedTemplateTitle
+                      ? styles.dissappearingMessage
+                      : styles.hiddenDissappearingMessage
+                  }
+                >
+                  Guarda el titulo de la plantilla para poder rellenar estos
+                  campos
+                </div>
+              }
+              <div className={styles.messageAndInput}>
+                <StandardInput
+                  setValue={setCorreoPrincipal}
+                  inputText="Tarea Principal"
+                  inputDisabled={!savedTemplateTitle}
+                />
+              </div>
+              {tasksArray[value.id].subtasks.map((value: any) => {
+                return (
+                  <>
+                    <div className={styles.messageAndInput}>
+                      <div className={styles.inputRow}>
+                        <StandardInput
+                          setValue={setCorreoPrincipal}
+                          inputText="Subtarea"
+                          inputDisabled={!savedTemplateTitle}
+                        />
+                        <StandardInput
+                          setValue={setCorreoPrincipal}
+                          inputText="Tipo de Subtarea"
+                          inputDisabled={!savedTemplateTitle}
+                        />
+                      </div>
+                    </div>
+                  </>
+                );
+              })}
+            </div>
+          </div>
+          <div className={styles.addSubtaskButtonIconContainer}>
+            <div className={styles.addSubtaskButtonIcon}>
+              <AddCircleRoundedIcon
+                onClick={() => {
+                  addSubTask(value.id);
+                }}
+                htmlColor="#bbbbbb"
+                fontSize="inherit"
+              />
+            </div>
+          </div>
+        </>
+      ));
+    });
+
+    return y;
+  };
   return (
     <main className={styles.RegisterAirlineContainer}>
       <div className={styles.titleInputContainer}>
@@ -151,48 +245,17 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
 
       <div className={styles.airlinesListContainer}>
         <span className={styles.titleText}>Tareas</span>
-        <div className={styles.inputsList}>
-          <div className={styles.inputColumn}>
-            {
-              <div
-                className={
-                  !savedTemplateTitle
-                    ? styles.dissappearingMessage
-                    : styles.hiddenDissappearingMessage
-                }
-              >
-                Guarda el titulo de la plantilla para poder rellenar estos
-                campos
-              </div>
-            }
-            <div className={styles.messageAndInput}>
-              <StandardInput
-                setValue={setCorreoPrincipal}
-                inputText="Tarea Principal"
-                inputDisabled={!savedTemplateTitle}
-              />
-            </div>
-            <div className={styles.messageAndInput}>
-              <div className={styles.inputRow}>
-                <StandardInput
-                  setValue={setCorreoPrincipal}
-                  inputText="Subtarea"
-                  inputDisabled={!savedTemplateTitle}
-                />
-                <StandardInput
-                  setValue={setCorreoPrincipal}
-                  inputText="Tipo de Subtarea"
-                  inputDisabled={!savedTemplateTitle}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
+
+        {getTareasArray()}
+
         <div className={styles.addTaskContainer}>
           <div className={styles.addTaskButton}>
             <GreenButton
-              executableFunction={() => {}}
+              executableFunction={() => {
+                addTask();
+              }}
               buttonText="Agregar Tarea"
+              disabled={!savedTemplateTitle}
             />
           </div>
         </div>
@@ -218,12 +281,34 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
           disabled={true}
         />
       </div>
-      <div className={styles.hidden}>{handleMachineryQuantities}</div>
+      <div className={styles.hidden}>
+        {handleMachineryQuantities}
+        {handleSubTasksQuantities}
+      </div>
     </main>
   );
 };
 
 export default RegisterTemplate;
+let subtasksType = {
+  id: 0,
+  title: "",
+  type: "",
+};
+
+let tasksArray = [
+  {
+    id: 0,
+    title: "",
+    subtasks: [
+      {
+        key: 0,
+        title: "",
+        type: "",
+      },
+    ],
+  },
+];
 
 let machinesArray = [
   {
