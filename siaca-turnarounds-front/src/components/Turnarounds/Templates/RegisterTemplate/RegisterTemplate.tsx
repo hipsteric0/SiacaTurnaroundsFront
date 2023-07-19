@@ -36,7 +36,7 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
   const [handleSubTasksQuantities, sethandleSubTasksQuantities] = useState(0);
   const [handleMachineryAvailable, sethhandleMachineryAvailable] = useState(0);
   const [inputTitleAux, setinputTitleAux] = useState("");
-  const [inputIdAux, setinputIdAux] = useState(-1);
+  const [inputAux, setinputAux] = useState("");
 
   const handleSavingTitle = () => {
     setSavedTemplateTitle(true);
@@ -80,7 +80,9 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
                 <DoNotDisturbOnRoundedIcon
                   onClick={() => {
                     {
-                      handleRemoveMachineryItem(value.id);
+                      savedTemplateTitle
+                        ? handleRemoveMachineryItem(value.id)
+                        : undefined;
                     }
                   }}
                 />
@@ -89,7 +91,9 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
               <div className={styles.addMachineryButtonIcon}>
                 <AddCircleRoundedIcon
                   onClick={() => {
-                    handleAddMachineryItem(value.id);
+                    savedTemplateTitle
+                      ? handleAddMachineryItem(value.id)
+                      : undefined;
                   }}
                 />
               </div>
@@ -117,7 +121,9 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
                 <DoNotDisturbOnRoundedIcon
                   onClick={() => {
                     {
-                      handleRemoveMachineryItem(value.id);
+                      savedTemplateTitle
+                        ? handleRemoveMachineryItem(value.id)
+                        : undefined;
                     }
                   }}
                 />
@@ -127,7 +133,9 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
               <div className={styles.addMachineryButtonIcon}>
                 <AddCircleRoundedIcon
                   onClick={() => {
-                    handleAddMachineryItem(value.id);
+                    savedTemplateTitle
+                      ? handleAddMachineryItem(value.id)
+                      : undefined;
                   }}
                 />
               </div>
@@ -191,6 +199,7 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
                   setValue={setCorreoPrincipal}
                   inputText="Tarea Principal"
                   inputDisabled={!savedTemplateTitle}
+                  inputWidth="265px"
                 />
               </div>
               {tasksArray[value.id].subtasks.map((value: any) => {
@@ -199,12 +208,12 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
                     <div className={styles.messageAndInput}>
                       <div className={styles.inputRow}>
                         <StandardInput
-                          setValue={setCorreoPrincipal}
+                          setValue={setinputAux}
                           inputText="Subtarea"
                           inputDisabled={!savedTemplateTitle}
                         />
                         <StandardInput
-                          setValue={setCorreoPrincipal}
+                          setValue={setinputAux}
                           inputText="Tipo de Subtarea"
                           inputDisabled={!savedTemplateTitle}
                         />
@@ -219,7 +228,7 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
             <div className={styles.addSubtaskButtonIcon}>
               <AddCircleRoundedIcon
                 onClick={() => {
-                  addSubTask(value.id);
+                  savedTemplateTitle ? addSubTask(value.id) : undefined;
                 }}
                 htmlColor="#bbbbbb"
                 fontSize="inherit"
@@ -267,7 +276,9 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
         <div className={styles.addMachineryButton}>
           <div className={styles.addMachineryButtonIcon}>
             <AddCircleRoundedIcon
-              onClick={() => handleAddOtherItem()}
+              onClick={() =>
+                savedTemplateTitle ? handleAddOtherItem() : undefined
+              }
               htmlColor="#bbbbbb"
               fontSize="inherit"
             />
