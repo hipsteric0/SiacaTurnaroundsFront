@@ -15,6 +15,7 @@ import SiacaNavbar from "@/components/Reusables/Navbar/SiacaNavbar";
 import DoNotDisturbOnRoundedIcon from "@mui/icons-material/DoNotDisturbOnRounded";
 import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import BackArrow from "@/components/Reusables/BackArrow";
 interface PageProps {
   setStep: (value: number) => void;
 }
@@ -100,12 +101,13 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
               <Input
                 bordered
                 labelPlaceholder={"otro"}
-                color={"success"}
+                color={savedTemplateTitle ? "success" : "error"}
                 width={"125px"}
                 height={"10px"}
                 onChange={({ target: { value } }) => {
                   machinesArray[currentArrayPosition].name = value;
                 }}
+                disabled={!savedTemplateTitle}
               />
             </div>
 
@@ -258,6 +260,18 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
   };
   return (
     <main className={styles.RegisterAirlineContainer}>
+      <div className={styles.backArrowIcon}>
+        <BackArrow
+          executableFunction={() => {
+            setStep(0);
+          }}
+        />
+      </div>
+      <BackArrow
+        executableFunction={() => {
+          setStep(0);
+        }}
+      />
       <div className={styles.titleInputContainer}>
         <StandardInput
           setValue={setTemplateTitle}

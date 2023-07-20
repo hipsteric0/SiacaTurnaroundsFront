@@ -1,5 +1,5 @@
 .RegisterAirlineContainer {
-  padding: 93px 115px;
+  padding: 30px 115px;
 }
 .airlinesListContainer {
   width: 100%;
@@ -167,4 +167,9 @@
   font-size: 25px;
   padding-left: 270px;
   display: flex;
+}
+.backArrowIcon {
+  position: absolute;
+  top: 170px;
+  left: 10px;
 }
