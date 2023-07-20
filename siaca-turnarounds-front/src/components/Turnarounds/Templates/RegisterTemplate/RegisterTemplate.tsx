@@ -14,20 +14,13 @@ import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import SiacaNavbar from "@/components/Reusables/Navbar/SiacaNavbar";
 import DoNotDisturbOnRoundedIcon from "@mui/icons-material/DoNotDisturbOnRounded";
 import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 interface PageProps {
   setStep: (value: number) => void;
 }
 
 const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
   //if token exists show regular html else show not signed in screen
-  const [aerolinea, setAerolinea] = useState("");
-  const [codigo, setCodigo] = useState("");
-  const [correoPrincipal, setCorreoPrincipal] = useState("");
-  const [correoSecundario, setCorreoSecundario] = useState("");
-  const [telefonoPrincipal, setTelefonoPrincipal] = useState("");
-  const [telefonoSecundario, setTelefonoSecundario] = useState("");
-  const [pais, setPais] = useState("");
-  const [ciudad, setCiudad] = useState("");
 
   const [savedTemplateTitle, setSavedTemplateTitle] = useState(false);
   const [templateTitle, setTemplateTitle] = useState("");
@@ -174,7 +167,7 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
 
   const getTareasArray = () => {
     let y: any = [];
-    console.log("tasksArray", tasksArray);
+    //console.log("tasksArray", tasksArray);
     tasksArray.map((value: any) => {
       let currentArrayPosition = value.id;
 
@@ -195,28 +188,50 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
                 </div>
               }
               <div className={styles.messageAndInput}>
-                <StandardInput
-                  setValue={setCorreoPrincipal}
-                  inputText="Tarea Principal"
-                  inputDisabled={!savedTemplateTitle}
-                  inputWidth="265px"
-                />
+                <div className={styles.singleInput}>
+                  <Input
+                    bordered
+                    labelPlaceholder={"Tarea Principal"}
+                    color={savedTemplateTitle ? "success" : "error"}
+                    onChange={({ target: { value } }) => {
+                      tasksArray[currentArrayPosition].title = value;
+                    }}
+                    disabled={!savedTemplateTitle}
+                    width="240px"
+                  />
+                </div>
               </div>
-              {tasksArray[value.id].subtasks.map((value: any) => {
+              {tasksArray[value.id].subtasks.map((index: any) => {
                 return (
                   <>
                     <div className={styles.messageAndInput}>
                       <div className={styles.inputRow}>
-                        <StandardInput
-                          setValue={setinputAux}
-                          inputText="Subtarea"
-                          inputDisabled={!savedTemplateTitle}
-                        />
-                        <StandardInput
-                          setValue={setinputAux}
-                          inputText="Tipo de Subtarea"
-                          inputDisabled={!savedTemplateTitle}
-                        />
+                        <div className={styles.singleInput}>
+                          <Input
+                            bordered
+                            labelPlaceholder={"Subtarea"}
+                            color={savedTemplateTitle ? "success" : "error"}
+                            onChange={({ target: { value } }) => {
+                              tasksArray[currentArrayPosition].subtasks[
+                                index.key
+                              ].title = value;
+                            }}
+                            disabled={!savedTemplateTitle}
+                          />
+                        </div>
+                        <div className={styles.singleInput}>
+                          <Input
+                            bordered
+                            labelPlaceholder={"Tipo de Subtarea"}
+                            color={savedTemplateTitle ? "success" : "error"}
+                            onChange={({ target: { value } }) => {
+                              tasksArray[currentArrayPosition].subtasks[
+                                index.key
+                              ].type = value;
+                            }}
+                            disabled={!savedTemplateTitle}
+                          />
+                        </div>
                       </div>
                     </div>
                   </>
@@ -244,12 +259,21 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
   return (
     <main className={styles.RegisterAirlineContainer}>
       <div className={styles.titleInputContainer}>
-        <StandardInput setValue={setTemplateTitle} inputText="Título" />
-        <GreenButton
-          executableFunction={() => handleSavingTitle()}
-          buttonText="Guardar"
-          disabled={templateTitle === ""}
+        <StandardInput
+          setValue={setTemplateTitle}
+          inputText="Título"
+          inputDisabled={savedTemplateTitle}
         />
+        <GreenButton
+          executableFunction={() => {
+            !savedTemplateTitle ? handleSavingTitle() : undefined;
+          }}
+          buttonText={!savedTemplateTitle ? "Guardar" : "Guardado!"}
+          disabled={!savedTemplateTitle ? templateTitle === "" : true}
+        />
+        <div className={!savedTemplateTitle ? styles.hidden : undefined}>
+          <CheckCircleOutlineIcon htmlColor="#00A75D" />
+        </div>
       </div>
 
       <div className={styles.airlinesListContainer}>
@@ -289,7 +313,7 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
         <GreenButton
           executableFunction={() => setStep(0)}
           buttonText="Registrar"
-          disabled={true}
+          disabled={savedTemplateTitle ? false : true}
         />
       </div>
       <div className={styles.hidden}>
