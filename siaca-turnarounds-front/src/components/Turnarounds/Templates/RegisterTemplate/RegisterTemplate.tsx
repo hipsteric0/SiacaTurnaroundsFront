@@ -23,6 +23,9 @@ interface PageProps {
 const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
   //if token exists show regular html else show not signed in screen
 
+  //let plantillaId = -1;
+  const [plantillaId, setplantillaId] = useState(-1);
+
   const [savedTemplateTitle, setSavedTemplateTitle] = useState(false);
   const [templateTitle, setTemplateTitle] = useState("");
   const [handleMachineryQuantities, sethandleMachineryQuantities] = useState(0);
@@ -46,6 +49,36 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
             console.log(result);
+            console.log("result.id", result.id);
+            //plantillaId = result.id;
+            setplantillaId(result.id);
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+        return;
+      }
+    };
+    fetchData().catch(console.error);
+  };
+
+  const createTask = (titleValue: string) => {
+    const fetchData = async () => {
+      console.log("plantilla ID anjtes del request", plantillaId);
+      try {
+        const url = "/api/createTask";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            titulo: titleValue,
+            fk_plantilla: plantillaId,
+            userToken: localStorage.getItem("userToken"),
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            console.log(result);
+            console.log("result.id", result.id);
           })
         );
       } catch (error) {
@@ -283,6 +316,15 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
 
     return y;
   };
+
+  const handleRegisterFunction = () => {
+    tasksArray.map((value: any) => {
+      console.log("value", value);
+      createTask(value.title);
+    });
+
+    setStep(0);
+  };
   return (
     <main className={styles.RegisterAirlineContainer}>
       <div className={styles.backArrowIcon}>
@@ -350,7 +392,7 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
       </div>
       <div className={styles.registerbuttoncontainer}>
         <GreenButton
-          executableFunction={() => setStep(0)}
+          executableFunction={() => handleRegisterFunction()}
           buttonText="Registrar"
           disabled={savedTemplateTitle ? false : true}
         />
@@ -364,11 +406,6 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
 };
 
 export default RegisterTemplate;
-let subtasksType = {
-  id: 0,
-  title: "",
-  type: "",
-};
 
 let tasksArray = [
   {
