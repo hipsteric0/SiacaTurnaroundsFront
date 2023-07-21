@@ -32,8 +32,33 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
   const [inputTitleAux, setinputTitleAux] = useState("");
   const [inputAux, setinputAux] = useState("");
 
-  const handleSavingTitle = () => {
-    setSavedTemplateTitle(true);
+  const createTemplate = () => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/createTemplate";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            titulo: templateTitle,
+            userToken: localStorage.getItem("userToken"),
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            console.log(result);
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+        return;
+      }
+    };
+    fetchData().catch(console.error);
+  };
+
+  const handleSavingTitle = async () => {
+    await createTemplate();
+    await setSavedTemplateTitle(true);
   };
 
   const handleAddOtherItem = async () => {
