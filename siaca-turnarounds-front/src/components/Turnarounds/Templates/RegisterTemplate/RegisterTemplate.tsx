@@ -4,7 +4,7 @@ import KeyboardArrowLeftRoundedIcon from "@mui/icons-material/KeyboardArrowLeftR
 import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRightRounded";
 import { log } from "console";
 import { useEffect, useState } from "react";
-import router from "next/router";
+import router, { Router } from "next/router";
 import { Input, Table } from "@nextui-org/react";
 import { TableBody } from "@mui/material";
 import StandardInput from "@/components/Reusables/StandardInput";
@@ -16,6 +16,7 @@ import DoNotDisturbOnRoundedIcon from "@mui/icons-material/DoNotDisturbOnRounded
 import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import BackArrow from "@/components/Reusables/BackArrow";
+import { useRouter } from "next/router";
 interface PageProps {
   setStep: (value: number) => void;
 }
@@ -364,7 +365,7 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
       }
     }
 
-    setStep(0);
+    router.reload();
   };
 
   return (
