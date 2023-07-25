@@ -146,7 +146,8 @@ export default async function handler(
         },
         body: JSON.stringify({
           titulo: body?.["titulo"],
-          fk_plantilla: body?.["fk_plantilla"],
+          fk_tarea: body?.["fk_tarea"],
+          fk_tipo: body?.["fk_tipo"],
         }),
         /*body: JSON.stringify({
           username: "hola9",
@@ -157,8 +158,9 @@ export default async function handler(
 
     // Backend URL
     const url =
-      `${BACKEND_BASE_URL}/plantillas/tarea/?token=` + body?.["userToken"];
-
+      `${BACKEND_BASE_URL}/plantillas/subtarea/?token=` + body?.["userToken"];
+    console.log("url", url);
+    console.log("fetchOptions", fetchOptions);
     // Make the actual request to backend
     const response = await fetch(url, fetchOptions);
 

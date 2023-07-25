@@ -62,7 +62,7 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
     fetchData().catch(console.error);
   };
 
-  const createTask = (titleValue: string) => {
+  const createTask = async (titleValue: string, indexTaskArray: number) => {
     const fetchData = async () => {
       console.log("plantilla ID anjtes del request", plantillaId);
       try {
@@ -79,6 +79,7 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
           res.json().then((result) => {
             console.log(result);
             console.log("result.id", result.id);
+            tasksArray[indexTaskArray].tareaIDforDB = result.id;
           })
         );
       } catch (error) {
@@ -86,7 +87,39 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
         return;
       }
     };
-    fetchData().catch(console.error);
+    await fetchData().catch(console.error);
+  };
+
+  const createSubtask = async (
+    titleValue: string,
+    tareaValue: number,
+    tipoValue: number
+  ) => {
+    const fetchData = async () => {
+      console.log("plantilla ID anjtes del request", plantillaId);
+      try {
+        const url = "/api/createSubtask";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            titulo: titleValue,
+            fk_tarea: tareaValue,
+            fk_tipo: tipoValue,
+            userToken: localStorage.getItem("userToken"),
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            console.log(result);
+            console.log("result.id", result.id);
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
   };
 
   const handleSavingTitle = async () => {
@@ -204,11 +237,12 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
     tasksArray.push({
       id: tasksArray.length,
       title: "",
+      tareaIDforDB: -1,
       subtasks: [
         {
           key: 0,
           title: "",
-          type: "",
+          type: -1,
         },
       ],
     });
@@ -220,7 +254,7 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
     tasksArray[index].subtasks.push({
       key: tasksArray[index].subtasks.length,
       title: "",
-      type: "",
+      type: -1,
     });
     sethandleSubTasksQuantities(tasksArray[index].subtasks.length);
   };
@@ -287,7 +321,7 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
                             onChange={({ target: { value } }) => {
                               tasksArray[currentArrayPosition].subtasks[
                                 index.key
-                              ].type = value;
+                              ].type = parseInt(value);
                             }}
                             disabled={!savedTemplateTitle}
                           />
@@ -316,15 +350,23 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
 
     return y;
   };
-
-  const handleRegisterFunction = () => {
-    tasksArray.map((value: any) => {
-      console.log("value", value);
-      createTask(value.title);
-    });
+  //missing tipo y fk_tarea
+  const handleRegisterFunction = async () => {
+    for (let i = 0; i < tasksArray.length; i++) {
+      console.log("tasksArray[i]", tasksArray[i]);
+      await createTask(tasksArray[i].title, i);
+      for (let j = 0; j < tasksArray[i].subtasks.length; j++) {
+        await createSubtask(
+          tasksArray[i].subtasks[j].title,
+          tasksArray[i].tareaIDforDB,
+          tasksArray[i].subtasks[j].type
+        );
+      }
+    }
 
     setStep(0);
   };
+
   return (
     <main className={styles.RegisterAirlineContainer}>
       <div className={styles.backArrowIcon}>
@@ -411,11 +453,12 @@ let tasksArray = [
   {
     id: 0,
     title: "",
+    tareaIDforDB: -1,
     subtasks: [
       {
         key: 0,
         title: "",
-        type: "",
+        type: -1,
       },
     ],
   },
