@@ -155,6 +155,37 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
     await fetchData().catch(console.error);
   };
 
+  const createMachineryUsageRecord = async (
+    quantity: number,
+    fk_categoria_value: number,
+    fk_plantilla_value: number
+  ) => {
+    const fetchData = async () => {
+      console.log("plantilla ID anjtes del request", plantillaId);
+      try {
+        const url = "/api/createMachineryUsageRecord";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            cantidad: quantity,
+            fk_categoria: fk_categoria_value,
+            fk_plantilla: fk_plantilla_value,
+            userToken: localStorage.getItem("userToken"),
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            console.log("category", result);
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
   const getMachineryCount = async () => {
     const fetchData = async () => {
       console.log("plantilla ID anjtes del request", plantillaId);
@@ -428,11 +459,15 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
         await createCategory(machinesArray[i].name);
       }
       if (machinesArray[i].name != "" && machinesArray[i].quantity > 0) {
-        //agregar maquinaria a plantilla con await
+        await createMachineryUsageRecord(
+          machinesArray[i].quantity,
+          machinesArray[i].dbID,
+          plantillaId
+        );
       }
     }
 
-    //router.reload();
+    router.reload();
   };
 
   return (
