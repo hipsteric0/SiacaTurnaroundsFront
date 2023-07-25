@@ -35,6 +35,13 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
   const [handleMachineryAvailable, sethhandleMachineryAvailable] = useState(0);
   const [inputTitleAux, setinputTitleAux] = useState("");
   const [inputAux, setinputAux] = useState("");
+  const [machineryCounter, setmachineryCounter] = useState(-1);
+
+  useEffect(() => {
+    if (machineryCounter === -1) {
+      getMachineryCount();
+    }
+  });
 
   const createTemplate = () => {
     const fetchData = async () => {
@@ -123,6 +130,56 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
     await fetchData().catch(console.error);
   };
 
+  const createCategory = async (nombreValue: string) => {
+    const fetchData = async () => {
+      console.log("plantilla ID anjtes del request", plantillaId);
+      try {
+        const url = "/api/createCategory";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            nombre: nombreValue,
+            userToken: localStorage.getItem("userToken"),
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            console.log("category", result);
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
+  const getMachineryCount = async () => {
+    const fetchData = async () => {
+      console.log("plantilla ID anjtes del request", plantillaId);
+      try {
+        const url = "/api/machineryCounter";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            console.log("machineryCounter", result);
+            setmachineryCounter(result.contador);
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
   const handleSavingTitle = async () => {
     await createTemplate();
     await setSavedTemplateTitle(true);
@@ -131,12 +188,14 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
   const handleAddOtherItem = async () => {
     machinesArray.push({
       id: machinesArray.length,
-      name: "Otro",
+      dbID: machineryCounter + 1,
+      name: "",
       quantity: 0,
       hasInput: true,
     });
+    setmachineryCounter(machineryCounter + 1);
     sethhandleMachineryAvailable(machinesArray.length);
-    //console.log("machinesArray", machinesArray);
+    console.log("machinesArray", machinesArray);
   };
 
   const handleAddMachineryItem = async (index: number) => {
@@ -354,7 +413,6 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
   //missing tipo y fk_tarea
   const handleRegisterFunction = async () => {
     for (let i = 0; i < tasksArray.length; i++) {
-      console.log("tasksArray[i]", tasksArray[i]);
       await createTask(tasksArray[i].title, i);
       for (let j = 0; j < tasksArray[i].subtasks.length; j++) {
         await createSubtask(
@@ -365,7 +423,16 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
       }
     }
 
-    router.reload();
+    for (let i = 0; i < machinesArray.length; i++) {
+      if (machinesArray[i].hasInput === true && machinesArray[i].quantity > 0) {
+        await createCategory(machinesArray[i].name);
+      }
+      if (machinesArray[i].name != "" && machinesArray[i].quantity > 0) {
+        //agregar maquinaria a plantilla con await
+      }
+    }
+
+    //router.reload();
   };
 
   return (
@@ -468,62 +535,65 @@ let tasksArray = [
 let machinesArray = [
   {
     id: 0,
+    dbID: 1,
     name: "Aguas servidas",
     quantity: 0,
     hasInput: false,
   },
   {
     id: 1,
+    dbID: 2,
     name: "Tractor de arrastre",
     quantity: 0,
     hasInput: false,
   },
   {
     id: 2,
+    dbID: 3,
     name: "Escalera",
     quantity: 0,
     hasInput: false,
   },
   {
     id: 3,
+    dbID: 4,
     name: "Cinta transportadora",
     quantity: 0,
     hasInput: false,
   },
   {
     id: 4,
+    dbID: 5,
     name: "Loader",
     quantity: 0,
     hasInput: false,
   },
   {
     id: 5,
+    dbID: 6,
     name: "Tractor de empuje",
     quantity: 0,
     hasInput: false,
   },
   {
     id: 6,
+    dbID: 7,
     name: "Aire acondicionado",
     quantity: 0,
     hasInput: false,
   },
   {
     id: 7,
+    dbID: 8,
     name: "Planta neumática",
     quantity: 0,
     hasInput: false,
   },
   {
     id: 8,
+    dbID: 9,
     name: "GPU Planta eléctrica",
     quantity: 0,
     hasInput: false,
-  },
-  {
-    id: 9,
-    name: "Otro",
-    quantity: 0,
-    hasInput: true,
   },
 ];
