@@ -56,8 +56,8 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log(result);
-            console.log("result.id", result.id);
+            //console.log(result);
+            //console.log("result.id", result.id);
             //plantillaId = result.id;
             setplantillaId(result.id);
           })
@@ -72,7 +72,6 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
 
   const createTask = async (titleValue: string, indexTaskArray: number) => {
     const fetchData = async () => {
-      console.log("plantilla ID anjtes del request", plantillaId);
       try {
         const url = "/api/createTask";
         const requestOptions = {
@@ -85,8 +84,8 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log(result);
-            console.log("result.id", result.id);
+            //console.log(result);
+            //console.log("result.id", result.id);
             tasksArray[indexTaskArray].tareaIDforDB = result.id;
           })
         );
@@ -104,7 +103,6 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
     tipoValue: number
   ) => {
     const fetchData = async () => {
-      console.log("plantilla ID anjtes del request", plantillaId);
       try {
         const url = "/api/createSubtask";
         const requestOptions = {
@@ -118,8 +116,8 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log(result);
-            console.log("result.id", result.id);
+            //console.log(result);
+            // console.log("result.id", result.id);
           })
         );
       } catch (error) {
@@ -132,7 +130,6 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
 
   const createCategory = async (nombreValue: string) => {
     const fetchData = async () => {
-      console.log("plantilla ID anjtes del request", plantillaId);
       try {
         const url = "/api/createCategory";
         const requestOptions = {
@@ -144,7 +141,7 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log("category", result);
+            //console.log("category", result);
           })
         );
       } catch (error) {
@@ -161,7 +158,6 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
     fk_plantilla_value: number
   ) => {
     const fetchData = async () => {
-      console.log("plantilla ID anjtes del request", plantillaId);
       try {
         const url = "/api/createMachineryUsageRecord";
         const requestOptions = {
@@ -175,7 +171,7 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log("category", result);
+            // console.log("category", result);
           })
         );
       } catch (error) {
@@ -188,7 +184,6 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
 
   const getMachineryCount = async () => {
     const fetchData = async () => {
-      console.log("plantilla ID anjtes del request", plantillaId);
       try {
         const url = "/api/machineryCounter";
         const requestOptions = {
@@ -199,7 +194,7 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log("machineryCounter", result);
+            // console.log("machineryCounter", result);
             setmachineryCounter(result.contador);
           })
         );
@@ -233,14 +228,13 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
   const handleAddOtherItem = async () => {
     machinesArray.push({
       id: machinesArray.length,
-      dbID: -1 /*machineryCounter + 1*/,
+      dbID: -1,
       name: "",
       quantity: 0,
       hasInput: true,
     });
-    //setmachineryCounter(machineryCounter + 1);
     sethhandleMachineryAvailable(machinesArray.length);
-    console.log("machinesArray", machinesArray);
+    //console.log("machinesArray", machinesArray);
   };
 
   const handleAddMachineryItem = async (index: number) => {
@@ -455,7 +449,7 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
 
     return y;
   };
-  //missing tipo y fk_tarea
+
   const handleRegisterFunction = async () => {
     setMachineArrayDBids();
 
@@ -488,7 +482,7 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
       }
     }
 
-    //router.reload();
+    router.reload();
   };
 
   return (
