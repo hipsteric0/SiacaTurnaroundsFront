@@ -216,15 +216,29 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
     await setSavedTemplateTitle(true);
   };
 
+  const setMachineArrayDBids = () => {
+    let dbid = machineryCounter;
+    for (let i = 0; i < machinesArray.length; i++) {
+      if (
+        machinesArray[i].hasInput === true &&
+        machinesArray[i].name != "" &&
+        machinesArray[i].quantity > 0
+      ) {
+        machinesArray[i].dbID = dbid + 1;
+        dbid = dbid + 1;
+        setmachineryCounter(machineryCounter + 1);
+      }
+    }
+  };
   const handleAddOtherItem = async () => {
     machinesArray.push({
       id: machinesArray.length,
-      dbID: machineryCounter + 1,
+      dbID: -1 /*machineryCounter + 1*/,
       name: "",
       quantity: 0,
       hasInput: true,
     });
-    setmachineryCounter(machineryCounter + 1);
+    //setmachineryCounter(machineryCounter + 1);
     sethhandleMachineryAvailable(machinesArray.length);
     console.log("machinesArray", machinesArray);
   };
@@ -443,14 +457,18 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
   };
   //missing tipo y fk_tarea
   const handleRegisterFunction = async () => {
+    setMachineArrayDBids();
+
     for (let i = 0; i < tasksArray.length; i++) {
       await createTask(tasksArray[i].title, i);
       for (let j = 0; j < tasksArray[i].subtasks.length; j++) {
-        await createSubtask(
-          tasksArray[i].subtasks[j].title,
-          tasksArray[i].tareaIDforDB,
-          tasksArray[i].subtasks[j].type
-        );
+        if (tasksArray[i].subtasks[j].title != "") {
+          await createSubtask(
+            tasksArray[i].subtasks[j].title,
+            tasksArray[i].tareaIDforDB,
+            tasksArray[i].subtasks[j].type
+          );
+        }
       }
     }
 
@@ -458,6 +476,9 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
       if (machinesArray[i].hasInput === true && machinesArray[i].quantity > 0) {
         await createCategory(machinesArray[i].name);
       }
+    }
+
+    for (let i = 0; i < machinesArray.length; i++) {
       if (machinesArray[i].name != "" && machinesArray[i].quantity > 0) {
         await createMachineryUsageRecord(
           machinesArray[i].quantity,
@@ -467,7 +488,7 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
       }
     }
 
-    router.reload();
+    //router.reload();
   };
 
   return (
