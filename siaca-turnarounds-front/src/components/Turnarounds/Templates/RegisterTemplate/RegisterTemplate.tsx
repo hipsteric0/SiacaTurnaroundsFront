@@ -552,20 +552,7 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
 
 export default RegisterTemplate;
 
-let tasksArray = [
-  {
-    id: 0,
-    title: "",
-    tareaIDforDB: -1,
-    subtasks: [
-      {
-        key: 0,
-        title: "",
-        type: -1,
-      },
-    ],
-  },
-];
+let tasksArray: any = [];
 
 let machinesArray = [
   {
