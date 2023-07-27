@@ -3,13 +3,16 @@ import styles from "./PersonnelMainPage.style.module.css";
 import KeyboardArrowLeftRoundedIcon from "@mui/icons-material/KeyboardArrowLeftRounded";
 import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRightRounded";
 import { log } from "console";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import router from "next/router";
-import { Table } from "@nextui-org/react";
+import { Table , Spacer} from "@nextui-org/react";
 import { TableBody } from "@mui/material";
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import { Dropdown } from "@nextui-org/react";
+import { useMediaQuery } from "@mui/material";
+import { IconButton } from "@mui/material/IconButton";
 
 
 interface PageProps {
@@ -18,6 +21,16 @@ interface PageProps {
 
 const PersonnelMainPage: React.FC = () => {
   //if token exists show regular html else show not signed in screen
+
+  const isMobile = useMediaQuery("(max-width: 1270px)");
+  const [allowContinue, setAllowContinue] = useState(false);
+  const [selectedDepartment, setSelectedDepartment] = React.useState(
+    new Set([" "])
+  );
+  const selectedDepartmentValue = React.useMemo(
+    () => Array.from(selectedDepartment).join(", ").replaceAll("_", " "),
+    [selectedDepartment]
+  );
 
   const arrayPrinter = () => {
     let y: any = [];
@@ -29,17 +42,37 @@ const PersonnelMainPage: React.FC = () => {
           <Table.Cell>{index?.departamento}</Table.Cell>
           <Table.Cell>{index?.username} - {index?.telefono}</Table.Cell>
           <Table.Cell>{index?.turno}</Table.Cell>
-          <Table.Cell><RemoveRedEyeIcon/>  <BorderColorOutlinedIcon/>  <DeleteOutlineOutlinedIcon/> </Table.Cell>
+          <Table.Cell><IconButton onClick={() => console.log("View user")}></IconButton><RemoveRedEyeIcon/>  <BorderColorOutlinedIcon/>  <DeleteOutlineOutlinedIcon/> </Table.Cell>
         </Table.Row>
       ));
     });
     return y;
   };
   return (
-    <main className={styles.containerAirlinesMainPage}>
-      <div className={styles.registerbuttoncontainer}>
-      </div>
-      <div className={styles.airlinesListContainer}>
+    <main className={styles.containerPersonnelMainPage}>
+      <div className="filtro">
+        <Dropdown>
+            <Dropdown.Button flat color="success" css={{ tt: "capitalize" }}>
+              {selectedDepartmentValue}
+            </Dropdown.Button>
+            <Dropdown.Menu
+              aria-label="Single selection actions"
+              color="success"
+              disallowEmptySelection
+              selectionMode="single"
+              selectedKeys={selectedDepartment}
+              onSelectionChange={setSelectedDepartment}
+            >
+              <Dropdown.Item key="Departamento 1">Departamento 1</Dropdown.Item>
+              <Dropdown.Item key="Departamento 2">Departamento 2</Dropdown.Item>
+              <Dropdown.Item key="Departamento 3">Departamento 3</Dropdown.Item>
+              <Dropdown.Item key="Departamento 4">Departamento 4</Dropdown.Item>
+              <Dropdown.Item key="Departamento 5">Departamento 5</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+        </div>
+      <Spacer/>
+      <div className={styles.personnelListContainer}>
         <Table
           lined
           headerLined
