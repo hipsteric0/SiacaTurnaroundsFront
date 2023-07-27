@@ -32,15 +32,51 @@ const PersonnelMainPage: React.FC = () => {
     [selectedDepartment]
   );
 
+  let arrayList : any  = []
+  let h : any
+
+  useEffect(() => {
+    getList()
+  }, []);
+
+const getList = async () => {
+  const fetchData = async () => {
+    try {
+      const url = "/api/personnelList";
+      const requestOptions = {
+        method: "POST",
+        body: JSON.stringify({
+          userToken: localStorage.getItem("userToken"),
+        }),
+      };
+      const response = await fetch(url, requestOptions).then((res) =>
+        res.json().then((result) => {
+          console.log(result);
+          arrayList = result;
+          //console.log("result.id", result.id);
+          //plantillaId = result.id;
+
+        })
+      );
+    } catch (error) {
+      console.error("Error geting user", error);
+      return;
+    }
+  };
+  await fetchData().catch(console.error);
+  h = arrayPrinter
+}
+
   const arrayPrinter = () => {
     let y: any = [];
-    arrayAux.map((index: any) => {
+    arrayList.map((index: any) => { 
+      console.log("index",index)
       return (y[index.id] = (
         <Table.Row key={index?.id}>
-          <Table.Cell>{index?.first_name} {index?.last_name} </Table.Cell>
+          <Table.Cell>{index?.fk_user.first_name} {index?.fk_user.last_name} </Table.Cell>
           <Table.Cell>{index?.cargo}</Table.Cell>
           <Table.Cell>{index?.departamento}</Table.Cell>
-          <Table.Cell>{index?.username} - {index?.telefono}</Table.Cell>
+          <Table.Cell>{index?.fk_user.username} - {index?.telefono}</Table.Cell>
           <Table.Cell>{index?.turno}</Table.Cell>
           <Table.Cell><RemoveRedEyeIcon/>  <BorderColorOutlinedIcon/>  <DeleteOutlineOutlinedIcon/> </Table.Cell>
         </Table.Row>
@@ -48,29 +84,10 @@ const PersonnelMainPage: React.FC = () => {
     });
     return y;
   };
+
+
   return (
     <main className={styles.containerPersonnelMainPage}>
-      <div className="filtro">
-        <Dropdown>
-            <Dropdown.Button flat color="success" css={{ tt: "capitalize" }}>
-              {selectedDepartmentValue}
-            </Dropdown.Button>
-            <Dropdown.Menu
-              aria-label="Single selection actions"
-              color="success"
-              disallowEmptySelection
-              selectionMode="single"
-              selectedKeys={selectedDepartment}
-              onSelectionChange={setSelectedDepartment}
-            >
-              <Dropdown.Item key="Departamento 1">Departamento 1</Dropdown.Item>
-              <Dropdown.Item key="Departamento 2">Departamento 2</Dropdown.Item>
-              <Dropdown.Item key="Departamento 3">Departamento 3</Dropdown.Item>
-              <Dropdown.Item key="Departamento 4">Departamento 4</Dropdown.Item>
-              <Dropdown.Item key="Departamento 5">Departamento 5</Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-        </div>
       <Spacer/>
       <div className={styles.personnelListContainer}>
         <Table
@@ -91,7 +108,7 @@ const PersonnelMainPage: React.FC = () => {
             <Table.Column>Turno</Table.Column>
             <Table.Column>Opciones</Table.Column>
           </Table.Header>
-          <Table.Body>{arrayPrinter()}</Table.Body>
+          <Table.Body>{h}</Table.Body>
         </Table>
       </div>
     </main>
