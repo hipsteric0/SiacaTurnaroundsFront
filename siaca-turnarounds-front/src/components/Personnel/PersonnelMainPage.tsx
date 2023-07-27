@@ -12,7 +12,7 @@ import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import { Dropdown } from "@nextui-org/react";
 import { useMediaQuery } from "@mui/material";
-import { IconButton } from "@mui/material/IconButton";
+
 
 
 interface PageProps {
@@ -42,7 +42,7 @@ const PersonnelMainPage: React.FC = () => {
           <Table.Cell>{index?.departamento}</Table.Cell>
           <Table.Cell>{index?.username} - {index?.telefono}</Table.Cell>
           <Table.Cell>{index?.turno}</Table.Cell>
-          <Table.Cell><IconButton onClick={() => console.log("View user")}></IconButton><RemoveRedEyeIcon/>  <BorderColorOutlinedIcon/>  <DeleteOutlineOutlinedIcon/> </Table.Cell>
+          <Table.Cell><RemoveRedEyeIcon/>  <BorderColorOutlinedIcon/>  <DeleteOutlineOutlinedIcon/> </Table.Cell>
         </Table.Row>
       ));
     });
