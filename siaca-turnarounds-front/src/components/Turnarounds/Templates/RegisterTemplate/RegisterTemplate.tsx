@@ -17,6 +17,8 @@ import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import BackArrow from "@/components/Reusables/BackArrow";
 import { useRouter } from "next/router";
+import DropdownMenu from "@/components/Reusables/DropdownMenu";
+
 interface PageProps {
   setStep: (value: number) => void;
 }
@@ -358,6 +360,15 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
     sethandleSubTasksQuantities(tasksArray[index].subtasks.length);
   };
 
+  const setOptionsInTareasArray = (
+    taskPosition: number,
+    subtaskPosition: number,
+    typeValue: number
+  ) => {
+    tasksArray[taskPosition].subtasks[subtaskPosition].type = typeValue;
+    //console.log("tasksArray", tasksArray);
+  };
+
   const getTareasArray = () => {
     let y: any = [];
     //console.log("tasksArray", tasksArray);
@@ -412,17 +423,20 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
                             disabled={!savedTemplateTitle}
                           />
                         </div>
-                        <div className={styles.singleInput}>
-                          <Input
-                            bordered
-                            labelPlaceholder={"Tipo de Subtarea"}
-                            color={savedTemplateTitle ? "success" : "error"}
-                            onChange={({ target: { value } }) => {
-                              tasksArray[currentArrayPosition].subtasks[
-                                index.key
-                              ].type = parseInt(value);
-                            }}
-                            disabled={!savedTemplateTitle}
+
+                        <div>
+                          <DropdownMenu
+                            buttonText={"Tipo de subtarea"}
+                            optionsArray={optionsArray}
+                            executableOptionClickFunction={(
+                              optionValue: number
+                            ) =>
+                              setOptionsInTareasArray(
+                                currentArrayPosition,
+                                index.key,
+                                optionValue
+                              )
+                            }
                           />
                         </div>
                       </div>
@@ -566,6 +580,25 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
 };
 
 export default RegisterTemplate;
+
+let optionsArray: any = [
+  {
+    key: 1,
+    name: "Comentario",
+  },
+  {
+    key: 2,
+    name: "Hora inicio",
+  },
+  {
+    key: 3,
+    name: "Hora inicio y fin",
+  },
+  {
+    key: 4,
+    name: "Imagen",
+  },
+];
 
 let tasksArray: any = [];
 
