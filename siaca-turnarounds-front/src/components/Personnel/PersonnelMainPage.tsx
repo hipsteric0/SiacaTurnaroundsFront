@@ -23,6 +23,35 @@ const PersonnelMainPage: React.FC = () => {
 
   const isMobile = useMediaQuery("(max-width: 1270px)");
   const [allowContinue, setAllowContinue] = useState(false);
+  const [arrayList3, setArrayList3] = useState([]);
+  const [arrayList3length, setArrayList3length] = useState(-1);
+  const [arrayListData3, setArrayListData3] = useState(
+    <Table.Row key={1}>
+      <Table.Cell>cargando</Table.Cell>
+      <Table.Cell>asdas</Table.Cell>
+      <Table.Cell>asd</Table.Cell>
+      <Table.Cell>asdasd</Table.Cell>
+      <Table.Cell>asdas</Table.Cell>
+      <Table.Cell>
+        <RemoveRedEyeIcon /> <BorderColorOutlinedIcon />{" "}
+        <DeleteOutlineOutlinedIcon />{" "}
+      </Table.Cell>
+    </Table.Row>
+  );
+  let auxRows = (
+    <Table.Row key={1}>
+      <Table.Cell>cargando</Table.Cell>
+      <Table.Cell>asdas</Table.Cell>
+      <Table.Cell>asd</Table.Cell>
+      <Table.Cell>asdasd</Table.Cell>
+      <Table.Cell>asdas</Table.Cell>
+      <Table.Cell>
+        <RemoveRedEyeIcon /> <BorderColorOutlinedIcon />{" "}
+        <DeleteOutlineOutlinedIcon />{" "}
+      </Table.Cell>
+    </Table.Row>
+  );
+
   const [selectedDepartment, setSelectedDepartment] = React.useState(
     new Set([" "])
   );
@@ -53,6 +82,8 @@ const PersonnelMainPage: React.FC = () => {
             console.log(result);
             console.log("values", Object.values(result));
             arrayList = Object.values(result);
+
+            setArrayList3(Object.values(result));
           })
         );
       } catch (error) {
@@ -66,11 +97,12 @@ const PersonnelMainPage: React.FC = () => {
 
   const arrayPrinter = () => {
     let y: any = [];
-    arrayList.map((index: any) => {
+    console.log("arrayList3", arrayList3.length);
+    arrayList3.map((index: any) => {
       console.log("index", index);
       console.log("index?.fk_user.first_name", index.fk_user.first_name);
       console.log("index.cargo", index.cargo);
-      return (y[index.id] = (
+      y[index.id] = (
         <Table.Row key={index.id}>
           <Table.Cell>
             {index.fk_user.first_name} {index.fk_user.last_name}{" "}
@@ -86,7 +118,7 @@ const PersonnelMainPage: React.FC = () => {
             <DeleteOutlineOutlinedIcon />{" "}
           </Table.Cell>
         </Table.Row>
-      ));
+      );
     });
     console.log("arrayList", Symbol(arrayList[0]?.cargo).description);
     let sas = arrayList[0]?.cargo;
@@ -103,12 +135,17 @@ const PersonnelMainPage: React.FC = () => {
         </Table.Cell>
       </Table.Row>
     );
-
-    return x;
+    setArrayListData3(y);
+    return y;
   };
 
   return (
     <main className={styles.containerPersonnelMainPage}>
+      length: {arrayList3.length}
+      <button onClick={() => setArrayList3length(arrayList3length + 1)}>
+        {" "}
+        ver personal
+      </button>
       <Spacer />
       <div className={styles.personnelListContainer}>
         <Table
@@ -122,17 +159,23 @@ const PersonnelMainPage: React.FC = () => {
           }}
         >
           <Table.Header>
-            <Table.Column>Nombre</Table.Column>
+            <Table.Column>Nombre ({arrayList3length})</Table.Column>
             <Table.Column>Cargo</Table.Column>
             <Table.Column>Departamento</Table.Column>
             <Table.Column>Contacto</Table.Column>
             <Table.Column>Turno</Table.Column>
             <Table.Column>Opciones</Table.Column>
           </Table.Header>
-          <Table.Body>{arrayPrinter()}</Table.Body>
+          {arrayList3length > 0 ? (
+            <Table.Body>{arrayListData3}</Table.Body>
+          ) : (
+            <Table.Body>{auxRows}</Table.Body>
+          )}
         </Table>
       </div>
-      {allowContinue}
+      {!allowContinue}
+      {arrayListData3.key}
+      {arrayList3.length}
     </main>
   );
 };
