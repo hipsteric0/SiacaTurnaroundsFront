@@ -93,56 +93,8 @@ const PersonnelMainPage: React.FC = () => {
         </div>
       </div>
       {!allowContinue}
-
-      <Table
-        aria-label="Example table with dynamic content"
-        css={{
-          height: "auto",
-          minWidth: "100%",
-        }}
-      >
-        <Table.Header columns={columns}>
-          {(column) => (
-            <Table.Column key={column.key}>{column.label}</Table.Column>
-          )}
-        </Table.Header>
-        <Table.Body items={arrayList3}>
-          {(item) => (
-            <Table.Row key={item.key}>
-              {(columnKey) => <Table.Cell>{item[columnKey]}</Table.Cell>}
-            </Table.Row>
-          )}
-        </Table.Body>
-      </Table>
     </main>
   );
 };
 
 export default PersonnelMainPage;
-
-const columns = [
-  {
-    key: "fk_user.first_name",
-    label: "Nombre",
-  },
-  {
-    key: "fk_user.last_name",
-    label: "Apellido",
-  },
-  {
-    key: "cargo",
-    label: "Cargo",
-  },
-  {
-    key: "telefono",
-    label: "Telefono",
-  },
-  {
-    key: "fk_user.username",
-    label: "Correo",
-  },
-  {
-    key: "departamento",
-    label: "Departamento",
-  },
-];
