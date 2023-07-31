@@ -25,7 +25,6 @@ const PersonnelMainPage: React.FC = () => {
   const [allowContinue, setAllowContinue] = useState(false);
   const [arrayList3, setArrayList3] = useState([]);
 
-
   useEffect(() => {
     getList();
   }, []);
@@ -54,7 +53,6 @@ const PersonnelMainPage: React.FC = () => {
       }
     };
     await fetchData().catch(console.error);
-
   };
 
   const arrayPrinter = () => {
@@ -62,16 +60,20 @@ const PersonnelMainPage: React.FC = () => {
     console.log("arrayList3", arrayList3.length);
     arrayList3.map((index: any) => {
       y[index.id] = (
-        <tr key={index.id}>
-          <td>{index.fk_user.first_name} {index.fk_user.last_name}</td>
+        <div key={index.id} className={styles.tableInfoRow}>
+          <td>
+            {index.fk_user.first_name} {index.fk_user.last_name}
+          </td>
           <td>{index.cargo}</td>
           <td>{index.departamento}</td>
-          <td>{index.fk_user.username} - {index.telefono}</td>
+          <td>
+            {index.fk_user.username} - {index.telefono}
+          </td>
           <td>{index.turno}</td>
-        </tr>
+        </div>
       );
     });
- 
+
     return y;
   };
 
@@ -79,39 +81,39 @@ const PersonnelMainPage: React.FC = () => {
     <main className={styles.containerPersonnelMainPage}>
       <Spacer />
       <div className={styles.personnelListContainer}>
-      <tbody>
-        <tr>
-          <th>Nombre</th>
-          <th>Cargo</th>
-          <th>Departamento</th>
-          <th>Contacto</th>
-          <th>Turno</th>
-        </tr>
-      {arrayPrinter()}
-      </tbody>
+        <div>
+          <div className={styles.tableTitlesContainer}>
+            <span>Nombre</span>
+            <span>Cargo</span>
+            <span>Departamento</span>
+            <span>Contacto</span>
+            <span>Turno</span>
+          </div>
+          {arrayPrinter()}
+        </div>
       </div>
       {!allowContinue}
 
       <Table
-      aria-label="Example table with dynamic content"
-      css={{
-        height: "auto",
-        minWidth: "100%",
-      }}
-    >
-      <Table.Header columns={columns}>
-        {(column) => (
-          <Table.Column key={column.key}>{column.label}</Table.Column>
-        )}
-      </Table.Header>
-      <Table.Body items={arrayList3}>
-        {(item) => (
-          <Table.Row key={item.key}>
-            {(columnKey) => <Table.Cell>{item[columnKey]}</Table.Cell>}
-          </Table.Row>
-        )}
-      </Table.Body>
-    </Table>
+        aria-label="Example table with dynamic content"
+        css={{
+          height: "auto",
+          minWidth: "100%",
+        }}
+      >
+        <Table.Header columns={columns}>
+          {(column) => (
+            <Table.Column key={column.key}>{column.label}</Table.Column>
+          )}
+        </Table.Header>
+        <Table.Body items={arrayList3}>
+          {(item) => (
+            <Table.Row key={item.key}>
+              {(columnKey) => <Table.Cell>{item[columnKey]}</Table.Cell>}
+            </Table.Row>
+          )}
+        </Table.Body>
+      </Table>
     </main>
   );
 };
@@ -144,5 +146,3 @@ const columns = [
     label: "Departamento",
   },
 ];
-
-
