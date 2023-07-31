@@ -25,5 +25,5 @@
   display: grid;
   grid-template-columns: 20% 20% 20% 20% 20%;
   padding: 16px;
-  border-radius: 10px;
+  border-bottom: 1px solid #f1f3f5;
 }
