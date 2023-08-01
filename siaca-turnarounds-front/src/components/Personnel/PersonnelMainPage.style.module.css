@@ -27,3 +27,7 @@
   padding: 16px;
   border-bottom: 1px solid #f1f3f5;
 }
+.comboboxMainContainer {
+  position: absolute;
+  top: 170px;
+}

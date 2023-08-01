@@ -13,6 +13,7 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 import { Dropdown } from "@nextui-org/react";
 import { useMediaQuery } from "@mui/material";
 import { text } from "stream/consumers";
+import Combobox from "../Reusables/Combobox";
 
 interface PageProps {
   setStep: (value: number) => void;
@@ -24,6 +25,10 @@ const PersonnelMainPage: React.FC = () => {
   const isMobile = useMediaQuery("(max-width: 1270px)");
   const [allowContinue, setAllowContinue] = useState(false);
   const [arrayList3, setArrayList3] = useState([]);
+  const [arrayFilteredList3, setArrayFilteredList3] = useState([]);
+  const [isFilteredResults, setIsFilteredResults] = useState(false);
+  const [filterValues2, setfilterValues2] = useState(false);
+  let filterValues: any[] = [];
 
   useEffect(() => {
     getList();
@@ -41,9 +46,6 @@ const PersonnelMainPage: React.FC = () => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log(result);
-            console.log("values", Object.values(result));
-
             setArrayList3(Object.values(result));
           })
         );
@@ -54,11 +56,28 @@ const PersonnelMainPage: React.FC = () => {
     };
     await fetchData().catch(console.error);
   };
+  const setFilterValues = () => {
+    arrayList3.map((value: any) => {
+      if (filterValues.indexOf(value["departamento"])) {
+        filterValues.push(value["departamento"]);
+      }
+    });
+  };
+
+  const filterArray = (filtername: string) => {
+    let filteredUsers = arrayList3.filter((user) => {
+      return user["departamento"] === filtername;
+    });
+    setArrayFilteredList3(filteredUsers);
+  };
 
   const arrayPrinter = () => {
     let y: any = [];
-    console.log("arrayList3", arrayList3.length);
-    arrayList3.map((index: any) => {
+    let arrayList3aux: any = [];
+    isFilteredResults
+      ? (arrayList3aux = arrayFilteredList3)
+      : (arrayList3aux = arrayList3);
+    arrayList3aux.map((index: any) => {
       y[index.id] = (
         <div key={index.id} className={styles.tableInfoRow}>
           <td>
@@ -73,13 +92,22 @@ const PersonnelMainPage: React.FC = () => {
         </div>
       );
     });
-
+    setFilterValues();
     return y;
   };
 
   return (
     <main className={styles.containerPersonnelMainPage}>
       <Spacer />
+
+      <div className={styles.comboboxMainContainer}>
+        <Combobox
+          onClickFilteringFunction={filterArray}
+          setIsFiltered={setIsFilteredResults}
+          filterValues={filterValues}
+        />
+      </div>
+
       <div className={styles.personnelListContainer}>
         <div>
           <div className={styles.tableTitlesContainer}>
