@@ -1,5 +1,5 @@
 import GreenButton from "@/components/Reusables/GreenButton";
-import styles from "./TurnaroundsMainPage.style.module.css";
+import styles from "./DocsMainPage.style.module.css";
 import KeyboardArrowLeftRoundedIcon from "@mui/icons-material/KeyboardArrowLeftRounded";
 import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRightRounded";
 import { log } from "console";
@@ -19,7 +19,7 @@ interface PageProps {
   setStep: (value: number) => void;
 }
 
-const TemplatesPage: React.FC<PageProps> = ({ setStep }) => {
+const DocsPage: React.FC<PageProps> = ({ setStep }) => {
   //if token exists show regular html else show not signed in screen
   const isMobile = useMediaQuery("(max-width: 1270px)");
   const [allowContinue, setAllowContinue] = useState(false);
@@ -32,7 +32,7 @@ const TemplatesPage: React.FC<PageProps> = ({ setStep }) => {
   const getList = async () => {
     const fetchData = async () => {
       try {
-        const url = "/api/turnaroundsList";
+        const url = "/api/docsList";
         const requestOptions = {
           method: "POST",
           body: JSON.stringify({
@@ -61,9 +61,8 @@ const TemplatesPage: React.FC<PageProps> = ({ setStep }) => {
     arrayList3.map((index: any) => {
       y[index.id] = (
         <div key={index.id} className={styles.tableInfoRow}>
-          <td>{index.identificador}</td>
           <td>{index.fk_vuelo.numero_vuelo}</td>
-          <td>{index.fecha_inicio}</td>
+          <td>{index.fecha}</td>
           <td><RemoveRedEyeIcon/> <BorderColorOutlinedIcon/> <DeleteOutlineOutlinedIcon/></td>
         </div>
       );
@@ -83,9 +82,8 @@ const TemplatesPage: React.FC<PageProps> = ({ setStep }) => {
       <div className={styles.airlinesListContainer}>
         <div>
           <div className={styles.tableTitlesContainer}>
-            <span>Identificador</span>
             <span>No. vuelo</span>
-            <span>Fecha de inicio</span>
+            <span>Fecha</span>
           </div>
           {arrayPrinter()}
         </div>
@@ -94,6 +92,6 @@ const TemplatesPage: React.FC<PageProps> = ({ setStep }) => {
   );
 };
 
-export default TemplatesPage;
+export default DocsPage;
 
 
