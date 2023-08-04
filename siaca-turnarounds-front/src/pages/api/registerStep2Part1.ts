@@ -90,7 +90,7 @@ type Data =
 
 // List of HTTP methods that DOES NOT allow to send a body in request (this could be in a different setup file)
 // List of valid HTTP methods for THIS endpoint
-const validHTTPMethods: string[] = ["GET", "POST", "PUT", "DELETE"];
+const validHTTPMethods: string[] = ["GET", "POST", "PUT", "DELETE", "PATCH"];
 
 export default async function handler(
   req: NextApiRequest,
@@ -101,7 +101,7 @@ export default async function handler(
 
   try {
     // Get request method (GET by default)
-    const httpMethod: string = "PUT";
+    const httpMethod: string = "PATCH";
 
     if (!validHTTPMethods.includes(httpMethod)) {
       status = 405;
@@ -143,9 +143,11 @@ export default async function handler(
 
     // Backend URL
     const url =
-      `${BACKEND_BASE_URL}/usuarios/registro2user/` +
+      `${BACKEND_BASE_URL}/usuarios/registro2user2/` +
       bodyJSON?.["searchValue"] +
       `/`;
+    console.log("url", url);
+    console.log("fetchOptions", fetchOptions);
     // Make the actual request to backend
     const response = await fetch(url, fetchOptions);
 
