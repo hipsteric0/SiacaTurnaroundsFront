@@ -1,9 +1,9 @@
-.greenButtonContainer {
+.redButtonContainer {
   min-width: 185px;
   height: 30px;
   border-radius: 5px;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
-  background-color: #08a75a;
+  background-color: #f10303;
   border: none;
   color: white;
   cursor: pointer;
@@ -11,7 +11,7 @@
   font-weight: bold;
   padding: 0 10px;
 }
-.greenButtonContainerDisabled {
+.redButtonContainerDisabled {
   min-width: 185px;
   height: 30px;
   border-radius: 5%;
