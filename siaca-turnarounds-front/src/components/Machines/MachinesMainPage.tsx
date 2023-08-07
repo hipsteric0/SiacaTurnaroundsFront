@@ -141,46 +141,46 @@ const MachinesMainPage: React.FC = () => {
       </div>
       <Spacer />
       <div className={styles.machineListContainer}>
-        <Collapse.Group>
-          <Collapse title="Aguas Servidas">
+        <Collapse.Group id="group">
+          <Collapse title="Aguas Servidas" id="Aguas Servidas">
             <div className={styles.machinesgrid}>
               {arrayPrinter("Aguas Servidas")}
             </div>
           </Collapse>
-          <Collapse title="Tractor de arrastre">
+          <Collapse title="Tractor de arrastre" id="1">
             <div className={styles.machinesgrid}>
               {arrayPrinter("Tractor de arrastre")}
             </div>
           </Collapse>
-          <Collapse title="Escalera">
+          <Collapse title="Escalera" id="2">
             <div className={styles.machinesgrid}>
               {arrayPrinter("Escalera")}
             </div>
           </Collapse>
-          <Collapse title="Cinta Transportadora">
+          <Collapse title="Cinta Transportadora" id="3">
             <div className={styles.machinesgrid}>
               {arrayPrinter("Cinta Transportadora")}
             </div>
           </Collapse>
-          <Collapse title="Loader">
+          <Collapse title="Loader" id="4">
             <div className={styles.machinesgrid}>{arrayPrinter("Loader")}</div>
           </Collapse>
-          <Collapse title="Tractor de empuje">
+          <Collapse title="Tractor de empuje" id="5">
             <div className={styles.machinesgrid}>
               {arrayPrinter("Tractor de empuje")}
             </div>
           </Collapse>
-          <Collapse title="Aire acondicionado">
+          <Collapse title="Aire acondicionado" id="6">
             <div className={styles.machinesgrid}>
               {arrayPrinter("Aire acondicionado")}
             </div>
           </Collapse>
-          <Collapse title="Planta neumática">
+          <Collapse title="Planta neumática" id="7">
             <div className={styles.machinesgrid}>
               {arrayPrinter("Planta neumática")}
             </div>
           </Collapse>
-          <Collapse title="GPU Planta eléctrica">
+          <Collapse title="GPU Planta eléctrica" id="8">
             <div className={styles.machinesgrid}>
               {arrayPrinter("GPU Planta eléctrica")}
             </div>
