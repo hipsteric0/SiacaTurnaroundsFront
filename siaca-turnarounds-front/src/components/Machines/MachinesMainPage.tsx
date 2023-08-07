@@ -44,9 +44,6 @@ const MachinesMainPage: React.FC = () => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log(result);
-            console.log("values", Object.values(result));
-
             setArrayList3(Object.values(result));
           })
         );
@@ -71,7 +68,6 @@ const MachinesMainPage: React.FC = () => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log(result);
             router.reload();
           })
         );
@@ -87,15 +83,10 @@ const MachinesMainPage: React.FC = () => {
     let y: any = [];
     let arrayAux: any = [];
     arrayAux = arrayList3.filter((user) => {
-      console.log(
-        'user["fk_categoria"]["nombre"]',
-        user["fk_categoria"]["nombre"]
-      );
       let aux: string = user["fk_categoria"]["nombre"] || undefined;
       return aux.trim().toUpperCase() === category.toUpperCase();
     });
     arrayAux.map((index: any) => {
-      console.log("index", index);
       y[index.id] = (
         <div className={styles.machinescard} key={index.id}>
           <h3 className={styles.cardTitle}>{index.identificador}</h3>
