@@ -5,7 +5,7 @@ import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRigh
 import { log } from "console";
 import React, { useEffect, useState } from "react";
 import router from "next/router";
-import { Table, Spacer } from "@nextui-org/react";
+import { Table, Spacer, Switch } from "@nextui-org/react";
 import { TableBody } from "@mui/material";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
@@ -13,7 +13,6 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 import { Dropdown } from "@nextui-org/react";
 import { useMediaQuery } from "@mui/material";
 import { Collapse, Text } from "@nextui-org/react";
-import { Card, Image } from "@nextui-org/react";
 import RedButton from "../Reusables/RedButton";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
@@ -29,7 +28,6 @@ const MachinesMainPage: React.FC = () => {
   const [arrayList3, setArrayList3] = useState([]);
   const [hover, setHover] = useState(false);
   const [hoverOptionValue, setHoverOptionValue] = useState(-1);
-  const [arrayFilteredList3, setArrayFilteredList3] = useState([]);
 
   useEffect(() => {
     getList();
@@ -154,29 +152,24 @@ const MachinesMainPage: React.FC = () => {
 
           <p className={styles.cardText}>MODELO: {index.modelo}</p>
           <p className={styles.cardText}>COMBUSTIBLE: {index.combustible}</p>
-          <div className={styles.cardText}>
-            ESTADO:{" "}
-            {index.estado ? (
-              <span className={styles.greenText}>OPERATIVO</span>
-            ) : (
-              <span className={styles.redText}>NO OPERATIVO</span>
-            )}{" "}
+          <div className={styles.stateAndSwitchContainer}>
+            <div className={styles.cardText}>
+              ESTADO:{" "}
+              {index.estado ? (
+                <span className={styles.greenText}>OPERATIVO </span>
+              ) : (
+                <span className={styles.redText}>NO OPERATIVO </span>
+              )}{" "}
+            </div>
+            <Switch
+              color="success"
+              initialChecked={index.estado}
+              onChange={() => {
+                changeMachineryState(index.id);
+                getList();
+              }}
+            ></Switch>
           </div>
-          {index.estado ? (
-            <div className={styles.buttonCenterer}>
-              <RedButton
-                executableFunction={() => changeMachineryState(index.id)}
-                buttonText="Cambiar estado a NO OPERATIVO"
-              />
-            </div>
-          ) : (
-            <div className={styles.buttonCenterer}>
-              <GreenButton
-                executableFunction={() => changeMachineryState(index.id)}
-                buttonText="Cambiar estado a OPERATIVO"
-              />
-            </div>
-          )}
         </div>
       );
     });
