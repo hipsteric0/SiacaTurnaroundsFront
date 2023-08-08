@@ -94,16 +94,7 @@ const MachinesMainPage: React.FC = () => {
         <div className={styles.machinescard} key={index.id}>
           <div className={styles.cardTitleAndIconContainer}>
             <h3 className={styles.cardTitle}>{index.identificador}</h3>
-            <div
-              className={styles.menuContainer}
-              onClick={
-                openCardMenu === -1
-                  ? () => setOpenCardMenu(index.id)
-                  : openCardMenu === index.id
-                  ? () => setOpenCardMenu(-1)
-                  : () => setOpenCardMenu(index.id)
-              }
-            >
+            <div className={styles.menuContainer}>
               {openCardMenu === index.id && (
                 <div className={styles.menuAppearingContainer}>
                   <div className={styles.menuAppearingContainerRow}>
@@ -146,7 +137,16 @@ const MachinesMainPage: React.FC = () => {
                   </div>
                 </div>
               )}
-              <div className={styles.pointer}>
+              <div
+                className={styles.pointer}
+                onClick={
+                  openCardMenu === -1
+                    ? () => setOpenCardMenu(index.id)
+                    : openCardMenu === index.id
+                    ? () => setOpenCardMenu(-1)
+                    : () => setOpenCardMenu(index.id)
+                }
+              >
                 <MoreVertIcon />
               </div>
             </div>
