@@ -26,6 +26,56 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep }) => {
   const [telefonoSecundario, setTelefonoSecundario] = useState("");
   const [pais, setPais] = useState("");
   const [ciudad, setCiudad] = useState("");
+
+  let responseValue = false;
+
+  const registerAirlines = () => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/registerAirline";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            nombre: aerolinea,
+            correo: correoPrincipal,
+            correo_secundario: correoSecundario,
+            telefono: telefonoPrincipal,
+            telefono_secundario: telefonoSecundario,
+            codigo: codigo,
+            pais: pais,
+            ciudad: ciudad,
+            userToken: localStorage.getItem("userToken"),
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((value) => {
+          if (value?.status === 400) {
+            responseValue = false;
+          } else {
+            responseValue = true;
+            console.log("value", value)
+          }
+          return true;
+        });
+        if (!response) {
+          responseValue = false;
+
+          throw new Error("Error in response registering user");
+        }
+      } catch (error) {
+        responseValue = false;
+        //mostrar mensaje de no se pudo validasr usuario, ya existe o su conexion es limitada
+      }
+    };
+    fetchData().catch(console.error);
+  };
+
+  const continueButton = () => {
+
+    registerAirlines();
+    router.reload();
+ 
+  };
+
   return (
     <main className={styles.RegisterAirlineContainer}>
       <div className={styles.airlinesListContainer}>
@@ -71,7 +121,7 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep }) => {
       </div>
       <div className={styles.registerbuttoncontainer}>
         <GreenButton
-          executableFunction={() => setStep(0)}
+          executableFunction={() => continueButton()}
           buttonText="Registrar"
           disabled={
             aerolinea === "" ||
@@ -83,6 +133,7 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep }) => {
             pais === "" ||
             ciudad === ""
           }
+          
         />
       </div>
     </main>
@@ -91,29 +142,4 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep }) => {
 
 export default RegisterAirline;
 
-let arrayAux = [
-  {
-    id: 0,
-    nombre: "Aerolinea 1",
-    correo: "corre1@gmail.com",
-    telefono: "48374783784",
-    codigo: "123",
-    imagen: "link",
-  },
-  {
-    id: 1,
-    nombre: "Aerolinea 2",
-    correo: "correo2@gmail.com",
-    telefono: "48374783784",
-    codigo: "123",
-    imagen: "link",
-  },
-  {
-    id: 2,
-    nombre: "Aerolinea 3",
-    correo: "correo3@gmail.com",
-    telefono: "48374783784",
-    codigo: "123",
-    imagen: "link",
-  },
-];
+
