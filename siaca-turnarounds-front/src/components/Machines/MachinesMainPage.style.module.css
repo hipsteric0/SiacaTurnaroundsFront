@@ -59,3 +59,36 @@
   display: flex;
   justify-content: right;
 }
+.cardTitleAndIconContainer {
+  display: flex;
+  justify-content: space-between;
+}
+.menuContainer {
+  position: relative;
+}
+.pointer {
+  cursor: pointer;
+  width: fit-content;
+  height: fit-content;
+}
+.menuAppearingContainer {
+  height: 50px;
+  width: 100px;
+  padding: 5px;
+  background: #fff;
+  box-shadow: 0 5px 10px 0 rgba(187, 187, 187, 0.5);
+  position: absolute;
+  right: 30px;
+  border-radius: 8px;
+}
+.menuAppearingContainerRow {
+}
+.optionsText {
+  font-size: 12px;
+  cursor: pointer;
+}
+.optionsTextHover {
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+}

@@ -15,6 +15,7 @@ import { useMediaQuery } from "@mui/material";
 import { Collapse, Text } from "@nextui-org/react";
 import { Card, Image } from "@nextui-org/react";
 import RedButton from "../Reusables/RedButton";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 interface PageProps {
   setStep: (value: number) => void;
@@ -24,8 +25,10 @@ const MachinesMainPage: React.FC = () => {
   //if token exists show regular html else show not signed in screen
 
   const isMobile = useMediaQuery("(max-width: 1270px)");
-  const [allowContinue, setAllowContinue] = useState(false);
+  const [openCardMenu, setOpenCardMenu] = useState(-1);
   const [arrayList3, setArrayList3] = useState([]);
+  const [hover, setHover] = useState(false);
+  const [hoverOptionValue, setHoverOptionValue] = useState(-1);
   const [arrayFilteredList3, setArrayFilteredList3] = useState([]);
 
   useEffect(() => {
@@ -89,7 +92,66 @@ const MachinesMainPage: React.FC = () => {
     arrayAux.map((index: any) => {
       y[index.id] = (
         <div className={styles.machinescard} key={index.id}>
-          <h3 className={styles.cardTitle}>{index.identificador}</h3>
+          <div className={styles.cardTitleAndIconContainer}>
+            <h3 className={styles.cardTitle}>{index.identificador}</h3>
+            <div
+              className={styles.menuContainer}
+              onClick={
+                openCardMenu === -1
+                  ? () => setOpenCardMenu(index.id)
+                  : openCardMenu === index.id
+                  ? () => setOpenCardMenu(-1)
+                  : () => setOpenCardMenu(index.id)
+              }
+            >
+              {openCardMenu === index.id && (
+                <div className={styles.menuAppearingContainer}>
+                  <div className={styles.menuAppearingContainerRow}>
+                    <p
+                      className={
+                        hover && 1 === hoverOptionValue
+                          ? styles.optionsTextHover
+                          : styles.optionsText
+                      }
+                      onMouseEnter={() => {
+                        setHoverOptionValue(1);
+                        setHover(true);
+                      }}
+                      onMouseLeave={() => {
+                        setHoverOptionValue(-1);
+                        setHover(false);
+                      }}
+                    >
+                      Editar
+                    </p>
+                  </div>
+                  <div className={styles.menuAppearingContainerRow}>
+                    <p
+                      className={
+                        hover && 2 === hoverOptionValue
+                          ? styles.optionsTextHover
+                          : styles.optionsText
+                      }
+                      onMouseEnter={() => {
+                        setHoverOptionValue(2);
+                        setHover(true);
+                      }}
+                      onMouseLeave={() => {
+                        setHoverOptionValue(-1);
+                        setHover(false);
+                      }}
+                    >
+                      Eliminar
+                    </p>
+                  </div>
+                </div>
+              )}
+              <div className={styles.pointer}>
+                <MoreVertIcon />
+              </div>
+            </div>
+          </div>
+
           <p className={styles.cardText}>MODELO: {index.modelo}</p>
           <p className={styles.cardText}>COMBUSTIBLE: {index.combustible}</p>
           <div className={styles.cardText}>
