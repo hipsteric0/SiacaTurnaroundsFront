@@ -20,7 +20,7 @@ interface PageProps {
   setStep: (value: number) => void;
 }
 
-const MachinesMainPage: React.FC = () => {
+const MachinesMainPage: React.FC<PageProps> = ({setStep}) => {
   //if token exists show regular html else show not signed in screen
 
   const isMobile = useMediaQuery("(max-width: 1270px)");
@@ -181,7 +181,7 @@ const MachinesMainPage: React.FC = () => {
     <main className={styles.containerMachineMainPage}>
       <div className={styles.createMachineButton}>
         <GreenButton
-          executableFunction={() => undefined}
+          executableFunction={() => setStep(1)}
           buttonText="Crear maquinaria"
         />
       </div>
