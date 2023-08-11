@@ -1,0 +1,14 @@
+.mainFlightsContainer {
+  background: white;
+  color: #4d4e56;
+  font-family: Montserrat, Poppins, sans-serif;
+  padding: 200px 120px 30px 120px;
+}
+.upperSection {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+.filtreContainer {
+}
