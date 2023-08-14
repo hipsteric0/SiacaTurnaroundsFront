@@ -5,6 +5,7 @@ import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRigh
 import { log } from "console";
 import React, { useEffect, useState } from "react";
 import router from "next/router";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Table, Spacer } from "@nextui-org/react";
 import { TableBody } from "@mui/material";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
@@ -15,6 +16,7 @@ import { useMediaQuery } from "@mui/material";
 import { text } from "stream/consumers";
 import Combobox from "../Reusables/Combobox";
 import SiacaNavbar from "../Reusables/Navbar/SiacaNavbar";
+import FlightLandIcon from "@mui/icons-material/FlightLand";
 
 interface PageProps {
   setStep: (value: number) => void;
@@ -31,14 +33,15 @@ const FlightsMainPage: React.FC = () => {
 
   const [arrayList3, setArrayList3] = useState([]);
   let date = new Date();
-
+  const [openCardMenu, setOpenCardMenu] = useState(-1);
   const [dateCounter, setdateCounter] = useState(0);
   const [dateState, setdateState] = useState("");
-
+  const [hover, setHover] = useState(false);
+  const [hoverOptionValue, setHoverOptionValue] = useState(-1);
   const getList = async () => {
     const fetchData = async () => {
       try {
-        const url = "/api/airlinesList";
+        const url = "/api/flightsList";
         const requestOptions = {
           method: "POST",
           body: JSON.stringify({
@@ -88,17 +91,102 @@ const FlightsMainPage: React.FC = () => {
 
   const arrayPrinter = () => {
     let y: any = [];
-    console.log("arrayList3", arrayList3.length);
+    console.log("arrayList3", arrayList3);
     arrayList3.map((index: any) => {
+      let aux = arrayList3[index.id];
       y[index.id] = (
         <div key={index.id} className={styles.tableInfoRow}>
-          <td>
-            <img />
-          </td>
-          <td>{index.nombre}</td>
-          <td>{index.correo}</td>
-          <td>{index.telefono}</td>
-          <td>{index.codigo}</td>
+          <div className={styles.menuContainer}>
+            {openCardMenu === index.id && (
+              <div className={styles.menuAppearingContainer}>
+                <div className={styles.menuAppearingContainerRow}>
+                  <p
+                    className={
+                      hover && 1 === hoverOptionValue
+                        ? styles.optionsTextHover
+                        : styles.optionsText
+                    }
+                    onMouseEnter={() => {
+                      setHoverOptionValue(1);
+                      setHover(true);
+                    }}
+                    onMouseLeave={() => {
+                      setHoverOptionValue(-1);
+                      setHover(false);
+                    }}
+                  >
+                    Editar
+                  </p>
+                </div>
+                <div className={styles.menuAppearingContainerRow}>
+                  <p
+                    className={
+                      hover && 2 === hoverOptionValue
+                        ? styles.optionsTextHover
+                        : styles.optionsText
+                    }
+                    onMouseEnter={() => {
+                      setHoverOptionValue(2);
+                      setHover(true);
+                    }}
+                    onMouseLeave={() => {
+                      setHoverOptionValue(-1);
+                      setHover(false);
+                    }}
+                  >
+                    Eliminar
+                  </p>
+                </div>
+              </div>
+            )}
+            <div
+              className={styles.pointer}
+              onClick={
+                openCardMenu === -1
+                  ? () => setOpenCardMenu(index.id)
+                  : openCardMenu === index.id
+                  ? () => setOpenCardMenu(-1)
+                  : () => setOpenCardMenu(index.id)
+              }
+            >
+              <MoreVertIcon />
+            </div>
+          </div>
+          <div className={styles.imageContainer}>image not found</div>
+          <div className={styles.column1Container}>
+            <p>Vuelo:</p>
+            <p>REG:</p>
+            <p>Estado:</p>
+          </div>
+          <div className={styles.column2Container}>
+            <p>{index?.numero_vuelo}</p>
+            <p>{index?.ac_reg}</p>
+            <p
+              className={
+                index?.estado == "Atendido"
+                  ? styles.greenTextCol2
+                  : index?.estado == "En proceso"
+                  ? styles.yellowTextCol2
+                  : index?.estado == "No ha llegado"
+                  ? styles.redTextCol2
+                  : undefined
+              }
+            >
+              {index?.estado}
+            </p>
+          </div>
+          <div className={styles.column3Container}>
+            <div className={styles.column3Icon}>
+              <FlightLandIcon />
+            </div>
+
+            <p>
+              {index?.lugar_salida}-{index?.lugar_destino}
+            </p>
+          </div>
+          <div className={styles.column4Container}>
+            <p>{index?.hora_llegada}</p>
+          </div>
         </div>
       );
     });
