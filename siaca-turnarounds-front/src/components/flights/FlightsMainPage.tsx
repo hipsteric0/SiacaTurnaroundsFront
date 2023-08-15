@@ -42,6 +42,8 @@ const FlightsMainPage: React.FC = () => {
   const [isFilteredResults, setIsFilteredResults] = useState(false);
   let filterValues: any[] = [];
   const getList = async () => {
+    setIsFilteredResults(false);
+    setArrayFilteredList3([]);
     const fetchData = async () => {
       try {
         const url = "/api/flightsList";
@@ -49,18 +51,23 @@ const FlightsMainPage: React.FC = () => {
           method: "POST",
           body: JSON.stringify({
             userToken: localStorage.getItem("userToken"),
+            day: date.getDate().toString(),
+            month: (date.getMonth() + 1).toString(),
+            year: date.getFullYear().toString(),
           }),
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log(result);
-            console.log("values", Object.values(result));
-
             setArrayList3(Object.values(result));
+            if (result?.[0]?.["status"] === 400) {
+              console.log("entro");
+            } else {
+            }
           })
         );
       } catch (error) {
         console.error("Error geting user", error);
+
         return;
       }
     };
@@ -74,7 +81,6 @@ const FlightsMainPage: React.FC = () => {
       (date.getMonth() + 1).toString() +
       " - " +
       date.getFullYear().toString();
-    console.log("x", x);
     console.log("userToken", localStorage.getItem("userToken"));
     setdateState(x);
     return <></>;
@@ -84,18 +90,21 @@ const FlightsMainPage: React.FC = () => {
     await setdateCounter(dateCounter - 1);
     date = new Date(new Date().setDate(new Date().getDate() + dateCounter - 1));
     getDateForCalendar();
+    getList();
   };
 
   const frontDateButton = async () => {
     await setdateCounter(dateCounter + 1);
     date = new Date(new Date().setDate(new Date().getDate() + dateCounter + 1));
     getDateForCalendar();
+    getList();
   };
 
   const arrayPrinter = () => {
     let y: any = [];
-    console.log("arrayList3", arrayList3);
     let arrayList3aux: any = [];
+    console.log("statusVar", arrayList3?.[0]?.["status"]);
+
     isFilteredResults
       ? (arrayList3aux = arrayFilteredList3)
       : (arrayList3aux = arrayList3);
@@ -160,7 +169,7 @@ const FlightsMainPage: React.FC = () => {
             </div>
           </div>
           <div className={styles.imageContainer}>
-            {index?.fk_aerolinea.nombre} image not found
+            {index?.fk_aerolinea?.nombre} image not found
           </div>
           <div className={styles.column1Container}>
             <p>Vuelo:</p>
@@ -205,8 +214,8 @@ const FlightsMainPage: React.FC = () => {
 
   const setFilterValues = () => {
     arrayList3.map((value: any) => {
-      if (filterValues.indexOf(value["fk_aerolinea"]["nombre"])) {
-        filterValues.push(value["fk_aerolinea"]["nombre"]);
+      if (filterValues.indexOf(value?.fk_aerolinea?.nombre)) {
+        filterValues.push(value?.fk_aerolinea?.nombre);
       }
     });
   };
@@ -215,7 +224,6 @@ const FlightsMainPage: React.FC = () => {
     let filteredUsers = arrayList3.filter((user) => {
       return user["fk_aerolinea"]["nombre"] === filtername;
     });
-    console.log("filteredUsers", filteredUsers);
     setArrayFilteredList3(filteredUsers);
   };
 
@@ -225,7 +233,11 @@ const FlightsMainPage: React.FC = () => {
         <div className={styles.calendarAndFilterContainer}>
           <div className={styles.calendarContainer}>
             <div className={styles.pointer}>
-              <KeyboardArrowLeftRoundedIcon onClick={backDateButton} />
+              <KeyboardArrowLeftRoundedIcon
+                onClick={() => {
+                  backDateButton();
+                }}
+              />
             </div>
             <div className={styles.dateAndCalendarContainer}>
               <span>fecha {dateState}</span>
@@ -251,7 +263,9 @@ const FlightsMainPage: React.FC = () => {
           buttonText="Crear vuelo "
         />
       </div>
-      <div className={styles.flightsListContainer}>{arrayPrinter()}</div>
+      <div className={styles.flightsListContainer}>
+        {arrayList3?.[0]?.["status"] != 400 ? arrayPrinter() : undefined}
+      </div>
     </main>
   );
 };
