@@ -10,9 +10,23 @@
   justify-content: space-between;
   align-items: flex-end;
 }
-.filtreContainer {
+.calendarContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 600;
+  color: #4d4e56;
 }
-
+.dateAndCalendarContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+.calendarIcon {
+}
 .flightsListContainer {
   padding-top: 30px;
   display: flex;

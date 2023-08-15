@@ -17,7 +17,7 @@ import { text } from "stream/consumers";
 import Combobox from "../Reusables/Combobox";
 import SiacaNavbar from "../Reusables/Navbar/SiacaNavbar";
 import FlightLandIcon from "@mui/icons-material/FlightLand";
-
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 interface PageProps {
   setStep: (value: number) => void;
 }
@@ -33,11 +33,14 @@ const FlightsMainPage: React.FC = () => {
 
   const [arrayList3, setArrayList3] = useState([]);
   let date = new Date();
+  const [arrayFilteredList3, setArrayFilteredList3] = useState([]);
   const [openCardMenu, setOpenCardMenu] = useState(-1);
   const [dateCounter, setdateCounter] = useState(0);
   const [dateState, setdateState] = useState("");
   const [hover, setHover] = useState(false);
   const [hoverOptionValue, setHoverOptionValue] = useState(-1);
+  const [isFilteredResults, setIsFilteredResults] = useState(false);
+  let filterValues: any[] = [];
   const getList = async () => {
     const fetchData = async () => {
       try {
@@ -92,7 +95,11 @@ const FlightsMainPage: React.FC = () => {
   const arrayPrinter = () => {
     let y: any = [];
     console.log("arrayList3", arrayList3);
-    arrayList3.map((index: any) => {
+    let arrayList3aux: any = [];
+    isFilteredResults
+      ? (arrayList3aux = arrayFilteredList3)
+      : (arrayList3aux = arrayList3);
+    arrayList3aux.map((index: any) => {
       let aux = arrayList3[index.id];
       y[index.id] = (
         <div key={index.id} className={styles.tableInfoRow}>
@@ -152,7 +159,9 @@ const FlightsMainPage: React.FC = () => {
               <MoreVertIcon />
             </div>
           </div>
-          <div className={styles.imageContainer}>image not found</div>
+          <div className={styles.imageContainer}>
+            {index?.fk_aerolinea.nombre} image not found
+          </div>
           <div className={styles.column1Container}>
             <p>Vuelo:</p>
             <p>REG:</p>
@@ -190,8 +199,24 @@ const FlightsMainPage: React.FC = () => {
         </div>
       );
     });
-
+    setFilterValues();
     return y;
+  };
+
+  const setFilterValues = () => {
+    arrayList3.map((value: any) => {
+      if (filterValues.indexOf(value["fk_aerolinea"]["nombre"])) {
+        filterValues.push(value["fk_aerolinea"]["nombre"]);
+      }
+    });
+  };
+
+  const filterArray = (filtername: string) => {
+    let filteredUsers = arrayList3.filter((user) => {
+      return user["fk_aerolinea"]["nombre"] === filtername;
+    });
+    console.log("filteredUsers", filteredUsers);
+    setArrayFilteredList3(filteredUsers);
   };
 
   return (
@@ -199,18 +224,25 @@ const FlightsMainPage: React.FC = () => {
       <div className={styles.upperSection}>
         <div className={styles.calendarAndFilterContainer}>
           <div className={styles.calendarContainer}>
-            <KeyboardArrowLeftRoundedIcon onClick={backDateButton} />
-            fecha{dateState}
-            <KeyboardArrowRightRoundedIcon onClick={frontDateButton} />
+            <div className={styles.pointer}>
+              <KeyboardArrowLeftRoundedIcon onClick={backDateButton} />
+            </div>
+            <div className={styles.dateAndCalendarContainer}>
+              <span>fecha {dateState}</span>
+              <div className={styles.calendarIcon}>
+                <CalendarTodayIcon htmlColor="#00a75d" />
+              </div>
+            </div>
+            <div className={styles.pointer}>
+              <KeyboardArrowRightRoundedIcon onClick={frontDateButton} />
+            </div>
           </div>
-          <div className={styles.filterButton}></div>
-          <div className={styles.createFlightButton}></div>
         </div>
         <div className={styles.filtreContainer}>
           <Combobox
-            onClickFilteringFunction={() => undefined}
-            setIsFiltered={() => undefined}
-            filterValues={[]}
+            onClickFilteringFunction={filterArray}
+            setIsFiltered={setIsFilteredResults}
+            filterValues={filterValues}
           />
         </div>
 

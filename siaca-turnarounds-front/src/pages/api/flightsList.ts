@@ -154,7 +154,7 @@ export default async function handler(
 
     // Backend URL
     const url =
-      `${BACKEND_BASE_URL}/vuelos/lista/?token=` + body?.["userToken"];
+      `${BACKEND_BASE_URL}/vuelos/lista/detalles/?token=` + body?.["userToken"];
 
     // Make the actual request to backend
     const response = await fetch(url, fetchOptions);
