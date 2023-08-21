@@ -54,17 +54,42 @@ const AirlinesMainPage: React.FC<PageProps> = ({ setStep }) => {
     await fetchData().catch(console.error);
   };
 
+  const deleteAirline = async (airlineID: number) => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/deleteAirline";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+            airlineId: airlineID,
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            router.reload();
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
   const arrayPrinter = () => {
     let y: any = [];
     console.log("arrayList3", arrayList3.length);
     arrayList3.map((index: any) => {
       y[index.id] = (
         <div key={index.id} className={styles.tableInfoRow}>
-          <td><img/></td>
+          <td>Logo</td>
           <td>{index.nombre}</td>
           <td>{index.correo}</td>
           <td>{index.telefono}</td>
           <td>{index.codigo}</td>
+          <td><RemoveRedEyeIcon/> <BorderColorOutlinedIcon/> <DeleteOutlineOutlinedIcon  onClick={() => deleteAirline(index.id)}/></td>
         </div>
       );
     });
@@ -88,6 +113,7 @@ const AirlinesMainPage: React.FC<PageProps> = ({ setStep }) => {
             <span>Correo</span>
             <span>Teléfono</span>
             <span>Código</span>
+            <span>Opciones</span>
           </div>
           {arrayPrinter()}
         </div>

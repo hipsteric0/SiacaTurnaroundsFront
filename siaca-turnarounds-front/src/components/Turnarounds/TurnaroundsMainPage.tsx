@@ -55,6 +55,30 @@ const TemplatesPage: React.FC<PageProps> = ({ setStep }) => {
     await fetchData().catch(console.error);
   };
 
+  const deleteTurnaround = async (turnaroundID: number) => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/deleteTurnaround";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+            turnaroundId: turnaroundID,
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            router.reload();
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
   const arrayPrinter = () => {
     let y: any = [];
     console.log("arrayList3", arrayList3.length);
@@ -64,7 +88,7 @@ const TemplatesPage: React.FC<PageProps> = ({ setStep }) => {
           <td>{index.identificador}</td>
           <td>{index.fk_vuelo.numero_vuelo}</td>
           <td>{index.fecha_inicio}</td>
-          <td><RemoveRedEyeIcon/> <BorderColorOutlinedIcon/> <DeleteOutlineOutlinedIcon/></td>
+          <td><RemoveRedEyeIcon/> <BorderColorOutlinedIcon/> <DeleteOutlineOutlinedIcon onClick={() => deleteTurnaround(index.id)}/></td>
         </div>
       );
     });
@@ -86,6 +110,7 @@ const TemplatesPage: React.FC<PageProps> = ({ setStep }) => {
             <span>Identificador</span>
             <span>No. vuelo</span>
             <span>Fecha de inicio</span>
+            <span>Opciones</span>
           </div>
           {arrayPrinter()}
         </div>

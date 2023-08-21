@@ -80,6 +80,30 @@ const MachinesMainPage: React.FC<PageProps> = ({setStep}) => {
     await fetchData().catch(console.error);
   };
 
+  const deleteMachine = async (machineID: number) => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/deleteMachine";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+            machineId: machineID,
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            router.reload();
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
   const arrayPrinter = (category: string) => {
     let y: any = [];
     let arrayAux: any = [];
@@ -129,6 +153,7 @@ const MachinesMainPage: React.FC<PageProps> = ({setStep}) => {
                         setHoverOptionValue(-1);
                         setHover(false);
                       }}
+                      onClick={() => deleteMachine(index.id)}
                     >
                       Eliminar
                     </p>
