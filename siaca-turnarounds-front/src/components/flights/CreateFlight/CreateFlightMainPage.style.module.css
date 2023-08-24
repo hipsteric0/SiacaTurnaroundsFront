@@ -8,6 +8,7 @@
   border-radius: 12px;
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.25);
   padding: 0 16px 16px 16px;
+  margin-bottom: 30px;
 }
 
 .backArrowIcon {
@@ -24,4 +25,155 @@
   font-size: 16px;
   font-weight: bold;
   color: #4d4e56;
+  gap: 300px;
+}
+.dataContainerRowMediumGap {
+  border-bottom: 1px solid #bbbbbb;
+  min-height: 65px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 16px;
+  font-weight: bold;
+  color: #4d4e56;
+  gap: 100px;
+}
+.dataContainerRowNoGap {
+  border-bottom: 1px solid #bbbbbb;
+  min-height: 65px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 16px;
+  font-weight: bold;
+  color: #4d4e56;
+  justify-content: space-between;
+  gap: 9px;
+}
+
+.dataContainerRowItem {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+}
+.dataContainerRowItemRouting {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 204px;
+  position: relative;
+}
+.dropdownContainerSTN {
+  position: absolute;
+  top: -12px;
+  left: 45px;
+  z-index: 99;
+}
+.dropdownContainerTemplate {
+  position: absolute;
+  top: -12px;
+  left: 85px;
+  z-index: 99;
+}
+.dropdownContainerCarrier {
+  position: absolute;
+  top: -12px;
+  left: 85px;
+  z-index: 99;
+}
+.dropdownContainerCharges {
+  position: absolute;
+  top: -12px;
+  left: 165px;
+  z-index: 98;
+}
+.dropdownContainerRouting1 {
+  position: absolute;
+  top: -12px;
+  left: 75px;
+  z-index: 99;
+}
+.dropdownContainerRouting2 {
+  position: absolute;
+  top: -12px;
+  left: 290px;
+  z-index: 98;
+}
+.templateContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+  margin-bottom: 25px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #4d4e56;
+}
+.recurrencyContainer {
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+  font-size: 16px;
+  font-weight: bold;
+  color: #4d4e56;
+}
+.recurrentButtonsContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+.registerButtonContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+.recurrencyFormContainer {
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #4d4e56;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.recurrencyFormRow {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  align-items: center;
+}
+.weekdayContainerUnselected {
+  width: 30px;
+  height: 30px;
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.25);
+  border: 1px solid #bbb;
+  background-color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  color: #98989a;
+  border-radius: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+}
+.weekdayContainerSelected {
+  width: 30px;
+  height: 30px;
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.25);
+  border: solid 2px #00a75d;
+  background-color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  color: #00a75d;
+  border-radius: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
 }
