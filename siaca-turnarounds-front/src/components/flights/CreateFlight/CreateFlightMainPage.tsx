@@ -234,15 +234,21 @@ const CreateFlightMainPage: React.FC<PageProps> = ({}) => {
               />
             </div>
           </div>
-        </div>
-        <div className={styles.dataContainerRowMediumGap}>
-          <div className={styles.dataContainerRowItem}>
+          <div className={styles.dataContainerRowItemFlightType}>
             <p>Tipo de vuelo:</p>
-            <StandardInput
-              setValue={setflightType}
-              inputText=""
-              inputWidth="185px"
-            />
+            <div className={styles.dropdownContainerFlightType}>
+              <DropdownMenu
+                buttonText={""}
+                optionsArray={optionsArray}
+                executableOptionClickFunction={(optionValue: number) =>
+                  setOptionsInTareasArray(
+                    currentArrayPosition,
+                    index.key,
+                    optionValue
+                  )
+                }
+              />
+            </div>
           </div>
         </div>
       </div>
