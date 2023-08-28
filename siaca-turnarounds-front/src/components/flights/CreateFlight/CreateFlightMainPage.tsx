@@ -54,14 +54,54 @@ const CreateFlightMainPage: React.FC<PageProps> = ({}) => {
   const [recurrentSunday, setrecurrentSunday] = useState(false);
 
   useEffect(() => {
-    getcitiesListDestination();
-    getcitiesListDeparture();
-    getAirlinesList();
-    getFlightTypesList();
+    const fetchData = async () => {
+      await getcitiesListDestination();
+      await getcitiesListDeparture();
+      await getAirlinesList();
+      await getFlightTypesList();
+      await getTemplatesList();
+    };
+    fetchData().catch(console.error);
   }, []);
 
-  const setFlightTypesForDropdown = async () => {
-    FlightTypesList.map((index: any) => {
+  const setTemplatesForDropdown = async (TemplatesListArray: []) => {
+    TemplatesListArray.map((index: any) => {
+      console.log("indexx", index.id);
+      templatesOptionsArray.push({
+        key: index.id,
+        name: index.titulo,
+      });
+    });
+    console.log("templatesOptionsArray", templatesOptionsArray);
+  };
+  const getTemplatesList = async () => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/templatesList";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then(async (result) => {
+            console.log("getTemplatesList", Object.values(result));
+            await setFlightTypesList(Object.values(result));
+
+            await setTemplatesForDropdown(Object.values(result));
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
+  const setFlightTypesForDropdown = async (flightTypesListArray: []) => {
+    flightTypesListArray.map((index: any) => {
       console.log("index", index.id);
       flightTypesOptionsArray.push({
         key: index.id,
@@ -80,10 +120,11 @@ const CreateFlightMainPage: React.FC<PageProps> = ({}) => {
           }),
         };
         const response = await fetch(url, requestOptions).then((res) =>
-          res.json().then((result) => {
+          res.json().then(async (result) => {
             console.log("flightTypesList", Object.values(result));
-            setFlightTypesList(Object.values(result));
-            setFlightTypesForDropdown();
+            await setFlightTypesList(Object.values(result));
+
+            await setFlightTypesForDropdown(Object.values(result));
           })
         );
       } catch (error) {
@@ -94,8 +135,8 @@ const CreateFlightMainPage: React.FC<PageProps> = ({}) => {
     await fetchData().catch(console.error);
   };
 
-  const setAirlinesForDropdown = async () => {
-    AirlinesArrayList.map((index: any) => {
+  const setAirlinesForDropdown = async (airlinesArray: []) => {
+    await airlinesArray.map((index: any) => {
       console.log("index", index.id);
       airlinesOptionsArray.push({
         key: index.id,
@@ -114,10 +155,10 @@ const CreateFlightMainPage: React.FC<PageProps> = ({}) => {
           }),
         };
         const response = await fetch(url, requestOptions).then((res) =>
-          res.json().then((result) => {
+          res.json().then(async (result) => {
             console.log("getAirlinesList", Object.values(result));
-            setAirlinesArrayList(Object.values(result));
-            setAirlinesForDropdown();
+            await setAirlinesArrayList(Object.values(result));
+            await setAirlinesForDropdown(Object.values(result));
           })
         );
       } catch (error) {
@@ -128,10 +169,10 @@ const CreateFlightMainPage: React.FC<PageProps> = ({}) => {
     await fetchData().catch(console.error);
   };
 
-  const setCitiesListDepartureForDropdown = async () => {
-    FlightTypesList.map((index: any) => {
+  const setCitiesListDepartureForDropdown = async (citiesListArray: []) => {
+    citiesListArray.map((index: any) => {
       console.log("index", index.id);
-      flightTypesOptionsArray.push({
+      CitiesOptionsArray.push({
         key: index.id,
         name: index.nombre,
       });
@@ -151,7 +192,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({}) => {
           res.json().then((result) => {
             console.log("getcitiesListDeparture", Object.values(result));
             setDepartureCitiesArrayList(Object.values(result));
-            setCitiesListDepartureForDropdown();
+            setCitiesListDepartureForDropdown(Object.values(result));
           })
         );
       } catch (error) {
@@ -160,6 +201,18 @@ const CreateFlightMainPage: React.FC<PageProps> = ({}) => {
       }
     };
     await fetchData().catch(console.error);
+  };
+
+  const setCitiesListDestinationCodeForDropdown = async (
+    citiesListArray: []
+  ) => {
+    citiesListArray.map((index: any) => {
+      console.log("index", index.id);
+      STNOptionsArray.push({
+        key: index.id,
+        name: index.codigo,
+      });
+    });
   };
 
   const getcitiesListDestination = async () => {
@@ -176,6 +229,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({}) => {
           res.json().then((result) => {
             console.log("citiesListDestination", Object.values(result));
             setDestinationCitiesArrayList(Object.values(result));
+            setCitiesListDestinationCodeForDropdown(Object.values(result));
           })
         );
       } catch (error) {
@@ -197,193 +251,192 @@ const CreateFlightMainPage: React.FC<PageProps> = ({}) => {
 
   return (
     <>
-      <Suspense fallback={<>loading</>}>
+      <Suspense fallback={<>loadig</>}>
         <main className={styles.containerCreateFlightMainPage}>
           <div className={styles.backArrowIcon}>
             <BackArrow executableFunction={() => router.push("/Flights")} />
           </div>
-          {AirlinesArrayList.length > 0 && (
-            <div className={styles.dataContainer}>
-              <div className={styles.dataContainerRow}>
-                <div className={styles.dataContainerRowItem}>
-                  <p>STN:</p>
-                  <div className={styles.dropdownContainerSTN}>
-                    <DropdownMenu
-                      buttonText={""}
-                      optionsArray={flightTypesOptionsArray}
-                      executableOptionClickFunction={(optionValue: number) =>
-                        setOptionsInTareasArray(
-                          currentArrayPosition,
-                          index.key,
-                          optionValue
-                        )
-                      }
-                    />
-                  </div>
-                </div>
-                <div className={styles.dataContainerRowItem}>
-                  <p>CARRIER:</p>
 
-                  <div className={styles.dropdownContainerCarrier}>
-                    <DropdownMenu
-                      buttonText={""}
-                      optionsArray={airlinesOptionsArray}
-                      executableOptionClickFunction={(optionValue: number) =>
-                        setOptionsInTareasArray(
-                          currentArrayPosition,
-                          index.key,
-                          optionValue
-                        )
-                      }
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className={styles.dataContainerRow}>
-                <div className={styles.dataContainerRowItem}>
-                  <p>Charges Payable By:</p>
-                  <div className={styles.dropdownContainerCharges}>
-                    <DropdownMenu
-                      buttonText={""}
-                      optionsArray={optionsArray}
-                      executableOptionClickFunction={(optionValue: number) =>
-                        setOptionsInTareasArray(
-                          currentArrayPosition,
-                          index.key,
-                          optionValue
-                        )
-                      }
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className={styles.dataContainerRowNoGap}>
-                <div className={styles.dataContainerRowItem}>
-                  <p>Número de vuelo:</p>
-                  <StandardInput
-                    setValue={setFlightNumber}
-                    inputText=""
-                    inputWidth="185px"
-                  />
-                </div>
-                <div className={styles.dataContainerRowItem}>
-                  <p>A/C Reg:</p>
-                  <StandardInput
-                    setValue={setACreg}
-                    inputText=""
-                    inputWidth="185px"
-                  />
-                </div>
-                <div className={styles.dataContainerRowItem}>
-                  <p>A/C type:</p>
-                  <StandardInput
-                    setValue={setACtype}
-                    inputText=""
-                    inputWidth="185px"
-                  />
-                </div>
-                <div className={styles.dataContainerRowItem}>
-                  <p>Gate:</p>
-                  <StandardInput
-                    setValue={setGate}
-                    inputText=""
-                    inputWidth="185px"
+          <div className={styles.dataContainer}>
+            <div className={styles.dataContainerRow}>
+              <div className={styles.dataContainerRowItem}>
+                <p>STN:</p>
+                <div className={styles.dropdownContainerSTN}>
+                  <DropdownMenu
+                    buttonText={""}
+                    optionsArray={STNOptionsArray}
+                    executableOptionClickFunction={(optionValue: number) =>
+                      setOptionsInTareasArray(
+                        currentArrayPosition,
+                        index.key,
+                        optionValue
+                      )
+                    }
                   />
                 </div>
               </div>
-              <div className={styles.dataContainerRowMediumGap}>
-                <div className={styles.dataContainerRowItem}>
-                  <p>ETA:</p>
-                  <StandardInput
-                    setValue={setETA}
-                    inputText=""
-                    inputWidth="185px"
+              <div className={styles.dataContainerRowItem}>
+                <p>CARRIER:</p>
+
+                <div className={styles.dropdownContainerCarrier}>
+                  <DropdownMenu
+                    buttonText={""}
+                    optionsArray={airlinesOptionsArray}
+                    executableOptionClickFunction={(optionValue: number) =>
+                      setOptionsInTareasArray(
+                        currentArrayPosition,
+                        index.key,
+                        optionValue
+                      )
+                    }
                   />
-                </div>
-                <div className={styles.dataContainerRowItem}>
-                  <p>DATE:</p>
-                  <StandardInput
-                    setValue={setdateETA}
-                    inputText=""
-                    inputWidth="185px"
-                  />
-                </div>
-              </div>
-              <div className={styles.dataContainerRowMediumGap}>
-                <div className={styles.dataContainerRowItem}>
-                  <p>ETD:</p>
-                  <StandardInput
-                    setValue={setETD}
-                    inputText=""
-                    inputWidth="185px"
-                  />
-                </div>
-                <div className={styles.dataContainerRowItem}>
-                  <p>DATE:</p>
-                  <StandardInput
-                    setValue={setdateETD}
-                    inputText=""
-                    inputWidth="185px"
-                  />
-                </div>
-              </div>
-              <div className={styles.dataContainerRowMediumGap}>
-                <div className={styles.dataContainerRowItemRouting}>
-                  <p>Routing:</p>
-                  <div className={styles.dropdownContainerRouting1}>
-                    <DropdownMenu
-                      buttonText={""}
-                      optionsArray={optionsArray}
-                      executableOptionClickFunction={(optionValue: number) =>
-                        setOptionsInTareasArray(
-                          currentArrayPosition,
-                          index.key,
-                          optionValue
-                        )
-                      }
-                    />
-                  </div>
-                  <p>/</p>
-                  <div className={styles.dropdownContainerRouting2}>
-                    <DropdownMenu
-                      buttonText={""}
-                      optionsArray={optionsArray}
-                      executableOptionClickFunction={(optionValue: number) =>
-                        setOptionsInTareasArray(
-                          currentArrayPosition,
-                          index.key,
-                          optionValue
-                        )
-                      }
-                    />
-                  </div>
-                </div>
-                <div className={styles.dataContainerRowItemFlightType}>
-                  <p>Tipo de vuelo:</p>
-                  <div className={styles.dropdownContainerFlightType}>
-                    <DropdownMenu
-                      buttonText={""}
-                      optionsArray={flightTypesOptionsArray}
-                      executableOptionClickFunction={(optionValue: number) =>
-                        setOptionsInTareasArray(
-                          currentArrayPosition,
-                          index.key,
-                          optionValue
-                        )
-                      }
-                    />
-                  </div>
                 </div>
               </div>
             </div>
-          )}
+            <div className={styles.dataContainerRow}>
+              <div className={styles.dataContainerRowItem}>
+                <p>Charges Payable By:</p>
+                <div className={styles.dropdownContainerCharges}>
+                  <DropdownMenu
+                    buttonText={""}
+                    optionsArray={airlinesOptionsArray}
+                    executableOptionClickFunction={(optionValue: number) =>
+                      setOptionsInTareasArray(
+                        currentArrayPosition,
+                        index.key,
+                        optionValue
+                      )
+                    }
+                  />
+                </div>
+              </div>
+            </div>
+            <div className={styles.dataContainerRowNoGap}>
+              <div className={styles.dataContainerRowItem}>
+                <p>Número de vuelo:</p>
+                <StandardInput
+                  setValue={setFlightNumber}
+                  inputText=""
+                  inputWidth="185px"
+                />
+              </div>
+              <div className={styles.dataContainerRowItem}>
+                <p>A/C Reg:</p>
+                <StandardInput
+                  setValue={setACreg}
+                  inputText=""
+                  inputWidth="185px"
+                />
+              </div>
+              <div className={styles.dataContainerRowItem}>
+                <p>A/C type:</p>
+                <StandardInput
+                  setValue={setACtype}
+                  inputText=""
+                  inputWidth="185px"
+                />
+              </div>
+              <div className={styles.dataContainerRowItem}>
+                <p>Gate:</p>
+                <StandardInput
+                  setValue={setGate}
+                  inputText=""
+                  inputWidth="185px"
+                />
+              </div>
+            </div>
+            <div className={styles.dataContainerRowMediumGap}>
+              <div className={styles.dataContainerRowItem}>
+                <p>ETA:</p>
+                <StandardInput
+                  setValue={setETA}
+                  inputText=""
+                  inputWidth="185px"
+                />
+              </div>
+              <div className={styles.dataContainerRowItem}>
+                <p>DATE:</p>
+                <StandardInput
+                  setValue={setdateETA}
+                  inputText=""
+                  inputWidth="185px"
+                />
+              </div>
+            </div>
+            <div className={styles.dataContainerRowMediumGap}>
+              <div className={styles.dataContainerRowItem}>
+                <p>ETD:</p>
+                <StandardInput
+                  setValue={setETD}
+                  inputText=""
+                  inputWidth="185px"
+                />
+              </div>
+              <div className={styles.dataContainerRowItem}>
+                <p>DATE:</p>
+                <StandardInput
+                  setValue={setdateETD}
+                  inputText=""
+                  inputWidth="185px"
+                />
+              </div>
+            </div>
+            <div className={styles.dataContainerRowMediumGap}>
+              <div className={styles.dataContainerRowItemRouting}>
+                <p>Routing:</p>
+                <div className={styles.dropdownContainerRouting1}>
+                  <DropdownMenu
+                    buttonText={""}
+                    optionsArray={STNOptionsArray}
+                    executableOptionClickFunction={(optionValue: number) =>
+                      setOptionsInTareasArray(
+                        currentArrayPosition,
+                        index.key,
+                        optionValue
+                      )
+                    }
+                  />
+                </div>
+                <p>/</p>
+                <div className={styles.dropdownContainerRouting2}>
+                  <DropdownMenu
+                    buttonText={""}
+                    optionsArray={STNOptionsArray}
+                    executableOptionClickFunction={(optionValue: number) =>
+                      setOptionsInTareasArray(
+                        currentArrayPosition,
+                        index.key,
+                        optionValue
+                      )
+                    }
+                  />
+                </div>
+              </div>
+              <div className={styles.dataContainerRowItemFlightType}>
+                <p>Tipo de vuelo:</p>
+                <div className={styles.dropdownContainerFlightType}>
+                  <DropdownMenu
+                    buttonText={""}
+                    optionsArray={flightTypesOptionsArray}
+                    executableOptionClickFunction={(optionValue: number) =>
+                      setOptionsInTareasArray(
+                        currentArrayPosition,
+                        index.key,
+                        optionValue
+                      )
+                    }
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
 
           <div className={styles.templateContainer}>
             <p>Plantilla:</p>
             <div className={styles.dropdownContainerTemplate}>
               <DropdownMenu
                 buttonText={""}
-                optionsArray={optionsArray}
+                optionsArray={templatesOptionsArray}
                 executableOptionClickFunction={(optionValue: number) =>
                   setOptionsInTareasArray(
                     currentArrayPosition,
@@ -526,7 +579,9 @@ let tasksArray: any = [];
 
 let flightTypesOptionsArray: any = [];
 let airlinesOptionsArray: any = [];
-
+let STNOptionsArray: any = [];
+let CitiesOptionsArray: any = [];
+let templatesOptionsArray: any = [];
 let optionsArray: any = [
   {
     key: 1,
