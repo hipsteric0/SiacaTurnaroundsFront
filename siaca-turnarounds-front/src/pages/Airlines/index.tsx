@@ -9,6 +9,7 @@ import { Table } from "@nextui-org/react";
 import { TableBody } from "@mui/material";
 import AirlinesMainPage from "@/components/airlines/AirlinesMainPage";
 import RegisterAirline from "@/components/airlines/RegisterAirline/RegisterAirline";
+import EditAirline from "@/components/airlines/EditAirline/EditAirline";
 import SiacaNavbar from "@/components/Reusables/Navbar/SiacaNavbar";
 export default function Airlines() {
   //if token exists show regular html else show not signed in screen
@@ -31,32 +32,13 @@ export default function Airlines() {
           </>
         ) /*el step 1 es la pagina de registrar aerolinea*/
       }
+      {
+        step === 2 && (
+          <>
+            <EditAirline setStep={setStep} />
+          </>
+        ) /*el step 2 es la pagina de editar aerolinea*/
+      }
     </main>
   );
 }
-let arrayAux = [
-  {
-    id: 0,
-    nombre: "Aerolinea 1",
-    correo: "corre1@gmail.com",
-    telefono: "48374783784",
-    codigo: "123",
-    imagen: "link",
-  },
-  {
-    id: 1,
-    nombre: "Aerolinea 2",
-    correo: "correo2@gmail.com",
-    telefono: "48374783784",
-    codigo: "123",
-    imagen: "link",
-  },
-  {
-    id: 2,
-    nombre: "Aerolinea 3",
-    correo: "correo3@gmail.com",
-    telefono: "48374783784",
-    codigo: "123",
-    imagen: "link",
-  },
-];

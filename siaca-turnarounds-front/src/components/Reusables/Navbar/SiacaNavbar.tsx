@@ -14,6 +14,7 @@ interface PageProps {
   activeAirlinesValue?: boolean;
 }
 
+
 const SiacaNavbar: React.FC<PageProps> = ({
   activeFlightsValue,
   activeTurnaroundsValue,
@@ -40,7 +41,33 @@ const SiacaNavbar: React.FC<PageProps> = ({
   const [activeDocs, setActiveDocs] = useState(false);
   const [activeAirlines, setActiveAirlines] = useState(false);
 
+  const Logout = async () => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/logout";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            router.reload();
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+    
+  };
+
+
   return (
+
     <div className={styles.siacaNavbarContainer}>
       <div className={styles.siacaLogo}>
         <Image src={SiacaLogo} alt="Logo" height={50} />
@@ -100,8 +127,14 @@ const SiacaNavbar: React.FC<PageProps> = ({
       >
         Aerolíneas
       </h1>
-      <h4 className={styles.closeSesionText}>cerrar sesión</h4>
+      <h4 
+        className={styles.closeSesionText}
+          onClick={() => Logout()}
+      >
+        cerrar sesión
+      </h4>
     </div>
+
   );
 };
 export default SiacaNavbar;

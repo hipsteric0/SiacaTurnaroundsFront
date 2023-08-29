@@ -89,7 +89,7 @@ const AirlinesMainPage: React.FC<PageProps> = ({ setStep }) => {
           <td>{index.correo}</td>
           <td>{index.telefono}</td>
           <td>{index.codigo}</td>
-          <td><RemoveRedEyeIcon/> <BorderColorOutlinedIcon/> <DeleteOutlineOutlinedIcon  onClick={() => deleteAirline(index.id)}/></td>
+          <td><RemoveRedEyeIcon  onClick={() => setStep(2)} /> <BorderColorOutlinedIcon/> <DeleteOutlineOutlinedIcon  onClick={() => deleteAirline(index.id)}/></td>
         </div>
       );
     });
@@ -124,29 +124,4 @@ const AirlinesMainPage: React.FC<PageProps> = ({ setStep }) => {
 
 export default AirlinesMainPage;
 
-let arrayAux = [
-  {
-    id: 0,
-    nombre: "Aerolinea 1",
-    correo: "corre1@gmail.com",
-    telefono: "48374783784",
-    codigo: "123",
-    imagen: "link",
-  },
-  {
-    id: 1,
-    nombre: "Aerolinea 2",
-    correo: "correo2@gmail.com",
-    telefono: "48374783784",
-    codigo: "123",
-    imagen: "link",
-  },
-  {
-    id: 2,
-    nombre: "Aerolinea 3",
-    correo: "correo3@gmail.com",
-    telefono: "48374783784",
-    codigo: "123",
-    imagen: "link",
-  },
-];
+

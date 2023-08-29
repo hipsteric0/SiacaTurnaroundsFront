@@ -134,6 +134,7 @@ const MachinesMainPage: React.FC<PageProps> = ({setStep}) => {
                         setHoverOptionValue(-1);
                         setHover(false);
                       }}
+                      onClick={() => setStep(2)}
                     >
                       Editar
                     </p>
