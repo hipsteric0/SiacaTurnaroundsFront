@@ -21,6 +21,7 @@ const StandardInput: React.FC<PageProps> = ({
   return (
     <div className={isMobile ? styles.singleInputMobile : styles.singleInput}>
       <Input
+        aria-label="Standard input"
         disabled={inputDisabled}
         bordered
         labelPlaceholder={inputText}

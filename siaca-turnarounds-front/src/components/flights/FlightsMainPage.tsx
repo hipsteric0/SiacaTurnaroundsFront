@@ -4,7 +4,7 @@ import KeyboardArrowLeftRoundedIcon from "@mui/icons-material/KeyboardArrowLeftR
 import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRightRounded";
 import { log } from "console";
 import React, { useEffect, useState } from "react";
-import router from "next/router";
+import router, { Router } from "next/router";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Table, Spacer } from "@nextui-org/react";
 import { TableBody } from "@mui/material";
@@ -259,7 +259,7 @@ const FlightsMainPage: React.FC = () => {
         </div>
 
         <GreenButton
-          executableFunction={() => undefined}
+          executableFunction={() => router.push("/Flights/CreateFlights")}
           buttonText="Crear vuelo "
         />
       </div>

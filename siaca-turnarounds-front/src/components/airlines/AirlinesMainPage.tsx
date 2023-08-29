@@ -96,7 +96,7 @@ const AirlinesMainPage: React.FC<PageProps> = ({ setStep }) => {
 
     return y;
   };
-  
+
   return (
     <main className={styles.containerAirlinesMainPage}>
       <div className={styles.registerbuttoncontainer}>
@@ -117,7 +117,7 @@ const AirlinesMainPage: React.FC<PageProps> = ({ setStep }) => {
           </div>
           {arrayPrinter()}
         </div>
-        </div>
+      </div>
     </main>
   );
 };
