@@ -199,11 +199,11 @@ const FlightsMainPage: React.FC = () => {
             </div>
 
             <p>
-              {index?.lugar_salida}-{index?.lugar_destino}
+              {index?.lugar_salida.codigo}-{index?.lugar_destino.codigo}
             </p>
           </div>
           <div className={styles.column4Container}>
-            <p>{index?.hora_llegada}</p>
+            <p>{index?.ETA}</p>
           </div>
         </div>
       );

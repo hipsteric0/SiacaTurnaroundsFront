@@ -31,6 +31,10 @@ const CreateFlightMainPage: React.FC<PageProps> = ({}) => {
   const [DepartureCitiesArrayList, setDepartureCitiesArrayList] = useState([]);
   const [AirlinesArrayList, setAirlinesArrayList] = useState([]);
   const [FlightTypesList, setFlightTypesList] = useState([]);
+
+  const [STN, setSTN] = useState("");
+  const [Carrier, setCarrier] = useState(0);
+  const [ChargesPayableBy, setChargesPayableBy] = useState("");
   const [flightNumber, setFlightNumber] = useState("");
   const [ACreg, setACreg] = useState("");
   const [ACtype, setACtype] = useState("");
@@ -39,10 +43,12 @@ const CreateFlightMainPage: React.FC<PageProps> = ({}) => {
   const [dateETA, setdateETA] = useState("");
   const [ETD, setETD] = useState("");
   const [dateETD, setdateETD] = useState("");
-  const [flightType, setflightType] = useState("");
+  const [routing1, setRouting1] = useState(0);
+  const [routing2, setRouting2] = useState(0);
+  const [flightType, setflightType] = useState(0);
   const [recurrentFlight, setrecurrentFlight] = useState(false);
   const [clickedRecurrentFlight, setclickedRecurrentFlight] = useState(false);
-  const [templateValue, setTemplateValue] = useState("");
+  const [templateValue, setTemplateValue] = useState(0);
   const [recurrentStartDate, setrecurrentStartDate] = useState("");
   const [recurrentEndDate, setrecurrentEndDate] = useState("");
   const [recurrentMonday, setrecurrentMonday] = useState(false);
@@ -63,6 +69,45 @@ const CreateFlightMainPage: React.FC<PageProps> = ({}) => {
     };
     fetchData().catch(console.error);
   }, []);
+
+  const registerFlight = async () => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/createFlight";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+            ac_reg: ACreg,
+            ac_type: ACtype,
+            estado: "No ha llegado",
+            ente_pagador: ChargesPayableBy,
+            numero_vuelo: flightNumber,
+            ETA: ETA,
+            ETD: ETD,
+            ETA_fecha: "2023-08-29",
+            ETD_fecha: "2023-08-29",
+            gate: gate,
+            fk_aerolinea: Carrier,
+            fk_plantilla: templateValue,
+            stn: STN,
+            lugar_salida: routing1,
+            lugar_destino: routing2,
+            tipo_vuelo: flightType,
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then(async (result) => {
+            console.log("registerFlight", Object.values(result));
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
 
   const setTemplatesForDropdown = async (TemplatesListArray: []) => {
     TemplatesListArray.map((index: any) => {
@@ -208,6 +253,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({}) => {
   ) => {
     citiesListArray.map((index: any) => {
       console.log("index", index.id);
+
       STNOptionsArray.push({
         key: index.id,
         name: index.codigo,
@@ -248,6 +294,9 @@ const CreateFlightMainPage: React.FC<PageProps> = ({}) => {
     tasksArray[taskPosition].subtasks[subtaskPosition].type = typeValue;
     //console.log("tasksArray", tasksArray);
   };
+  const handleRegisterButton = () => {
+    registerFlight();
+  };
 
   return (
     <>
@@ -265,13 +314,9 @@ const CreateFlightMainPage: React.FC<PageProps> = ({}) => {
                   <DropdownMenu
                     buttonText={""}
                     optionsArray={STNOptionsArray}
-                    executableOptionClickFunction={(optionValue: number) =>
-                      setOptionsInTareasArray(
-                        currentArrayPosition,
-                        index.key,
-                        optionValue
-                      )
-                    }
+                    executableOptionClickFunction={(optionValue: number) => {
+                      setSTN(optionValue.toString());
+                    }}
                   />
                 </div>
               </div>
@@ -282,13 +327,9 @@ const CreateFlightMainPage: React.FC<PageProps> = ({}) => {
                   <DropdownMenu
                     buttonText={""}
                     optionsArray={airlinesOptionsArray}
-                    executableOptionClickFunction={(optionValue: number) =>
-                      setOptionsInTareasArray(
-                        currentArrayPosition,
-                        index.key,
-                        optionValue
-                      )
-                    }
+                    executableOptionClickFunction={(optionValue: number) => {
+                      setCarrier(optionValue);
+                    }}
                   />
                 </div>
               </div>
@@ -301,10 +342,9 @@ const CreateFlightMainPage: React.FC<PageProps> = ({}) => {
                     buttonText={""}
                     optionsArray={airlinesOptionsArray}
                     executableOptionClickFunction={(optionValue: number) =>
-                      setOptionsInTareasArray(
-                        currentArrayPosition,
-                        index.key,
-                        optionValue
+                      setChargesPayableBy(
+                        airlinesOptionsArray.find((o) => o.key === optionValue)
+                          .name
                       )
                     }
                   />
@@ -389,11 +429,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({}) => {
                     buttonText={""}
                     optionsArray={STNOptionsArray}
                     executableOptionClickFunction={(optionValue: number) =>
-                      setOptionsInTareasArray(
-                        currentArrayPosition,
-                        index.key,
-                        optionValue
-                      )
+                      setRouting1(optionValue)
                     }
                   />
                 </div>
@@ -403,11 +439,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({}) => {
                     buttonText={""}
                     optionsArray={STNOptionsArray}
                     executableOptionClickFunction={(optionValue: number) =>
-                      setOptionsInTareasArray(
-                        currentArrayPosition,
-                        index.key,
-                        optionValue
-                      )
+                      setRouting2(optionValue)
                     }
                   />
                 </div>
@@ -419,11 +451,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({}) => {
                     buttonText={""}
                     optionsArray={flightTypesOptionsArray}
                     executableOptionClickFunction={(optionValue: number) =>
-                      setOptionsInTareasArray(
-                        currentArrayPosition,
-                        index.key,
-                        optionValue
-                      )
+                      setflightType(optionValue)
                     }
                   />
                 </div>
@@ -438,11 +466,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({}) => {
                 buttonText={""}
                 optionsArray={templatesOptionsArray}
                 executableOptionClickFunction={(optionValue: number) =>
-                  setOptionsInTareasArray(
-                    currentArrayPosition,
-                    index.key,
-                    optionValue
-                  )
+                  setTemplateValue(optionValue)
                 }
               />
             </div>
@@ -563,7 +587,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({}) => {
           )}
           <div className={styles.registerButtonContainer}>
             <GreenButton
-              executableFunction={() => undefined}
+              executableFunction={() => handleRegisterButton()}
               buttonText="Registrar vuelo"
             />
           </div>
