@@ -87,6 +87,8 @@ const AirlinesMainPage: React.FC<PageProps> = ({ setStep }) => {
   const arrayPrinter = () => {
     let y: any = [];
     console.log("arrayList3", arrayList3.length);
+    const [hoverEye, sethoverEye] = useState(false);
+    const [hoverEyeId, sethoverEyeId] = useState(-1);
     arrayList3.map((index: any) => {
       y[index.id] = (
         <div key={index.id} className={styles.tableInfoRow}>
@@ -118,10 +120,32 @@ const AirlinesMainPage: React.FC<PageProps> = ({ setStep }) => {
           <td>{index.correo}</td>
           <td>{index.telefono}</td>
           <td>{index.codigo}</td>
-          <td>
-            <RemoveRedEyeIcon onClick={() => setStep(2)} />{" "}
-            <BorderColorOutlinedIcon />{" "}
-            <DeleteOutlineOutlinedIcon onClick={() => setDeleteDialog(true)} />
+          <td className={styles.iconsContainer}>
+            <div
+              className={styles.functionIcon}
+              onMouseEnter={() => {
+                sethoverEye(true);
+                sethoverEyeId(index.id);
+              }}
+              onMouseLeave={() => {
+                sethoverEye(false);
+                sethoverEyeId(-1);
+              }}
+            >
+              <RemoveRedEyeIcon
+                htmlColor={hoverEyeId === index.id ? "#00A75D" : "#98989A"}
+                onClick={() => setStep(2)}
+              />{" "}
+            </div>
+            <div className={styles.functionIcon}>
+              <BorderColorOutlinedIcon />{" "}
+            </div>
+
+            <div className={styles.functionIcon}>
+              <DeleteOutlineOutlinedIcon
+                onClick={() => setDeleteDialog(true)}
+              />
+            </div>
           </td>
         </div>
       );
