@@ -6,13 +6,14 @@ import { log } from "console";
 import React, { useEffect, useState } from "react";
 import router from "next/router";
 import { Table, Spacer } from "@nextui-org/react";
-import { TableBody } from "@mui/material";
+import { Dialog, TableBody } from "@mui/material";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { Dropdown } from "@nextui-org/react";
 import { useMediaQuery } from "@mui/material";
 import { text } from "stream/consumers";
+import RedButton from "../Reusables/RedButton";
 
 interface PageProps {
   setStep: (value: number) => void;
@@ -23,6 +24,7 @@ const AirlinesMainPage: React.FC<PageProps> = ({ setStep }) => {
   const isMobile = useMediaQuery("(max-width: 1270px)");
   const [allowContinue, setAllowContinue] = useState(false);
   const [arrayList3, setArrayList3] = useState([]);
+  const [deleteDialog, setDeleteDialog] = useState(false);
 
   useEffect(() => {
     getList();
@@ -78,18 +80,49 @@ const AirlinesMainPage: React.FC<PageProps> = ({ setStep }) => {
     await fetchData().catch(console.error);
   };
 
+  const handleDeleteAirline = async (airlineID: number) => {
+    deleteAirline(airlineID);
+  };
+
   const arrayPrinter = () => {
     let y: any = [];
     console.log("arrayList3", arrayList3.length);
     arrayList3.map((index: any) => {
       y[index.id] = (
         <div key={index.id} className={styles.tableInfoRow}>
+          {
+            <Dialog
+              //className={}
+              open={deleteDialog}
+              onClose={() => setDeleteDialog(false)}
+            >
+              <div>
+                Quieres borrar la verga esta?
+                <GreenButton
+                  executableFunction={() => {
+                    handleDeleteAirline(index.id);
+                  }}
+                  buttonText="Si"
+                />
+                <RedButton
+                  executableFunction={() => {
+                    setDeleteDialog(false);
+                  }}
+                  buttonText="No"
+                />
+              </div>
+            </Dialog>
+          }
           <td>Logo</td>
           <td>{index.nombre}</td>
           <td>{index.correo}</td>
           <td>{index.telefono}</td>
           <td>{index.codigo}</td>
-          <td><RemoveRedEyeIcon  onClick={() => setStep(2)} /> <BorderColorOutlinedIcon/> <DeleteOutlineOutlinedIcon  onClick={() => deleteAirline(index.id)}/></td>
+          <td>
+            <RemoveRedEyeIcon onClick={() => setStep(2)} />{" "}
+            <BorderColorOutlinedIcon />{" "}
+            <DeleteOutlineOutlinedIcon onClick={() => setDeleteDialog(true)} />
+          </td>
         </div>
       );
     });
@@ -123,5 +156,3 @@ const AirlinesMainPage: React.FC<PageProps> = ({ setStep }) => {
 };
 
 export default AirlinesMainPage;
-
-
