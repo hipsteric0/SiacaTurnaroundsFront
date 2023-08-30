@@ -17,9 +17,10 @@ import RedButton from "../Reusables/RedButton";
 
 interface PageProps {
   setStep: (value: number) => void;
+  flightID: number;
 }
 
-const AirlinesMainPage: React.FC<PageProps> = ({ setStep }) => {
+const AirlinesMainPage: React.FC<PageProps> = ({ setStep, flightID }) => {
   //if token exists show regular html else show not signed in screen
   const isMobile = useMediaQuery("(max-width: 1270px)");
   const [allowContinue, setAllowContinue] = useState(false);
@@ -134,7 +135,10 @@ const AirlinesMainPage: React.FC<PageProps> = ({ setStep }) => {
             >
               <RemoveRedEyeIcon
                 htmlColor={hoverEyeId === index.id ? "#00A75D" : "#98989A"}
-                onClick={() => setStep(2)}
+                onClick={() => {
+                  flightID = index.id;
+                  setStep(2);
+                }}
               />{" "}
             </div>
             <div className={styles.functionIcon}>

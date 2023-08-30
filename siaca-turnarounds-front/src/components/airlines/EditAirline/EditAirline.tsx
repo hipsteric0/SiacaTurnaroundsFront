@@ -14,9 +14,10 @@ import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import SiacaNavbar from "@/components/Reusables/Navbar/SiacaNavbar";
 interface PageProps {
   setStep: (value: number) => void;
+  flightID: number;
 }
 
-const RegisterAirline: React.FC<PageProps> = ({ setStep }) => {
+const RegisterAirline: React.FC<PageProps> = ({ setStep, flightID }) => {
   //if token exists show regular html else show not signed in screen
   const [aerolinea, setAerolinea] = useState("");
   const [codigo, setCodigo] = useState("");
@@ -52,7 +53,7 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep }) => {
             responseValue = false;
           } else {
             responseValue = true;
-            console.log("value", value)
+            console.log("value", value);
           }
           return true;
         });
@@ -70,10 +71,8 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep }) => {
   };
 
   const continueButton = () => {
-
     registerAirlines();
     router.reload();
- 
   };
 
   return (
@@ -133,7 +132,6 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep }) => {
             pais === "" ||
             ciudad === ""
           }
-          
         />
       </div>
     </main>
@@ -141,5 +139,3 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep }) => {
 };
 
 export default RegisterAirline;
-
-

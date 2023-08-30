@@ -14,14 +14,14 @@ import SiacaNavbar from "@/components/Reusables/Navbar/SiacaNavbar";
 export default function Airlines() {
   //if token exists show regular html else show not signed in screen
   const [step, setStep] = useState(0);
-
+  let flightID = -1;
   return (
     <main className={styles.mainContainerAirlinesPage}>
       <SiacaNavbar activeAirlinesValue={true} />
       {
         step === 0 && (
           <>
-            <AirlinesMainPage setStep={setStep} />
+            <AirlinesMainPage setStep={setStep} flightID={flightID} />
           </>
         ) /*el step 0 es la pagina principal de aerolineas*/
       }
@@ -35,7 +35,7 @@ export default function Airlines() {
       {
         step === 2 && (
           <>
-            <EditAirline setStep={setStep} />
+            <EditAirline setStep={setStep} flightID={flightID} />
           </>
         ) /*el step 2 es la pagina de editar aerolinea*/
       }
