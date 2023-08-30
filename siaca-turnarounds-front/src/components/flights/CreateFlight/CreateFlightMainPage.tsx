@@ -85,8 +85,8 @@ const CreateFlightMainPage: React.FC<PageProps> = ({}) => {
             numero_vuelo: flightNumber,
             ETA: ETA,
             ETD: ETD,
-            ETA_fecha: "2023-08-29",
-            ETD_fecha: "2023-08-29",
+            ETA_fecha: dateETA,
+            ETD_fecha: dateETD,
             gate: gate,
             fk_aerolinea: Carrier,
             fk_plantilla: templateValue,
@@ -402,6 +402,11 @@ const CreateFlightMainPage: React.FC<PageProps> = ({}) => {
                   inputWidth="185px"
                 />
               </div>
+              <div className={styles.dataContainerRowItem}>
+                <p className={styles.adviceText}>
+                  *Formato de Fecha: AAAA-MM-DD. Formato de Hora: HH:MM:SS 24hrs
+                </p>
+              </div>
             </div>
             <div className={styles.dataContainerRowMediumGap}>
               <div className={styles.dataContainerRowItem}>
@@ -419,6 +424,11 @@ const CreateFlightMainPage: React.FC<PageProps> = ({}) => {
                   inputText=""
                   inputWidth="185px"
                 />
+              </div>
+              <div className={styles.dataContainerRowItem}>
+                <p className={styles.adviceText}>
+                  *Formato de Fecha: AAAA-MM-DD. Formato de Hora: HH:MM:SS 24hrs
+                </p>
               </div>
             </div>
             <div className={styles.dataContainerRowMediumGap}>
@@ -496,19 +506,20 @@ const CreateFlightMainPage: React.FC<PageProps> = ({}) => {
             <div className={styles.recurrencyFormContainer}>
               <div className={styles.recurrencyFormRow}>
                 <p>Fecha de inicio de la serie:</p>
-                <StandardInput
-                  setValue={setrecurrentStartDate}
-                  inputText=""
-                  inputWidth="105px"
-                />
+                <div className={styles.unmodifiableInput}>{dateETA} </div>
               </div>
               <div className={styles.recurrencyFormRow}>
                 <p>Fecha de fin de la serie:</p>
+
                 <StandardInput
                   setValue={setrecurrentEndDate}
                   inputText=""
                   inputWidth="105px"
                 />
+                <p className={styles.adviceText2}>
+                  *Formato de Fecha: AAAA-MM-DD mayor a la fecha de inicio de la
+                  serie.
+                </p>
               </div>
               <div className={styles.recurrencyFormRow}>
                 <p>Días de la semana:</p>

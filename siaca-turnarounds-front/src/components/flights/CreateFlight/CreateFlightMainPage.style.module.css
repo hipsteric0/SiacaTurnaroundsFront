@@ -50,7 +50,17 @@
   justify-content: space-between;
   gap: 9px;
 }
-
+.adviceText {
+  font-size: 12px;
+  font-weight: bold;
+  color: #bbb;
+  margin-left: -75px;
+}
+.adviceText2 {
+  font-size: 12px;
+  font-weight: bold;
+  color: #bbb;
+}
 .dataContainerRowItem {
   display: flex;
   flex-direction: row;
@@ -190,4 +200,16 @@
   justify-content: center;
   text-align: center;
   cursor: pointer;
+}
+.unmodifiableInput {
+  border-radius: 12px;
+  border: solid 2px lightgray;
+  min-width: 105px;
+  height: 45px;
+  outline: none;
+  padding-left: 10px;
+  color: #bbb;
+  display: flex;
+  align-items: center;
+  cursor: not-allowed;
 }
