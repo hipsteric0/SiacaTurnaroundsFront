@@ -37,3 +37,8 @@
   box-shadow: 0px 0px 1px 1px rgba(0.25, 0.25, 0.25, 0.25);
   cursor: pointer;
 }
+
+.closeSesionText:hover {
+  color: #f10303;
+  box-shadow: 0px 0px 1px 1px #f10303;
+}
