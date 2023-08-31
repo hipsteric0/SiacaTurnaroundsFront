@@ -70,7 +70,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({}) => {
     fetchData().catch(console.error);
   }, []);
 
-  const registerFlight = async () => {
+  const registerFlight = async (ETADateValue: string) => {
     const fetchData = async () => {
       try {
         const url = "/api/createFlight";
@@ -85,7 +85,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({}) => {
             numero_vuelo: flightNumber,
             ETA: ETA,
             ETD: ETD,
-            ETA_fecha: dateETA,
+            ETA_fecha: ETADateValue,
             ETD_fecha: dateETD,
             gate: gate,
             fk_aerolinea: Carrier,
@@ -294,8 +294,121 @@ const CreateFlightMainPage: React.FC<PageProps> = ({}) => {
     tasksArray[taskPosition].subtasks[subtaskPosition].type = typeValue;
     //console.log("tasksArray", tasksArray);
   };
-  const handleRegisterButton = () => {
-    registerFlight();
+  const handleRegisterButton = async () => {
+    if (recurrentFlight === true) {
+      //vuelo recurrente
+      let initialDate = new Date(dateETA);
+      initialDate.setDate(initialDate.getDate() + 1);
+      let finalDate = new Date(recurrentEndDate);
+      finalDate.setDate(finalDate.getDate() + 1);
+      console.log("initialDate", initialDate);
+      console.log("finalDate", finalDate);
+
+      //desde la fecha ETA a la fecha
+      while (initialDate <= finalDate) {
+        if (recurrentSunday) {
+          if (initialDate.getDay() === 0) {
+            //registrar
+            let initialDateAux = new Date(initialDate);
+            initialDateAux.setDate(initialDateAux.getDate() - 1);
+            await registerFlight(initialDateAux.toISOString().split("T")[0]);
+          }
+        }
+        if (recurrentMonday) {
+          if (initialDate.getDay() === 1) {
+            //registrar
+            let initialDateAux = new Date(initialDate);
+            initialDateAux.setDate(initialDateAux.getDate() - 1);
+            await registerFlight(initialDateAux.toISOString().split("T")[0]);
+          }
+        }
+        if (recurrentTuesday) {
+          if (initialDate.getDay() === 2) {
+            //registrar
+            let initialDateAux = new Date(initialDate);
+            initialDateAux.setDate(initialDateAux.getDate() - 1);
+            await registerFlight(initialDateAux.toISOString().split("T")[0]);
+          }
+        }
+        if (recurrentWednesday) {
+          if (initialDate.getDay() === 3) {
+            //registrar
+            let initialDateAux = new Date(initialDate);
+            initialDateAux.setDate(initialDateAux.getDate() - 1);
+            await registerFlight(initialDateAux.toISOString().split("T")[0]);
+          }
+        }
+        if (recurrentThursday) {
+          if (initialDate.getDay() === 4) {
+            //registrar
+            let initialDateAux = new Date(initialDate);
+            initialDateAux.setDate(initialDateAux.getDate() - 1);
+            await registerFlight(initialDateAux.toISOString().split("T")[0]);
+          }
+        }
+        if (recurrentFriday) {
+          if (initialDate.getDay() === 5) {
+            //registrar
+            let initialDateAux = new Date(initialDate);
+            initialDateAux.setDate(initialDateAux.getDate() - 1);
+            await registerFlight(initialDateAux.toISOString().split("T")[0]);
+          }
+        }
+        if (recurrentSaturday) {
+          if (initialDate.getDay() === 6) {
+            //registrar
+            let initialDateAux = new Date(initialDate);
+            initialDateAux.setDate(initialDateAux.getDate() - 1);
+            await registerFlight(initialDateAux.toISOString().split("T")[0]);
+          }
+        }
+        initialDate.setDate(initialDate.getDate() + 1);
+      }
+      router.push("/Flights");
+    } else {
+      //vuelo unico
+      await registerFlight(dateETA);
+      router.push("/Flights");
+    }
+  };
+
+  const checkDisabledRegisterButton = () => {
+    //checks if register button should be disabled by asking that every fillable item is filled
+    if (
+      STN === "" ||
+      Carrier === 0 ||
+      ChargesPayableBy === "" ||
+      flightNumber === "" ||
+      ACreg === "" ||
+      ACtype === "" ||
+      gate === "" ||
+      ETA === "" ||
+      dateETA === "" ||
+      ETD === "" ||
+      dateETD === "" ||
+      routing1 === 0 ||
+      routing2 === 0 ||
+      flightType === 0 ||
+      templateValue === 0 ||
+      clickedRecurrentFlight === false
+    )
+      return true;
+    if (clickedRecurrentFlight === true && recurrentFlight === true) {
+      if (recurrentEndDate === "") {
+        return true;
+      }
+      if (
+        recurrentMonday === false &&
+        recurrentTuesday === false &&
+        recurrentWednesday === false &&
+        recurrentThursday === false &&
+        recurrentSaturday === false &&
+        recurrentSunday === false
+      ) {
+        return true;
+      }
+    }
+    return false;
   };
 
   return (
@@ -600,6 +713,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({}) => {
             <GreenButton
               executableFunction={() => handleRegisterButton()}
               buttonText="Registrar vuelo"
+              disabled={checkDisabledRegisterButton()}
             />
           </div>
         </main>
