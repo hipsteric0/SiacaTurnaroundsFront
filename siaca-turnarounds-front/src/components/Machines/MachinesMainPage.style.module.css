@@ -81,8 +81,7 @@
   right: 30px;
   border-radius: 8px;
 }
-.menuAppearingContainerRow {
-}
+
 .optionsText {
   font-size: 12px;
   cursor: pointer;
@@ -97,4 +96,29 @@
   flex-direction: row;
   align-items: center;
   gap: 30px;
+}
+
+.dialogText{
+  text-align: center;
+  font-family: Montserrat, Poppins, sans-serif;
+  padding-top: 5%;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-bottom: 30px;
+}
+
+.dialogButtons {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  gap: 10px;
+  padding: 16px;
+}
+
+.warningIcon {
+  font-size: 70px;
+}
+
+.dialogBack{
+  background: #f1f3f5;
+  border-radius: 12px;
 }

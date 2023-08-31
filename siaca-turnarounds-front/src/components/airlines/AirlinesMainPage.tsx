@@ -14,6 +14,7 @@ import { Dropdown } from "@nextui-org/react";
 import { useMediaQuery } from "@mui/material";
 import { text } from "stream/consumers";
 import RedButton from "../Reusables/RedButton";
+import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 
 interface PageProps {
   setStep: (value: number) => void;
@@ -90,20 +91,29 @@ const AirlinesMainPage: React.FC<PageProps> = ({ setStep, flightID }) => {
     console.log("arrayList3", arrayList3.length);
     const [hoverEye, sethoverEye] = useState(false);
     const [hoverEyeId, sethoverEyeId] = useState(-1);
+    const [hoverPencilId, sethoverPencilId] = useState(-1);
+    const [hoverTrashId, sethoverTrashId] = useState(-1);
+
     arrayList3.map((index: any) => {
       y[index.id] = (
         <div key={index.id} className={styles.tableInfoRow}>
           {
             <Dialog
-              //className={}
+              className={styles.dialogDelete}
               open={deleteDialog}
               onClose={() => setDeleteDialog(false)}
             >
-              <div>
-                Quieres borrar la verga esta?
+              <div className={styles.dialogBack}>
+              <div className={styles.dialogText}>
+                <div className={styles.warningIcon}><WarningAmberIcon color="warning" fontSize="inherit"/></div>
+                <p><strong>¿Está seguro que desea eliminar {index.nombre}?</strong></p>
+                <br/>
+                <p>Si elimina esta aerolinea seran eliminados <strong>todos</strong> los vuelos y</p>
+                turnarounds asociados a ella.
+                <div className={styles.dialogButtons}>
                 <GreenButton
                   executableFunction={() => {
-                    handleDeleteAirline(index.id);
+                  handleDeleteAirline(index.id);
                   }}
                   buttonText="Si"
                 />
@@ -113,6 +123,8 @@ const AirlinesMainPage: React.FC<PageProps> = ({ setStep, flightID }) => {
                   }}
                   buttonText="No"
                 />
+                </div>
+              </div>
               </div>
             </Dialog>
           }
@@ -125,29 +137,46 @@ const AirlinesMainPage: React.FC<PageProps> = ({ setStep, flightID }) => {
             <div
               className={styles.functionIcon}
               onMouseEnter={() => {
-                sethoverEye(true);
                 sethoverEyeId(index.id);
               }}
-              onMouseLeave={() => {
-                sethoverEye(false);
+              onMouseLeave={() => {              
                 sethoverEyeId(-1);
               }}
             >
               <RemoveRedEyeIcon
-                htmlColor={hoverEyeId === index.id ? "#00A75D" : "#98989A"}
-                onClick={() => {
-                  flightID = index.id;
-                  setStep(2);
-                }}
-              />{" "}
-            </div>
-            <div className={styles.functionIcon}>
-              <BorderColorOutlinedIcon />{" "}
+              htmlColor={hoverEyeId === index.id ? "#00A75D" : "#4D4E56"}
+              onClick={() => {
+                flightID = index.id;
+              }}/>{" "}
             </div>
 
-            <div className={styles.functionIcon}>
+            <div className={styles.functionIcon}
+            onMouseEnter={() => {
+              sethoverPencilId(index.id);
+            }}
+            onMouseLeave={() => {              
+              sethoverPencilId(-1);
+            }}>
+              <BorderColorOutlinedIcon 
+              htmlColor={hoverPencilId === index.id ? "#00A75D" : "#4D4E56"}
+              onClick={() => {
+                flightID = index.id;
+                setStep(2);
+              }}/>{" "}
+            </div>
+
+            <div className={styles.functionIcon}
+            onMouseEnter={() => {
+              sethoverTrashId(index.id);
+            }}
+            onMouseLeave={() => {              
+              sethoverTrashId(-1);
+            }}>
               <DeleteOutlineOutlinedIcon
-                onClick={() => setDeleteDialog(true)}
+               htmlColor={hoverTrashId === index.id ? "#f10303" : "#4D4E56"}
+               onClick={() => {
+                setDeleteDialog(true);
+               }}
               />
             </div>
           </td>

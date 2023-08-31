@@ -6,7 +6,7 @@ import { log } from "console";
 import React, { useEffect, useState } from "react";
 import router from "next/router";
 import { Table, Spacer, Switch } from "@nextui-org/react";
-import { TableBody } from "@mui/material";
+import { TableBody, Dialog } from "@mui/material";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
@@ -15,6 +15,7 @@ import { useMediaQuery } from "@mui/material";
 import { Collapse, Text } from "@nextui-org/react";
 import RedButton from "../Reusables/RedButton";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 
 interface PageProps {
   setStep: (value: number) => void;
@@ -28,6 +29,7 @@ const MachinesMainPage: React.FC<PageProps> = ({setStep}) => {
   const [arrayList3, setArrayList3] = useState([]);
   const [hover, setHover] = useState(false);
   const [hoverOptionValue, setHoverOptionValue] = useState(-1);
+  const [deleteDialog, setDeleteDialog] = useState(false);
 
   useEffect(() => {
     getList();
@@ -104,6 +106,11 @@ const MachinesMainPage: React.FC<PageProps> = ({setStep}) => {
     await fetchData().catch(console.error);
   };
 
+  const handleDeleteMachine = async (machineID: number) => {
+    deleteMachine(machineID);
+  };
+
+
   const arrayPrinter = (category: string) => {
     let y: any = [];
     let arrayAux: any = [];
@@ -119,6 +126,34 @@ const MachinesMainPage: React.FC<PageProps> = ({setStep}) => {
             <div className={styles.menuContainer}>
               {openCardMenu === index.id && (
                 <div className={styles.menuAppearingContainer}>
+              
+              <Dialog
+              className={styles.dialogDelete}
+              open={deleteDialog}
+              onClose={() => setDeleteDialog(false)}
+            >
+              <div className={styles.dialogBack}>
+              <div className={styles.dialogText}>
+                <div className={styles.warningIcon}><WarningAmberIcon color="warning" fontSize="inherit"/></div>
+                <p><strong>¿Está seguro que desea eliminar la máquina {index.identificador}?</strong></p>
+                <div className={styles.dialogButtons}>
+                <GreenButton
+                  executableFunction={() => {
+                  handleDeleteMachine(index.id);
+                  }}
+                  buttonText="Si"
+                />
+                <RedButton
+                  executableFunction={() => {
+                    setDeleteDialog(false);
+                  }}
+                  buttonText="No"
+                />
+                </div>
+              </div>
+              </div>
+            </Dialog>
+
                   <div className={styles.menuAppearingContainerRow}>
                     <p
                       className={
@@ -154,7 +189,7 @@ const MachinesMainPage: React.FC<PageProps> = ({setStep}) => {
                         setHoverOptionValue(-1);
                         setHover(false);
                       }}
-                      onClick={() => deleteMachine(index.id)}
+                      onClick={() => setDeleteDialog(true)}
                     >
                       Eliminar
                     </p>
