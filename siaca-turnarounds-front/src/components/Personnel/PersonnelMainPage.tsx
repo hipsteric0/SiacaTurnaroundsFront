@@ -108,6 +108,7 @@ const PersonnelMainPage: React.FC = () => {
     const [hoverEyeId, sethoverEyeId] = useState(-1);
     const [hoverPencilId, sethoverPencilId] = useState(-1);
     const [hoverTrashId, sethoverTrashId] = useState(-1);
+    const [clickID, setclickID] = useState(-1);
 
     isFilteredResults
       ? (arrayList3aux = arrayFilteredList3)
@@ -126,11 +127,10 @@ const PersonnelMainPage: React.FC = () => {
               <div className={styles.warningIcon}><WarningAmberIcon color="warning" fontSize="inherit"/></div>
               <p><strong>¿Está seguro que desea eliminar este usuario?</strong></p>
               <br/>
-              <p>{index.fk_user.first_name} {" "} {index.fk_user.last_name}</p>
               <div className={styles.dialogButtons}>
               <GreenButton
                 executableFunction={() => {
-                handleDeletePersonnel(index.fk_user.id);
+                handleDeletePersonnel(clickID);
                 }}
                 buttonText="Si"
               />
@@ -147,15 +147,15 @@ const PersonnelMainPage: React.FC = () => {
 
           }
           <td>
-            {index.fk_user.first_name} {index.fk_user.last_name}
+            {index?.fk_user?.first_name} {index?.fk_user?.last_name}
           </td>
-          <td>{index.cargo}</td>
-          <td>{index.departamento}</td>
+          <td>{index?.cargo}</td>
+          <td>{index?.departamento}</td>
           <td>
-            {index.fk_user.username} 
-            <p>{index.telefono}</p>
+            {index?.fk_user?.username} 
+            <p>{index?.telefono}</p>
           </td>
-          <td>{index.turno}</td>
+          <td>{index?.turno}</td>
           <td className={styles.iconsContainer}>
             <div
               className={styles.functionIcon}
@@ -198,6 +198,7 @@ const PersonnelMainPage: React.FC = () => {
               <DeleteOutlineOutlinedIcon
                htmlColor={hoverTrashId === index.id ? "#f10303" : "#4D4E56"}
                onClick={() => {
+                setclickID(index.fk_user.id);
                 setDeleteDialog(true);
                }}
               />

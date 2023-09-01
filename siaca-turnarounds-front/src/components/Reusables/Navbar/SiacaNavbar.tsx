@@ -53,7 +53,7 @@ const SiacaNavbar: React.FC<PageProps> = ({
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            router.reload();
+            router.push("/");
           })
         );
       } catch (error) {

@@ -84,8 +84,6 @@ const AirlinesMainPage: React.FC<PageProps> = ({ setStep, flightID }) => {
   };
 
   const handleDeleteAirline = async (airlineID: number) => {
-    console.log("airlineID",airlineID);
-    console.log("flightID",flightID)
     deleteAirline(airlineID);
   };
 
