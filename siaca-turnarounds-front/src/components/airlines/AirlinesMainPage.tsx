@@ -27,6 +27,7 @@ const AirlinesMainPage: React.FC<PageProps> = ({ setStep, flightID }) => {
   const [allowContinue, setAllowContinue] = useState(false);
   const [arrayList3, setArrayList3] = useState([]);
   const [deleteDialog, setDeleteDialog] = useState(false);
+ 
 
   useEffect(() => {
     getList();
@@ -83,16 +84,20 @@ const AirlinesMainPage: React.FC<PageProps> = ({ setStep, flightID }) => {
   };
 
   const handleDeleteAirline = async (airlineID: number) => {
+    console.log("airlineID",airlineID);
+    console.log("flightID",flightID)
     deleteAirline(airlineID);
   };
 
   const arrayPrinter = () => {
     let y: any = [];
+    
     console.log("arrayList3", arrayList3.length);
     const [hoverEye, sethoverEye] = useState(false);
     const [hoverEyeId, sethoverEyeId] = useState(-1);
     const [hoverPencilId, sethoverPencilId] = useState(-1);
     const [hoverTrashId, sethoverTrashId] = useState(-1);
+    const [clickID, setclickID] = useState(-1);
 
     arrayList3.map((index: any) => {
       y[index.id] = (
@@ -106,14 +111,15 @@ const AirlinesMainPage: React.FC<PageProps> = ({ setStep, flightID }) => {
               <div className={styles.dialogBack}>
               <div className={styles.dialogText}>
                 <div className={styles.warningIcon}><WarningAmberIcon color="warning" fontSize="inherit"/></div>
-                <p><strong>¿Está seguro que desea eliminar {index.nombre}?</strong></p>
+                <p><strong>¿Está seguro que desea eliminar {arrayList3.find((o) => o.id=== clickID)?.nombre}?</strong></p>
                 <br/>
                 <p>Si elimina esta aerolinea seran eliminados <strong>todos</strong> los vuelos y</p>
                 turnarounds asociados a ella.
                 <div className={styles.dialogButtons}>
                 <GreenButton
                   executableFunction={() => {
-                  handleDeleteAirline(index.id);
+                  handleDeleteAirline(clickID);
+                  
                   }}
                   buttonText="Si"
                 />
@@ -175,6 +181,7 @@ const AirlinesMainPage: React.FC<PageProps> = ({ setStep, flightID }) => {
               <DeleteOutlineOutlinedIcon
                htmlColor={hoverTrashId === index.id ? "#f10303" : "#4D4E56"}
                onClick={() => {
+                setclickID(index.id);
                 setDeleteDialog(true);
                }}
               />
