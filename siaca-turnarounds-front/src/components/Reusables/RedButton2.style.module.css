@@ -1,0 +1,14 @@
+.redButtonContainer {
+  font-size: 12px;
+  color: #f10303;
+  padding: 5px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 1px 1px #f10303;
+  cursor: pointer;
+}
+
+.redButtonContainer:hover{
+  color: white;
+  box-shadow: 0px 0px 1px 1px #f10303;
+  background-color: #f10303 ;
+}

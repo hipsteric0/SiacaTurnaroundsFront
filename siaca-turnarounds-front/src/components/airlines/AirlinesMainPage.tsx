@@ -13,7 +13,8 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 import { Dropdown } from "@nextui-org/react";
 import { useMediaQuery } from "@mui/material";
 import { text } from "stream/consumers";
-import RedButton from "../Reusables/RedButton";
+import RedButton2 from "../Reusables/RedButton2";
+import GreenButton2 from "@/components/Reusables/GreenButton2";
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 
 interface PageProps {
@@ -114,14 +115,14 @@ const AirlinesMainPage: React.FC<PageProps> = ({ setStep, flightID }) => {
                 <p>Si elimina esta aerolinea seran eliminados <strong>todos</strong> los vuelos y</p>
                 turnarounds asociados a ella.
                 <div className={styles.dialogButtons}>
-                <GreenButton
+                <GreenButton2
                   executableFunction={() => {
                   handleDeleteAirline(clickID);
                   
                   }}
                   buttonText="Si"
                 />
-                <RedButton
+                <RedButton2
                   executableFunction={() => {
                     setDeleteDialog(false);
                   }}

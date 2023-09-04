@@ -13,7 +13,8 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 import { Dropdown } from "@nextui-org/react";
 import { useMediaQuery } from "@mui/material";
 import { Collapse, Text } from "@nextui-org/react";
-import RedButton from "../Reusables/RedButton";
+import RedButton2 from "../Reusables/RedButton2";
+import GreenButton2 from "@/components/Reusables/GreenButton2";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 
@@ -137,13 +138,13 @@ const MachinesMainPage: React.FC<PageProps> = ({setStep}) => {
                 <div className={styles.warningIcon}><WarningAmberIcon color="warning" fontSize="inherit"/></div>
                 <p><strong>¿Está seguro que desea eliminar la máquina {index.identificador}?</strong></p>
                 <div className={styles.dialogButtons}>
-                <GreenButton
+                <GreenButton2
                   executableFunction={() => {
                   handleDeleteMachine(index.id);
                   }}
                   buttonText="Si"
                 />
-                <RedButton
+                <RedButton2
                   executableFunction={() => {
                     setDeleteDialog(false);
                   }}

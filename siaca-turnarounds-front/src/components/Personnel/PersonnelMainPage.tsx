@@ -1,4 +1,4 @@
-import GreenButton from "@/components/Reusables/GreenButton";
+import GreenButton2 from "@/components/Reusables/GreenButton2";
 import styles from "./PersonnelMainPage.style.module.css";
 import KeyboardArrowLeftRoundedIcon from "@mui/icons-material/KeyboardArrowLeftRounded";
 import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRightRounded";
@@ -14,7 +14,7 @@ import { Dropdown } from "@nextui-org/react";
 import { useMediaQuery } from "@mui/material";
 import { text } from "stream/consumers";
 import Combobox from "../Reusables/Combobox";
-import RedButton from "../Reusables/RedButton";
+import RedButton2 from "../Reusables/RedButton2";
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 
 interface PageProps {
@@ -128,13 +128,13 @@ const PersonnelMainPage: React.FC = () => {
               <p><strong>¿Está seguro que desea eliminar este usuario?</strong></p>
               <br/>
               <div className={styles.dialogButtons}>
-              <GreenButton
+              <GreenButton2
                 executableFunction={() => {
                 handleDeletePersonnel(clickID);
                 }}
                 buttonText="Si"
               />
-              <RedButton
+              <RedButton2
                 executableFunction={() => {
                   setDeleteDialog(false);
                 }}

@@ -7,7 +7,7 @@ import React, { useEffect, useState } from "react";
 import router, { Router } from "next/router";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Table, Spacer } from "@nextui-org/react";
-import { TableBody } from "@mui/material";
+import { TableBody, Dialog } from "@mui/material";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
@@ -18,6 +18,10 @@ import Combobox from "../Reusables/Combobox";
 import SiacaNavbar from "../Reusables/Navbar/SiacaNavbar";
 import FlightLandIcon from "@mui/icons-material/FlightLand";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import RedButton2 from "../Reusables/RedButton2";
+import GreenButton2 from "@/components/Reusables/GreenButton2";
+import WarningAmberIcon from '@mui/icons-material/WarningAmber';
+
 interface PageProps {
   setStep: (value: number) => void;
 }
@@ -40,6 +44,8 @@ const FlightsMainPage: React.FC = () => {
   const [hover, setHover] = useState(false);
   const [hoverOptionValue, setHoverOptionValue] = useState(-1);
   const [isFilteredResults, setIsFilteredResults] = useState(false);
+  const [deleteDialog, setDeleteDialog] = useState(false);
+
   let filterValues: any[] = [];
   const getList = async () => {
     setIsFilteredResults(false);
@@ -100,6 +106,34 @@ const FlightsMainPage: React.FC = () => {
     getList();
   };
 
+  const flightMachine = async (flightID: number) => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/deleteFlight";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+            flightId: flightID,
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            router.reload();
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
+  const handleDeleteFlight = async (flightID: number) => {
+    flightMachine(flightID);
+  };
+
   const arrayPrinter = () => {
     let y: any = [];
     let arrayList3aux: any = [];
@@ -115,6 +149,34 @@ const FlightsMainPage: React.FC = () => {
           <div className={styles.menuContainer}>
             {openCardMenu === index.id && (
               <div className={styles.menuAppearingContainer}>
+
+            <Dialog
+              className={styles.dialogDelete}
+              open={deleteDialog}
+              onClose={() => setDeleteDialog(false)}
+            >
+              <div className={styles.dialogBack}>
+              <div className={styles.dialogText}>
+                <div className={styles.warningIcon}><WarningAmberIcon color="warning" fontSize="inherit"/></div>
+                <p><strong>¿Está seguro que desea eliminar este vuelo {index.numero_vuelo}?</strong></p>
+                <div className={styles.dialogButtons}>
+                <GreenButton2
+                  executableFunction={() => {
+                  handleDeleteFlight(index.id);
+                  }}
+                  buttonText="Si"
+                />
+                <RedButton2
+                  executableFunction={() => {
+                    setDeleteDialog(false);
+                  }}
+                  buttonText="No"
+                />
+                </div>
+              </div>
+              </div>
+            </Dialog>
+
                 <div className={styles.menuAppearingContainerRow}>
                   <p
                     className={
@@ -149,6 +211,7 @@ const FlightsMainPage: React.FC = () => {
                       setHoverOptionValue(-1);
                       setHover(false);
                     }}
+                    onClick={() => setDeleteDialog(true)}
                   >
                     Eliminar
                   </p>
