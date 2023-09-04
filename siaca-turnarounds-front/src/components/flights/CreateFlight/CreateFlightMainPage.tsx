@@ -70,6 +70,34 @@ const CreateFlightMainPage: React.FC<PageProps> = ({}) => {
     fetchData().catch(console.error);
   }, []);
 
+  const registerTurnaround = async (
+    fk_vueloValue: number,
+    fk_codigos_demoraValue: number
+  ) => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/createTurnaround";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+            fk_vuelo: fk_vueloValue,
+            fk_codigos_demora: fk_codigos_demoraValue,
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then(async (result) => {
+            console.log("registerTrunaround", result);
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
   const registerFlight = async (ETADateValue: string) => {
     const fetchData = async () => {
       try {
@@ -98,7 +126,8 @@ const CreateFlightMainPage: React.FC<PageProps> = ({}) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then(async (result) => {
-            console.log("registerFlight", Object.values(result));
+            console.log("registerFlight", result);
+            registerTurnaround(result?.id, 1);
           })
         );
       } catch (error) {
