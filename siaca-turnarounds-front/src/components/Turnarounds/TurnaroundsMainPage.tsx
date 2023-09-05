@@ -4,69 +4,117 @@ import KeyboardArrowLeftRoundedIcon from "@mui/icons-material/KeyboardArrowLeftR
 import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRightRounded";
 import { log } from "console";
 import React, { useEffect, useState } from "react";
-import router from "next/router";
-import { Table , Spacer} from "@nextui-org/react";
+import router, { Router } from "next/router";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { Table, Spacer } from "@nextui-org/react";
 import { TableBody, Dialog } from "@mui/material";
-import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
-import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
+import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { Dropdown } from "@nextui-org/react";
 import { useMediaQuery } from "@mui/material";
-import { Collapse, Text } from "@nextui-org/react";
-import {Card, Image} from "@nextui-org/react";
-import RedButton from "../Reusables/RedButton";
-import WarningAmberIcon from '@mui/icons-material/WarningAmber';
+import { text } from "stream/consumers";
+import Combobox from "../Reusables/Combobox";
+import SiacaNavbar from "../Reusables/Navbar/SiacaNavbar";
+import FlightLandIcon from "@mui/icons-material/FlightLand";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import RedButton2 from "../Reusables/RedButton2";
+import GreenButton2 from "@/components/Reusables/GreenButton2";
+import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 
 interface PageProps {
   setStep: (value: number) => void;
 }
 
-const TemplatesPage: React.FC<PageProps> = ({ setStep }) => {
-  //if token exists show regular html else show not signed in screen
-  const isMobile = useMediaQuery("(max-width: 1270px)");
-  const [allowContinue, setAllowContinue] = useState(false);
-  const [arrayList3, setArrayList3] = useState([]);
-  const [deleteDialog, setDeleteDialog] = useState(false);
+const TurnaroundsMainPage: React.FC = () => {
+  useEffect(() => {
+    getDateForCalendar();
+  }, []);
 
   useEffect(() => {
     getList();
   }, []);
 
+  const [arrayList3, setArrayList3] = useState([]);
+  let date = new Date();
+  const [arrayFilteredList3, setArrayFilteredList3] = useState([]);
+  const [openCardMenu, setOpenCardMenu] = useState(-1);
+  const [dateCounter, setdateCounter] = useState(0);
+  const [dateState, setdateState] = useState("");
+  const [hover, setHover] = useState(false);
+  const [hoverOptionValue, setHoverOptionValue] = useState(-1);
+  const [isFilteredResults, setIsFilteredResults] = useState(false);
+  const [deleteDialog, setDeleteDialog] = useState(false);
+
+  let filterValues: any[] = [];
   const getList = async () => {
+    setIsFilteredResults(false);
+    setArrayFilteredList3([]);
     const fetchData = async () => {
       try {
-        const url = "/api/turnaroundsList";
+        const url = "/api/flightsList";
         const requestOptions = {
           method: "POST",
           body: JSON.stringify({
             userToken: localStorage.getItem("userToken"),
+            day: date.getDate().toString(),
+            month: (date.getMonth() + 1).toString(),
+            year: date.getFullYear().toString(),
           }),
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log(result);
-            console.log("values", Object.values(result));
-
             setArrayList3(Object.values(result));
+            if (result?.[0]?.["status"] === 400) {
+              console.log("entro");
+            } else {
+            }
           })
         );
       } catch (error) {
         console.error("Error geting user", error);
+
         return;
       }
     };
     await fetchData().catch(console.error);
   };
 
-  const deleteTurnaround = async (turnaroundID: number) => {
+  const getDateForCalendar = () => {
+    let x =
+      date.getDate().toString() +
+      " - " +
+      (date.getMonth() + 1).toString() +
+      " - " +
+      date.getFullYear().toString();
+    console.log("userToken", localStorage.getItem("userToken"));
+    setdateState(x);
+    return <></>;
+  };
+
+  const backDateButton = async () => {
+    await setdateCounter(dateCounter - 1);
+    date = new Date(new Date().setDate(new Date().getDate() + dateCounter - 1));
+    getDateForCalendar();
+    getList();
+  };
+
+  const frontDateButton = async () => {
+    await setdateCounter(dateCounter + 1);
+    date = new Date(new Date().setDate(new Date().getDate() + dateCounter + 1));
+    getDateForCalendar();
+    getList();
+  };
+
+  const flightMachine = async (flightID: number) => {
     const fetchData = async () => {
       try {
-        const url = "/api/deleteTurnaround";
+        const url = "/api/deleteFlight";
         const requestOptions = {
           method: "POST",
           body: JSON.stringify({
             userToken: localStorage.getItem("userToken"),
-            turnaroundId: turnaroundID,
+            flightId: flightID,
           }),
         };
         const response = await fetch(url, requestOptions).then((res) =>
@@ -82,129 +130,213 @@ const TemplatesPage: React.FC<PageProps> = ({ setStep }) => {
     await fetchData().catch(console.error);
   };
 
-  const handleDeleteTurnaround = async (turnaroundID: number) => {
-    deleteTurnaround(turnaroundID);
+  const handleDeleteFlight = async (flightID: number) => {
+    flightMachine(flightID);
   };
 
   const arrayPrinter = () => {
     let y: any = [];
-    console.log("arrayList3", arrayList3.length);
-    const [hoverEyeId, sethoverEyeId] = useState(-1);
-    const [hoverPencilId, sethoverPencilId] = useState(-1);
-    const [hoverTrashId, sethoverTrashId] = useState(-1);
+    let arrayList3aux: any = [];
+    console.log("statusVar", arrayList3?.[0]?.["status"]);
 
-    arrayList3.map((index: any) => {
+    isFilteredResults
+      ? (arrayList3aux = arrayFilteredList3)
+      : (arrayList3aux = arrayList3);
+    arrayList3aux.map((index: any) => {
+      let aux = arrayList3[index.id];
       y[index.id] = (
         <div key={index.id} className={styles.tableInfoRow}>
-              <Dialog
-              className={styles.dialogDelete}
-              open={deleteDialog}
-              onClose={() => setDeleteDialog(false)}
-            >
-              <div className={styles.dialogBack}>
-              <div className={styles.dialogText}>
-                <div className={styles.warningIcon}><WarningAmberIcon color="warning" fontSize="inherit"/></div>
-                <p><strong>¿Está seguro que desea eliminar este Turnaround?</strong></p>
-                <br/>
-                <p>Identificador: <strong>{index.identificador}</strong></p>
-                <p>No. vuelo: <strong>{index.fk_vuelo.numero_vuelo}</strong></p>
-                <div className={styles.dialogButtons}>
-                <GreenButton
-                  executableFunction={() => {
-                  handleDeleteTurnaround(index.id);
-                  }}
-                  buttonText="Si"
-                />
-                <RedButton
-                  executableFunction={() => {
-                    setDeleteDialog(false);
-                  }}
-                  buttonText="No"
-                />
+          <div className={styles.menuContainer}>
+            {openCardMenu === index.id && (
+              <div className={styles.menuAppearingContainer}>
+                <Dialog
+                  className={styles.dialogDelete}
+                  open={deleteDialog}
+                  onClose={() => setDeleteDialog(false)}
+                >
+                  <div className={styles.dialogBack}>
+                    <div className={styles.dialogText}>
+                      <div className={styles.warningIcon}>
+                        <WarningAmberIcon color="warning" fontSize="inherit" />
+                      </div>
+                      <p>
+                        <strong>
+                          ¿Está seguro que desea eliminar este vuelo{" "}
+                          {index.numero_vuelo}?
+                        </strong>
+                      </p>
+                      <div className={styles.dialogButtons}>
+                        <GreenButton2
+                          executableFunction={() => {
+                            handleDeleteFlight(index.id);
+                          }}
+                          buttonText="Si"
+                        />
+                        <RedButton2
+                          executableFunction={() => {
+                            setDeleteDialog(false);
+                          }}
+                          buttonText="No"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </Dialog>
+
+                <div className={styles.menuAppearingContainerRow}>
+                  <p
+                    className={
+                      hover && 1 === hoverOptionValue
+                        ? styles.optionsTextHover
+                        : styles.optionsText
+                    }
+                    onMouseEnter={() => {
+                      setHoverOptionValue(1);
+                      setHover(true);
+                    }}
+                    onMouseLeave={() => {
+                      setHoverOptionValue(-1);
+                      setHover(false);
+                    }}
+                  >
+                    Editar
+                  </p>
+                </div>
+                <div className={styles.menuAppearingContainerRow}>
+                  <p
+                    className={
+                      hover && 2 === hoverOptionValue
+                        ? styles.optionsTextHover
+                        : styles.optionsText
+                    }
+                    onMouseEnter={() => {
+                      setHoverOptionValue(2);
+                      setHover(true);
+                    }}
+                    onMouseLeave={() => {
+                      setHoverOptionValue(-1);
+                      setHover(false);
+                    }}
+                    onClick={() => setDeleteDialog(true)}
+                  >
+                    Eliminar
+                  </p>
                 </div>
               </div>
-              </div>
-            </Dialog>
-          <td>{index.identificador}</td>
-          <td>{index.fk_vuelo.numero_vuelo}</td>
-          <td>{index.fecha_inicio}</td>
-          <td className={styles.iconsContainer}>
+            )}
             <div
-              className={styles.functionIcon}
-              onMouseEnter={() => {
-                sethoverEyeId(index.id);
-              }}
-              onMouseLeave={() => {              
-                sethoverEyeId(-1);
-              }}
+              className={styles.pointer}
+              onClick={
+                openCardMenu === -1
+                  ? () => setOpenCardMenu(index.id)
+                  : openCardMenu === index.id
+                  ? () => setOpenCardMenu(-1)
+                  : () => setOpenCardMenu(index.id)
+              }
             >
-              <RemoveRedEyeIcon
-              htmlColor={hoverEyeId === index.id ? "#00A75D" : "#4D4E56"}
-              onClick={() => {
-               /**id  */
-              }}/>{" "}
+              <MoreVertIcon />
+            </div>
+          </div>
+          <div className={styles.imageContainer}>
+            {index?.fk_aerolinea?.nombre} image not found
+          </div>
+          <div className={styles.column1Container}>
+            <p>Vuelo:</p>
+            <p>REG:</p>
+            <p>Estado:</p>
+          </div>
+          <div className={styles.column2Container}>
+            <p>{index?.numero_vuelo}</p>
+            <p>{index?.ac_reg}</p>
+            <p
+              className={
+                index?.estado == "Atendido"
+                  ? styles.greenTextCol2
+                  : index?.estado == "En proceso"
+                  ? styles.yellowTextCol2
+                  : index?.estado == "No ha llegado"
+                  ? styles.redTextCol2
+                  : undefined
+              }
+            >
+              {index?.estado}
+            </p>
+          </div>
+          <div className={styles.column3Container}>
+            <div className={styles.column3Icon}>
+              <FlightLandIcon />
             </div>
 
-            <div className={styles.functionIcon}
-            onMouseEnter={() => {
-              sethoverPencilId(index.id);
-            }}
-            onMouseLeave={() => {              
-              sethoverPencilId(-1);
-            }}>
-              <BorderColorOutlinedIcon 
-              htmlColor={hoverPencilId === index.id ? "#00A75D" : "#4D4E56"}
-              onClick={() => {
-                /**id  */
-                
-              }}/>{" "}
-            </div>
-
-            <div className={styles.functionIcon}
-            onMouseEnter={() => {
-              sethoverTrashId(index.id);
-            }}
-            onMouseLeave={() => {              
-              sethoverTrashId(-1);
-            }}>
-              <DeleteOutlineOutlinedIcon
-               htmlColor={hoverTrashId === index.id ? "#f10303" : "#4D4E56"}
-               onClick={() => {
-                setDeleteDialog(true);
-               }}
-              />
-            </div>
-          </td>
+            <p>
+              {index?.lugar_salida?.codigo}-{index?.lugar_destino?.codigo}
+            </p>
+          </div>
+          <div className={styles.column4Container}>
+            <p>{index?.ETA}</p>
+          </div>
         </div>
       );
     });
-
+    setFilterValues();
     return y;
   };
 
+  const setFilterValues = () => {
+    arrayList3.map((value: any) => {
+      if (filterValues.indexOf(value?.fk_aerolinea?.nombre)) {
+        filterValues.push(value?.fk_aerolinea?.nombre);
+      }
+    });
+  };
+
+  const filterArray = (filtername: string) => {
+    let filteredUsers = arrayList3.filter((user) => {
+      return user["fk_aerolinea"]["nombre"] === filtername;
+    });
+    setArrayFilteredList3(filteredUsers);
+  };
+
   return (
-    <main className={styles.containerAirlinesMainPage}>
-      <div className={styles.registerbuttoncontainer}>
+    <main className={styles.mainFlightsContainer}>
+      <div className={styles.upperSection}>
+        <div className={styles.calendarAndFilterContainer}>
+          <div className={styles.calendarContainer}>
+            <div className={styles.pointer}>
+              <KeyboardArrowLeftRoundedIcon
+                onClick={() => {
+                  backDateButton();
+                }}
+              />
+            </div>
+            <div className={styles.dateAndCalendarContainer}>
+              <span>fecha {dateState}</span>
+              <div className={styles.calendarIcon}>
+                <CalendarTodayIcon htmlColor="#00a75d" />
+              </div>
+            </div>
+            <div className={styles.pointer}>
+              <KeyboardArrowRightRoundedIcon onClick={frontDateButton} />
+            </div>
+          </div>
+        </div>
+        <div className={styles.filtreContainer}>
+          <Combobox
+            onClickFilteringFunction={filterArray}
+            setIsFiltered={setIsFilteredResults}
+            filterValues={filterValues}
+          />
+        </div>
+
         <GreenButton
-          executableFunction={() => router.push("/Turnarounds/Templates")}
-          buttonText="Plantillas"
+          executableFunction={() => router.push("/Flights/CreateFlights")}
+          buttonText="Crear vuelo "
         />
       </div>
-      <div className={styles.airlinesListContainer}>
-        <div>
-          <div className={styles.tableTitlesContainer}>
-            <span>Identificador</span>
-            <span>No. vuelo</span>
-            <span>Fecha de inicio</span>
-            <span>Opciones</span>
-          </div>
-          {arrayPrinter()}
-        </div>
-        </div>
+      <div className={styles.flightsListContainer}>
+        {arrayList3?.[0]?.["status"] != 400 ? arrayPrinter() : undefined}
+      </div>
     </main>
   );
 };
 
-export default TemplatesPage;
-
-
+export default TurnaroundsMainPage;
