@@ -19,10 +19,10 @@ import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 
 interface PageProps {
   setStep: (value: number) => void;
-  flightID: number;
+  setflightID: (value: number) => void;
 }
 
-const AirlinesMainPage: React.FC<PageProps> = ({ setStep, flightID }) => {
+const AirlinesMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
   //if token exists show regular html else show not signed in screen
   const isMobile = useMediaQuery("(max-width: 1270px)");
   const [allowContinue, setAllowContinue] = useState(false);
@@ -151,7 +151,7 @@ const AirlinesMainPage: React.FC<PageProps> = ({ setStep, flightID }) => {
               <RemoveRedEyeIcon
               htmlColor={hoverEyeId === index.id ? "#00A75D" : "#4D4E56"}
               onClick={() => {
-                flightID = index.id;
+                
               }}/>{" "}
             </div>
 
@@ -165,7 +165,7 @@ const AirlinesMainPage: React.FC<PageProps> = ({ setStep, flightID }) => {
               <BorderColorOutlinedIcon 
               htmlColor={hoverPencilId === index.id ? "#00A75D" : "#4D4E56"}
               onClick={() => {
-                flightID = index.id;
+                setflightID(index.id);
                 setStep(2);
               }}/>{" "}
             </div>

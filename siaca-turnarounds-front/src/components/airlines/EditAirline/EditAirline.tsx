@@ -71,8 +71,7 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep, flightID }) => {
   };
 
   const continueButton = () => {
-    registerAirlines();
-    router.reload();
+    console.log("flightID", flightID)
   };
 
   return (
