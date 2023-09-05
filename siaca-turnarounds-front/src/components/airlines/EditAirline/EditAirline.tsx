@@ -12,6 +12,7 @@ import DriveFolderUploadRoundedIcon from "@mui/icons-material/DriveFolderUploadR
 import FileUploadRoundedIcon from "@mui/icons-material/FileUploadRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import SiacaNavbar from "@/components/Reusables/Navbar/SiacaNavbar";
+import StandardInputV2 from "@/components/Reusables/StandardInputV2";
 interface PageProps {
   setStep: (value: number) => void;
   flightID: number;
@@ -19,6 +20,11 @@ interface PageProps {
 
 const RegisterAirline: React.FC<PageProps> = ({ setStep, flightID }) => {
   //if token exists show regular html else show not signed in screen
+
+  useEffect(() => {
+    getList();
+  }, []);
+
   const [aerolinea, setAerolinea] = useState("");
   const [codigo, setCodigo] = useState("");
   const [correoPrincipal, setCorreoPrincipal] = useState("");
@@ -27,8 +33,41 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep, flightID }) => {
   const [telefonoSecundario, setTelefonoSecundario] = useState("");
   const [pais, setPais] = useState("");
   const [ciudad, setCiudad] = useState("");
-
+  const [arrayList, setArrayList] = useState([]);
   let responseValue = false;
+
+  const getList = async () => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/specificAirlineByID";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+            flightID: flightID,
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            setArrayList(Object.values(result));
+            console.log("result", result);
+
+            setAerolinea(result?.nombre);
+
+            if (result?.[0]?.["status"] === 400) {
+              console.log("entro");
+            } else {
+            }
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
 
   const registerAirlines = () => {
     const fetchData = async () => {
@@ -71,7 +110,7 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep, flightID }) => {
   };
 
   const continueButton = () => {
-    console.log("flightID", flightID)
+    console.log("flightID", flightID);
   };
 
   return (
@@ -89,7 +128,11 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep, flightID }) => {
         </div>
         <span className={styles.titleText}>Datos</span>
         <div className={styles.inputsList}>
-          <StandardInput setValue={setAerolinea} inputText="Aerolínea" />
+          <StandardInputV2
+            setValue={setAerolinea}
+            labelText="Aerolínea"
+            placeholderText={aerolinea}
+          />
           <StandardInput setValue={setCodigo} inputText="Código" />
         </div>
         <span className={styles.titleText}>Contacto</span>
