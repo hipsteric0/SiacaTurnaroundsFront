@@ -26,7 +26,7 @@ interface PageProps {
   setStep: (value: number) => void;
 }
 
-const TurnaroundsMainPage: React.FC = () => {
+const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
   useEffect(() => {
     getDateForCalendar();
   }, []);
@@ -52,7 +52,7 @@ const TurnaroundsMainPage: React.FC = () => {
     setArrayFilteredList3([]);
     const fetchData = async () => {
       try {
-        const url = "/api/flightsList";
+        const url = "/api/turnaroundsList";
         const requestOptions = {
           method: "POST",
           body: JSON.stringify({
@@ -64,6 +64,7 @@ const TurnaroundsMainPage: React.FC = () => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
+            console.log("turnarounds list", Object.values(result));
             setArrayList3(Object.values(result));
             if (result?.[0]?.["status"] === 400) {
               console.log("entro");
@@ -162,7 +163,7 @@ const TurnaroundsMainPage: React.FC = () => {
                       <p>
                         <strong>
                           ¿Está seguro que desea eliminar este vuelo{" "}
-                          {index.numero_vuelo}?
+                          {index?.fk_vuelo?.numero_vuelo}?
                         </strong>
                       </p>
                       <div className={styles.dialogButtons}>
@@ -246,20 +247,20 @@ const TurnaroundsMainPage: React.FC = () => {
             <p>Estado:</p>
           </div>
           <div className={styles.column2Container}>
-            <p>{index?.numero_vuelo}</p>
-            <p>{index?.ac_reg}</p>
+            <p>{index?.fk_vuelo?.numero_vuelo}</p>
+            <p>{index?.fk_vuelo?.ac_reg}</p>
             <p
               className={
-                index?.estado == "Atendido"
+                index?.fk_vuelo?.estado == "Atendido"
                   ? styles.greenTextCol2
-                  : index?.estado == "En proceso"
+                  : index?.fk_vuelo?.estado == "En proceso"
                   ? styles.yellowTextCol2
-                  : index?.estado == "No ha llegado"
+                  : index?.fk_vuelo?.estado == "No ha llegado"
                   ? styles.redTextCol2
                   : undefined
               }
             >
-              {index?.estado}
+              {index?.fk_vuelo?.estado}
             </p>
           </div>
           <div className={styles.column3Container}>
@@ -268,11 +269,12 @@ const TurnaroundsMainPage: React.FC = () => {
             </div>
 
             <p>
-              {index?.lugar_salida?.codigo}-{index?.lugar_destino?.codigo}
+              {index?.fk_vuelo?.lugar_salida?.codigo}-
+              {index?.fk_vuelo?.lugar_destino?.codigo}
             </p>
           </div>
           <div className={styles.column4Container}>
-            <p>{index?.ETA}</p>
+            <p>{index?.hora_inicio}</p>
           </div>
         </div>
       );
@@ -283,15 +285,15 @@ const TurnaroundsMainPage: React.FC = () => {
 
   const setFilterValues = () => {
     arrayList3.map((value: any) => {
-      if (filterValues.indexOf(value?.fk_aerolinea?.nombre)) {
-        filterValues.push(value?.fk_aerolinea?.nombre);
+      if (filterValues.indexOf(value?.fk_vuelo?.fk_aerolinea?.nombre)) {
+        filterValues.push(value?.fk_vuelo?.fk_aerolinea?.nombre);
       }
     });
   };
 
   const filterArray = (filtername: string) => {
     let filteredUsers = arrayList3.filter((user) => {
-      return user["fk_aerolinea"]["nombre"] === filtername;
+      return user["fk_vuelo"]["fk_aerolinea"]["nombre"] === filtername;
     });
     setArrayFilteredList3(filteredUsers);
   };
@@ -328,8 +330,8 @@ const TurnaroundsMainPage: React.FC = () => {
         </div>
 
         <GreenButton
-          executableFunction={() => router.push("/Flights/CreateFlights")}
-          buttonText="Crear vuelo "
+          executableFunction={() => router.push("/Turnarounds/Templates")}
+          buttonText="Plantillas"
         />
       </div>
       <div className={styles.flightsListContainer}>

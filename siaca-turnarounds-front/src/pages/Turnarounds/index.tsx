@@ -19,7 +19,7 @@ export default function Turnarounds() {
   return (
     <main className={styles.mainContainerTurnaroundsPage}>
       <SiacaNavbar activeTurnaroundsValue={true} />
-      <TurnaroundsMainPage /*setStep={setStep} */ />
+      <TurnaroundsMainPage setStep={setStep} />
     </main>
   );
 }
