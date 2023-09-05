@@ -53,6 +53,14 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep, flightID }) => {
             console.log("result", result);
 
             setAerolinea(result?.nombre);
+            setCodigo(result?.codigo);
+            setCorreoPrincipal(result?.correo);
+            setCorreoSecundario(result?.correo_secundario);
+            setTelefonoPrincipal(result?.telefono);
+            setTelefonoSecundario(result?.telefono_secundario);
+            setPais(result?.pais);
+            setCiudad(result?.ciudad);
+
 
             if (result?.[0]?.["status"] === 400) {
               console.log("entro");
@@ -72,7 +80,7 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep, flightID }) => {
   const registerAirlines = () => {
     const fetchData = async () => {
       try {
-        const url = "/api/registerAirline";
+        const url = "/api/updateAirline";
         const requestOptions = {
           method: "POST",
           body: JSON.stringify({
@@ -85,6 +93,7 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep, flightID }) => {
             pais: pais,
             ciudad: ciudad,
             userToken: localStorage.getItem("userToken"),
+            flightID: flightID
           }),
         };
         const response = await fetch(url, requestOptions).then((value) => {
@@ -110,7 +119,8 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep, flightID }) => {
   };
 
   const continueButton = () => {
-    console.log("flightID", flightID);
+    registerAirlines();
+    router.reload();
   };
 
   return (
@@ -133,47 +143,53 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep, flightID }) => {
             labelText="Aerolínea"
             placeholderText={aerolinea}
           />
-          <StandardInput setValue={setCodigo} inputText="Código" />
+          <StandardInputV2 
+          setValue={setCodigo} 
+          labelText="Código"
+          placeholderText={codigo} 
+          />
         </div>
         <span className={styles.titleText}>Contacto</span>
         <div className={styles.inputsList}>
-          <StandardInput
+          <StandardInputV2
             setValue={setCorreoPrincipal}
-            inputText="Correo principal"
+            labelText="Correo principal"
+            placeholderText={correoPrincipal}
           />
-          <StandardInput
+          <StandardInputV2
             setValue={setCorreoSecundario}
-            inputText="Correo secundario"
+            labelText="Correo secundario"
+            placeholderText={correoSecundario}
           />
-          <StandardInput
+          <StandardInputV2
             setValue={setTelefonoPrincipal}
-            inputText="Teléfono principal"
+            labelText="Teléfono principal"
+            placeholderText={telefonoPrincipal}
           />
-          <StandardInput
+          <StandardInputV2
             setValue={setTelefonoSecundario}
-            inputText="Teléfono secundario"
+            labelText="Teléfono secundario"
+            placeholderText={telefonoSecundario}
           />
         </div>
         <span className={styles.titleText}>Localización</span>
         <div className={styles.inputsList}>
-          <StandardInput setValue={setPais} inputText="Pais" />
-          <StandardInput setValue={setCiudad} inputText="Ciudad" />
+          <StandardInputV2 
+          setValue={setPais} 
+          labelText="Pais" 
+          placeholderText={pais}
+          />
+          <StandardInputV2
+          setValue={setCiudad} 
+          labelText="Ciudad" 
+          placeholderText={ciudad}
+          />
         </div>
       </div>
       <div className={styles.registerbuttoncontainer}>
         <GreenButton
           executableFunction={() => continueButton()}
           buttonText="Registrar"
-          disabled={
-            aerolinea === "" ||
-            codigo === "" ||
-            correoPrincipal === "" ||
-            correoSecundario === "" ||
-            telefonoPrincipal === "" ||
-            telefonoSecundario === "" ||
-            pais === "" ||
-            ciudad === ""
-          }
         />
       </div>
     </main>
