@@ -146,6 +146,8 @@ export default async function handler(
         },
 
         body: JSON.stringify({
+          fecha_inicio: body?.["fecha_inicio"],
+          hora_inicio: body?.["hora_inicio"],
           fk_vuelo: body?.["fk_vuelo"],
           fk_codigos_demora: body?.["fk_codigos_demora"],
         }),

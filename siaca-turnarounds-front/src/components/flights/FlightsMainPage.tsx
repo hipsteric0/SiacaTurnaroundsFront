@@ -20,7 +20,7 @@ import FlightLandIcon from "@mui/icons-material/FlightLand";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import RedButton2 from "../Reusables/RedButton2";
 import GreenButton2 from "@/components/Reusables/GreenButton2";
-import WarningAmberIcon from '@mui/icons-material/WarningAmber';
+import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 
 interface PageProps {
   setStep: (value: number) => void;
@@ -149,33 +149,39 @@ const FlightsMainPage: React.FC = () => {
           <div className={styles.menuContainer}>
             {openCardMenu === index.id && (
               <div className={styles.menuAppearingContainer}>
-
-            <Dialog
-              className={styles.dialogDelete}
-              open={deleteDialog}
-              onClose={() => setDeleteDialog(false)}
-            >
-              <div className={styles.dialogBack}>
-              <div className={styles.dialogText}>
-                <div className={styles.warningIcon}><WarningAmberIcon color="warning" fontSize="inherit"/></div>
-                <p><strong>¿Está seguro que desea eliminar este vuelo {index.numero_vuelo}?</strong></p>
-                <div className={styles.dialogButtons}>
-                <GreenButton2
-                  executableFunction={() => {
-                  handleDeleteFlight(index.id);
-                  }}
-                  buttonText="Si"
-                />
-                <RedButton2
-                  executableFunction={() => {
-                    setDeleteDialog(false);
-                  }}
-                  buttonText="No"
-                />
-                </div>
-              </div>
-              </div>
-            </Dialog>
+                <Dialog
+                  className={styles.dialogDelete}
+                  open={deleteDialog}
+                  onClose={() => setDeleteDialog(false)}
+                >
+                  <div className={styles.dialogBack}>
+                    <div className={styles.dialogText}>
+                      <div className={styles.warningIcon}>
+                        <WarningAmberIcon color="warning" fontSize="inherit" />
+                      </div>
+                      <p>
+                        <strong>
+                          ¿Está seguro que desea eliminar este vuelo{" "}
+                          {index.numero_vuelo}?
+                        </strong>
+                      </p>
+                      <div className={styles.dialogButtons}>
+                        <GreenButton2
+                          executableFunction={() => {
+                            handleDeleteFlight(index.id);
+                          }}
+                          buttonText="Si"
+                        />
+                        <RedButton2
+                          executableFunction={() => {
+                            setDeleteDialog(false);
+                          }}
+                          buttonText="No"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </Dialog>
 
                 <div className={styles.menuAppearingContainerRow}>
                   <p
@@ -262,7 +268,7 @@ const FlightsMainPage: React.FC = () => {
             </div>
 
             <p>
-              {index?.lugar_salida.codigo}-{index?.lugar_destino.codigo}
+              {index?.lugar_salida?.codigo}-{index?.lugar_destino?.codigo}
             </p>
           </div>
           <div className={styles.column4Container}>

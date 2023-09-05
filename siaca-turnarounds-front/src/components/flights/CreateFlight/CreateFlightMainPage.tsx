@@ -71,6 +71,8 @@ const CreateFlightMainPage: React.FC<PageProps> = ({}) => {
   }, []);
 
   const registerTurnaround = async (
+    fecha_inicioValue: string,
+    hora_inicioValue: string,
     fk_vueloValue: number,
     fk_codigos_demoraValue: number
   ) => {
@@ -81,6 +83,8 @@ const CreateFlightMainPage: React.FC<PageProps> = ({}) => {
           method: "POST",
           body: JSON.stringify({
             userToken: localStorage.getItem("userToken"),
+            fecha_inicio: fecha_inicioValue,
+            hora_inicio: hora_inicioValue,
             fk_vuelo: fk_vueloValue,
             fk_codigos_demora: fk_codigos_demoraValue,
           }),
@@ -127,7 +131,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({}) => {
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then(async (result) => {
             console.log("registerFlight", result);
-            registerTurnaround(result?.id, 1);
+            registerTurnaround(result?.ETA_fecha, result?.ETA, result?.id, 1);
           })
         );
       } catch (error) {
