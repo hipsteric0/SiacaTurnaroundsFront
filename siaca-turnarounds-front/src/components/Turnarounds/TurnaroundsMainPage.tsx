@@ -169,7 +169,7 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
                       <div className={styles.dialogButtons}>
                         <GreenButton2
                           executableFunction={() => {
-                            handleDeleteFlight(index.id);
+                            handleDeleteFlight(index?.fk_vuelo?.id);
                           }}
                           buttonText="Si"
                         />
