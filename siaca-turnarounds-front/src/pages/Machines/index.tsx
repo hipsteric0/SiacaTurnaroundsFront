@@ -7,6 +7,7 @@ import EditMachine from "@/components/Machines/EditMachine/EditMachine";
 export default function Machines() {
   //if token exists show regular html else show not signed in screen
   const [step, setStep] = useState(0);
+  const [machineID, setmachineID] = useState(-1);
 
   return (
     <main className={styles.mainContainerMachinesPage}>
@@ -14,7 +15,7 @@ export default function Machines() {
       {
         step === 0 && (
           <>
-            <MachinesMainPage setStep={setStep} />
+            <MachinesMainPage setStep={setStep} setmachineID={setmachineID}/>
           </>
         ) /*el step 0 es la pagina principal de maquinarias*/
       }
@@ -28,7 +29,7 @@ export default function Machines() {
       {
         step === 2 && (
           <>
-            <EditMachine setStep={setStep} />
+            <EditMachine setStep={setStep} machineID={machineID} />
           </>
         ) /*el step 1 es la pagina de editar maquinaria*/
       }

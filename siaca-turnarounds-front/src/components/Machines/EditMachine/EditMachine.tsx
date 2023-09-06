@@ -14,13 +14,20 @@ import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import SiacaNavbar from "@/components/Reusables/Navbar/SiacaNavbar";
 import { imageConfigDefault } from "next/dist/shared/lib/image-config";
 import DropdownMenu from "@/components/Reusables/DropdownMenu";
+import StandardInputV2 from "@/components/Reusables/StandardInputV2";
 
 interface PageProps {
   setStep: (value: number) => void;
+  machineID : number;
 }
 
-const RegisterMachine: React.FC<PageProps> = ({ setStep }) => {
+const RegisterMachine: React.FC<PageProps> = ({ setStep , machineID}) => {
   //if token exists show regular html else show not signed in screen
+
+  useEffect(() => {
+    getList();
+  }, []);
+
   const [identificador, setIdentificador] = useState("");
   const [modelo, setModelo] = useState("");
   const [combustible, setCombustible] = useState("");
@@ -30,21 +37,57 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep }) => {
   const [arrayList, setArrayList] = useState([]);
 
   let responseValue = false;
+
+  const getList = async () => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/specificMachineByID";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+            machineID: machineID,
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            setArrayList(Object.values(result));
+            console.log("result", result);
+
+            setIdentificador(result?.identificador);
+            setModelo(result?.modelo);
+            setCombustible(result?.combustible);
+            setEstado(result?.estado);
+            setFkCategoria(result?.fkcategoria);
+
+
+            if (result?.[0]?.["status"] === 400) {
+              console.log("entro");
+            } else {
+            }
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
   
 
   const registerMachines = () => {
     const fetchData = async () => {
       try {
-        const url = "/api/registerMachine";
+        const url = "/api/updateMachine";
         const requestOptions = {
           method: "POST",
           body: JSON.stringify({
             identificador: identificador,
             modelo: modelo,
-            combustible: combustible,
-            estado: estado,
-            fk_categoria: fkcategoria,
             userToken: localStorage.getItem("userToken"),
+            machineID: machineID
           }),
         };
         const response = await fetch(url, requestOptions).then((value) => {
@@ -74,6 +117,7 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep }) => {
   const continueButton = () => {
 
     registerMachines();
+    router.reload();
 
  
   };
@@ -114,52 +158,23 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep }) => {
         </div>
         <span className={styles.titleText}>Datos</span>
         <div className={styles.inputsList}>
-          <StandardInput setValue={setIdentificador} inputText="Identificador" />
-          <StandardInput setValue={setModelo} inputText="Modelo" />
-                              <DropdownMenu
-                            buttonText={"Combustible"}
-                            optionsArray={fuelArray}
-                            executableOptionClickFunction={(
-                            optionValue: number
-                              
-                            ) =>
-                             fuel(optionValue)                              
-                            }
-                          />   
-
-                    <DropdownMenu
-                            buttonText={"Estado"}
-                            optionsArray={stateArray}
-                            executableOptionClickFunction={(
-                            optionValue: number
-                              
-                            ) =>
-                             state(optionValue)                              
-                            }
-                          />    
-          <DropdownMenu
-                            buttonText={"Categorias"}
-                            optionsArray={categoryArray}
-                            executableOptionClickFunction={(
-                            optionValue: number
-                              
-                            ) =>
-                             category(optionValue)                              
-                            }
-                          />          
+          <StandardInputV2 
+                  setValue={setIdentificador} 
+                  labelText="Identificador" 
+                  placeholderText={identificador}
+                  />
+          <StandardInputV2 
+                    setValue={setModelo} 
+                    labelText="Modelo" 
+                    placeholderText={modelo}
+                    />
+        
         </div>
       </div>
       <div className={styles.registerbuttoncontainer}>
         <GreenButton
           executableFunction={() => continueButton()}
           buttonText="Registrar"
-          disabled={
-            identificador === "" ||
-            modelo === "" ||
-            combustible === "" ||
-            estado === "" ||
-            fkcategoria === ""
-          }
         />
       </div>
     </main>

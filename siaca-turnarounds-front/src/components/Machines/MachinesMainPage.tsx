@@ -20,9 +20,10 @@ import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 
 interface PageProps {
   setStep: (value: number) => void;
+  setmachineID: (value: number) => void;
 }
 
-const MachinesMainPage: React.FC<PageProps> = ({setStep}) => {
+const MachinesMainPage: React.FC<PageProps> = ({setStep, setmachineID}) => {
   //if token exists show regular html else show not signed in screen
 
   const isMobile = useMediaQuery("(max-width: 1270px)");
@@ -170,7 +171,10 @@ const MachinesMainPage: React.FC<PageProps> = ({setStep}) => {
                         setHoverOptionValue(-1);
                         setHover(false);
                       }}
-                      onClick={() => setStep(2)}
+                      onClick={() => {
+                        setmachineID(index.id);
+                        setStep(2);
+                      }}
                     >
                       Editar
                     </p>
