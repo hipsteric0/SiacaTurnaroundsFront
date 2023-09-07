@@ -198,9 +198,6 @@
 .detailDialog {
   border-radius: 12px !important;
 }
-.detailDialog ::-webkit-scrollbar {
-  display: none;
-}
 
 .detailDialogInfoContainer {
 }
