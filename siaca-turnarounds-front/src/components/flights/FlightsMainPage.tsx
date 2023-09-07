@@ -158,7 +158,7 @@ const FlightsMainPage: React.FC = () => {
                 open={openDetailDialog}
                 onClose={() => setOpenDetailDialog(false)}
                 className={styles.detailDialog}
-                fullWidth={true}
+                fullScreen={true}
               >
                 <div className={styles.dialogDetail}>
                   <div
