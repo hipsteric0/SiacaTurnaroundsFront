@@ -6,6 +6,7 @@ import { log } from "console";
 import React, { useEffect, useState } from "react";
 import router, { Router } from "next/router";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { Table, Spacer } from "@nextui-org/react";
 import { TableBody, Dialog } from "@mui/material";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
@@ -42,6 +43,8 @@ const FlightsMainPage: React.FC = () => {
   const [dateCounter, setdateCounter] = useState(0);
   const [dateState, setdateState] = useState("");
   const [hover, setHover] = useState(false);
+  const [openDetailDialog, setOpenDetailDialog] = useState(false);
+  const [openDetailDialogID, setOpenDetailDialogID] = useState(false);
   const [hoverOptionValue, setHoverOptionValue] = useState(-1);
   const [isFilteredResults, setIsFilteredResults] = useState(false);
   const [deleteDialog, setDeleteDialog] = useState(false);
@@ -144,9 +147,195 @@ const FlightsMainPage: React.FC = () => {
       : (arrayList3aux = arrayList3);
     arrayList3aux.map((index: any) => {
       let aux = arrayList3[index.id];
+      if (openDetailDialogID === index.id) {
+        console.log("clickedIndex", index);
+      }
       y[index.id] = (
         <div key={index.id} className={styles.tableInfoRow}>
           <div className={styles.menuContainer}>
+            {openDetailDialogID === index?.id && (
+              <Dialog
+                open={openDetailDialog}
+                onClose={() => setOpenDetailDialog(false)}
+                className={styles.detailDialog}
+                fullWidth={true}
+              >
+                <div className={styles.dialogDetail}>
+                  <div
+                    className={styles.closeIconDialog}
+                    onClick={() => setOpenDetailDialog(false)}
+                  >
+                    <CloseRoundedIcon htmlColor="#4d4e56" />
+                  </div>
+                  <div className={styles.detailDialogInfoContainer}>
+                    <p className={styles.detailDialogInfoContainerTitleText}>
+                      Datos de vuelo
+                    </p>
+                    <div className={styles.detailDialogInfoRow1}>
+                      <div className={styles.detailDialogInfoItem}>
+                        <span className={styles.detailDialogInfoItemTitle}>
+                          STN:
+                        </span>
+                        <span className={styles.detailDialogInfoItemValueText}>
+                          {index?.stn?.codigo}
+                        </span>
+                      </div>
+                      <div className={styles.detailDialogInfoItem}>
+                        <span className={styles.detailDialogInfoItemTitle}>
+                          CARRIER:
+                        </span>
+                        <span>{index?.fk_aerolinea?.nombre}</span>
+                      </div>
+                    </div>
+                    <div className={styles.detailDialogInfoRow1}>
+                      <div className={styles.detailDialogInfoItem}>
+                        <span className={styles.detailDialogInfoItemTitle}>
+                          Charges Payable By:
+                        </span>
+                        <span className={styles.detailDialogInfoItemValueText}>
+                          {index?.ente_pagador}
+                        </span>
+                      </div>
+                      <div className={styles.detailDialogInfoItem}>
+                        <span className={styles.detailDialogInfoItemTitle}>
+                          No.:
+                        </span>
+                        <span>{index?.id}</span>
+                      </div>
+                    </div>
+                    <div className={styles.detailDialogInfoRow1}>
+                      <div className={styles.detailDialogInfoItem}>
+                        <span className={styles.detailDialogInfoItemTitle}>
+                          Routing:
+                        </span>
+                        <span className={styles.detailDialogInfoItemValueText}>
+                          {index?.lugar_salida?.codigo}/
+                          {index?.lugar_destino?.codigo}
+                        </span>
+                      </div>
+                      <div className={styles.detailDialogInfoItem}>
+                        <span className={styles.detailDialogInfoItemTitle}>
+                          Tipo de vuelo:
+                        </span>
+                        <span className={styles.detailDialogInfoItemValueText}>
+                          {index?.tipo_vuelo?.nombre}
+                        </span>
+                      </div>
+                    </div>
+                    <div className={styles.detailDialogInfoRow1}>
+                      <div className={styles.detailDialogInfoItem}>
+                        <span className={styles.detailDialogInfoItemTitle}>
+                          Flight No.:
+                        </span>
+                        <span className={styles.detailDialogInfoItemValueText}>
+                          {index?.numero_vuelo}
+                        </span>
+                      </div>
+                      <div className={styles.detailDialogInfoItem}>
+                        <span className={styles.detailDialogInfoItemTitle}>
+                          Gate/Gate:
+                        </span>
+                        <span>{index?.gate}</span>
+                      </div>
+                    </div>
+                    <div className={styles.detailDialogInfoRow1}>
+                      <div className={styles.detailDialogInfoItem}>
+                        <span className={styles.detailDialogInfoItemTitle}>
+                          A/C Reg:
+                        </span>
+                        <span className={styles.detailDialogInfoItemValueText}>
+                          {index?.ac_reg}
+                        </span>
+                      </div>
+                      <div className={styles.detailDialogInfoItem}>
+                        <span className={styles.detailDialogInfoItemTitle}>
+                          A/C Type:
+                        </span>
+                        <span>{index?.ac_type}</span>
+                      </div>
+                    </div>
+                    <div className={styles.detailDialogInfoRow1}>
+                      <div className={styles.detailDialogInfoItem}>
+                        <span className={styles.detailDialogInfoItemTitle}>
+                          ETA:
+                        </span>
+                        <span className={styles.detailDialogInfoItemValueText}>
+                          {index?.ETA}
+                        </span>
+                      </div>
+                      <div className={styles.detailDialogInfoItem}>
+                        <span className={styles.detailDialogInfoItemTitle}>
+                          ATA:
+                        </span>
+                        <span>
+                          {index?.ATA === null ? "Indefinido" : index?.ATA}
+                        </span>
+                      </div>
+                      <div className={styles.detailDialogInfoItem}>
+                        <span className={styles.detailDialogInfoItemTitle}>
+                          DATE:
+                        </span>
+                        <span>{index?.ETA_fecha}</span>
+                      </div>
+                    </div>
+                    <div className={styles.detailDialogInfoRow1}>
+                      <div className={styles.detailDialogInfoItem}>
+                        <span className={styles.detailDialogInfoItemTitle}>
+                          ETD:
+                        </span>
+                        <span className={styles.detailDialogInfoItemValueText}>
+                          {index?.ETD}
+                        </span>
+                      </div>
+                      <div className={styles.detailDialogInfoItem}>
+                        <span className={styles.detailDialogInfoItemTitle}>
+                          ATD:
+                        </span>
+                        <span>
+                          {index?.ATD === null ? "Indefinido" : index?.ATD}
+                        </span>
+                      </div>
+                      <div className={styles.detailDialogInfoItem}>
+                        <span className={styles.detailDialogInfoItemTitle}>
+                          DATE:
+                        </span>
+                        <span>{index?.ETD_fecha}</span>
+                      </div>
+                    </div>
+                    <div className={styles.detailDialogInfoRow1}>
+                      <div className={styles.detailDialogInfoItem}>
+                        <span className={styles.detailDialogInfoItemTitle2}>
+                          PLANTILLA:
+                        </span>
+                        <span className={styles.detailDialogInfoItemValueText2}>
+                          {index?.fk_plantilla?.titulo}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <iframe
+                      src={
+                        "https://globe.adsbexchange.com/?icao=" +
+                        index?.numero_vuelo
+                      }
+                      frameborder="0"
+                      className={styles.flightIframe}
+                    ></iframe>
+                  </div>
+                  <div className={styles.redButtonContainer}>
+                    <div className={styles.redButton}>
+                      <RedButton2
+                        executableFunction={() => {
+                          setOpenDetailDialog(false);
+                        }}
+                        buttonText={"Cerrar"}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </Dialog>
+            )}
             {openCardMenu === index.id && (
               <div className={styles.menuAppearingContainer}>
                 <Dialog
@@ -236,6 +425,15 @@ const FlightsMainPage: React.FC = () => {
             >
               <MoreVertIcon />
             </div>
+          </div>
+          <div
+            className={styles.openDetailContainer}
+            onClick={() => {
+              setOpenDetailDialogID(index.id);
+              setOpenDetailDialog(true);
+            }}
+          >
+            <p className={styles.openDetailContainerText}>Ver mas</p>
           </div>
           <div className={styles.imageContainer}>
             {index?.fk_aerolinea?.nombre} image not found
