@@ -25,9 +25,10 @@ import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 
 interface PageProps {
   setStep: (value: number) => void;
+  setflightID: (value: number) => void;
 }
 
-const FlightsMainPage: React.FC = () => {
+const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
   useEffect(() => {
     getDateForCalendar();
   }, []);
@@ -526,7 +527,7 @@ const FlightsMainPage: React.FC = () => {
         </div>
 
         <GreenButton
-          executableFunction={() => router.push("/Flights/CreateFlights")}
+          executableFunction={() => setStep(1)}
           buttonText="Crear vuelo "
         />
       </div>

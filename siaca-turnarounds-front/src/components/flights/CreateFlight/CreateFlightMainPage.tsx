@@ -19,9 +19,12 @@ import StandardInput from "@/components/Reusables/StandardInput";
 import RedButton from "@/components/Reusables/RedButton";
 import { Suspense } from "react";
 
-interface PageProps {}
+interface PageProps {
+  setStep: (value: number) => void;
 
-const CreateFlightMainPage: React.FC<PageProps> = ({}) => {
+}
+
+const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
   //if token exists show regular html else show not signed in screen
   const isMobile = useMediaQuery("(max-width: 1270px)");
   const [allowContinue, setAllowContinue] = useState(false);
@@ -397,11 +400,11 @@ const CreateFlightMainPage: React.FC<PageProps> = ({}) => {
         }
         initialDate.setDate(initialDate.getDate() + 1);
       }
-      router.push("/Flights");
+      router.reload();
     } else {
       //vuelo unico
       await registerFlight(dateETA);
-      router.push("/Flights");
+      router.reload();
     }
   };
 
@@ -449,7 +452,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({}) => {
       <Suspense fallback={<>loadig</>}>
         <main className={styles.containerCreateFlightMainPage}>
           <div className={styles.backArrowIcon}>
-            <BackArrow executableFunction={() => router.push("/Flights")} />
+            <BackArrow executableFunction={() => router.reload()} />
           </div>
 
           <div className={styles.dataContainer}>
