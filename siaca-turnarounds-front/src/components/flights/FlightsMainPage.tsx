@@ -137,6 +137,11 @@ const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
   const handleDeleteFlight = async (flightID: number) => {
     flightMachine(flightID);
   };
+  const handleEditFlight = async (flightID: number) => {
+    await setflightID(flightID);
+    await setStep(2);
+  };
+ 
 
   const arrayPrinter = () => {
     let y: any = [];
@@ -387,6 +392,9 @@ const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
                     onMouseLeave={() => {
                       setHoverOptionValue(-1);
                       setHover(false);
+                    }}
+                    onClick={ () => 
+                      {handleEditFlight(index.id)
                     }}
                   >
                     Editar
