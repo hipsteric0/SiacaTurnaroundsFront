@@ -157,7 +157,6 @@ export default async function handler(
           ETD_fecha: body?.["ETD_fecha"],
           gate: body?.["gate"],
           fk_aerolinea: body?.["fk_aerolinea"],
-          fk_plantilla: body?.["fk_plantilla"],
           stn: body?.["stn"],
           lugar_salida: body?.["lugar_salida"],
           lugar_destino: body?.["lugar_destino"],
@@ -168,6 +167,8 @@ export default async function handler(
 
     // Backend URL
     const url = `${BACKEND_BASE_URL}/vuelos/`+ body?.["flightID"] +`/?token=` + body?.["userToken"];
+    console.log("fetchOptions",fetchOptions);
+    console.log("url",url);
     // Make the actual request to backend
     const response = await fetch(url, fetchOptions);
 
