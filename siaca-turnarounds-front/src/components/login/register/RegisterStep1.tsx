@@ -35,6 +35,7 @@ const LoginMainPage: React.FC<PageProps> = ({
           body: JSON.stringify({
             username: email,
             password: password,
+            is_active : 0
           }),
         };
         const response = await fetch(url, requestOptions).then((value) => {
