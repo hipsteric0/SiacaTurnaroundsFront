@@ -39,6 +39,7 @@ const PersonnelMainPage: React.FC = () => {
   const [denyDialog, setDenyDialog] = useState(false);
   const [aceptDialog, setAceptDialog] = useState(false);
   const [listDialog, setListDialog] = useState(false);
+  const [solicitudeCounter, setSolicitudeCounter ] = useState(-1);
   let filterValues: any[] = [];
 
   useEffect(() => {
@@ -47,6 +48,10 @@ const PersonnelMainPage: React.FC = () => {
 
   useEffect(() => {
     getSolicitudeList();
+  }, []);
+
+  useEffect(() => {
+    getSolicitudeCount();
   }, []);
 
   const getList = async () => {
@@ -161,6 +166,29 @@ const PersonnelMainPage: React.FC = () => {
     await fetchData().catch(console.error);
   };
 
+  const getSolicitudeCount = async () => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/solicitudeCounter";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            console.log("CONTADOR", result.contador);
+            setSolicitudeCounter(result.contador);
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
   
   const arrayPrinter = () => {
     let y: any = [];
@@ -447,7 +475,7 @@ const PersonnelMainPage: React.FC = () => {
 
           <GreenButton
           executableFunction={() => setListDialog(true)}
-          buttonText="Solicitudes"
+          buttonText="Solicitudes" 
         />
 
       </div>
