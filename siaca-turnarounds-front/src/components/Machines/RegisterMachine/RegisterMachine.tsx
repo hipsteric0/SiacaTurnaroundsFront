@@ -14,6 +14,7 @@ import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import SiacaNavbar from "@/components/Reusables/Navbar/SiacaNavbar";
 import { imageConfigDefault } from "next/dist/shared/lib/image-config";
 import DropdownMenu from "@/components/Reusables/DropdownMenu";
+import BackArrow from "@/components/Reusables/BackArrow";
 
 interface PageProps {
   setStep: (value: number) => void;
@@ -30,7 +31,6 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep }) => {
   const [arrayList, setArrayList] = useState([]);
 
   let responseValue = false;
-  
 
   const registerMachines = () => {
     const fetchData = async () => {
@@ -52,7 +52,8 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep }) => {
             responseValue = false;
           } else {
             responseValue = true;
-            console.log("value", value)
+            console.log("value", value);
+            router.reload();
           }
           return true;
         });
@@ -69,38 +70,31 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep }) => {
     fetchData().catch(console.error);
   };
 
-
-
   const continueButton = () => {
-
     registerMachines();
-
- 
   };
 
-  const category = (id : number) => {
-
-    setFkCategoria(id.toString())
-
- 
+  const category = (id: number) => {
+    setFkCategoria(id.toString());
   };
 
-  const state = (id : number) => {
-
-    setEstado(id.toString())
-
- 
+  const state = (id: number) => {
+    setEstado(id.toString());
   };
 
-  const fuel = (id : number) => {
-
-    setCombustible(fuelArray[id].name)
-
- 
+  const fuel = (id: number) => {
+    setCombustible(fuelArray[id].name);
   };
 
   return (
     <main className={styles.RegisterMachineContainer}>
+      <div className={styles.backArrowIcon}>
+        <BackArrow
+          executableFunction={() => {
+            router.reload();
+          }}
+        />
+      </div>
       <div className={styles.machinesListContainer}>
         <span className={styles.titleText}>Imagen</span>
         <div className={styles.inputsListImage}>
@@ -114,39 +108,33 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep }) => {
         </div>
         <span className={styles.titleText}>Datos</span>
         <div className={styles.inputsList}>
-          <StandardInput setValue={setIdentificador} inputText="Identificador" />
+          <StandardInput
+            setValue={setIdentificador}
+            inputText="Identificador"
+          />
           <StandardInput setValue={setModelo} inputText="Modelo" />
-                              <DropdownMenu
-                            buttonText={"Combustible"}
-                            optionsArray={fuelArray}
-                            executableOptionClickFunction={(
-                            optionValue: number
-                              
-                            ) =>
-                             fuel(optionValue)                              
-                            }
-                          />   
-
-                    <DropdownMenu
-                            buttonText={"Estado"}
-                            optionsArray={stateArray}
-                            executableOptionClickFunction={(
-                            optionValue: number
-                              
-                            ) =>
-                             state(optionValue)                              
-                            }
-                          />    
           <DropdownMenu
-                            buttonText={"Categorias"}
-                            optionsArray={categoryArray}
-                            executableOptionClickFunction={(
-                            optionValue: number
-                              
-                            ) =>
-                             category(optionValue)                              
-                            }
-                          />          
+            buttonText={"Combustible"}
+            optionsArray={fuelArray}
+            executableOptionClickFunction={(optionValue: number) =>
+              fuel(optionValue)
+            }
+          />
+
+          <DropdownMenu
+            buttonText={"Estado"}
+            optionsArray={stateArray}
+            executableOptionClickFunction={(optionValue: number) =>
+              state(optionValue)
+            }
+          />
+          <DropdownMenu
+            buttonText={"Categorias"}
+            optionsArray={categoryArray}
+            executableOptionClickFunction={(optionValue: number) =>
+              category(optionValue)
+            }
+          />
         </div>
       </div>
       <div className={styles.registerbuttoncontainer}>
@@ -170,71 +158,69 @@ export default RegisterMachine;
 
 let categoryArray: any = [
   {
-    "key": 1,
-    "name": "Aguas servidas"
-},
-{
-    "key": 2,
-    "name": "Tractor de arrastre"
-},
-{
-    "key": 3,
-    "name": "Escalera"
-},
-{
-    "key": 4,
-    "name": "Cinta transportadora"
-},
-{
-    "key": 5,
-    "name": "Loader"
-},
-{
-    "key": 6,
-    "name": "Tractor de empuje"
-},
-{
-    "key": 7,
-    "name": "Aire acondicionado"
-},
-{
-    "key": 8,
-    "name": "Planta neumática"
-},
-{
-    "key": 9,
-    "name": "GPU Planta eléctrica"
-}
+    key: 1,
+    name: "Aguas servidas",
+  },
+  {
+    key: 2,
+    name: "Tractor de arrastre",
+  },
+  {
+    key: 3,
+    name: "Escalera",
+  },
+  {
+    key: 4,
+    name: "Cinta transportadora",
+  },
+  {
+    key: 5,
+    name: "Loader",
+  },
+  {
+    key: 6,
+    name: "Tractor de empuje",
+  },
+  {
+    key: 7,
+    name: "Aire acondicionado",
+  },
+  {
+    key: 8,
+    name: "Planta neumática",
+  },
+  {
+    key: 9,
+    name: "GPU Planta eléctrica",
+  },
 ];
 
 let stateArray: any = [
   {
-    "key": 0,
-    "name": "No Operativo"
-},
-{
-    "key": 1,
-    "name": "Operativo"
-}
+    key: 0,
+    name: "No Operativo",
+  },
+  {
+    key: 1,
+    name: "Operativo",
+  },
 ];
 
 let fuelArray: any = [
   {
-    "key": 1,
-    "name": "Gasolina"
-},
-{
-    "key": 2,
-    "name": "Diesel"
-},
-{
-    "key": 3,
-    "name": "Electrico"
-},
-{
-    "key": 4,
-    "name": "Otro"
-}
+    key: 1,
+    name: "Gasolina",
+  },
+  {
+    key: 2,
+    name: "Diesel",
+  },
+  {
+    key: 3,
+    name: "Electrico",
+  },
+  {
+    key: 4,
+    name: "Otro",
+  },
 ];
-
-

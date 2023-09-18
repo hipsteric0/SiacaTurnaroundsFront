@@ -5,15 +5,16 @@ import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRigh
 import { log } from "console";
 import React, { useEffect, useState } from "react";
 import router from "next/router";
-import { Table , Spacer} from "@nextui-org/react";
+import { Table, Spacer } from "@nextui-org/react";
 import { TableBody } from "@mui/material";
-import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
-import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
+import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { Dropdown } from "@nextui-org/react";
 import { useMediaQuery } from "@mui/material";
 import { Collapse, Text } from "@nextui-org/react";
-import {Card, Image} from "@nextui-org/react";
+import { Card, Image } from "@nextui-org/react";
+import BackArrow from "@/components/Reusables/BackArrow";
 
 interface PageProps {
   setStep: (value: number) => void;
@@ -62,17 +63,22 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
       y[index.id] = (
         <div key={index.id} className={styles.tableInfoRow}>
           <td>{index.titulo}</td>
-          <td><RemoveRedEyeIcon/> <BorderColorOutlinedIcon/> <DeleteOutlineOutlinedIcon/></td>
+          <td>
+            <RemoveRedEyeIcon /> <BorderColorOutlinedIcon />{" "}
+            <DeleteOutlineOutlinedIcon />
+          </td>
         </div>
       );
     });
 
     return y;
   };
-  
 
   return (
     <main className={styles.containerAirlinesMainPage}>
+      <div className={styles.backArrowIcon}>
+        <BackArrow executableFunction={() => router.push("/Turnarounds")} />
+      </div>
       <div className={styles.registerbuttoncontainer}>
         <GreenButton
           executableFunction={() => setStep(1)}
@@ -87,7 +93,7 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
           </div>
           {arrayPrinter()}
         </div>
-        </div>
+      </div>
     </main>
   );
 };

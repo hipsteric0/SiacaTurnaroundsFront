@@ -1,5 +1,10 @@
 .RegisterMachineContainer {
-  padding: 93px 115px;
+  padding: 93px 308px;
+}
+.backArrowIcon {
+  position: absolute;
+  top: 170px;
+  left: 10px;
 }
 .machinesListContainer {
   width: 100%;
@@ -16,6 +21,7 @@
   gap: 35px;
   padding: 40px 0px 40px 10px;
   border-top: 1px solid #bbb;
+  align-items: center;
 }
 .inputsListImage {
   display: flex;
@@ -23,6 +29,7 @@
   gap: 35px;
   padding: 40px 0px 40px 10px;
   border-top: 1px solid #bbb;
+  justify-content: center;
 }
 .titleText {
   font-size: 14px;

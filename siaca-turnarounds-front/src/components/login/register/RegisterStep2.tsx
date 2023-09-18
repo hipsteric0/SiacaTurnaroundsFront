@@ -247,11 +247,90 @@ const LoginMainPage: React.FC<PageProps> = ({
               selectedKeys={selectedDepartment}
               onSelectionChange={setSelectedDepartment}
             >
-              <Dropdown.Item key="Departamento 1">Departamento 1</Dropdown.Item>
-              <Dropdown.Item key="Departamento 2">Departamento 2</Dropdown.Item>
-              <Dropdown.Item key="Departamento 3">Departamento 3</Dropdown.Item>
-              <Dropdown.Item key="Departamento 4">Departamento 4</Dropdown.Item>
-              <Dropdown.Item key="Departamento 5">Departamento 5</Dropdown.Item>
+              <Dropdown.Item key="Dirección" className={styles.dropdownItem}>
+                Dirección
+              </Dropdown.Item>
+              <Dropdown.Item key="Operaciones" className={styles.dropdownItem}>
+                Operaciones
+              </Dropdown.Item>
+              <Dropdown.Item
+                key="Recursos Humanos"
+                className={styles.dropdownItem}
+              >
+                Recursos Humanos
+              </Dropdown.Item>
+              <Dropdown.Item
+                key="Administración y Finanzas"
+                className={styles.dropdownItem}
+              >
+                Administración y Finanzas
+              </Dropdown.Item>
+              <Dropdown.Item
+                key="Tecnología Informática"
+                className={styles.dropdownItem}
+              >
+                Tecnología Informática
+              </Dropdown.Item>
+              <Dropdown.Item
+                key="Comercialización"
+                className={styles.dropdownItem}
+              >
+                Comercialización
+              </Dropdown.Item>
+              <Dropdown.Item
+                key="Mantenimiento"
+                className={styles.dropdownItem}
+              >
+                Mantenimiento
+              </Dropdown.Item>
+              <Dropdown.Item
+                key="Servicio al Pasajero"
+                className={styles.dropdownItem}
+              >
+                Servicio al Pasajero
+              </Dropdown.Item>
+              <Dropdown.Item
+                key="Despacho de Vuelos"
+                className={styles.dropdownItem}
+              >
+                Despacho de Vuelos
+              </Dropdown.Item>
+              <Dropdown.Item
+                key="Seguridad y Salud en el Trabajo"
+                className={styles.dropdownItem}
+              >
+                Seguridad y Salud en el Trabajo
+              </Dropdown.Item>
+              <Dropdown.Item
+                key="Capacitacion y Desarrollo"
+                className={styles.dropdownItem}
+              >
+                Capacitacion y Desarrollo
+              </Dropdown.Item>
+              <Dropdown.Item
+                key="Seguridad Operacional"
+                className={styles.dropdownItem}
+              >
+                Seguridad Operacional
+              </Dropdown.Item>
+              <Dropdown.Item
+                key="Organizacion y Metodos"
+                className={styles.dropdownItem}
+              >
+                Organizacion y Metodos
+              </Dropdown.Item>
+              <Dropdown.Item
+                key="Gestion de la Calidad"
+                className={styles.dropdownItem}
+              >
+                Gestion de la Calidad
+              </Dropdown.Item>
+              <Dropdown.Item
+                key="Gestion y Recaudación de Cobros y Pagos"
+                className={styles.dropdownItem}
+              >
+                Gestion y Recaudación de Cobros y Pagos
+              </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         </div>
@@ -271,11 +350,30 @@ const LoginMainPage: React.FC<PageProps> = ({
               selectedKeys={selectedPosition}
               onSelectionChange={setSelectedPosition}
             >
-              <Dropdown.Item key="Cargo 1">Cargo 1</Dropdown.Item>
-              <Dropdown.Item key="Cargo 2">Cargo 2</Dropdown.Item>
-              <Dropdown.Item key="Cargo 3">Cargo 3</Dropdown.Item>
-              <Dropdown.Item key="Cargo 4">Cargo 4</Dropdown.Item>
-              <Dropdown.Item key="Cargo 5">Cargo 5</Dropdown.Item>
+              <Dropdown.Item key="Director" className={styles.dropdownItem}>
+                Director
+              </Dropdown.Item>
+              <Dropdown.Item
+                key="Analista de RRHH"
+                className={styles.dropdownItem}
+              >
+                Analista de RRHH
+              </Dropdown.Item>
+              <Dropdown.Item key="Jefe de IT" className={styles.dropdownItem}>
+                Jefe de IT
+              </Dropdown.Item>
+              <Dropdown.Item
+                key="Analista de Flota"
+                className={styles.dropdownItem}
+              >
+                Analista de Flota
+              </Dropdown.Item>
+              <Dropdown.Item
+                key="Desarrollo de Software"
+                className={styles.dropdownItem}
+              >
+                Desarrollo de Software
+              </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         </div>
@@ -295,11 +393,21 @@ const LoginMainPage: React.FC<PageProps> = ({
               selectedKeys={selectedWorkshift}
               onSelectionChange={setSelectedWorkshift}
             >
-              <Dropdown.Item key="Turno 1">Turno 1</Dropdown.Item>
-              <Dropdown.Item key="Turno 2">Turno 2</Dropdown.Item>
-              <Dropdown.Item key="Turno 3">Turno 3</Dropdown.Item>
-              <Dropdown.Item key="Turno 4">Turno 4</Dropdown.Item>
-              <Dropdown.Item key="Turno 5">Turno 5</Dropdown.Item>
+              <Dropdown.Item key="Diurno" className={styles.dropdownItem}>
+                Diurno
+              </Dropdown.Item>
+              <Dropdown.Item key="Nocturno" className={styles.dropdownItem}>
+                Nocturno
+              </Dropdown.Item>
+              <Dropdown.Item key="Mixto" className={styles.dropdownItem}>
+                Mixto
+              </Dropdown.Item>
+              <Dropdown.Item key="Matutino" className={styles.dropdownItem}>
+                Matutino
+              </Dropdown.Item>
+              <Dropdown.Item key="Vespertino" className={styles.dropdownItem}>
+                Vespertino
+              </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         </div>

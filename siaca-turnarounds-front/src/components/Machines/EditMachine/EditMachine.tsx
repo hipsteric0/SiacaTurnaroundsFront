@@ -15,13 +15,14 @@ import SiacaNavbar from "@/components/Reusables/Navbar/SiacaNavbar";
 import { imageConfigDefault } from "next/dist/shared/lib/image-config";
 import DropdownMenu from "@/components/Reusables/DropdownMenu";
 import StandardInputV2 from "@/components/Reusables/StandardInputV2";
+import BackArrow from "@/components/Reusables/BackArrow";
 
 interface PageProps {
   setStep: (value: number) => void;
-  machineID : number;
+  machineID: number;
 }
 
-const RegisterMachine: React.FC<PageProps> = ({ setStep , machineID}) => {
+const RegisterMachine: React.FC<PageProps> = ({ setStep, machineID }) => {
   //if token exists show regular html else show not signed in screen
 
   useEffect(() => {
@@ -60,7 +61,6 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep , machineID}) => {
             setEstado(result?.estado);
             setFkCategoria(result?.fkcategoria);
 
-
             if (result?.[0]?.["status"] === 400) {
               console.log("entro");
             } else {
@@ -75,7 +75,6 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep , machineID}) => {
     };
     await fetchData().catch(console.error);
   };
-  
 
   const registerMachines = () => {
     const fetchData = async () => {
@@ -87,7 +86,7 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep , machineID}) => {
             identificador: identificador,
             modelo: modelo,
             userToken: localStorage.getItem("userToken"),
-            machineID: machineID
+            machineID: machineID,
           }),
         };
         const response = await fetch(url, requestOptions).then((value) => {
@@ -95,7 +94,7 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep , machineID}) => {
             responseValue = false;
           } else {
             responseValue = true;
-            console.log("value", value)
+            console.log("value", value);
           }
           return true;
         });
@@ -112,39 +111,32 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep , machineID}) => {
     fetchData().catch(console.error);
   };
 
-
-
   const continueButton = () => {
-
     registerMachines();
     router.reload();
-
- 
   };
 
-  const category = (id : number) => {
-
-    setFkCategoria(id.toString())
-
- 
+  const category = (id: number) => {
+    setFkCategoria(id.toString());
   };
 
-  const state = (id : number) => {
-
-    setEstado(id.toString())
-
- 
+  const state = (id: number) => {
+    setEstado(id.toString());
   };
 
-  const fuel = (id : number) => {
-
-    setCombustible(fuelArray[id].name)
-
- 
+  const fuel = (id: number) => {
+    setCombustible(fuelArray[id].name);
   };
 
   return (
     <main className={styles.RegisterMachineContainer}>
+      <div className={styles.backArrowIcon}>
+        <BackArrow
+          executableFunction={() => {
+            router.reload();
+          }}
+        />
+      </div>
       <div className={styles.machinesListContainer}>
         <span className={styles.titleText}>Imagen</span>
         <div className={styles.inputsListImage}>
@@ -158,17 +150,16 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep , machineID}) => {
         </div>
         <span className={styles.titleText}>Datos</span>
         <div className={styles.inputsList}>
-          <StandardInputV2 
-                  setValue={setIdentificador} 
-                  labelText="Identificador" 
-                  placeholderText={identificador}
-                  />
-          <StandardInputV2 
-                    setValue={setModelo} 
-                    labelText="Modelo" 
-                    placeholderText={modelo}
-                    />
-        
+          <StandardInputV2
+            setValue={setIdentificador}
+            labelText="Identificador"
+            placeholderText={identificador}
+          />
+          <StandardInputV2
+            setValue={setModelo}
+            labelText="Modelo"
+            placeholderText={modelo}
+          />
         </div>
       </div>
       <div className={styles.registerbuttoncontainer}>
@@ -185,71 +176,69 @@ export default RegisterMachine;
 
 let categoryArray: any = [
   {
-    "key": 1,
-    "name": "Aguas servidas"
-},
-{
-    "key": 2,
-    "name": "Tractor de arrastre"
-},
-{
-    "key": 3,
-    "name": "Escalera"
-},
-{
-    "key": 4,
-    "name": "Cinta transportadora"
-},
-{
-    "key": 5,
-    "name": "Loader"
-},
-{
-    "key": 6,
-    "name": "Tractor de empuje"
-},
-{
-    "key": 7,
-    "name": "Aire acondicionado"
-},
-{
-    "key": 8,
-    "name": "Planta neumática"
-},
-{
-    "key": 9,
-    "name": "GPU Planta eléctrica"
-}
+    key: 1,
+    name: "Aguas servidas",
+  },
+  {
+    key: 2,
+    name: "Tractor de arrastre",
+  },
+  {
+    key: 3,
+    name: "Escalera",
+  },
+  {
+    key: 4,
+    name: "Cinta transportadora",
+  },
+  {
+    key: 5,
+    name: "Loader",
+  },
+  {
+    key: 6,
+    name: "Tractor de empuje",
+  },
+  {
+    key: 7,
+    name: "Aire acondicionado",
+  },
+  {
+    key: 8,
+    name: "Planta neumática",
+  },
+  {
+    key: 9,
+    name: "GPU Planta eléctrica",
+  },
 ];
 
 let stateArray: any = [
   {
-    "key": 0,
-    "name": "No Operativo"
-},
-{
-    "key": 1,
-    "name": "Operativo"
-}
+    key: 0,
+    name: "No Operativo",
+  },
+  {
+    key: 1,
+    name: "Operativo",
+  },
 ];
 
 let fuelArray: any = [
   {
-    "key": 1,
-    "name": "Gasolina"
-},
-{
-    "key": 2,
-    "name": "Diesel"
-},
-{
-    "key": 3,
-    "name": "Electrico"
-},
-{
-    "key": 4,
-    "name": "Otro"
-}
+    key: 1,
+    name: "Gasolina",
+  },
+  {
+    key: 2,
+    name: "Diesel",
+  },
+  {
+    key: 3,
+    name: "Electrico",
+  },
+  {
+    key: 4,
+    name: "Otro",
+  },
 ];
-
-
