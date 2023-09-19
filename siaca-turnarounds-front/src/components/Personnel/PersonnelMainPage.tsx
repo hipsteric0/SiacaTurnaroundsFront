@@ -114,6 +114,24 @@ const PersonnelMainPage: React.FC = () => {
     setArrayFilteredList3(filteredUsers);
   };
 
+  const sortArrayByName = () => {
+    let filteredUsers = arrayList3.sort((item1, item2) => {
+      if (item1["fk_user"]["first_name"] < item2["fk_user"]["first_name"]) {
+        return -1;
+      }
+      if (item1["fk_user"]["first_name"] > item2["fk_user"]["first_name"]) {
+        return 1;
+      }
+      return 0;
+    });
+
+    setIsFilteredResults(true);
+    setArrayFilteredList3(filteredUsers);
+    setArrayFilteredList3(filteredUsers);
+    filteredUsers.pop();
+    setArrayFilteredList3(filteredUsers);
+  };
+
   const deletePersonnel = async (personnelID: number) => {
     const fetchData = async () => {
       try {
@@ -509,7 +527,7 @@ const PersonnelMainPage: React.FC = () => {
       <div className={styles.personnelListContainer}>
         <div>
           <div className={styles.tableTitlesContainer}>
-            <span>Nombre</span>
+            <span /*onClick={() => sortArrayByName()}*/>Nombre</span>
             <span>Cargo</span>
             <span>Departamento</span>
             <span>Contacto</span>

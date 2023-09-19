@@ -89,6 +89,12 @@
   left: 45px;
   z-index: 99;
 }
+.dropdownContainerServiceType {
+  position: absolute;
+  top: -12px;
+  left: 140px;
+  z-index: 101;
+}
 .dropdownContainerTemplate {
   position: absolute;
   top: -12px;

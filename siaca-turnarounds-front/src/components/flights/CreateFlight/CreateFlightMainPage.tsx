@@ -21,7 +21,6 @@ import { Suspense } from "react";
 
 interface PageProps {
   setStep: (value: number) => void;
-
 }
 
 const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
@@ -31,10 +30,12 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
   const [DestinationCitiesArrayList, setDestinationCitiesArrayList] = useState(
     []
   );
+  const [FlightServicesArrayList, setFlightServicesArrayList] = useState([]);
   const [DepartureCitiesArrayList, setDepartureCitiesArrayList] = useState([]);
   const [AirlinesArrayList, setAirlinesArrayList] = useState([]);
   const [FlightTypesList, setFlightTypesList] = useState([]);
 
+  const [FlightServiceType, setFlightServiceType] = useState("");
   const [STN, setSTN] = useState("");
   const [Carrier, setCarrier] = useState(0);
   const [ChargesPayableBy, setChargesPayableBy] = useState("");
@@ -69,6 +70,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
       await getAirlinesList();
       await getFlightTypesList();
       await getTemplatesList();
+      await getFlightServiceTypes();
     };
     fetchData().catch(console.error);
   }, []);
@@ -106,6 +108,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
   };
 
   const registerFlight = async (ETADateValue: string) => {
+    console.log("FlightServiceType", FlightServiceType);
     const fetchData = async () => {
       try {
         const url = "/api/createFlight";
@@ -129,6 +132,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
             lugar_salida: routing1,
             lugar_destino: routing2,
             tipo_vuelo: flightType,
+            tipo_servicio: FlightServiceType,
           }),
         };
         const response = await fetch(url, requestOptions).then((res) =>
@@ -272,8 +276,43 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
             console.log("getcitiesListDeparture", Object.values(result));
-            setDepartureCitiesArrayList(Object.values(result));
+            setFlightServicesArrayList(Object.values(result));
             setCitiesListDepartureForDropdown(Object.values(result));
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
+  const setFlightServiceTypesForDropdown = async (servicesListArray: []) => {
+    servicesListArray.map((index: any) => {
+      console.log("index", index.id);
+      FlightServicesOptionsArray.push({
+        key: index.id,
+        name: index.nombre,
+      });
+    });
+  };
+
+  const getFlightServiceTypes = async () => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/flightServiceTypes";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            console.log("getFlightServicesTypes", Object.values(result));
+            setDepartureCitiesArrayList(Object.values(result));
+            setFlightServiceTypesForDropdown(Object.values(result));
           })
         );
       } catch (error) {
@@ -457,6 +496,18 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
 
           <div className={styles.dataContainer}>
             <div className={styles.dataContainerRow}>
+              <div className={styles.dataContainerRowItem}>
+                <p>Tipo de servicio:</p>
+                <div className={styles.dropdownContainerServiceType}>
+                  <DropdownMenu
+                    buttonText={""}
+                    optionsArray={FlightServicesOptionsArray}
+                    executableOptionClickFunction={(optionValue: number) => {
+                      setFlightServiceType(optionValue.toString());
+                    }}
+                  />
+                </div>
+              </div>
               <div className={styles.dataContainerRowItem}>
                 <p>STN:</p>
                 <div className={styles.dropdownContainerSTN}>
@@ -766,6 +817,7 @@ let flightTypesOptionsArray: any = [];
 let airlinesOptionsArray: any = [];
 let STNOptionsArray: any = [];
 let CitiesOptionsArray: any = [];
+let FlightServicesOptionsArray: any = [];
 let templatesOptionsArray: any = [];
 let optionsArray: any = [
   {

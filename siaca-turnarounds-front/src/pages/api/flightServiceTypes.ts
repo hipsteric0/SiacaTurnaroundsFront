@@ -101,7 +101,7 @@ export default async function handler(
   let statusText = "INTERNAL";
   try {
     // Get request method (GET by default)
-    const httpMethod: string = "POST";
+    const httpMethod: string = "GET";
 
     if (!validHTTPMethods.includes(httpMethod)) {
       status = 405;
@@ -145,30 +145,18 @@ export default async function handler(
           // Any additional headers here only related to request body...
         },
 
-        body: JSON.stringify({
-          ac_reg: body?.["ac_reg"],
-          ac_type: body?.["ac_type"],
-          estado: body?.["estado"],
-          ente_pagador: body?.["ente_pagador"],
-          numero_vuelo: body?.["numero_vuelo"],
-          ETA: body?.["ETA"],
-          ETD: body?.["ETD"],
-          ETA_fecha: body?.["ETA_fecha"],
-          ETD_fecha: body?.["ETD_fecha"],
-          gate: body?.["gate"],
-          fk_aerolinea: body?.["fk_aerolinea"],
-          fk_plantilla: body?.["fk_plantilla"],
-          stn: body?.["stn"],
-          lugar_salida: body?.["lugar_salida"],
-          lugar_destino: body?.["lugar_destino"],
-          tipo_vuelo: body?.["tipo_vuelo"],
-          tipo_servicio: body?.["tipo_servicio"],
-        }),
+        /*body: JSON.stringify({
+          username: "hola9",
+          password: "hola",
+        }),*/
       };
     }
 
     // Backend URL
-    const url = `${BACKEND_BASE_URL}/vuelos/?token=` + body?.["userToken"];
+    const url =
+      `${BACKEND_BASE_URL}vuelos/lista/tipo-servicio/?token=` +
+      body?.["userToken"];
+
     // Make the actual request to backend
     const response = await fetch(url, fetchOptions);
 
