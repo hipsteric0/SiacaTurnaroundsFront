@@ -219,3 +219,17 @@
   align-items: center;
   cursor: not-allowed;
 }
+.Routing1container {
+  min-width: 180px;
+  height: 40px;
+  border-radius: 10px;
+  border: 2px solid lightgray;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #889096;
+}

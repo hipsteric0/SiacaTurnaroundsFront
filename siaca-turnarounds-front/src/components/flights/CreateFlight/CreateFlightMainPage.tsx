@@ -108,7 +108,6 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
   };
 
   const registerFlight = async (ETADateValue: string) => {
-    console.log("FlightServiceType", FlightServiceType);
     const fetchData = async () => {
       try {
         const url = "/api/createFlight";
@@ -129,7 +128,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
             fk_aerolinea: Carrier,
             fk_plantilla: templateValue,
             stn: STN,
-            lugar_salida: routing1,
+            lugar_salida: STN,
             lugar_destino: routing2,
             tipo_vuelo: flightType,
             tipo_servicio: FlightServiceType,
@@ -151,13 +150,11 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
 
   const setTemplatesForDropdown = async (TemplatesListArray: []) => {
     TemplatesListArray.map((index: any) => {
-      console.log("indexx", index.id);
       templatesOptionsArray.push({
         key: index.id,
         name: index.titulo,
       });
     });
-    console.log("templatesOptionsArray", templatesOptionsArray);
   };
   const getTemplatesList = async () => {
     const fetchData = async () => {
@@ -187,7 +184,6 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
 
   const setFlightTypesForDropdown = async (flightTypesListArray: []) => {
     flightTypesListArray.map((index: any) => {
-      console.log("index", index.id);
       flightTypesOptionsArray.push({
         key: index.id,
         name: index.nombre,
@@ -222,7 +218,6 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
 
   const setAirlinesForDropdown = async (airlinesArray: []) => {
     await airlinesArray.map((index: any) => {
-      console.log("index", index.id);
       airlinesOptionsArray.push({
         key: index.id,
         name: index.nombre,
@@ -256,7 +251,6 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
 
   const setCitiesListDepartureForDropdown = async (citiesListArray: []) => {
     citiesListArray.map((index: any) => {
-      console.log("index", index.id);
       CitiesOptionsArray.push({
         key: index.id,
         name: index.nombre,
@@ -290,7 +284,6 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
 
   const setFlightServiceTypesForDropdown = async (servicesListArray: []) => {
     servicesListArray.map((index: any) => {
-      console.log("index", index.id);
       FlightServicesOptionsArray.push({
         key: index.id,
         name: index.nombre,
@@ -327,8 +320,6 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
     citiesListArray: []
   ) => {
     citiesListArray.map((index: any) => {
-      console.log("index", index.id);
-
       STNOptionsArray.push({
         key: index.id,
         name: index.codigo,
@@ -376,8 +367,6 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
       initialDate.setDate(initialDate.getDate() + 1);
       let finalDate = new Date(recurrentEndDate);
       finalDate.setDate(finalDate.getDate() + 1);
-      console.log("initialDate", initialDate);
-      console.log("finalDate", finalDate);
 
       //desde la fecha ETA a la fecha
       while (initialDate <= finalDate) {
@@ -461,7 +450,6 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
       dateETA === "" ||
       ETD === "" ||
       dateETD === "" ||
-      routing1 === 0 ||
       routing2 === 0 ||
       flightType === 0 ||
       templateValue === 0 ||
@@ -635,13 +623,9 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
               <div className={styles.dataContainerRowItemRouting}>
                 <p>Routing:</p>
                 <div className={styles.dropdownContainerRouting1}>
-                  <DropdownMenu
-                    buttonText={""}
-                    optionsArray={STNOptionsArray}
-                    executableOptionClickFunction={(optionValue: number) =>
-                      setRouting1(optionValue)
-                    }
-                  />
+                  <div className={styles.Routing1container}>
+                    <span> {STNOptionsArray[STN - 1]?.name}</span>
+                  </div>
                 </div>
                 <p>/</p>
                 <div className={styles.dropdownContainerRouting2}>
