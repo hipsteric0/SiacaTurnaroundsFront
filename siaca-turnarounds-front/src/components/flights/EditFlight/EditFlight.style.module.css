@@ -68,6 +68,12 @@
   gap: 16px;
   position: relative;
 }
+.dropdownContainerServiceType {
+  position: absolute;
+  top: -12px;
+  left: 140px;
+  z-index: 101;
+}
 .dataContainerRowItemFlightType {
   display: flex;
   flex-direction: row;

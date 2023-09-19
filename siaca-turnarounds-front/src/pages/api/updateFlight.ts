@@ -161,14 +161,19 @@ export default async function handler(
           lugar_salida: body?.["lugar_salida"],
           lugar_destino: body?.["lugar_destino"],
           tipo_vuelo: body?.["tipo_vuelo"],
+          tipo_servicio: body?.["tipo_servicio"],
         }),
       };
     }
 
     // Backend URL
-    const url = `${BACKEND_BASE_URL}/vuelos/`+ body?.["flightID"] +`/?token=` + body?.["userToken"];
-    console.log("fetchOptions",fetchOptions);
-    console.log("url",url);
+    const url =
+      `${BACKEND_BASE_URL}/vuelos/` +
+      body?.["flightID"] +
+      `/?token=` +
+      body?.["userToken"];
+    console.log("fetchOptions", fetchOptions);
+    console.log("url", url);
     // Make the actual request to backend
     const response = await fetch(url, fetchOptions);
 

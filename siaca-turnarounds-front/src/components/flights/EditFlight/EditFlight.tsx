@@ -22,7 +22,7 @@ import { Suspense } from "react";
 
 interface PageProps {
   setStep: (value: number) => void;
-  flightID : number;
+  flightID: number;
 }
 
 const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
@@ -35,7 +35,8 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
   const [DepartureCitiesArrayList, setDepartureCitiesArrayList] = useState([]);
   const [AirlinesArrayList, setAirlinesArrayList] = useState([]);
   const [FlightTypesList, setFlightTypesList] = useState([]);
-
+  const [FlightServiceType, setFlightServiceType] = useState("");
+  const [FlightServiceType2, setFlightServiceType2] = useState("");
   const [STN, setSTN] = useState("");
   const [STN2, setSTN2] = useState("");
   const [Carrier, setCarrier] = useState(0);
@@ -76,6 +77,7 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
       await getAirlinesList();
       await getFlightTypesList();
       await getTemplatesList();
+      await getFlightServiceTypes();
     };
     fetchData().catch(console.error);
   }, []);
@@ -92,35 +94,34 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
           method: "POST",
           body: JSON.stringify({
             userToken: localStorage.getItem("userToken"),
-            flightID : flightID
+            flightID: flightID,
           }),
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
             setArrayList3(Object.values(result));
-            console.log("result", result)
+            console.log("result", result);
+            setFlightServiceType2(result?.tipo_servicio?.nombre);
+            setSTN(result?.stn?.id);
+            setSTN2(result?.stn?.codigo);
+            setCarrier(result?.fk_aerolinea?.id);
+            setCarrier2(result?.fk_aerolinea?.nombre);
+            setChargesPayableBy(result?.ente_pagador);
+            setFlightNumber(result?.numero_vuelo);
+            setACreg(result?.ac_reg);
+            setACtype(result?.ac_type);
+            setGate(result?.gate);
+            setETA(result?.ETA);
+            setETD(result?.ETD);
+            setdateETA(result?.ETA_fecha);
+            setdateETD(result?.ETD_fecha);
+            setRouting1(result?.lugar_salida?.id);
+            setRouting11(result?.lugar_salida?.codigo);
+            setRouting2(result?.lugar_destino?.id);
+            setRouting22(result?.lugar_destino?.codigo);
+            setflightType(result?.tipo_vuelo?.id);
+            setflightType2(result?.tipo_vuelo?.nombre);
 
-            setSTN(result?.stn?.id)
-            setSTN2(result?.stn?.codigo)
-            setCarrier(result?.fk_aerolinea?.id)
-            setCarrier2(result?.fk_aerolinea?.nombre)
-            setChargesPayableBy(result?.ente_pagador)
-            setFlightNumber(result?.numero_vuelo)
-            setACreg(result?.ac_reg)
-            setACtype(result?.ac_type)
-            setGate(result?.gate)
-            setETA(result?.ETA)
-            setETD(result?.ETD)
-            setdateETA(result?.ETA_fecha)
-            setdateETD(result?.ETD_fecha)
-            setRouting1(result?.lugar_salida?.id)
-            setRouting11(result?.lugar_salida?.codigo)
-            setRouting2(result?.lugar_destino?.id)
-            setRouting22(result?.lugar_destino?.codigo)
-            setflightType(result?.tipo_vuelo?.id)
-            setflightType2(result?.tipo_vuelo?.nombre)
-
-        
             if (result?.[0]?.["status"] === 400) {
               console.log("entro");
             } else {
@@ -135,7 +136,6 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
     };
     await fetchData().catch(console.error);
   };
-
 
   const registerFlight = async () => {
     const fetchData = async () => {
@@ -161,7 +161,8 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
             lugar_salida: routing1,
             lugar_destino: routing2,
             tipo_vuelo: flightType,
-            flightID : flightID
+            flightID: flightID,
+            tipo_servicio: FlightServiceType,
           }),
         };
         const response = await fetch(url, requestOptions).then((res) =>
@@ -354,6 +355,41 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
     await fetchData().catch(console.error);
   };
 
+  const setFlightServiceTypesForDropdown = async (servicesListArray: []) => {
+    servicesListArray.map((index: any) => {
+      console.log("index", index.id);
+      FlightServicesOptionsArray.push({
+        key: index.id,
+        name: index.nombre,
+      });
+    });
+  };
+
+  const getFlightServiceTypes = async () => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/flightServiceTypes";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            console.log("getFlightServicesTypes", Object.values(result));
+            setDepartureCitiesArrayList(Object.values(result));
+            setFlightServiceTypesForDropdown(Object.values(result));
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
   const setOptionsInTareasArray = (
     taskPosition: number,
     subtaskPosition: number,
@@ -364,17 +400,14 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
   };
 
   const consolePrueba = async () => {
-    console.log("flightID",flightID);
-  }
-
-  const handleRegisterButton = async () => {
-
-      //vuelo unico
-      await registerFlight();
-      router.reload();
-    
+    console.log("flightID", flightID);
   };
 
+  const handleRegisterButton = async () => {
+    //vuelo unico
+    await registerFlight();
+    router.reload();
+  };
 
   return (
     <>
@@ -386,6 +419,18 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
 
           <div className={styles.dataContainer}>
             <div className={styles.dataContainerRow}>
+              <div className={styles.dataContainerRowItem}>
+                <p>Tipo de servicio:</p>
+                <div className={styles.dropdownContainerServiceType}>
+                  <DropdownMenu
+                    buttonText={FlightServiceType2}
+                    optionsArray={FlightServicesOptionsArray}
+                    executableOptionClickFunction={(optionValue: number) => {
+                      setFlightServiceType(optionValue.toString());
+                    }}
+                  />
+                </div>
+              </div>
               <div className={styles.dataContainerRowItem}>
                 <p>STN:</p>
                 <div className={styles.dropdownContainerSTN}>
@@ -576,4 +621,4 @@ let airlinesOptionsArray: any = [];
 let STNOptionsArray: any = [];
 let CitiesOptionsArray: any = [];
 let templatesOptionsArray: any = [];
-
+let FlightServicesOptionsArray: any = [];
