@@ -43,6 +43,7 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
   const [Carrier2, setCarrier2] = useState(0);
   const [ChargesPayableBy, setChargesPayableBy] = useState("");
   const [flightNumber, setFlightNumber] = useState("");
+  const [ICAOhex, setICAOhex] = useState("");
   const [ACreg, setACreg] = useState("");
   const [ACtype, setACtype] = useState("");
   const [gate, setGate] = useState("");
@@ -106,6 +107,7 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
             setSTN2(result?.stn?.codigo);
             setCarrier(result?.fk_aerolinea?.id);
             setCarrier2(result?.fk_aerolinea?.nombre);
+            setICAOhex(result?.icao_hex);
             setChargesPayableBy(result?.ente_pagador);
             setFlightNumber(result?.numero_vuelo);
             setACreg(result?.ac_reg);
@@ -158,11 +160,12 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
             fk_aerolinea: Carrier,
             fk_plantilla: templateValue,
             stn: STN,
-            lugar_salida: routing1,
+            lugar_salida: STN,
             lugar_destino: routing2,
             tipo_vuelo: flightType,
             flightID: flightID,
             tipo_servicio: FlightServiceType,
+            icao_hex: ICAOhex,
           }),
         };
         const response = await fetch(url, requestOptions).then((res) =>
@@ -473,6 +476,17 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
                   />
                 </div>
               </div>
+              <div className={styles.dataContainerRowItem}>
+                <p>Identificador ICAO hex:</p>
+                <div className={styles.dropdownContainerICAOhex}>
+                  <StandardInputV2
+                    setValue={setICAOhex}
+                    labelText=""
+                    placeholderText={ICAOhex}
+                    inputWidth="185px"
+                  />
+                </div>
+              </div>
             </div>
             <div className={styles.dataContainerRowNoGap}>
               <div className={styles.dataContainerRowItem}>
@@ -566,13 +580,9 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
               <div className={styles.dataContainerRowItemRouting}>
                 <p>Routing:</p>
                 <div className={styles.dropdownContainerRouting1}>
-                  <DropdownMenu
-                    buttonText={routing11.toString()}
-                    optionsArray={STNOptionsArray}
-                    executableOptionClickFunction={(optionValue: number) =>
-                      setRouting1(optionValue)
-                    }
-                  />
+                  <div className={styles.Routing1container}>
+                    <span> {STNOptionsArray[STN - 1]?.name}</span>
+                  </div>
                 </div>
                 <p>/</p>
                 <div className={styles.dropdownContainerRouting2}>

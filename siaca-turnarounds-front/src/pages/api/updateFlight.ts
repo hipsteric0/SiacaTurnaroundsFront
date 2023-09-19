@@ -162,6 +162,7 @@ export default async function handler(
           lugar_destino: body?.["lugar_destino"],
           tipo_vuelo: body?.["tipo_vuelo"],
           tipo_servicio: body?.["tipo_servicio"],
+          icao_hex: body?.["icao_hex"],
         }),
       };
     }

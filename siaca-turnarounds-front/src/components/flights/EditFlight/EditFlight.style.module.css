@@ -113,6 +113,12 @@
   left: 165px;
   z-index: 98;
 }
+.dropdownContainerICAOhex {
+  position: absolute;
+  top: -12px;
+  left: 190px;
+  z-index: 98;
+}
 .dropdownContainerFlightType {
   position: absolute;
   top: -12px;
@@ -218,4 +224,18 @@
   display: flex;
   align-items: center;
   cursor: not-allowed;
+}
+.Routing1container {
+  min-width: 180px;
+  height: 40px;
+  border-radius: 10px;
+  border: 2px solid lightgray;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #889096;
 }
