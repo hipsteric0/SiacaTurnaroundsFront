@@ -141,7 +141,6 @@ const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
     await setflightID(flightID);
     await setStep(2);
   };
- 
 
   const arrayPrinter = () => {
     let y: any = [];
@@ -177,6 +176,27 @@ const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
                     <p className={styles.detailDialogInfoContainerTitleText}>
                       Datos de vuelo
                     </p>
+                    <div className={styles.detailDialogInfoRow1}>
+                      <div className={styles.detailDialogInfoItem}>
+                        <span className={styles.detailDialogInfoItemTitle}>
+                          Tipo de servicio:
+                        </span>
+                        <span className={styles.detailDialogInfoItemValueText}>
+                          {index?.tipo_servicio?.nombre}
+                        </span>
+                      </div>
+                      <div className={styles.detailDialogInfoItem}>
+                        <span className={styles.detailDialogInfoItemTitle}>
+                          ICAO HEX:
+                        </span>
+                        <span>
+                          {" "}
+                          {index?.icao_hex === null
+                            ? "Indefinido"
+                            : index?.icao_hex}
+                        </span>
+                      </div>
+                    </div>
                     <div className={styles.detailDialogInfoRow1}>
                       <div className={styles.detailDialogInfoItem}>
                         <span className={styles.detailDialogInfoItemTitle}>
@@ -322,8 +342,10 @@ const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
                   <div>
                     <iframe
                       src={
-                        "https://globe.adsbexchange.com/?icao=" +
-                        index?.numero_vuelo
+                        index?.icao_hex === null
+                          ? "https://globe.adsbexchange.com/?airport=SVMI"
+                          : "https://globe.adsbexchange.com/?icao=" +
+                            index?.icao_hex
                       }
                       frameborder="0"
                       className={styles.flightIframe}
@@ -393,8 +415,8 @@ const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
                       setHoverOptionValue(-1);
                       setHover(false);
                     }}
-                    onClick={ () => 
-                      {handleEditFlight(index.id)
+                    onClick={() => {
+                      handleEditFlight(index.id);
                     }}
                   >
                     Editar
