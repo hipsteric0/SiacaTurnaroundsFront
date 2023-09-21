@@ -233,3 +233,7 @@
   font-size: 14px;
   color: #889096;
 }
+.autocompleteInputContainer {
+  width: 185px;
+  height: 40px;
+}
