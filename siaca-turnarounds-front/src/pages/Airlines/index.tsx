@@ -10,11 +10,14 @@ import { TableBody } from "@mui/material";
 import AirlinesMainPage from "@/components/airlines/AirlinesMainPage";
 import RegisterAirline from "@/components/airlines/RegisterAirline/RegisterAirline";
 import EditAirline from "@/components/airlines/EditAirline/EditAirline";
+import RegisterCity from "@/components/airlines/RegisterCity/RegisterCity";
+import EditCity from "@/components/airlines/EditCity/EditCity";
 import SiacaNavbar from "@/components/Reusables/Navbar/SiacaNavbar";
 export default function Airlines() {
   //if token exists show regular html else show not signed in screen
   const [step, setStep] = useState(0);
   const [flightID, setFlightID] = useState(-1)
+  const [cityID, setCityID] = useState(-1)
 
   return (
     <main className={styles.mainContainerAirlinesPage}>
@@ -22,7 +25,7 @@ export default function Airlines() {
       {
         step === 0 && (
           <>
-            <AirlinesMainPage setStep={setStep} setflightID= {setFlightID} />
+            <AirlinesMainPage setStep={setStep} setflightID= {setFlightID} setCityID={setCityID} />
           </>
         ) /*el step 0 es la pagina principal de aerolineas*/
       }
@@ -39,6 +42,20 @@ export default function Airlines() {
             <EditAirline setStep={setStep} flightID={flightID} />
           </>
         ) /*el step 2 es la pagina de editar aerolinea*/
+      }
+      {
+        step === 3 && (
+          <>
+            <RegisterCity setStep={setStep} />
+          </>
+        ) /*el step 3 es la pagina de registrar ciudad*/
+      }
+      {
+        step === 4 && (
+          <>
+            <EditCity setStep={setStep} cityID={cityID} />
+          </>
+        ) /*el step 3 es la pagina de registrar ciudad*/
       }
     </main>
   );

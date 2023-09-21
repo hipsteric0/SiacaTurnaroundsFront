@@ -20,18 +20,25 @@ import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 interface PageProps {
   setStep: (value: number) => void;
   setflightID: (value: number) => void;
+  setCityID: (value: number) => void;
 }
 
-const AirlinesMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
+const AirlinesMainPage: React.FC<PageProps> = ({ setStep, setflightID, setCityID }) => {
   //if token exists show regular html else show not signed in screen
   const isMobile = useMediaQuery("(max-width: 1270px)");
   const [allowContinue, setAllowContinue] = useState(false);
   const [arrayList3, setArrayList3] = useState([]);
+  const [arrayList4, setArrayList4] = useState([]);
   const [deleteDialog, setDeleteDialog] = useState(false);
+  const [citiesDialog, setCitiesDialog] = useState(false);
+  const [registerDialog, setRegisterDialog] = useState(false);
+  const [deleteCitiesDialog, setDeleteCitiesDialog] = useState(false);
+  
  
 
   useEffect(() => {
     getList();
+    getCitiesList();
   }, []);
 
   const getList = async () => {
@@ -84,8 +91,63 @@ const AirlinesMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
     await fetchData().catch(console.error);
   };
 
+  /* ELIMINAR CIUDAD */
+  const deleteCity = async (cityID: number) => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/deleteCity";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+            cityId: cityID,
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            router.reload();
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
+  const getCitiesList = async () => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/citiesListDeparture";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            console.log(result);
+            console.log("values", Object.values(result));
+
+            setArrayList4(Object.values(result));
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
   const handleDeleteAirline = async (airlineID: number) => {
     deleteAirline(airlineID);
+  };
+
+  const handleDeleteCity= async (cityID: number) => {
+    deleteCity(cityID);
   };
 
   const arrayPrinter = () => {
@@ -193,10 +255,139 @@ const AirlinesMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
     return y;
   };
 
+  const arrayPrinter2 = () => {
+    let y: any = [];
+    
+    const [hoverEye, sethoverEye] = useState(false);
+    const [hoverEyeId, sethoverEyeId] = useState(-1);
+    const [hoverPencilId, sethoverPencilId] = useState(-1);
+    const [hoverTrashId, sethoverTrashId] = useState(-1);
+    const [clickID, setclickID] = useState(-1);
+
+    arrayList4.map((index: any) => {
+      y[index.id] = (
+        <div key={index.id} className={styles.tableInfoRow}>
+          {
+            <Dialog
+              className={styles.dialogDelete}
+              open={deleteCitiesDialog}
+              onClose={() => setDeleteCitiesDialog(false)}
+            >
+              <div className={styles.dialogBack}>
+              <div className={styles.dialogText}>
+                <div className={styles.warningIcon}><WarningAmberIcon color="warning" fontSize="inherit"/></div>
+                <p><strong>¿Está seguro que desea eliminar {arrayList4.find((o) => o.id=== clickID)?.nombre}?</strong></p>
+                <br/>
+                <div className={styles.dialogButtons}>
+                <GreenButton2
+                  executableFunction={() => {
+                  handleDeleteCity(clickID);
+                  
+                  }}
+                  buttonText="Si"
+                />
+                <RedButton2
+                  executableFunction={() => {
+                    setDeleteCitiesDialog(false);
+                  }}
+                  buttonText="No"
+                />
+                </div>
+              </div>
+              </div>
+            </Dialog>
+          }
+
+          <td>{index.codigo}</td>
+          <td>{index.codigo_oaci}</td>
+          <td>{index.nombre}</td>
+          <td>{index.pais}</td>
+          <td>{index.aeropuerto}</td>
+          <td className={styles.iconsContainer2}>
+
+            <div className={styles.functionIcon}
+            onMouseEnter={() => {
+              sethoverPencilId(index.id);
+            }}
+            onMouseLeave={() => {              
+              sethoverPencilId(-1);
+            }}>
+              <BorderColorOutlinedIcon 
+              htmlColor={hoverPencilId === index.id ? "#00A75D" : "#4D4E56"}
+              onClick={() => {
+                setCityID(index.id);
+                setStep(4);
+              }}/>{" "}
+            </div>
+
+            <div className={styles.functionIcon}
+            onMouseEnter={() => {
+              sethoverTrashId(index.id);
+            }}
+            onMouseLeave={() => {              
+              sethoverTrashId(-1);
+            }}>
+              <DeleteOutlineOutlinedIcon
+               htmlColor={hoverTrashId === index.id ? "#f10303" : "#4D4E56"}
+               onClick={() => {
+                setclickID(index.id);
+                setDeleteCitiesDialog(true);
+               }}
+              />
+            </div>
+          </td>
+        </div>
+      );
+    });
+
+    return y;
+  };
+
+
   return (
     <main className={styles.containerAirlinesMainPage}>
       <div className={styles.registerbuttoncontainer}>
+
+      {
+            <Dialog
+              className={styles.dialogDelete}
+              open={citiesDialog}
+              fullWidth={true}
+              maxWidth="xl"
+              scroll="paper"
+              onClose={() => setCitiesDialog(false)}
+            >
+              <div className={styles.dialogBack}>
+              <div className={styles.dialogText}>
+              <GreenButton
+          executableFunction={() => setStep(3)}
+          buttonText="Agregar Ciudades"
+        />
+        <Spacer/>
+              <div className={styles.airlinesListContainer}>
+            <div>
+          <div className={styles.tableTitlesContainer}>
+            <span>IATA</span>
+            <span>OACI</span>
+            <span>Ciudad/Estado</span>
+            <span>Pais</span>
+            <span>Aeropuerto</span>
+            <span>Opciones</span>
+          </div>
+          {arrayPrinter2()}
+        </div>
+      </div>
+              </div>
+              </div>
+            </Dialog>
+          }
+
         <GreenButton
+          executableFunction={() => setCitiesDialog(true)}
+          buttonText="Ciudades"
+        />
+        <Spacer/>
+          <GreenButton
           executableFunction={() => setStep(1)}
           buttonText="Registrar aerolinea"
         />
