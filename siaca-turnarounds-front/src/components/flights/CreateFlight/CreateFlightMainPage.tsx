@@ -67,6 +67,14 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
 
   const [acRegInput, setacRegInput] = useState(false);
 
+  const [stringValueServiceType, setStringValueServiceType] = useState("");
+  const [stringValueSTN, setStringValueSTN] = useState("");
+  const [stringValueCarrier, setStringValueCarrier] = useState("");
+  const [stringValueCharges, setStringValueCharges] = useState("");
+  const [stringValueRouting2, setStringValueRouting2] = useState("");
+  const [stringFlightType, setStringFlightType] = useState("");
+  const [stringTemplate, setStringTemplate] = useState("");
+
   useEffect(() => {
     const fetchData = async () => {
       await getcitiesListDestination();
@@ -534,6 +542,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
                     executableOptionClickFunction={(optionValue: number) => {
                       setFlightServiceType(optionValue.toString());
                     }}
+                    setStringValue={setStringValueServiceType}
                   />
                 </div>
               </div>
@@ -546,6 +555,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
                     executableOptionClickFunction={(optionValue: number) => {
                       setSTN(optionValue.toString());
                     }}
+                    setStringValue={setStringValueSTN}
                   />
                 </div>
               </div>
@@ -559,6 +569,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
                     executableOptionClickFunction={(optionValue: number) => {
                       setCarrier(optionValue);
                     }}
+                    setStringValue={setStringValueCarrier}
                   />
                 </div>
               </div>
@@ -576,6 +587,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
                           .name
                       )
                     }
+                    setStringValue={setStringValueCharges}
                   />
                 </div>
               </div>
@@ -616,17 +628,21 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
                       })}
                       renderInput={(params) => (
                         <TextField
-                        color="success"
-                        sx={{
-                          '& label': { paddingLeft: (theme) => theme.spacing(2) },
-                          '& input': { paddingLeft: (theme) => theme.spacing(3.5) },
-                          '& fieldset': {
-                            paddingLeft: (theme) => theme.spacing(2.5),
-                            borderRadius: '10px',
-                            borderBlockColor: '#bbb', 
-                            border: 'solid 2px #bbb',
-                          },
-                        }}
+                          color="success"
+                          sx={{
+                            "& label": {
+                              paddingLeft: (theme) => theme.spacing(2),
+                            },
+                            "& input": {
+                              paddingLeft: (theme) => theme.spacing(3.5),
+                            },
+                            "& fieldset": {
+                              paddingLeft: (theme) => theme.spacing(2.5),
+                              borderRadius: "10px",
+                              borderBlockColor: "#bbb",
+                              border: "solid 2px #bbb",
+                            },
+                          }}
                           {...params}
                           size="small"
                           label=""
@@ -705,7 +721,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
                 <p>Routing:</p>
                 <div className={styles.dropdownContainerRouting1}>
                   <div className={styles.Routing1container}>
-                    <span> {STNOptionsArray[STN - 1]?.name}</span>
+                    <span> {stringValueSTN}</span>
                   </div>
                 </div>
                 <p>/</p>
@@ -716,6 +732,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
                     executableOptionClickFunction={(optionValue: number) =>
                       setRouting2(optionValue)
                     }
+                    setStringValue={setStringValueRouting2}
                   />
                 </div>
               </div>
@@ -728,6 +745,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
                     executableOptionClickFunction={(optionValue: number) =>
                       setflightType(optionValue)
                     }
+                    setStringValue={setStringFlightType}
                   />
                 </div>
               </div>
@@ -743,6 +761,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
                 executableOptionClickFunction={(optionValue: number) =>
                   setTemplateValue(optionValue)
                 }
+                setStringValue={setStringTemplate}
               />
             </div>
           </div>

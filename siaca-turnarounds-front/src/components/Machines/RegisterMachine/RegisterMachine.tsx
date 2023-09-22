@@ -29,6 +29,7 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep }) => {
   const [imagen, setImagen] = useState("");
   const [fkcategoria, setFkCategoria] = useState("");
   const [arrayList, setArrayList] = useState([]);
+  const [stringValue, setStringValue] = useState("");
 
   let responseValue = false;
 
@@ -119,6 +120,7 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep }) => {
             executableOptionClickFunction={(optionValue: number) =>
               fuel(optionValue)
             }
+            setStringValue={setStringValue}
           />
 
           <DropdownMenu
@@ -127,6 +129,7 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep }) => {
             executableOptionClickFunction={(optionValue: number) =>
               state(optionValue)
             }
+            setStringValue={setStringValue}
           />
           <DropdownMenu
             buttonText={"Categorias"}
@@ -134,6 +137,7 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep }) => {
             executableOptionClickFunction={(optionValue: number) =>
               category(optionValue)
             }
+            setStringValue={setStringValue}
           />
         </div>
       </div>

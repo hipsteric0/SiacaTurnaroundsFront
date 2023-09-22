@@ -71,6 +71,9 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
   const [recurrentSunday, setrecurrentSunday] = useState(false);
   const [arrayList3, setArrayList3] = useState([]);
 
+  const [stringValue, setStringValue] = useState("");
+  const [stringValueSTN, setStringValueSTN] = useState("");
+
   useEffect(() => {
     const fetchData = async () => {
       await getcitiesListDestination();
@@ -431,6 +434,7 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
                     executableOptionClickFunction={(optionValue: number) => {
                       setFlightServiceType(optionValue.toString());
                     }}
+                    setStringValue={setStringValue}
                   />
                 </div>
               </div>
@@ -443,6 +447,7 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
                     executableOptionClickFunction={(optionValue: number) => {
                       setSTN(optionValue.toString());
                     }}
+                    setStringValue={setStringValueSTN}
                   />
                 </div>
               </div>
@@ -456,6 +461,7 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
                     executableOptionClickFunction={(optionValue: number) => {
                       setCarrier(optionValue);
                     }}
+                    setStringValue={setStringValue}
                   />
                 </div>
               </div>
@@ -473,6 +479,7 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
                           .name
                       )
                     }
+                    setStringValue={setStringValue}
                   />
                 </div>
               </div>
@@ -581,17 +588,21 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
                 <p>Routing:</p>
                 <div className={styles.dropdownContainerRouting1}>
                   <div className={styles.Routing1container}>
-                    <span> {STNOptionsArray[STN - 1]?.name}</span>
+                    <span>
+                      {" "}
+                      {stringValueSTN === "" ? STN2 : stringValueSTN}
+                    </span>
                   </div>
                 </div>
                 <p>/</p>
                 <div className={styles.dropdownContainerRouting2}>
                   <DropdownMenu
-                    buttonText={routing22.toString()}
+                    buttonText={routing22?.toString()}
                     optionsArray={STNOptionsArray}
                     executableOptionClickFunction={(optionValue: number) =>
                       setRouting2(optionValue)
                     }
+                    setStringValue={setStringValue}
                   />
                 </div>
               </div>
@@ -604,6 +615,7 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
                     executableOptionClickFunction={(optionValue: number) =>
                       setflightType(optionValue)
                     }
+                    setStringValue={setStringValue}
                   />
                 </div>
               </div>

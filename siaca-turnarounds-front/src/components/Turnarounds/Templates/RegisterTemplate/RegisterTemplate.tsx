@@ -38,7 +38,7 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
   const [inputTitleAux, setinputTitleAux] = useState("");
   const [inputAux, setinputAux] = useState("");
   const [machineryCounter, setmachineryCounter] = useState(-1);
-
+  const [stringValue, setStringValue] = useState("");
   useEffect(() => {
     if (machineryCounter === -1) {
       getMachineryCount();
@@ -437,6 +437,7 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
                                 optionValue
                               )
                             }
+                            setStringValue={setStringValue}
                           />
                         </div>
                       </div>
