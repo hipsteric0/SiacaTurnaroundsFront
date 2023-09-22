@@ -616,6 +616,16 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
                       })}
                       renderInput={(params) => (
                         <TextField
+                        sx={{
+                          '& label': { paddingLeft: (theme) => theme.spacing(2) },
+                          '& input': { paddingLeft: (theme) => theme.spacing(3.5) },
+                          '& fieldset': {
+                            paddingLeft: (theme) => theme.spacing(2.5),
+                            borderRadius: '10px',
+                            borderBlockColor: '#bbb', 
+                            border: 'solid 2px #bbb',
+                          },
+                        }}
                           {...params}
                           size="small"
                           label=""
