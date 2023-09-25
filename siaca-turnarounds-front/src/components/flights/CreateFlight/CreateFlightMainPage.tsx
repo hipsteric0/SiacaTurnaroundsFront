@@ -45,10 +45,16 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
   const [ACreg, setACreg] = useState("");
   const [ACtype, setACtype] = useState("");
   const [gate, setGate] = useState("");
-  const [ETA, setETA] = useState("");
-  const [dateETA, setdateETA] = useState("");
-  const [ETD, setETD] = useState("");
-  const [dateETD, setdateETD] = useState("");
+  const [ETA1, setETA1] = useState("");
+  const [ETA2, setETA2] = useState("");
+  const [dateETAday, setdateETAday] = useState("");
+  const [dateETAmonth, setdateETAmonth] = useState("");
+  const [dateETAyear, setdateETAyear] = useState("");
+  const [ETD1, setETD1] = useState("");
+  const [ETD2, setETD2] = useState("");
+  const [dateETDday, setdateETDday] = useState("");
+  const [dateETDmonth, setdateETDmonth] = useState("");
+  const [dateETDyear, setdateETDyear] = useState("");
   const [routing1, setRouting1] = useState(0);
   const [routing2, setRouting2] = useState(0);
   const [flightType, setflightType] = useState(0);
@@ -56,7 +62,9 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
   const [clickedRecurrentFlight, setclickedRecurrentFlight] = useState(false);
   const [templateValue, setTemplateValue] = useState(0);
   const [recurrentStartDate, setrecurrentStartDate] = useState("");
-  const [recurrentEndDate, setrecurrentEndDate] = useState("");
+  const [recurrentEndDateDay, setrecurrentEndDateDay] = useState("");
+  const [recurrentEndDateMonth, setrecurrentEndDateMonth] = useState("");
+  const [recurrentEndDateYear, setrecurrentEndDateYear] = useState("");
   const [recurrentMonday, setrecurrentMonday] = useState(false);
   const [recurrentTuesday, setrecurrentTuesday] = useState(false);
   const [recurrentWednesday, setrecurrentWednesday] = useState(false);
@@ -169,10 +177,10 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
             estado: "No ha llegado",
             ente_pagador: ChargesPayableBy,
             numero_vuelo: flightNumber,
-            ETA: ETA,
-            ETD: ETD,
+            ETA: ETA1 + ":" + ETA2,
+            ETD: ETD1 + ":" + ETD2,
             ETA_fecha: ETADateValue,
-            ETD_fecha: dateETD,
+            ETD_fecha: dateETDyear + "-" + dateETDmonth + "-" + dateETDday,
             gate: gate,
             fk_aerolinea: Carrier,
             fk_plantilla: templateValue,
@@ -412,9 +420,17 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
   const handleRegisterButton = async () => {
     if (recurrentFlight === true) {
       //vuelo recurrente
-      let initialDate = new Date(dateETA);
+      let initialDate = new Date(
+        dateETAyear + "-" + dateETAmonth + "-" + dateETAday
+      );
       initialDate.setDate(initialDate.getDate() + 1);
-      let finalDate = new Date(recurrentEndDate);
+      let finalDate = new Date(
+        recurrentEndDateYear +
+          "-" +
+          recurrentEndDateMonth +
+          "-" +
+          recurrentEndDateDay
+      );
       finalDate.setDate(finalDate.getDate() + 1);
 
       //desde la fecha ETA a la fecha
@@ -480,7 +496,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
       router.reload();
     } else {
       //vuelo unico
-      await registerFlight(dateETA);
+      await registerFlight(dateETAyear + "-" + dateETAmonth + "-" + dateETAday);
       router.reload();
     }
   };
@@ -495,10 +511,16 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
       ACreg === "" ||
       ACtype === "" ||
       gate === "" ||
-      ETA === "" ||
-      dateETA === "" ||
-      ETD === "" ||
-      dateETD === "" ||
+      ETA1 === "" ||
+      ETA2 === "" ||
+      dateETAday === "" ||
+      dateETAmonth === "" ||
+      dateETAyear === "" ||
+      ETD1 === "" ||
+      ETD2 === "" ||
+      dateETDday === "" ||
+      dateETDmonth === "" ||
+      dateETDyear === "" ||
       routing2 === 0 ||
       flightType === 0 ||
       templateValue === 0 ||
@@ -506,7 +528,11 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
     )
       return true;
     if (clickedRecurrentFlight === true && recurrentFlight === true) {
-      if (recurrentEndDate === "") {
+      if (
+        recurrentEndDateDay === "" ||
+        recurrentEndDateMonth === "" ||
+        recurrentEndDateYear === ""
+      ) {
         return true;
       }
       if (
@@ -522,6 +548,8 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
     }
     return false;
   };
+
+  const formatAutocompleteArray = () => {};
 
   return (
     <>
@@ -615,6 +643,10 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
                       id="free-solo-demo"
                       freeSolo
                       fullWidth
+                      onInputChange={(event, newInputValue) => {
+                        setACreg(newInputValue);
+                        console.log("autocomplete value:", newInputValue);
+                      }}
                       options={acregOptionsArray?.map((option) => {
                         if (Carrier > 0) {
                           if (option?.id_airline === Carrier) {
@@ -674,17 +706,35 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
               <div className={styles.dataContainerRowItem}>
                 <p>ETA:</p>
                 <StandardInput
-                  setValue={setETA}
+                  setValue={setETA1}
                   inputText=""
-                  inputWidth="185px"
+                  inputWidth="55px"
+                />
+                <p>:</p>
+                <StandardInput
+                  setValue={setETA2}
+                  inputText=""
+                  inputWidth="55px"
                 />
               </div>
               <div className={styles.dataContainerRowItem}>
-                <p>DATE:</p>
+                <p>DIA:</p>
                 <StandardInput
-                  setValue={setdateETA}
+                  setValue={setdateETAday}
                   inputText=""
-                  inputWidth="185px"
+                  inputWidth="55px"
+                />
+                <p>MES:</p>
+                <StandardInput
+                  setValue={setdateETAmonth}
+                  inputText=""
+                  inputWidth="55px"
+                />
+                <p>AÑO:</p>
+                <StandardInput
+                  setValue={setdateETAyear}
+                  inputText=""
+                  inputWidth="95px"
                 />
               </div>
               <div className={styles.dataContainerRowItem}>
@@ -696,18 +746,37 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
             <div className={styles.dataContainerRowMediumGap}>
               <div className={styles.dataContainerRowItem}>
                 <p>ETD:</p>
+
                 <StandardInput
-                  setValue={setETD}
+                  setValue={setETD1}
                   inputText=""
-                  inputWidth="185px"
+                  inputWidth="55px"
+                />
+                <p>:</p>
+                <StandardInput
+                  setValue={setETD2}
+                  inputText=""
+                  inputWidth="55px"
                 />
               </div>
               <div className={styles.dataContainerRowItem}>
-                <p>DATE:</p>
+                <p>DIA:</p>
                 <StandardInput
-                  setValue={setdateETD}
+                  setValue={setdateETDday}
                   inputText=""
-                  inputWidth="185px"
+                  inputWidth="55px"
+                />
+                <p>MES:</p>
+                <StandardInput
+                  setValue={setdateETDmonth}
+                  inputText=""
+                  inputWidth="55px"
+                />
+                <p>AÑO:</p>
+                <StandardInput
+                  setValue={setdateETDyear}
+                  inputText=""
+                  inputWidth="95px"
                 />
               </div>
               <div className={styles.dataContainerRowItem}>
@@ -790,15 +859,30 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
             <div className={styles.recurrencyFormContainer}>
               <div className={styles.recurrencyFormRow}>
                 <p>Fecha de inicio de la serie:</p>
-                <div className={styles.unmodifiableInput}>{dateETA} </div>
+                <div className={styles.unmodifiableInput}>
+                  {dateETAday + "-" + dateETAmonth + "-" + dateETAyear}{" "}
+                </div>
               </div>
               <div className={styles.recurrencyFormRow}>
                 <p>Fecha de fin de la serie:</p>
 
+                <p>Dia:</p>
                 <StandardInput
-                  setValue={setrecurrentEndDate}
+                  setValue={setrecurrentEndDateDay}
                   inputText=""
-                  inputWidth="105px"
+                  inputWidth="55px"
+                />
+                <p>Mes:</p>
+                <StandardInput
+                  setValue={setrecurrentEndDateMonth}
+                  inputText=""
+                  inputWidth="55px"
+                />
+                <p>Año:</p>
+                <StandardInput
+                  setValue={setrecurrentEndDateYear}
+                  inputText=""
+                  inputWidth="95px"
                 />
                 <p className={styles.adviceText2}>
                   *Formato de Fecha: AAAA-MM-DD mayor a la fecha de inicio de la
