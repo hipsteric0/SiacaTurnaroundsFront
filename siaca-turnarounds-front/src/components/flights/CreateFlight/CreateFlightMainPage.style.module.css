@@ -87,7 +87,7 @@
   position: absolute;
   top: -12px;
   left: 45px;
-  z-index: 99;
+  z-index: 100;
 }
 .dropdownContainerServiceType {
   position: absolute;
