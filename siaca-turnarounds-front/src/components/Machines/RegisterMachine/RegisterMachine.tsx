@@ -22,6 +22,12 @@ interface PageProps {
 
 const RegisterMachine: React.FC<PageProps> = ({ setStep }) => {
   //if token exists show regular html else show not signed in screen
+
+  useEffect(() => {
+    getList();
+  }, []);
+
+  const [arrayList3, setArrayList3] = useState([]);
   const [identificador, setIdentificador] = useState("");
   const [modelo, setModelo] = useState("");
   const [combustible, setCombustible] = useState("");
@@ -32,6 +38,47 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep }) => {
   const [stringValue, setStringValue] = useState("");
 
   let responseValue = false;
+
+  const formatMachinesList = async (result: any[]) => {
+    if (machinesOptionsArray.length === 0) {
+      result?.map((index: any) => {
+        machinesOptionsArray.push({
+          key: index?.id,
+          name: index?.nombre,
+        });
+      });
+    }
+  };
+
+  const getList = async () => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/machineCategories";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            console.log("result", result);
+            setArrayList3(Object.values(result));
+            formatMachinesList(Object.values(result));
+            if (result?.[0]?.["status"] === 400) {
+              console.log("entro");
+            } else {
+            }
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
 
   const registerMachines = () => {
     const fetchData = async () => {
@@ -133,7 +180,7 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep }) => {
           />
           <DropdownMenu
             buttonText={"Categorias"}
-            optionsArray={categoryArray}
+            optionsArray={machinesOptionsArray}
             executableOptionClickFunction={(optionValue: number) =>
               category(optionValue)
             }
@@ -160,44 +207,7 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep }) => {
 
 export default RegisterMachine;
 
-let categoryArray: any = [
-  {
-    key: 1,
-    name: "Aguas servidas",
-  },
-  {
-    key: 2,
-    name: "Tractor de arrastre",
-  },
-  {
-    key: 3,
-    name: "Escalera",
-  },
-  {
-    key: 4,
-    name: "Cinta transportadora",
-  },
-  {
-    key: 5,
-    name: "Loader",
-  },
-  {
-    key: 6,
-    name: "Tractor de empuje",
-  },
-  {
-    key: 7,
-    name: "Aire acondicionado",
-  },
-  {
-    key: 8,
-    name: "Planta neumática",
-  },
-  {
-    key: 9,
-    name: "GPU Planta eléctrica",
-  },
-];
+let machinesOptionsArray: any = [];
 
 let stateArray: any = [
   {
