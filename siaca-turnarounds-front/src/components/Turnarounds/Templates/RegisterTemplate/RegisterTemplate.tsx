@@ -667,4 +667,18 @@ let machinesArray = [
     quantity: 0,
     hasInput: false,
   },
+  {
+    id: 9,
+    dbID: 10,
+    name: "Agua Potable",
+    quantity: 0,
+    hasInput: false,
+  },
+  {
+    id: 10,
+    dbID: 11,
+    name: "Barra de tiro",
+    quantity: 0,
+    hasInput: false,
+  },
 ];
