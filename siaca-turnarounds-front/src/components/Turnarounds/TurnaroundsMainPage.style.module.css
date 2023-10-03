@@ -166,3 +166,129 @@
   background: #f1f3f5;
   border-radius: 12px;
 }
+.openDetailContainer {
+  position: absolute;
+  right: 15px;
+  bottom: 10px;
+}
+.openDetailContainer:hover {
+  position: absolute;
+  right: 15px;
+  bottom: 10px;
+  cursor: pointer;
+}
+.openDetailContainerText {
+  color: lightgray;
+  text-decoration: underline;
+  font-size: 14px;
+}
+.openDetailContainerText:hover {
+  color: #bbb;
+  text-decoration: underline;
+  font-size: 14px;
+}
+
+.dialogBack {
+  background: #f1f3f5;
+  border-radius: 12px;
+}
+.detailDialog {
+  border-radius: 12px !important;
+}
+
+.detailDialogInfoContainer {
+}
+.dialogDetail {
+  padding: 50px;
+  font-family: Montserrat, Poppins, sans-serif;
+  color: #4d4e56;
+  font-size: 16px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.detailDialogInfoContainer {
+  padding: 17px 42px 15px 43px;
+  border-radius: 12px;
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.25);
+}
+.detailDialogInfoContainerTitleText {
+  font-size: 16px;
+  color: #08a75a;
+  font-weight: 600;
+  margin-bottom: 28px;
+}
+.detailDialogInfoContainerTitleTextNoMargin {
+  font-size: 16px;
+  color: #08a75a;
+  font-weight: 600;
+}
+.detailDialogInfoRow1 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-bottom: 1px solid #bbb;
+  padding-bottom: 7px;
+  margin-bottom: 15px;
+}
+.detailDialogInfoRow2 {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  border-bottom: 1px solid #bbb;
+  padding-bottom: 7px;
+  margin-bottom: 15px;
+}
+.detailDialogInfoItem {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}
+.detailDialogInfoItemTitle {
+  font-size: 16px;
+  font-weight: bold;
+  color: #4d4e56;
+}
+.detailDialogInfoItemTitle2 {
+  font-size: 16px;
+  font-weight: bold;
+  color: #08a75a;
+}
+.detailDialogInfoItemValueText {
+  font-size: 16px;
+  color: #4d4e56;
+}
+.detailDialogInfoItemValueText2 {
+  font-size: 16px;
+  color: #4d4e56;
+  font-weight: bold;
+}
+.closeIconDialog {
+  position: absolute;
+  top: 20px;
+  right: 25px;
+  cursor: pointer;
+}
+.redButton {
+  width: 95px;
+}
+.redButtonContainer {
+  display: flex;
+  justify-content: center;
+}
+.taskText {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.taskTextTitle {
+  padding-top: 15px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #4d4e56;
+}
+.taskTextText {
+  font-size: 16px;
+  color: #4d4e56;
+}
