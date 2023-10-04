@@ -155,7 +155,7 @@ export default async function handler(
     // Backend URL
     const url =
       `${BACKEND_BASE_URL}/plantillas/vista/` +
-      body?.["tempalteId"] +
+      body?.["templateId"] +
       `/?token=` +
       body?.["userToken"];
 
