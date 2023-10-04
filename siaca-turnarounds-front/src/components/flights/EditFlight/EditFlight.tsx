@@ -48,9 +48,19 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
   const [ACtype, setACtype] = useState("");
   const [gate, setGate] = useState("");
   const [ETA, setETA] = useState("");
+  const [ETA1, setETA1] = useState("");
+  const [ETA2, setETA2] = useState("");
   const [dateETA, setdateETA] = useState("");
+  const [dateETAday, setdateETAday] = useState("");
+  const [dateETAmonth, setdateETAmonth] = useState("");
+  const [dateETAyear, setdateETAyear] = useState("");
   const [ETD, setETD] = useState("");
+  const [ETD1, setETD1] = useState("");
+  const [ETD2, setETD2] = useState("");
   const [dateETD, setdateETD] = useState("");
+  const [dateETDday, setdateETDday] = useState("");
+  const [dateETDmonth, setdateETDmonth] = useState("");
+  const [dateETDyear, setdateETDyear] = useState("");
   const [routing1, setRouting1] = useState(0);
   const [routing11, setRouting11] = useState(0);
   const [routing2, setRouting2] = useState(0);
@@ -117,9 +127,19 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
             setACtype(result?.ac_type);
             setGate(result?.gate);
             setETA(result?.ETA);
+            setETA1(result?.ETA?.slice(0, 2));
+            setETA2(result?.ETA?.slice(3, 5));
             setETD(result?.ETD);
+            setETD1(result?.ETD?.slice(0, 2));
+            setETD2(result?.ETD?.slice(3, 5));
             setdateETA(result?.ETA_fecha);
+            setdateETAyear(result?.ETA_fecha?.slice(0, 4));
+            setdateETAmonth(result?.ETA_fecha?.slice(5, 7));
+            setdateETAday(result?.ETA_fecha?.slice(8, 10));
             setdateETD(result?.ETD_fecha);
+            setdateETDyear(result?.ETD_fecha?.slice(0, 4));
+            setdateETDmonth(result?.ETD_fecha?.slice(5, 7));
+            setdateETDday(result?.ETD_fecha?.slice(8, 10));
             setRouting1(result?.lugar_salida?.id);
             setRouting11(result?.lugar_salida?.codigo);
             setRouting2(result?.lugar_destino?.id);
@@ -143,6 +163,7 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
   };
 
   const registerFlight = async () => {
+    console.log("ETD1 +  + ETD2", ETD1 + ":" + ETD2);
     const fetchData = async () => {
       try {
         const url = "/api/updateFlight";
@@ -155,10 +176,10 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
             estado: "No ha llegado",
             ente_pagador: ChargesPayableBy,
             numero_vuelo: flightNumber,
-            ETA: ETA,
-            ETD: ETD,
-            ETA_fecha: dateETA,
-            ETD_fecha: dateETD,
+            ETA: ETA1 + ":" + ETA2,
+            ETD: ETD1 + ":" + ETD2,
+            ETA_fecha: dateETAyear + "-" + dateETAmonth + "-" + dateETAday,
+            ETD_fecha: dateETDyear + "-" + dateETDmonth + "-" + dateETDday,
             gate: gate,
             fk_aerolinea: Carrier,
             fk_plantilla: templateValue,
@@ -537,19 +558,40 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
               <div className={styles.dataContainerRowItem}>
                 <p>ETA:</p>
                 <StandardInputV2
-                  setValue={setETA}
+                  setValue={setETA1}
                   labelText=""
-                  placeholderText={ETA}
-                  inputWidth="185px"
+                  placeholderText={ETA?.slice(0, 2)}
+                  inputWidth="55px"
+                />
+                <p>:</p>
+                <StandardInputV2
+                  setValue={setETA2}
+                  labelText=""
+                  placeholderText={ETA?.slice(3, 5)}
+                  inputWidth="55px"
                 />
               </div>
               <div className={styles.dataContainerRowItem}>
-                <p>DATE:</p>
+                <p>DIA:</p>
                 <StandardInputV2
-                  setValue={setdateETA}
+                  setValue={setdateETAday}
                   labelText=""
-                  placeholderText={dateETA}
-                  inputWidth="185px"
+                  placeholderText={dateETAday}
+                  inputWidth="55px"
+                />
+                <p>MES:</p>
+                <StandardInputV2
+                  setValue={setdateETAmonth}
+                  labelText=""
+                  placeholderText={dateETAmonth}
+                  inputWidth="55px"
+                />
+                <p>AÑO:</p>
+                <StandardInputV2
+                  setValue={setdateETAyear}
+                  labelText=""
+                  placeholderText={dateETAyear}
+                  inputWidth="95px"
                 />
               </div>
               <div className={styles.dataContainerRowItem}>
@@ -562,19 +604,40 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
               <div className={styles.dataContainerRowItem}>
                 <p>ETD:</p>
                 <StandardInputV2
-                  setValue={setETD}
+                  setValue={setETD1}
                   labelText=""
-                  placeholderText={ETD}
-                  inputWidth="185px"
+                  placeholderText={ETD?.slice(0, 2)}
+                  inputWidth="55px"
+                />
+                <p>:</p>
+                <StandardInputV2
+                  setValue={setETD2}
+                  labelText=""
+                  placeholderText={ETD?.slice(3, 5)}
+                  inputWidth="55px"
                 />
               </div>
               <div className={styles.dataContainerRowItem}>
-                <p>DATE:</p>
+                <p>DIA:</p>
                 <StandardInputV2
-                  setValue={setdateETD}
+                  setValue={setdateETDday}
                   labelText=""
-                  placeholderText={dateETD}
-                  inputWidth="185px"
+                  placeholderText={dateETDday}
+                  inputWidth="55px"
+                />
+                <p>MES:</p>
+                <StandardInputV2
+                  setValue={setdateETDmonth}
+                  labelText=""
+                  placeholderText={dateETDmonth}
+                  inputWidth="55px"
+                />
+                <p>AÑO:</p>
+                <StandardInputV2
+                  setValue={setdateETDyear}
+                  labelText=""
+                  placeholderText={dateETDyear}
+                  inputWidth="95px"
                 />
               </div>
               <div className={styles.dataContainerRowItem}>

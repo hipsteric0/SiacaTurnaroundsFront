@@ -16,14 +16,14 @@ import { Collapse, Text } from "@nextui-org/react";
 import RedButton2 from "../Reusables/RedButton2";
 import GreenButton2 from "@/components/Reusables/GreenButton2";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import WarningAmberIcon from '@mui/icons-material/WarningAmber';
+import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 
 interface PageProps {
   setStep: (value: number) => void;
   setmachineID: (value: number) => void;
 }
 
-const MachinesMainPage: React.FC<PageProps> = ({setStep, setmachineID}) => {
+const MachinesMainPage: React.FC<PageProps> = ({ setStep, setmachineID }) => {
   //if token exists show regular html else show not signed in screen
 
   const isMobile = useMediaQuery("(max-width: 1270px)");
@@ -112,13 +112,12 @@ const MachinesMainPage: React.FC<PageProps> = ({setStep, setmachineID}) => {
     deleteMachine(machineID);
   };
 
-
   const arrayPrinter = (category: string) => {
     let y: any = [];
     let arrayAux: any = [];
     arrayAux = arrayList3.filter((user) => {
-      let aux: string = user["fk_categoria"]["nombre"] || undefined;
-      return aux.trim().toUpperCase() === category.toUpperCase();
+      let aux: string = user["fk_categoria"]?.["nombre"] || undefined;
+      return aux?.trim().toUpperCase() === category.toUpperCase();
     });
     arrayAux.map((index: any) => {
       y[index.id] = (
@@ -128,33 +127,42 @@ const MachinesMainPage: React.FC<PageProps> = ({setStep, setmachineID}) => {
             <div className={styles.menuContainer}>
               {openCardMenu === index.id && (
                 <div className={styles.menuAppearingContainer}>
-              
-              <Dialog
-              className={styles.dialogDelete}
-              open={deleteDialog}
-              onClose={() => setDeleteDialog(false)}
-            >
-              <div className={styles.dialogBack}>
-              <div className={styles.dialogText}>
-                <div className={styles.warningIcon}><WarningAmberIcon color="warning" fontSize="inherit"/></div>
-                <p><strong>¿Está seguro que desea eliminar la máquina {index.identificador}?</strong></p>
-                <div className={styles.dialogButtons}>
-                <GreenButton2
-                  executableFunction={() => {
-                  handleDeleteMachine(index.id);
-                  }}
-                  buttonText="Si"
-                />
-                <RedButton2
-                  executableFunction={() => {
-                    setDeleteDialog(false);
-                  }}
-                  buttonText="No"
-                />
-                </div>
-              </div>
-              </div>
-            </Dialog>
+                  <Dialog
+                    className={styles.dialogDelete}
+                    open={deleteDialog}
+                    onClose={() => setDeleteDialog(false)}
+                  >
+                    <div className={styles.dialogBack}>
+                      <div className={styles.dialogText}>
+                        <div className={styles.warningIcon}>
+                          <WarningAmberIcon
+                            color="warning"
+                            fontSize="inherit"
+                          />
+                        </div>
+                        <p>
+                          <strong>
+                            ¿Está seguro que desea eliminar la máquina{" "}
+                            {index.identificador}?
+                          </strong>
+                        </p>
+                        <div className={styles.dialogButtons}>
+                          <GreenButton2
+                            executableFunction={() => {
+                              handleDeleteMachine(index.id);
+                            }}
+                            buttonText="Si"
+                          />
+                          <RedButton2
+                            executableFunction={() => {
+                              setDeleteDialog(false);
+                            }}
+                            buttonText="No"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </Dialog>
 
                   <div className={styles.menuAppearingContainerRow}>
                     <p
@@ -295,6 +303,16 @@ const MachinesMainPage: React.FC<PageProps> = ({setStep, setmachineID}) => {
           <Collapse title="GPU Planta eléctrica" id="8">
             <div className={styles.machinesgrid}>
               {arrayPrinter("GPU Planta eléctrica")}
+            </div>
+          </Collapse>
+          <Collapse title="Agua Potable" id="9">
+            <div className={styles.machinesgrid}>
+              {arrayPrinter("Agua Potable")}
+            </div>
+          </Collapse>
+          <Collapse title="Barra de tiro" id="10">
+            <div className={styles.machinesgrid}>
+              {arrayPrinter("Barra de tiro")}
             </div>
           </Collapse>
         </Collapse.Group>
