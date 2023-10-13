@@ -18,6 +18,8 @@ import { BarChart } from '@mui/x-charts/BarChart';
 import { LineChart } from '@mui/x-charts/LineChart';
 import { ChartContainer, BarPlot } from '@mui/x-charts';
 import { PieChart } from '@mui/x-charts/PieChart';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import AirportShuttleIcon from '@mui/icons-material/AirportShuttle';
 
 interface PageProps {
   setStep: (value: number) => void;
@@ -29,17 +31,26 @@ const MetricsPage: React.FC<PageProps> = ({ setStep }) => {
   const [allowContinue, setAllowContinue] = useState(false);
   const [arrayList3, setArrayList3] = useState(['']);
   const [deleteDialog, setDeleteDialog] = useState(false);
-  const [parametro, setParametro] = useState(['']);
+  const [arrayMachine, setArrayMachine] = useState(['']);
+  const [arrayPersonnel, setArrayPersonnel] = useState(['']);
+  const [arraySLA, setArraySLA] = useState(['']);
+  const [arrayAirline, setArrayAirline] = useState(['']);
 
-  let array1: any[] = []
-  let array2: any[] = []
-  let array3: any[] = []
+  let arrayMachineNumber: any[] = []
+  let arrayMachineCount: any[] = []
+
+  let arrayPersonnelName: any[] = []
+  let arrayPersonnelCount: any[] = []
 
   useEffect(() => {
-    getList();
+    getMachine();
   }, []);
 
-  const getList = async () => {
+  useEffect(() => {
+    getPersonnel();
+  }, []);
+
+  const getMachine = async () => {
     const fetchData = async () => {
       try {
         const url = "/api/metricMachineUse";
@@ -55,7 +66,34 @@ const MetricsPage: React.FC<PageProps> = ({ setStep }) => {
             console.log("values", Object.values(result));
 
             setArrayList3(Object.values(result));
-            setParametro(Object.values(result));
+            setArrayMachine(Object.values(result));
+
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
+  const getPersonnel = async () => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/metricPersonnel";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            console.log(result);
+            console.log("ARRAY PERSONAL", Object.values(result));
+
+            setArrayPersonnel(Object.values(result));
 
           })
         );
@@ -68,68 +106,126 @@ const MetricsPage: React.FC<PageProps> = ({ setStep }) => {
   };
 
 
-  const arrayPrinter = () => {
+  const arrayPrinterMachine = () => {
     let y: any = [];
-    console.log("arrayList3", arrayList3.length);
-
-    arrayList3.map((index: any) => {
-      y[index?.fk_maquinaria_id] = (
-        <div key={index?.fk_maquinaria_id} className={styles.tableInfoRow}>
-          <td>{index?.fk_maquinaria__fk_categoria__nombre}</td>
-          <td>{index?.fk_maquinaria__identificador}</td>
-          <td>{index?.contador}</td>
-        </div>
-        
-      );
-    });
-    
-    return y;
-  };
-
-  const arrayPrinter2 = () => {
-    let y: any = [];
-    parametro.map((index: any) => {
-      array1.push(index?.fk_maquinaria__identificador)
-      array2.push(index?.contador)
-      array3.push(index?.fk_maquinaria__fk_categoria__nombre)
+    arrayMachine.map((index: any) => {
+      arrayMachineNumber.push(index?.fk_maquinaria__identificador)
+      arrayMachineCount.push(index?.contador)
       
     });
     return y;
   };
   
+
+  const arrayPrinterPersonnel = () => {
+    let y: any = [];
+    arrayPersonnel.map((index: any) => {
+      arrayPersonnelName.push(index?.full_name)
+      arrayPersonnelCount.push(index?.contador)
+      
+    });
+
+    return y;
+  };
   
 
   return (
-    <main className={styles.containerAirlinesMainPage}>
-      <div className={styles.airlinesListContainer}>
-      {arrayPrinter2()}
-      <BarChart
+    <main>
+<div className={styles.containerMetrics}>
+{arrayPrinterMachine()}
+{arrayPrinterPersonnel()}
+<div className={styles.divPersonnel} onClick={() => {setStep(1);}}> Personal
+<center>
+<BarChart
   xAxis={[
     {
       id: 'barCategories',
-      data: array1,
+      data: arrayPersonnelName,
+      scaleType: 'band',
+      label: 'Personal'
+    },
+  ]}
+  series={[
+    {
+      data: arrayPersonnelCount,
+      label: 'Turnarounds',
+      color: '#00A75D'
+    },
+  ]}
+  width={500}
+  height={400}
+/>
+</center>
+</div>
+<div className={styles.divMachine} onClick={() => {setStep(2);}}> Maquinarias 
+<center>
+<BarChart
+  xAxis={[
+    {
+      id: 'barCategories',
+      data: arrayMachineNumber,
+      scaleType: 'band',
+      label: 'Maquinarias',
+    },
+  ]}
+  series={[
+    {
+      data: arrayMachineCount,
+      label: 'Número de usos',
+      color: '#00A75D'
+    },
+  ]}
+  width={500}
+  height={400}
+/>
+</center>
+</div>
+<div className={styles.divSLA} onClick={() => {setStep(3);}}> Métricas SLA
+<center>
+<BarChart
+  xAxis={[
+    {
+      id: 'barCategories',
+      data: arrayMachineNumber,
       scaleType: 'band',
       label: 'Maquinarias'
     },
   ]}
   series={[
     {
-      data: array2,
-      label: 'Número de usos'
+      data: arrayMachineCount,
+      label: 'Número de usos',
+      color: '#00A75D'
     },
   ]}
   width={500}
   height={400}
 />
-
-        <div>
-          <div className={styles.tableTitlesContainer}>
-            <span>Categoria</span>
-            <span>Identificador</span>
-            <span>Numero de usos</span>
-          </div>
-          {arrayPrinter()}
-        </div>
+</center>
+</div>
+<div className={styles.divAirline} onClick={() => {setStep(4);}}> Aerolineas
+<center>
+<BarChart
+  xAxis={[
+    {
+      id: 'barCategories',
+      data: arrayMachineNumber,
+      scaleType: 'band',
+      label: 'Maquinarias'
+    },
+  ]}
+  series={[
+    {
+      data: arrayMachineCount,
+      label: 'Número de usos',
+      color: '#00A75D'
+    },
+  ]}
+  width={500}
+  height={400}
+/>
+</center>
+</div>
         </div>
     </main>
   );
