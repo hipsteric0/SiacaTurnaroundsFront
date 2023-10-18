@@ -947,7 +947,7 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
                       lista de personal y seleccion: -1 -2 -3
                     </div>
                   </div>
-                  BOTON DE GUARDAR
+
                   <div className={styles.redButtonContainer}>
                     <div className={styles.redButton}>
                       <RedButton2
@@ -1069,8 +1069,9 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
                   <div className={styles.redButtonContainer}>
                     <div className={styles.redButton}>
                       <GreenButton2
-                        executableFunction={() => {
-                          handleSaveData();
+                        executableFunction={async () => {
+                          await handleSaveData();
+                          router.reload();
                         }}
                         buttonText={"Guardar"}
                       />
@@ -1080,7 +1081,8 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
                     <div className={styles.redButton}>
                       <RedButton2
                         executableFunction={() => {
-                          setOpenAssignDialog(false);
+                          //setOpenAssignDialog(false);
+                          router.reload();
                         }}
                         buttonText={"Cerrar"}
                       />
