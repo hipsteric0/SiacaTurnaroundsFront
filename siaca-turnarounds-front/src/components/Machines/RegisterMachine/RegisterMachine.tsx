@@ -131,7 +131,7 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep }) => {
   };
 
   const fuel = (id: number) => {
-    setCombustible(fuelArray[id].name);
+    setCombustible(fuelArray[id]?.name);
   };
 
   return (
@@ -222,19 +222,19 @@ let stateArray: any = [
 
 let fuelArray: any = [
   {
-    key: 1,
+    key: 0,
     name: "Gasolina",
   },
   {
-    key: 2,
+    key: 1,
     name: "Diesel",
   },
   {
-    key: 3,
+    key: 2,
     name: "Electrico",
   },
   {
-    key: 4,
+    key: 3,
     name: "Otro",
   },
 ];

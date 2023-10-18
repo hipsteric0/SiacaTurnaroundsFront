@@ -64,6 +64,22 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
     await fetchData().catch(console.error);
   };
 
+  const arrayPrinterMachinery = () => {
+    let y: any = [];
+
+    const [hoverEye, sethoverEye] = useState(false);
+    const [hoverEyeId, sethoverEyeId] = useState(-1);
+    const [hoverPencilId, sethoverPencilId] = useState(-1);
+    const [hoverTrashId, sethoverTrashId] = useState(-1);
+    const [clickID, setclickID] = useState(-1);
+
+    arrayList3.map((index: any) => {
+      y[index.id] = <div key={index.id} className={styles.tableInfoRow}></div>;
+    });
+
+    return y;
+  };
+
   const arrayPrinter = () => {
     let y: any = [];
     console.log("arrayList3", arrayList3.length);

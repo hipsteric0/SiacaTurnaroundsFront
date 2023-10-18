@@ -1,4 +1,5 @@
 import GreenButton from "@/components/Reusables/GreenButton";
+import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
 import styles from "./TurnaroundsMainPage.style.module.css";
 import KeyboardArrowLeftRoundedIcon from "@mui/icons-material/KeyboardArrowLeftRounded";
 import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRightRounded";
@@ -22,6 +23,8 @@ import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import RedButton2 from "../Reusables/RedButton2";
 import GreenButton2 from "@/components/Reusables/GreenButton2";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
+import StandardInputV2 from "../Reusables/StandardInputV2";
+import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 
 interface PageProps {
   setStep: (value: number) => void;
@@ -38,8 +41,18 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
 
   const [arrayList3, setArrayList3] = useState([]);
   const [tasksarrayList, setTasksarrayList] = useState([]);
+  const [machinesByTurnaroundArrayList, setMachinesByTurnaroundArrayList] =
+    useState([]);
+  const [machinesarrayList, setMachinesarrayList] = useState([]);
+  const [machinesReservationsarrayList, setMachinesReservationsarrayList] =
+    useState([]);
+  const [
+    machinesQuantityByTemplatearrayList,
+    setMachinesQuantityByTemplatearrayList,
+  ] = useState([]);
   let date = new Date();
   const [arrayFilteredList3, setArrayFilteredList3] = useState([]);
+  const [machinesToPostArray, setMachinesToPostArray] = useState([]);
   const [openCardMenu, setOpenCardMenu] = useState(-1);
   const [dateCounter, setdateCounter] = useState(0);
   const [dateState, setdateState] = useState("");
@@ -47,9 +60,26 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
   const [hoverOptionValue, setHoverOptionValue] = useState(-1);
   const [isFilteredResults, setIsFilteredResults] = useState(false);
   const [deleteDialog, setDeleteDialog] = useState(false);
+  const [addMachineDialog, setAddMachineDialog] = useState(false);
+  const [showMachineDialog, setShowMachineDialog] = useState(false);
   const [openDetailDialogID, setOpenDetailDialogID] = useState(false);
+  const [openAssignDialogID, setOpenAssignDialogID] = useState(false);
   const [openDetailDialog, setOpenDetailDialog] = useState(false);
-
+  const [openAssignDialog, setOpenAssignDialog] = useState(false);
+  const [machinesDateTimeSelected, setMachinesDateTimeSelected] =
+    useState(false);
+  const [aux, setAux] = useState(false);
+  const [ETA, setETA] = useState("");
+  const [horaInicio, setHoraInicio] = useState("");
+  const [minutosInicio, setMinutosInicio] = useState("");
+  const [horaFin, setHoraFin] = useState("");
+  const [minutosFin, setMinutosFin] = useState("");
+  const [turnaroundDate, setTurnaroundDate] = useState(false);
+  const [auxState, setauxState] = useState(-1);
+  const [selectedMachineID, setSelectedMachineID] = useState([]);
+  const [checkTask, setcheckTask] = useState(false);
+  const [checkTaskID, setcheckTaskID] = useState(-1);
+  const [reservedTask, setreservedTask] = useState(false);
   let filterValues: any[] = [];
   const getList = async () => {
     setIsFilteredResults(false);
@@ -70,6 +100,128 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
           res.json().then((result) => {
             console.log("turnarounds list", Object.values(result));
             setArrayList3(Object.values(result));
+
+            if (result?.[0]?.["status"] === 400) {
+              console.log("entro");
+            } else {
+            }
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
+  const postMachine = async () => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/machinesList";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            console.log("machines list", result);
+            setMachinesarrayList(Object.values(result));
+            if (result?.[0]?.["status"] === 400) {
+              console.log("entro");
+            } else {
+            }
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
+  const getMachinesList = async () => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/machinesList";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            console.log("machines list", result);
+            setMachinesarrayList(Object.values(result));
+            if (result?.[0]?.["status"] === 400) {
+              console.log("entro");
+            } else {
+            }
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
+  const getMachinesReservationList = async (turnaroundDate: any) => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/getMachinesReservationList";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+            fecha: turnaroundDate,
+            hora_inicio: horaInicio + ":" + minutosInicio,
+            hora_fin: horaFin + ":" + minutosFin,
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            console.log("machines reservation list", result);
+            setMachinesReservationsarrayList(Object.values(result));
+
+            if (result?.[0]?.["status"] === 400) {
+              console.log("entro");
+            } else {
+            }
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
+  const getMachineryQuantityByTemplate = async (templateID: any) => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/machineryQuantityByTemplate";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+            plantillaID: templateID,
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            console.log("MachinesQuantityByTemplatearrayList", result);
+            setMachinesQuantityByTemplatearrayList(Object.values(result));
             if (result?.[0]?.["status"] === 400) {
               console.log("entro");
             } else {
@@ -115,6 +267,70 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
     await fetchData().catch(console.error);
   };
 
+  const getMachinesByTurnaround = async (machineID: any) => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/getMachinesByTurnaround";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+            machineID: machineID,
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            console.log("Machines By Turnaround list", result);
+            setMachinesByTurnaroundArrayList(Object.values(result));
+            if (result?.[0]?.["status"] === 400) {
+              console.log("entro");
+            } else {
+            }
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
+  const postMachineReservartion = async (machineryID: any) => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/postMachineReservation";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+            hora_inicio: horaInicio + ":" + minutosInicio,
+            hora_fin: horaFin + ":" + minutosFin,
+            fecha: turnaroundDate,
+            fk_maquinaria: machineryID,
+            fk_turnaround: openAssignDialogID,
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            console.log("Guardar", result);
+
+            if (result?.[0]?.["status"] === 400) {
+              console.log("entro");
+            } else {
+            }
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
   const getDateForCalendar = () => {
     let x =
       date.getDate().toString() +
@@ -139,6 +355,17 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
     date = new Date(new Date().setDate(new Date().getDate() + dateCounter + 1));
     getDateForCalendar();
     getList();
+  };
+
+  const handleAddMachinery = async (machineCategoryID: any) => {
+    await setSelectedMachineID(machineCategoryID);
+    await setAddMachineDialog(true);
+  };
+
+  const handleShowMachinery = async (machineCategoryID: any) => {
+    await setSelectedMachineID(machineCategoryID);
+    await setAux(true);
+    await setShowMachineDialog(true);
   };
 
   const flightMachine = async (flightID: number) => {
@@ -169,6 +396,281 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
     flightMachine(flightID);
   };
 
+  const arrayPrinterSelectedMachinesForCategory = (category: any) => {
+    let y: any = [];
+    machinesToPostArray.map((index: any) => {
+      //console.log("the current category index is:", index);
+      if (index?.categoryID === category) {
+        console.log("entro", index);
+        y[index.id] = (
+          <div key={index.id} className={styles.tableInfoRow}>
+            <p>{index?.machineID}</p>
+            <p>ola</p>
+          </div>
+        );
+      }
+    });
+    //setMachinesToPostArray(machinesToPostArray);
+    //getMachinesList();
+    return y;
+  };
+
+  const MachineryQuantitiesArrayPrinter = () => {
+    let y: any = [];
+    let auxtitle = "";
+    let auxtitleBoolean = true;
+    let counter = 0;
+    machinesQuantityByTemplatearrayList.map((index: any) => {
+      if (auxtitle === index?.fk_tarea?.titulo) {
+        auxtitleBoolean = false;
+      }
+      if (
+        !machineryQuantityArrayAux.find(
+          (o) => o.id_categoria === index?.fk_categoria?.id
+        )
+      ) {
+        machineryQuantityArrayAux.push({
+          cantidad: index?.cantidad,
+          id_categoria: index?.fk_categoria?.id,
+          id_plantilla: index?.fk_plantilla?.id,
+        });
+      }
+
+      y[counter] = (
+        <div className={styles.detailDialogInfoRow1}>
+          <Dialog
+            className={styles.dialogDelete}
+            open={addMachineDialog}
+            onClose={() => setAddMachineDialog(false)}
+          >
+            <div className={styles.dialogAddMachine}>
+              Cliquea una maquinaria para añadirla:
+              {arrayPrinterMachinesSelection(index?.fk_categoria?.id)}
+              <div>
+                <GreenButton
+                  executableFunction={() => setAddMachineDialog(false)}
+                  buttonText="Confirmar"
+                />
+              </div>
+              {reservedTask && (
+                <div className={styles.machineReservedContainer}>
+                  <p>La maquinaria que intentas añadir esta reservada!</p>
+                  <div
+                    className={styles.closeIconContainer}
+                    onClick={() => setreservedTask(false)}
+                  >
+                    <CloseRoundedIcon htmlColor="#bbb" />
+                  </div>
+                </div>
+              )}
+            </div>
+          </Dialog>
+          <Dialog
+            className={styles.dialogDelete}
+            open={showMachineDialog}
+            onClose={() => setShowMachineDialog(false)}
+          >
+            <div className={styles.dialogAddMachine}>
+              Lista de maquinarias añadidas:
+              {arrayPrinterShowSelectedMachines(index?.fk_categoria?.id)}
+            </div>
+          </Dialog>
+          <div className={styles.addMachineItem}>
+            <span className={styles.detailDialogInfoItemValueText2}>
+              {index?.fk_categoria?.nombre} (Se requieren: {index?.cantidad}{" "}
+              maquinarias) :
+            </span>
+
+            <span className={styles.detailDialogInfoItemValueText2}>
+              {/**array printer de machinesToPostArray que haga match con la categoria */}
+              {arrayPrinterSelectedMachinesForCategory(index?.fk_categoria?.id)}
+            </span>
+            <div className={styles.addMachineryButtonIcon}>
+              <AddCircleRoundedIcon
+                htmlColor="#bbb"
+                onClick={() => {
+                  handleAddMachinery(index?.fk_categoria?.id);
+                }}
+              />
+            </div>
+          </div>
+        </div>
+      );
+      counter++;
+    });
+
+    return y;
+  };
+
+  const handleSaveData = async () => {
+    for (let i = 0; i < machinesToPostArray.length; i++) {
+      await postMachineReservartion(machinesToPostArray[i]?.machineID);
+    }
+    //luego lo mismo para personal, un for para cada personal
+
+    //router reload
+  };
+
+  const findMachineInPostArray = (selectedMachineModelID: any) => {
+    for (let i = 0; i < machinesToPostArray.length; i++) {
+      if (machinesToPostArray[i]?.machineID === selectedMachineModelID) {
+        return true;
+      }
+    }
+    return false;
+  };
+  const findMachineInReservationsArray = (selectedMachineModelID: any) => {
+    for (let i = 0; i < machinesReservationsarrayList.length; i++) {
+      if (
+        machinesReservationsarrayList[i]?.fk_maquinaria?.id ===
+        selectedMachineModelID
+      ) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  const addMachineToPage = (selectedMachineModelID: any) => {
+    console.log("selectedMachineModelID", selectedMachineModelID);
+    console.log("machineryQuantityArrayAux", machineryQuantityArrayAux);
+    let arrayOfMachinesToPush: any = [];
+    let x = 0;
+    let cantidad = -1;
+    let machineCategory = -1;
+    let nombre = "";
+    while (x <= machinesarrayList.length) {
+      if (machinesarrayList[x]?.id === selectedMachineModelID) {
+        machineCategory = machinesarrayList[x]?.fk_categoria?.id;
+        //push into array the machine added
+        nombre = machinesarrayList[x]?.identificador;
+        console.log("x1", machineCategory);
+      }
+      x++;
+    }
+    x = 0;
+
+    while (x <= machinesQuantityByTemplatearrayList.length) {
+      if (
+        machinesQuantityByTemplatearrayList[x]?.fk_categoria?.id ===
+        machineCategory
+      ) {
+        cantidad = machinesQuantityByTemplatearrayList[x]?.cantidad;
+        //push into array the machine added
+
+        console.log("x2", cantidad);
+      }
+      x++;
+    }
+    if (findMachineInPostArray(selectedMachineModelID) === false) {
+      arrayOfMachinesToPush = machinesToPostArray;
+      arrayOfMachinesToPush.push({
+        machineID: selectedMachineModelID,
+        categoryID: machineCategory,
+        machineName: nombre,
+      });
+      setMachinesToPostArray(arrayOfMachinesToPush);
+    } else {
+      //remove from array the added object
+    }
+
+    console.log("machinesToPostArray", machinesToPostArray);
+  };
+
+  const arrayPrinterMachinesSelection = (machineCategoryID: any) => {
+    let y: any = [];
+
+    machinesarrayList.map((index: any) => {
+      if (index?.fk_categoria?.id === selectedMachineID) {
+        if (index?.estado) {
+          y[index?.id] = (
+            <div
+              key={index?.id}
+              className={styles.machineContainer}
+              onClick={async () => {
+                if (findMachineInReservationsArray(index?.id)) {
+                  setreservedTask(true);
+                  setTimeout(() => {
+                    setreservedTask(false);
+                  }, 5000);
+                } else {
+                  await setcheckTask(true);
+                  setcheckTaskID(index?.id);
+                  await addMachineToPage(index?.id);
+                }
+              }}
+            >
+              <p className={styles.taskTextText}> {index?.identificador}</p>
+              {(checkTask && checkTaskID === index?.id) ||
+              findMachineInPostArray(index?.id) ? (
+                <div className={styles.checkIcon}>
+                  <CheckCircleRoundedIcon
+                    htmlColor="#00A75D"
+                    fontSize="small"
+                  />
+                </div>
+              ) : (
+                <></>
+              )}
+            </div>
+          );
+        }
+      }
+    });
+
+    return y;
+  };
+
+  const arrayPrinterShowSelectedMachines = (machineCategoryID: any) => {
+    let y: any = [];
+    let enoughMachines = false;
+
+    machinesToPostArray.map((index: any) => {
+      console.log("machinesToPostArray", machinesToPostArray);
+
+      if (index?.categoryID === machineCategoryID) {
+        console.log("index?.machineName", index?.machineName);
+        enoughMachines = true;
+        y[index?.id] = (
+          <div key={index?.id} className={styles.machineContainerNoHover}>
+            <p className={styles.taskTextText}> {index?.machineName}</p>
+            <p>ola</p>
+          </div>
+        );
+      }
+    });
+    return y;
+  };
+
+  const MachinesArrayPrinter = () => {
+    let y: any = [];
+    let auxtitle = "";
+    let auxtitleBoolean = true;
+    let counter = 0;
+    machinesByTurnaroundArrayList.map((index: any) => {
+      if (auxtitle === index?.fk_maquinaria?.fk_categoria?.nombre) {
+        auxtitleBoolean = false;
+      }
+      y[counter] = (
+        <div key={index?.id} className={styles.taskText}>
+          {auxtitleBoolean && (
+            <p className={styles.taskTextTitle}>
+              {index?.fk_maquinaria?.fk_categoria?.nombre}
+            </p>
+          )}
+          <p className={styles.taskTextText}>
+            - {index?.fk_maquinaria?.identificador}
+          </p>
+        </div>
+      );
+      auxtitleBoolean = true;
+      counter++;
+      auxtitle = index?.fk_maquinaria?.fk_categoria?.nombre;
+    });
+
+    return y;
+  };
+
   const TasksArrayPrinter = () => {
     let y: any = [];
     let auxtitle = "";
@@ -195,7 +697,6 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
   const arrayPrinter = () => {
     let y: any = [];
     let arrayList3aux: any = [];
-    console.log("statusVar", arrayList3?.[0]?.["status"]);
 
     isFilteredResults
       ? (arrayList3aux = arrayFilteredList3)
@@ -398,11 +899,15 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
                     <div className={styles.detailDialogInfoRow1}>
                       <div>{TasksArrayPrinter()}</div>
                     </div>
-                    <p className={styles.detailDialogInfoContainerTitleText}>
+                    <p
+                      className={
+                        styles.detailDialogInfoContainerTitleTextNoMargin
+                      }
+                    >
                       Maquinarias
                     </p>
                     <div className={styles.detailDialogInfoRow1}>
-                      lista de Maquinarias y seleccion: -1 -2 -3
+                      <div>{MachinesArrayPrinter()}</div>
                     </div>
                     <p className={styles.detailDialogInfoContainerTitleText}>
                       personal
@@ -417,6 +922,134 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
                       <RedButton2
                         executableFunction={() => {
                           setOpenDetailDialog(false);
+                        }}
+                        buttonText={"Cerrar"}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </Dialog>
+            )}
+            {openAssignDialogID === index?.id && (
+              <Dialog
+                open={openAssignDialog}
+                onClose={() => setOpenAssignDialog(false)}
+                className={styles.detailDialog}
+                fullScreen={true}
+              >
+                <div className={styles.dialogDetail}>
+                  <div
+                    className={styles.closeIconDialog}
+                    onClick={() => setOpenAssignDialog(false)}
+                  >
+                    <CloseRoundedIcon htmlColor="#4d4e56" />
+                  </div>
+                  <div className={styles.assignContainers}>
+                    <div className={styles.detailDialogInfoContainer}>
+                      <div className={styles.detailDialogInfoRow1}>
+                        <div className={styles.detailDialogInfoItem}>
+                          <span className={styles.detailDialogInfoItemTitle2}>
+                            Asignar personal
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {machinesDateTimeSelected ? (
+                      <div className={styles.detailDialogInfoContainer}>
+                        <div className={styles.detailDialogInfoRow1}>
+                          <div className={styles.detailDialogInfoItem}>
+                            <span className={styles.detailDialogInfoItemTitle2}>
+                              Asignar maquinaria
+                            </span>
+                          </div>
+                        </div>
+
+                        {MachineryQuantitiesArrayPrinter()}
+                      </div>
+                    ) : (
+                      <div className={styles.detailDialogInfoContainer}>
+                        <span className={styles.detailDialogInfoItemTitle}>
+                          Selecciona la hora de inicio y fin de reserva de las
+                          maquinarias
+                        </span>
+                        <p className={styles.detailDialogInfoItemText}>
+                          Hora de inicio del turnaround:{" "}
+                          <strong>{index?.hora_inicio}</strong>
+                        </p>
+
+                        <div className={styles.dateContainerRowItem}>
+                          <p>Hora inicio:</p>
+                          <StandardInputV2
+                            setValue={setHoraInicio}
+                            labelText=""
+                            placeholderText={"HH"}
+                            inputWidth="55px"
+                          />
+                          <p>:</p>
+                          <StandardInputV2
+                            setValue={setMinutosInicio}
+                            labelText=""
+                            placeholderText={"MM"}
+                            inputWidth="55px"
+                          />
+                        </div>
+                        <div className={styles.dateContainerRowItem}>
+                          <p>Hora final:</p>
+                          <StandardInputV2
+                            setValue={setHoraFin}
+                            labelText=""
+                            placeholderText={"HH"}
+                            inputWidth="55px"
+                          />
+                          <p>:</p>
+                          <StandardInputV2
+                            setValue={setMinutosFin}
+                            labelText=""
+                            placeholderText={"MM"}
+                            inputWidth="55px"
+                          />
+                        </div>
+                        <p className={styles.detailDialogInfoItemText}>
+                          *El sistema tomará la reserva desde 30 minutos antes
+                          de la hora de inicio hasta una hora después de la hora
+                          final.
+                        </p>
+                        <div className={styles.greenButtonAssignContainer}>
+                          <GreenButton2
+                            executableFunction={async () => {
+                              await getMachinesReservationList(
+                                index?.fecha_inicio
+                              );
+                              await setMachinesDateTimeSelected(true);
+                            }}
+                            buttonText="Confirmar"
+                            disabled={
+                              horaInicio === "" ||
+                              horaFin === "" ||
+                              minutosInicio === "" ||
+                              minutosFin === ""
+                            }
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  <div className={styles.redButtonContainer}>
+                    <div className={styles.redButton}>
+                      <GreenButton2
+                        executableFunction={() => {
+                          handleSaveData();
+                        }}
+                        buttonText={"Guardar"}
+                      />
+                    </div>
+                  </div>
+                  <div className={styles.redButtonContainer}>
+                    <div className={styles.redButton}>
+                      <RedButton2
+                        executableFunction={() => {
+                          setOpenAssignDialog(false);
                         }}
                         buttonText={"Cerrar"}
                       />
@@ -519,11 +1152,29 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
             className={styles.openDetailContainer}
             onClick={() => {
               getTemplateTasks(index?.fk_vuelo?.fk_plantilla?.id);
+              getMachinesByTurnaround(index?.id);
               setOpenDetailDialogID(index.id);
+
               setOpenDetailDialog(true);
             }}
           >
             <p className={styles.openDetailContainerText}>Ver mas</p>
+          </div>
+          <div
+            className={styles.openDetailContainer2}
+            onClick={async () => {
+              await getMachinesList();
+              await getTemplateTasks(index?.fk_vuelo?.fk_plantilla?.id);
+              await getMachinesByTurnaround(index?.id);
+              await getMachineryQuantityByTemplate(
+                index?.fk_vuelo?.fk_plantilla?.id
+              );
+              await setOpenAssignDialogID(index.id);
+              await setTurnaroundDate(index?.fecha_inicio);
+              await setOpenAssignDialog(true);
+            }}
+          >
+            <p className={styles.openDetailContainerText}>Asignar</p>
           </div>
           <div className={styles.imageContainer}>
             {index?.fk_aerolinea?.nombre} image not found
@@ -629,3 +1280,6 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
 };
 
 export default TurnaroundsMainPage;
+
+let machineryArrayAux: any = [];
+let machineryQuantityArrayAux: any = [];

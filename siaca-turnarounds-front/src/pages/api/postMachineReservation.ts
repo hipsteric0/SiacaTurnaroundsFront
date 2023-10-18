@@ -101,7 +101,7 @@ export default async function handler(
   let statusText = "INTERNAL";
   try {
     // Get request method (GET by default)
-    const httpMethod: string = req.method || "GET";
+    const httpMethod: string = "POST";
 
     if (!validHTTPMethods.includes(httpMethod)) {
       status = 405;
@@ -144,23 +144,20 @@ export default async function handler(
           "Content-Type": "application/json", // Add body content-type
           // Any additional headers here only related to request body...
         },
+
         body: JSON.stringify({
-          identificador: body?.["identificador"],
-          modelo: body?.["modelo"],
-          combustible: body?.["combustible"],
-          estado: body?.["estado"],
-          fk_categoria: body?.["fk_categoria"],
+          hora_inicio: body?.["hora_inicio"],
+          hora_fin: body?.["hora_fin"],
+          fecha: body?.["fecha"],
+          fk_maquinaria: body?.["fk_maquinaria"],
+          fk_turnaround: body?.["fk_turnaround"],
         }),
-        /*body: JSON.stringify({
-          username: "hola9",
-          password: "hola",
-        }),*/
       };
     }
-    console.log("body", fetchOptions);
-    console.log("combustible", body?.["combustible"]);
+
     // Backend URL
-    const url = `${BACKEND_BASE_URL}/maquinarias/?token=` + body?.["userToken"];
+    const url =
+      `${BACKEND_BASE_URL}/maquinarias/reserva/?token=` + body?.["userToken"];
 
     // Make the actual request to backend
     const response = await fetch(url, fetchOptions);

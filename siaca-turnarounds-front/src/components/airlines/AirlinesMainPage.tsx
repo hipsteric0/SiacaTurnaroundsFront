@@ -15,7 +15,7 @@ import { useMediaQuery } from "@mui/material";
 import { text } from "stream/consumers";
 import RedButton2 from "../Reusables/RedButton2";
 import GreenButton2 from "@/components/Reusables/GreenButton2";
-import WarningAmberIcon from '@mui/icons-material/WarningAmber';
+import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 
 interface PageProps {
   setStep: (value: number) => void;
@@ -23,7 +23,11 @@ interface PageProps {
   setCityID: (value: number) => void;
 }
 
-const AirlinesMainPage: React.FC<PageProps> = ({ setStep, setflightID, setCityID }) => {
+const AirlinesMainPage: React.FC<PageProps> = ({
+  setStep,
+  setflightID,
+  setCityID,
+}) => {
   //if token exists show regular html else show not signed in screen
   const isMobile = useMediaQuery("(max-width: 1270px)");
   const [allowContinue, setAllowContinue] = useState(false);
@@ -33,8 +37,6 @@ const AirlinesMainPage: React.FC<PageProps> = ({ setStep, setflightID, setCityID
   const [citiesDialog, setCitiesDialog] = useState(false);
   const [registerDialog, setRegisterDialog] = useState(false);
   const [deleteCitiesDialog, setDeleteCitiesDialog] = useState(false);
-  
- 
 
   useEffect(() => {
     getList();
@@ -146,13 +148,13 @@ const AirlinesMainPage: React.FC<PageProps> = ({ setStep, setflightID, setCityID
     deleteAirline(airlineID);
   };
 
-  const handleDeleteCity= async (cityID: number) => {
+  const handleDeleteCity = async (cityID: number) => {
     deleteCity(cityID);
   };
 
   const arrayPrinter = () => {
     let y: any = [];
-    
+
     console.log("arrayList3", arrayList3.length);
     const [hoverEye, sethoverEye] = useState(false);
     const [hoverEyeId, sethoverEyeId] = useState(-1);
@@ -170,28 +172,37 @@ const AirlinesMainPage: React.FC<PageProps> = ({ setStep, setflightID, setCityID
               onClose={() => setDeleteDialog(false)}
             >
               <div className={styles.dialogBack}>
-              <div className={styles.dialogText}>
-                <div className={styles.warningIcon}><WarningAmberIcon color="warning" fontSize="inherit"/></div>
-                <p><strong>¿Está seguro que desea eliminar {arrayList3.find((o) => o.id=== clickID)?.nombre}?</strong></p>
-                <br/>
-                <p>Si elimina esta aerolinea seran eliminados <strong>todos</strong> los vuelos y</p>
-                turnarounds asociados a ella.
-                <div className={styles.dialogButtons}>
-                <GreenButton2
-                  executableFunction={() => {
-                  handleDeleteAirline(clickID);
-                  
-                  }}
-                  buttonText="Si"
-                />
-                <RedButton2
-                  executableFunction={() => {
-                    setDeleteDialog(false);
-                  }}
-                  buttonText="No"
-                />
+                <div className={styles.dialogText}>
+                  <div className={styles.warningIcon}>
+                    <WarningAmberIcon color="warning" fontSize="inherit" />
+                  </div>
+                  <p>
+                    <strong>
+                      ¿Está seguro que desea eliminar{" "}
+                      {arrayList3.find((o) => o.id === clickID)?.nombre}?
+                    </strong>
+                  </p>
+                  <br />
+                  <p>
+                    Si elimina esta aerolinea seran eliminados{" "}
+                    <strong>todos</strong> los vuelos y
+                  </p>
+                  turnarounds asociados a ella.
+                  <div className={styles.dialogButtons}>
+                    <GreenButton2
+                      executableFunction={() => {
+                        handleDeleteAirline(clickID);
+                      }}
+                      buttonText="Si"
+                    />
+                    <RedButton2
+                      executableFunction={() => {
+                        setDeleteDialog(false);
+                      }}
+                      buttonText="No"
+                    />
+                  </div>
                 </div>
-              </div>
               </div>
             </Dialog>
           }
@@ -206,45 +217,49 @@ const AirlinesMainPage: React.FC<PageProps> = ({ setStep, setflightID, setCityID
               onMouseEnter={() => {
                 sethoverEyeId(index.id);
               }}
-              onMouseLeave={() => {              
+              onMouseLeave={() => {
                 sethoverEyeId(-1);
               }}
             >
               <RemoveRedEyeIcon
-              htmlColor={hoverEyeId === index.id ? "#00A75D" : "#4D4E56"}
-              onClick={() => {
-                
-              }}/>{" "}
+                htmlColor={hoverEyeId === index.id ? "#00A75D" : "#4D4E56"}
+                onClick={() => {}}
+              />{" "}
             </div>
 
-            <div className={styles.functionIcon}
-            onMouseEnter={() => {
-              sethoverPencilId(index.id);
-            }}
-            onMouseLeave={() => {              
-              sethoverPencilId(-1);
-            }}>
-              <BorderColorOutlinedIcon 
-              htmlColor={hoverPencilId === index.id ? "#00A75D" : "#4D4E56"}
-              onClick={() => {
-                setflightID(index.id);
-                setStep(2);
-              }}/>{" "}
+            <div
+              className={styles.functionIcon}
+              onMouseEnter={() => {
+                sethoverPencilId(index.id);
+              }}
+              onMouseLeave={() => {
+                sethoverPencilId(-1);
+              }}
+            >
+              <BorderColorOutlinedIcon
+                htmlColor={hoverPencilId === index.id ? "#00A75D" : "#4D4E56"}
+                onClick={() => {
+                  setflightID(index.id);
+                  setStep(2);
+                }}
+              />{" "}
             </div>
 
-            <div className={styles.functionIcon}
-            onMouseEnter={() => {
-              sethoverTrashId(index.id);
-            }}
-            onMouseLeave={() => {              
-              sethoverTrashId(-1);
-            }}>
+            <div
+              className={styles.functionIcon}
+              onMouseEnter={() => {
+                sethoverTrashId(index.id);
+              }}
+              onMouseLeave={() => {
+                sethoverTrashId(-1);
+              }}
+            >
               <DeleteOutlineOutlinedIcon
-               htmlColor={hoverTrashId === index.id ? "#f10303" : "#4D4E56"}
-               onClick={() => {
-                setclickID(index.id);
-                setDeleteDialog(true);
-               }}
+                htmlColor={hoverTrashId === index.id ? "#f10303" : "#4D4E56"}
+                onClick={() => {
+                  setclickID(index.id);
+                  setDeleteDialog(true);
+                }}
               />
             </div>
           </td>
@@ -257,7 +272,7 @@ const AirlinesMainPage: React.FC<PageProps> = ({ setStep, setflightID, setCityID
 
   const arrayPrinter2 = () => {
     let y: any = [];
-    
+
     const [hoverEye, sethoverEye] = useState(false);
     const [hoverEyeId, sethoverEyeId] = useState(-1);
     const [hoverPencilId, sethoverPencilId] = useState(-1);
@@ -274,26 +289,32 @@ const AirlinesMainPage: React.FC<PageProps> = ({ setStep, setflightID, setCityID
               onClose={() => setDeleteCitiesDialog(false)}
             >
               <div className={styles.dialogBack}>
-              <div className={styles.dialogText}>
-                <div className={styles.warningIcon}><WarningAmberIcon color="warning" fontSize="inherit"/></div>
-                <p><strong>¿Está seguro que desea eliminar {arrayList4.find((o) => o.id=== clickID)?.nombre}?</strong></p>
-                <br/>
-                <div className={styles.dialogButtons}>
-                <GreenButton2
-                  executableFunction={() => {
-                  handleDeleteCity(clickID);
-                  
-                  }}
-                  buttonText="Si"
-                />
-                <RedButton2
-                  executableFunction={() => {
-                    setDeleteCitiesDialog(false);
-                  }}
-                  buttonText="No"
-                />
+                <div className={styles.dialogText}>
+                  <div className={styles.warningIcon}>
+                    <WarningAmberIcon color="warning" fontSize="inherit" />
+                  </div>
+                  <p>
+                    <strong>
+                      ¿Está seguro que desea eliminar{" "}
+                      {arrayList4.find((o) => o.id === clickID)?.nombre}?
+                    </strong>
+                  </p>
+                  <br />
+                  <div className={styles.dialogButtons}>
+                    <GreenButton2
+                      executableFunction={() => {
+                        handleDeleteCity(clickID);
+                      }}
+                      buttonText="Si"
+                    />
+                    <RedButton2
+                      executableFunction={() => {
+                        setDeleteCitiesDialog(false);
+                      }}
+                      buttonText="No"
+                    />
+                  </div>
                 </div>
-              </div>
               </div>
             </Dialog>
           }
@@ -304,35 +325,39 @@ const AirlinesMainPage: React.FC<PageProps> = ({ setStep, setflightID, setCityID
           <td>{index.pais}</td>
           <td>{index.aeropuerto}</td>
           <td className={styles.iconsContainer2}>
-
-            <div className={styles.functionIcon}
-            onMouseEnter={() => {
-              sethoverPencilId(index.id);
-            }}
-            onMouseLeave={() => {              
-              sethoverPencilId(-1);
-            }}>
-              <BorderColorOutlinedIcon 
-              htmlColor={hoverPencilId === index.id ? "#00A75D" : "#4D4E56"}
-              onClick={() => {
-                setCityID(index.id);
-                setStep(4);
-              }}/>{" "}
+            <div
+              className={styles.functionIcon}
+              onMouseEnter={() => {
+                sethoverPencilId(index.id);
+              }}
+              onMouseLeave={() => {
+                sethoverPencilId(-1);
+              }}
+            >
+              <BorderColorOutlinedIcon
+                htmlColor={hoverPencilId === index.id ? "#00A75D" : "#4D4E56"}
+                onClick={() => {
+                  setCityID(index.id);
+                  setStep(4);
+                }}
+              />{" "}
             </div>
 
-            <div className={styles.functionIcon}
-            onMouseEnter={() => {
-              sethoverTrashId(index.id);
-            }}
-            onMouseLeave={() => {              
-              sethoverTrashId(-1);
-            }}>
+            <div
+              className={styles.functionIcon}
+              onMouseEnter={() => {
+                sethoverTrashId(index.id);
+              }}
+              onMouseLeave={() => {
+                sethoverTrashId(-1);
+              }}
+            >
               <DeleteOutlineOutlinedIcon
-               htmlColor={hoverTrashId === index.id ? "#f10303" : "#4D4E56"}
-               onClick={() => {
-                setclickID(index.id);
-                setDeleteCitiesDialog(true);
-               }}
+                htmlColor={hoverTrashId === index.id ? "#f10303" : "#4D4E56"}
+                onClick={() => {
+                  setclickID(index.id);
+                  setDeleteCitiesDialog(true);
+                }}
               />
             </div>
           </td>
@@ -343,51 +368,49 @@ const AirlinesMainPage: React.FC<PageProps> = ({ setStep, setflightID, setCityID
     return y;
   };
 
-
   return (
     <main className={styles.containerAirlinesMainPage}>
       <div className={styles.registerbuttoncontainer}>
-
-      {
-            <Dialog
-              className={styles.dialogDelete}
-              open={citiesDialog}
-              fullWidth={true}
-              maxWidth="xl"
-              scroll="paper"
-              onClose={() => setCitiesDialog(false)}
-            >
-              <div className={styles.dialogBack}>
+        {
+          <Dialog
+            className={styles.dialogDelete}
+            open={citiesDialog}
+            fullWidth={true}
+            maxWidth="xl"
+            scroll="paper"
+            onClose={() => setCitiesDialog(false)}
+          >
+            <div className={styles.dialogBack}>
               <div className={styles.dialogText}>
-              <GreenButton
-          executableFunction={() => setStep(3)}
-          buttonText="Agregar Ciudades"
-        />
-        <Spacer/>
-              <div className={styles.airlinesListContainer}>
-            <div>
-          <div className={styles.tableTitlesContainer}>
-            <span>IATA</span>
-            <span>OACI</span>
-            <span>Ciudad/Estado</span>
-            <span>Pais</span>
-            <span>Aeropuerto</span>
-            <span>Opciones</span>
-          </div>
-          {arrayPrinter2()}
-        </div>
-      </div>
+                <GreenButton
+                  executableFunction={() => setStep(3)}
+                  buttonText="Agregar Ciudades"
+                />
+                <Spacer />
+                <div className={styles.airlinesListContainer}>
+                  <div>
+                    <div className={styles.tableTitlesContainer}>
+                      <span>IATA</span>
+                      <span>OACI</span>
+                      <span>Ciudad/Estado</span>
+                      <span>Pais</span>
+                      <span>Aeropuerto</span>
+                      <span>Opciones</span>
+                    </div>
+                    {arrayPrinter2()}
+                  </div>
+                </div>
               </div>
-              </div>
-            </Dialog>
-          }
+            </div>
+          </Dialog>
+        }
 
         <GreenButton
           executableFunction={() => setCitiesDialog(true)}
           buttonText="Ciudades"
         />
-        <Spacer/>
-          <GreenButton
+        <Spacer />
+        <GreenButton
           executableFunction={() => setStep(1)}
           buttonText="Registrar aerolinea"
         />
