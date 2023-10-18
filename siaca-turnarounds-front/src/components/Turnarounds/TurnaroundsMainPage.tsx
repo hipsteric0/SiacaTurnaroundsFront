@@ -531,6 +531,29 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
     return false;
   };
 
+  const removeMachinefromPage = (selectedMachineModelID: any) => {
+    console.log("selectedMachineModelID", selectedMachineModelID);
+    console.log("machineryQuantityArrayAux", machineryQuantityArrayAux);
+    let arrayOfMachinesToPush: any = [];
+    let x = 0;
+    let machineCategory = -1;
+    let nombre = "";
+    while (x <= machinesToPostArray.length) {
+      if (machinesToPostArray[x]?.machineID === selectedMachineModelID) {
+        //delete that instance from posting array
+        arrayOfMachinesToPush = machinesToPostArray;
+        arrayOfMachinesToPush.splice(x, 1);
+        setMachinesToPostArray(arrayOfMachinesToPush);
+        x++;
+      } else {
+        x++;
+      }
+    }
+    x = 0;
+
+    console.log("machinesToPostArray after delete", machinesToPostArray);
+  };
+
   const addMachineToPage = (selectedMachineModelID: any) => {
     console.log("selectedMachineModelID", selectedMachineModelID);
     console.log("machineryQuantityArrayAux", machineryQuantityArrayAux);
@@ -594,9 +617,15 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
                     setreservedTask(false);
                   }, 5000);
                 } else {
-                  await setcheckTask(true);
-                  setcheckTaskID(index?.id);
-                  await addMachineToPage(index?.id);
+                  if (findMachineInPostArray(index?.id)) {
+                    await removeMachinefromPage(index?.id);
+                    await setcheckTask(false);
+                    await setcheckTaskID(checkTaskID - 1);
+                  } else {
+                    await addMachineToPage(index?.id);
+                    await setcheckTask(true);
+                    await setcheckTaskID(index?.id);
+                  }
                 }
               }}
             >
@@ -675,11 +704,12 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
     let y: any = [];
     let auxtitle = "";
     let auxtitleBoolean = true;
+    let counter = 0;
     tasksarrayList.map((index: any) => {
       if (auxtitle === index?.fk_tarea?.titulo) {
         auxtitleBoolean = false;
       }
-      y[index?.id] = (
+      y[counter] = (
         <div key={index?.id} className={styles.taskText}>
           {auxtitleBoolean && (
             <p className={styles.taskTextTitle}>{index?.fk_tarea?.titulo}</p>
@@ -688,6 +718,7 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
         </div>
       );
       auxtitleBoolean = true;
+      counter++;
       auxtitle = index?.fk_tarea?.titulo;
     });
 
