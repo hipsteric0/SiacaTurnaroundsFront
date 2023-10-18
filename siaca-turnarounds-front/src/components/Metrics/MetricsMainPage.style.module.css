@@ -1,0 +1,68 @@
+.containerMetrics {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  }
+  
+  .divPersonnel { 
+    grid-area: 1 / 1 / 2 / 2;
+    width: 90%;
+    height: 95%;
+    border-radius: 12px;
+    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.25);
+    padding: 16px; 
+    margin-left: 70px;
+    color:#98989A;
+  }
+  .divMachine { 
+    grid-area: 1 / 2 / 2 / 3;
+    width: 90%;
+    height: 95%;
+    border-radius: 12px;
+    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.25);
+    padding: 16px;
+    color:#98989A;
+  }
+  .divSLA { 
+    grid-area: 2 / 1 / 3 / 2;
+    width: 90%;
+    height: 95%;
+    border-radius: 12px;
+    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.25);
+    padding: 16px;
+    margin-left: 70px;
+    color:#98989A;
+  }
+  .divAirline { 
+    grid-area: 2 / 2 / 3 / 3;
+    width: 90%;
+    height: 95%;
+    border-radius: 12px;
+    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.25);
+    padding: 16px;
+    color:#98989A;
+  }
+
+  .divPersonnel:hover {
+    box-shadow: 0 5px 10px 0 #00A75D;
+    color:#00A75D;
+  }
+
+  .divMachine:hover {
+    box-shadow: 0 5px 10px 0 #00A75D;
+    color:#00A75D;
+  }
+
+  .divSLA:hover {
+    box-shadow: 0 5px 10px 0 #00A75D;
+    color:#00A75D;
+  }
+
+  .divAirline:hover {
+    box-shadow: 0 5px 10px 0 #00A75D;
+    color:#00A75D;
+  }
+  
+  

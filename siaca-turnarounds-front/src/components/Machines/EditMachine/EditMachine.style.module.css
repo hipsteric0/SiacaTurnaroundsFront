@@ -14,6 +14,11 @@
   display: flex;
   gap: 10px;
   flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 1fr;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
 }
 .inputsList {
   display: flex;
@@ -22,6 +27,7 @@
   padding: 40px 0px 40px 10px;
   border-top: 1px solid #bbb;
   align-items: center;
+  grid-area: 2 / 2 / 3 / 3;
 }
 .inputsListImage {
   display: flex;
@@ -30,11 +36,19 @@
   padding: 40px 0px 40px 10px;
   border-top: 1px solid #bbb;
   justify-content: center;
+  grid-area: 2 / 1 / 3 / 2; 
 }
-.titleText {
+.titleTextImagen {
   font-size: 14px;
   font-weight: bold;
   color: #08a75a;
+  grid-area: 1 / 1 / 2 / 2;
+}
+.titleTextDates {
+  font-size: 14px;
+  font-weight: bold;
+  color: #08a75a;
+  grid-area: 1 / 2 / 2 / 3; 
 }
 .registerbuttoncontainer {
   width: 100%;

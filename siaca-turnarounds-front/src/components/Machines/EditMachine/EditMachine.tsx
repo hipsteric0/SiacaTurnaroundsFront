@@ -138,7 +138,7 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep, machineID }) => {
         />
       </div>
       <div className={styles.machinesListContainer}>
-        <span className={styles.titleText}>Imagen</span>
+        <span className={styles.titleTextImagen}>Imagen</span>
         <div className={styles.inputsListImage}>
           <div className={styles.uploadContainer}>
             <DriveFolderUploadRoundedIcon fontSize="inherit" />
@@ -148,7 +148,7 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep, machineID }) => {
             </div>
           </div>
         </div>
-        <span className={styles.titleText}>Datos</span>
+        <span className={styles.titleTextDates}>Datos</span>
         <div className={styles.inputsList}>
           <StandardInputV2
             setValue={setIdentificador}
