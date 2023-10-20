@@ -42,6 +42,12 @@ const MetricsPage: React.FC<PageProps> = ({ setStep }) => {
   let arrayPersonnelName: any[] = []
   let arrayPersonnelCount: any[] = []
 
+  let arrayAirlineName: any[] = []
+  let arrayAirlineCount: any[] = []
+
+  let arraySLAName: any[] = []
+  let arraySLATime: any[] = []
+
   useEffect(() => {
     getMachine();
   }, []);
@@ -49,6 +55,15 @@ const MetricsPage: React.FC<PageProps> = ({ setStep }) => {
   useEffect(() => {
     getPersonnel();
   }, []);
+
+  useEffect(() => {
+    getAirline();
+  }, []);
+
+  useEffect(() => {
+    getSLA();
+  }, []);
+
 
   const getMachine = async () => {
     const fetchData = async () => {
@@ -105,6 +120,60 @@ const MetricsPage: React.FC<PageProps> = ({ setStep }) => {
     await fetchData().catch(console.error);
   };
 
+  const getAirline = async () => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/metricAirline";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            console.log(result);
+
+            setArrayAirline(Object.values(result));
+
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
+
+  const getSLA = async () => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/metricSLA";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            console.log("SLA RESULTADO",result);
+
+            setArraySLA(Object.values(result));
+
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
+
 
   const arrayPrinterMachine = () => {
     let y: any = [];
@@ -127,6 +196,29 @@ const MetricsPage: React.FC<PageProps> = ({ setStep }) => {
 
     return y;
   };
+
+  const arrayPrinterAirline = () => {
+    let y: any = [];
+    arrayAirline.map((index: any) => {
+      arrayAirlineName.push(index?.fk_aerolinea__nombre)
+      arrayAirlineCount.push(index?.contador)
+      
+    });
+
+    return y;
+  };
+
+  const arrayPrinterSLA = () => {
+    let y: any = [];
+    arraySLA.map((index: any) => {
+      arraySLAName.push(index?.fk_vuelo__numero_vuelo)
+      arraySLATime.push(index?.tiempo)
+      
+    });
+
+    return y;
+  };
+
   
 
   return (
@@ -134,8 +226,11 @@ const MetricsPage: React.FC<PageProps> = ({ setStep }) => {
 <div className={styles.containerMetrics}>
 {arrayPrinterMachine()}
 {arrayPrinterPersonnel()}
-<div className={styles.divPersonnel} onClick={() => {setStep(1);}}> Personal
+{arrayPrinterAirline()}
+{arrayPrinterSLA()}
+<div className={styles.divPersonnel} onClick={() => router.push("/Metrics/MetricsPersonnel")}> Personal
 <center>
+
 <BarChart
   xAxis={[
     {
@@ -148,82 +243,89 @@ const MetricsPage: React.FC<PageProps> = ({ setStep }) => {
   series={[
     {
       data: arrayPersonnelCount,
+      label: 'Número de turnarounds',
+      color: '#00A75D'
+    },
+  ]}
+  width={500}
+  height={300}
+/>
+
+</center>
+</div>
+<div className={styles.divMachine} onClick={() => router.push("/Metrics/MetricsMachine")}> Maquinarias 
+<center>
+
+<BarChart
+  xAxis={[
+    {
+      id: 'barCategories',
+      data: arrayMachineNumber,
+      scaleType: 'band',
+      label: 'Maquinas'
+    },
+  ]}
+  series={[
+    {
+      data: arrayMachineCount,
+      label: 'Número de usos',
+      color: '#00A75D'
+    },
+  ]}
+  width={500}
+  height={300}
+/>
+
+</center>
+</div>
+<div className={styles.divSLA} onClick={() => router.push("/Metrics/MetricsSLA")}> Métricas SLA
+<center>
+
+<BarChart
+  xAxis={[
+    {
+      id: 'barCategories',
+      data: arraySLAName,
+      scaleType: 'band',
+      label: 'Número de vuelo'
+    },
+  ]}
+  series={[
+    {
+      data: arraySLATime,
+      label: 'Tiempo del turnaround (minutos)',
+      color: '#00A75D'
+    },
+  ]}
+  width={500}
+  height={300}
+/>
+
+</center>
+</div>
+<div className={styles.divAirline} onClick={() => router.push("/Metrics/MetricsAirline")}> Aerolineas
+<center>
+
+<BarChart
+  xAxis={[
+    {
+      id: 'barCategories',
+      data: arrayAirlineName,
+      scaleType: 'band',
+      label: 'Aerolineas'
+    },
+  ]}
+  series={[
+    {
+      data: arrayAirlineCount,
       label: 'Turnarounds',
       color: '#00A75D'
     },
   ]}
   width={500}
-  height={400}
+  height={300}
 />
-</center>
-</div>
-<div className={styles.divMachine} onClick={() => {setStep(2);}}> Maquinarias 
-<center>
-<BarChart
-  xAxis={[
-    {
-      id: 'barCategories',
-      data: arrayMachineNumber,
-      scaleType: 'band',
-      label: 'Maquinarias',
-    },
-  ]}
-  series={[
-    {
-      data: arrayMachineCount,
-      label: 'Número de usos',
-      color: '#00A75D'
-    },
-  ]}
-  width={500}
-  height={400}
-/>
-</center>
-</div>
-<div className={styles.divSLA} onClick={() => {setStep(3);}}> Métricas SLA
-<center>
-<BarChart
-  xAxis={[
-    {
-      id: 'barCategories',
-      data: arrayMachineNumber,
-      scaleType: 'band',
-      label: 'Maquinarias'
-    },
-  ]}
-  series={[
-    {
-      data: arrayMachineCount,
-      label: 'Número de usos',
-      color: '#00A75D'
-    },
-  ]}
-  width={500}
-  height={400}
-/>
-</center>
-</div>
-<div className={styles.divAirline} onClick={() => {setStep(4);}}> Aerolineas
-<center>
-<BarChart
-  xAxis={[
-    {
-      id: 'barCategories',
-      data: arrayMachineNumber,
-      scaleType: 'band',
-      label: 'Maquinarias'
-    },
-  ]}
-  series={[
-    {
-      data: arrayMachineCount,
-      label: 'Número de usos',
-      color: '#00A75D'
-    },
-  ]}
-  width={500}
-  height={400}
-/>
+
 </center>
 </div>
         </div>

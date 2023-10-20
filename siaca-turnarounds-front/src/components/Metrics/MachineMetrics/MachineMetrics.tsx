@@ -86,42 +86,46 @@ const MachineMetrics: React.FC<PageProps> = ({ setStep }) => {
     return y;
   };
 
-  const arrayPrinter2 = () => {
+  const arrayPrinter2 = (category: string) => {
     let y: any = [];
-    parametro.map((index: any) => {
+    const arrayAux = parametro.filter(parametro => parametro["fk_maquinaria__fk_categoria__nombre"] === category);
+    arrayAux.map((index: any) => {
       array1.push(index?.fk_maquinaria__identificador)
       array2.push(index?.contador)
-      array3.push(index?.fk_maquinaria__fk_categoria__nombre)
+      y =(
+        <BarChart
+        xAxis={[
+          {
+            id: 'barCategories',
+            data: array1,
+            scaleType: 'band',
+            label: 'Maquinarias'
+          },
+        ]}
+        series={[
+          {
+            data: array2,
+            label: 'Número de usos'
+          },
+        ]}
+        width={500}
+        height={400}
+      />
+      );
       
     });
     return y;
   };
-  
   
 
   return (
     <main className={styles.containerAirlinesMainPage}>
       <div className={styles.airlinesListContainer}>
       <p>MAQUINARIAS</p>
-      {arrayPrinter2()}
-      <BarChart
-  xAxis={[
-    {
-      id: 'barCategories',
-      data: array1,
-      scaleType: 'band',
-      label: 'Maquinarias'
-    },
-  ]}
-  series={[
-    {
-      data: array2,
-      label: 'Número de usos'
-    },
-  ]}
-  width={500}
-  height={400}
-/>
+
+
+            {arrayPrinter2("Escalera")}
+
 
         <div>
           <div className={styles.tableTitlesContainer}>
@@ -137,6 +141,7 @@ const MachineMetrics: React.FC<PageProps> = ({ setStep }) => {
 };
 
 export default MachineMetrics;
+
 
 
 

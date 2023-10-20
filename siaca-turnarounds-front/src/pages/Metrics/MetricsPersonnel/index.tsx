@@ -14,7 +14,7 @@ export default function Metrics() {
   return (
       <main className={styles.mainContainerMachinesPage}>
         <SiacaNavbar />
-        <MetricsPage setStep={setStep} />
+        <PersonnelMetrics setStep={setStep} />
       </main>
     );
   }
