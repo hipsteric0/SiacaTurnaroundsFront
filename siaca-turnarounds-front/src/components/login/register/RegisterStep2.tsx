@@ -19,6 +19,11 @@ const LoginMainPage: React.FC<PageProps> = ({
   emailValue, //el email que introdujo el user en el paso anterior
   passwordValue, //el password  que introdujo el user en el paso anterior
 }) => {
+  useEffect(() => {
+    getJobPositionsList();
+    getDepartmentsList();
+  }, []);
+
   const isMobile = useMediaQuery("(max-width: 1270px)");
   const [allowContinue, setAllowContinue] = useState(false);
   const [selectedDepartment, setSelectedDepartment] = React.useState(
@@ -49,7 +54,8 @@ const LoginMainPage: React.FC<PageProps> = ({
   const [lastName, setLastName] = useState("");
   const [cedula, setCedula] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-
+  const [arrayJobPositionsList, setArrayJobPositionsList] = useState([]);
+  const [arrayDepartmentsList, setArrayDepartmentsList] = useState([]);
   const [userID, setUserID] = useState("");
   let userIDValue;
 
@@ -129,6 +135,58 @@ const LoginMainPage: React.FC<PageProps> = ({
     fetchData().catch(console.error);
   };
 
+  const getDepartmentsList = async () => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/getPersonnelDepartmentsList";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+          }),
+        };
+
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            console.log("getJobPositionsList", Object.values(result));
+
+            setArrayDepartmentsList(Object.values(result));
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
+  const getJobPositionsList = async () => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/getPersonnelJobPositionsList";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+          }),
+        };
+
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            console.log("getJobPositionsList", Object.values(result));
+
+            setArrayJobPositionsList(Object.values(result));
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
   const validateContinueButton = () => {
     if ((firstName && lastName && cedula && phoneNumber) === "") {
       if (allowContinue === true) setAllowContinue(false);
@@ -151,6 +209,34 @@ const LoginMainPage: React.FC<PageProps> = ({
     registerStep2requestFirst();
     registerStep2requestSecond();
     setStep(6);
+  };
+
+  const arrayPrinterDepartments = () => {
+    let y: any = [];
+
+    arrayDepartmentsList.map((index: any) => {
+      y[index?.id] = (
+        <Dropdown.Item key={index?.nombre} className={styles.dropdownItem}>
+          {index?.nombre}
+        </Dropdown.Item>
+      );
+    });
+
+    return y;
+  };
+
+  const arrayPrinterJobPositions = () => {
+    let y: any = [];
+
+    arrayJobPositionsList.map((index: any) => {
+      y[index?.id] = (
+        <Dropdown.Item key={index?.nombre} className={styles.dropdownItem}>
+          {index?.nombre}
+        </Dropdown.Item>
+      );
+    });
+
+    return y;
   };
 
   return (
@@ -247,90 +333,7 @@ const LoginMainPage: React.FC<PageProps> = ({
               selectedKeys={selectedDepartment}
               onSelectionChange={setSelectedDepartment}
             >
-              <Dropdown.Item key="Dirección" className={styles.dropdownItem}>
-                Dirección
-              </Dropdown.Item>
-              <Dropdown.Item key="Operaciones" className={styles.dropdownItem}>
-                Operaciones
-              </Dropdown.Item>
-              <Dropdown.Item
-                key="Recursos Humanos"
-                className={styles.dropdownItem}
-              >
-                Recursos Humanos
-              </Dropdown.Item>
-              <Dropdown.Item
-                key="Administración y Finanzas"
-                className={styles.dropdownItem}
-              >
-                Administración y Finanzas
-              </Dropdown.Item>
-              <Dropdown.Item
-                key="Tecnología Informática"
-                className={styles.dropdownItem}
-              >
-                Tecnología Informática
-              </Dropdown.Item>
-              <Dropdown.Item
-                key="Comercialización"
-                className={styles.dropdownItem}
-              >
-                Comercialización
-              </Dropdown.Item>
-              <Dropdown.Item
-                key="Mantenimiento"
-                className={styles.dropdownItem}
-              >
-                Mantenimiento
-              </Dropdown.Item>
-              <Dropdown.Item
-                key="Servicio al Pasajero"
-                className={styles.dropdownItem}
-              >
-                Servicio al Pasajero
-              </Dropdown.Item>
-              <Dropdown.Item
-                key="Despacho de Vuelos"
-                className={styles.dropdownItem}
-              >
-                Despacho de Vuelos
-              </Dropdown.Item>
-              <Dropdown.Item
-                key="Seguridad y Salud en el Trabajo"
-                className={styles.dropdownItem}
-              >
-                Seguridad y Salud en el Trabajo
-              </Dropdown.Item>
-              <Dropdown.Item
-                key="Capacitacion y Desarrollo"
-                className={styles.dropdownItem}
-              >
-                Capacitacion y Desarrollo
-              </Dropdown.Item>
-              <Dropdown.Item
-                key="Seguridad Operacional"
-                className={styles.dropdownItem}
-              >
-                Seguridad Operacional
-              </Dropdown.Item>
-              <Dropdown.Item
-                key="Organizacion y Metodos"
-                className={styles.dropdownItem}
-              >
-                Organizacion y Metodos
-              </Dropdown.Item>
-              <Dropdown.Item
-                key="Gestion de la Calidad"
-                className={styles.dropdownItem}
-              >
-                Gestion de la Calidad
-              </Dropdown.Item>
-              <Dropdown.Item
-                key="Gestion y Recaudación de Cobros y Pagos"
-                className={styles.dropdownItem}
-              >
-                Gestion y Recaudación de Cobros y Pagos
-              </Dropdown.Item>
+              {arrayPrinterDepartments()}
             </Dropdown.Menu>
           </Dropdown>
         </div>
@@ -350,30 +353,7 @@ const LoginMainPage: React.FC<PageProps> = ({
               selectedKeys={selectedPosition}
               onSelectionChange={setSelectedPosition}
             >
-              <Dropdown.Item key="Director" className={styles.dropdownItem}>
-                Director
-              </Dropdown.Item>
-              <Dropdown.Item
-                key="Analista de RRHH"
-                className={styles.dropdownItem}
-              >
-                Analista de RRHH
-              </Dropdown.Item>
-              <Dropdown.Item key="Jefe de IT" className={styles.dropdownItem}>
-                Jefe de IT
-              </Dropdown.Item>
-              <Dropdown.Item
-                key="Analista de Flota"
-                className={styles.dropdownItem}
-              >
-                Analista de Flota
-              </Dropdown.Item>
-              <Dropdown.Item
-                key="Desarrollo de Software"
-                className={styles.dropdownItem}
-              >
-                Desarrollo de Software
-              </Dropdown.Item>
+              {arrayPrinterJobPositions()}
             </Dropdown.Menu>
           </Dropdown>
         </div>
