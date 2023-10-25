@@ -46,6 +46,8 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
   const [machinesarrayList, setMachinesarrayList] = useState([]);
   const [machinesReservationsarrayList, setMachinesReservationsarrayList] =
     useState([]);
+  const [personnelReservationsarrayList, setPersonnelReservationsarrayList] =
+    useState([]);
   const [
     machinesQuantityByTemplatearrayList,
     setMachinesQuantityByTemplatearrayList,
@@ -68,12 +70,18 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
   const [openAssignDialog, setOpenAssignDialog] = useState(false);
   const [machinesDateTimeSelected, setMachinesDateTimeSelected] =
     useState(false);
+  const [personnelDateTimeSelected, setPersonnelDateTimeSelected] =
+    useState(false);
   const [aux, setAux] = useState(false);
   const [ETA, setETA] = useState("");
   const [horaInicio, setHoraInicio] = useState("");
   const [minutosInicio, setMinutosInicio] = useState("");
   const [horaFin, setHoraFin] = useState("");
   const [minutosFin, setMinutosFin] = useState("");
+  const [horaInicioPersonnel, setHoraInicioPersonnel] = useState("");
+  const [minutosInicioPersonnel, setMinutosInicioPersonnel] = useState("");
+  const [horaFinPersonnel, setHoraFinPersonnel] = useState("");
+  const [minutosFinPersonnel, setMinutosFinPersonnel] = useState("");
   const [turnaroundDate, setTurnaroundDate] = useState(false);
   const [auxState, setauxState] = useState(-1);
   const [selectedMachineID, setSelectedMachineID] = useState([]);
@@ -191,6 +199,39 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
           res.json().then((result) => {
             console.log("machines reservation list", result);
             setMachinesReservationsarrayList(Object.values(result));
+
+            if (result?.[0]?.["status"] === 400) {
+              console.log("entro");
+            } else {
+            }
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
+  const getPersonnelReservationList = async (turnaroundDate: any) => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/getPersonnelReservationList";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+            fecha: turnaroundDate,
+            hora_inicio: horaInicioPersonnel + ":" + minutosInicioPersonnel,
+            hora_fin: horaFinPersonnel + ":" + minutosFinPersonnel,
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            console.log("machines reservation list", result);
+            setPersonnelReservationsarrayList(Object.values(result));
 
             if (result?.[0]?.["status"] === 400) {
               console.log("entro");
@@ -976,15 +1017,85 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
                     <CloseRoundedIcon htmlColor="#4d4e56" />
                   </div>
                   <div className={styles.assignContainers}>
-                    <div className={styles.detailDialogInfoContainer}>
-                      <div className={styles.detailDialogInfoRow1}>
-                        <div className={styles.detailDialogInfoItem}>
-                          <span className={styles.detailDialogInfoItemTitle2}>
-                            Asignar personal
-                          </span>
+                    {personnelDateTimeSelected ? (
+                      <div className={styles.detailDialogInfoContainer}>
+                        <div className={styles.detailDialogInfoRow1}>
+                          <div className={styles.detailDialogInfoItem}>
+                            <span className={styles.detailDialogInfoItemTitle2}>
+                              Asignar personal
+                            </span>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    ) : (
+                      <div className={styles.detailDialogInfoContainer}>
+                        <span className={styles.detailDialogInfoItemTitle}>
+                          Selecciona la hora de inicio y fin de reserva del
+                          personal
+                        </span>
+                        <p className={styles.detailDialogInfoItemText}>
+                          Hora de inicio del turnaround:{" "}
+                          <strong>{index?.hora_inicio}</strong>
+                        </p>
+
+                        <div className={styles.dateContainerRowItem}>
+                          <p>Hora inicio:</p>
+                          <StandardInputV2
+                            setValue={setHoraInicioPersonnel}
+                            labelText=""
+                            placeholderText={"HH"}
+                            inputWidth="55px"
+                          />
+                          <p>:</p>
+                          <StandardInputV2
+                            setValue={setMinutosInicioPersonnel}
+                            labelText=""
+                            placeholderText={"MM"}
+                            inputWidth="55px"
+                          />
+                        </div>
+                        <div className={styles.dateContainerRowItem}>
+                          <p>Hora final:</p>
+                          <StandardInputV2
+                            setValue={setHoraFinPersonnel}
+                            labelText=""
+                            placeholderText={"HH"}
+                            inputWidth="55px"
+                          />
+                          <p>:</p>
+                          <StandardInputV2
+                            setValue={setMinutosFinPersonnel}
+                            labelText=""
+                            placeholderText={"MM"}
+                            inputWidth="55px"
+                          />
+                        </div>
+                        {
+                          <p className={styles.detailDialogInfoItemText}>
+                            *El sistema tomará la reserva desde 30 minutos antes
+                            de la hora de inicio hasta una hora después de la
+                            hora final.
+                          </p>
+                        }
+                        <div className={styles.greenButtonAssignContainer}>
+                          <GreenButton2
+                            executableFunction={async () => {
+                              await getPersonnelReservationList(
+                                index?.fecha_inicio
+                              );
+                              await setPersonnelDateTimeSelected(true);
+                            }}
+                            buttonText="Confirmar"
+                            disabled={
+                              horaInicioPersonnel === "" ||
+                              horaFinPersonnel === "" ||
+                              minutosInicioPersonnel === "" ||
+                              minutosFinPersonnel === ""
+                            }
+                          />
+                        </div>
+                      </div>
+                    )}
 
                     {machinesDateTimeSelected ? (
                       <div className={styles.detailDialogInfoContainer}>
