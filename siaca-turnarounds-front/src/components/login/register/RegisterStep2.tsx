@@ -107,7 +107,24 @@ const LoginMainPage: React.FC<PageProps> = ({
     fetchData().catch(console.error);
   };
 
-  const registerStep2requestSecond = () => {
+  const getDepartmentFromArray = (departmentName: string) => {
+    let result = arrayDepartmentsList.find(
+      (o) => o.nombre === departmentName
+    )?.id;
+    return result;
+  };
+
+  const getJobPositionFromArray = (jobPositionName: any) => {
+    let result = arrayJobPositionsList.find(
+      (o) => o.nombre === jobPositionName
+    )?.id;
+    return result;
+  };
+
+  const registerStep2requestSecond = (
+    departmentID: number,
+    jobPositionID: number
+  ) => {
     const fetchData = async () => {
       try {
         const url = "/api/registerStep2Part2";
@@ -115,8 +132,8 @@ const LoginMainPage: React.FC<PageProps> = ({
           method: "POST",
           body: JSON.stringify({
             cedula: cedula,
-            cargo: selectedPositionValue,
-            departamento: selectedDepartmentValue,
+            fk_cargo: jobPositionID,
+            fk_departamento: departmentID,
             telefono: phoneNumber,
             turno: selectedWorkshiftValue,
             fk_user: userID.toString(),
@@ -148,7 +165,7 @@ const LoginMainPage: React.FC<PageProps> = ({
 
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log("getJobPositionsList", Object.values(result));
+            //console.log("getJobPositionsList", Object.values(result));
 
             setArrayDepartmentsList(Object.values(result));
           })
@@ -202,13 +219,17 @@ const LoginMainPage: React.FC<PageProps> = ({
     return <></>;
   };
 
-  const continueButton = () => {
+  const continueButton = async () => {
     //setEmailValue(email);
     //setPasswordValue(password);
     //registerStep2request();
-    registerStep2requestFirst();
-    registerStep2requestSecond();
-    setStep(6);
+    let departmentID = 0;
+    let jobPositionID = 0;
+    departmentID = await getDepartmentFromArray(selectedDepartmentValue);
+    jobPositionID = await getJobPositionFromArray(selectedPositionValue);
+    await registerStep2requestFirst();
+    await registerStep2requestSecond(departmentID, jobPositionID);
+    await setStep(6);
   };
 
   const arrayPrinterDepartments = () => {
