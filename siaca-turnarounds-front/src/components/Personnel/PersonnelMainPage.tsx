@@ -260,8 +260,8 @@ const PersonnelMainPage: React.FC = () => {
           <td>
             {index?.fk_user?.first_name} {index?.fk_user?.last_name}
           </td>
-          <td>{index?.cargo}</td>
-          <td>{index?.departamento}</td>
+          <td>{index?.fk_cargo?.nombre}</td>
+          <td>{index?.fk_departamento?.nombre}</td>
           <td>
             {index?.fk_user?.username}
             <p>{index?.telefono}</p>
@@ -415,8 +415,8 @@ const PersonnelMainPage: React.FC = () => {
           <td>
             {index?.fk_user?.first_name} {index?.fk_user?.last_name}
           </td>
-          <td>{index?.cargo}</td>
-          <td>{index?.departamento}</td>
+          <td>{index?.fk_cargo?.nombre}</td>
+          <td>{index?.fk_departamento?.nombre}</td>
           <td>
             {index?.fk_user?.username}
             <p>{index?.telefono}</p>
