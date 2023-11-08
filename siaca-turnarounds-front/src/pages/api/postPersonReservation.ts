@@ -101,7 +101,7 @@ export default async function handler(
   let statusText = "INTERNAL";
   try {
     // Get request method (GET by default)
-    const httpMethod: string = "GET";
+    const httpMethod: string = "POST";
 
     if (!validHTTPMethods.includes(httpMethod)) {
       status = 405;
@@ -145,19 +145,21 @@ export default async function handler(
           // Any additional headers here only related to request body...
         },
 
-        /*body: JSON.stringify({
-          username: "hola9",
-          password: "hola",
-        }),*/
+        body: JSON.stringify({
+          hora_inicio: body?.["hora_inicio"],
+          hora_fin: body?.["hora_fin"],
+          fecha: body?.["fecha"],
+          fk_usuario: body?.["fk_usuario"],
+          fk_turnaround: body?.["fk_turnaround"],
+        }),
       };
     }
 
     // Backend URL
-    const url = `${BACKEND_BASE_URL}/usuarios/cargos/`;
+    const url =
+      `${BACKEND_BASE_URL}/usuarios/reserva/?token=` + body?.["userToken"];
 
     // Make the actual request to backend
-    console.log("url", url);
-    console.log("fetchOptions", fetchOptions);
     const response = await fetch(url, fetchOptions);
 
     status = response.status;

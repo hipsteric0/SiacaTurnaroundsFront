@@ -37,9 +37,11 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
 
   useEffect(() => {
     getList();
+    getPersonnelList();
   }, []);
 
   const [arrayList3, setArrayList3] = useState([]);
+  const [personnelListArray, setPersonnelListArray] = useState([]);
   const [tasksarrayList, setTasksarrayList] = useState([]);
   const [machinesByTurnaroundArrayList, setMachinesByTurnaroundArrayList] =
     useState([]);
@@ -52,9 +54,12 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
     machinesQuantityByTemplatearrayList,
     setMachinesQuantityByTemplatearrayList,
   ] = useState([]);
+  const [personnelDepartmentsarrayList, setPersonnelDepartmentsarrayList] =
+    useState([]);
   let date = new Date();
   const [arrayFilteredList3, setArrayFilteredList3] = useState([]);
   const [machinesToPostArray, setMachinesToPostArray] = useState([]);
+  const [personnelToPostArray, setPersonnelToPostArray] = useState([]);
   const [openCardMenu, setOpenCardMenu] = useState(-1);
   const [dateCounter, setdateCounter] = useState(0);
   const [dateState, setdateState] = useState("");
@@ -63,6 +68,7 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
   const [isFilteredResults, setIsFilteredResults] = useState(false);
   const [deleteDialog, setDeleteDialog] = useState(false);
   const [addMachineDialog, setAddMachineDialog] = useState(false);
+  const [addPersonnelDialog, setAddPersonnelDialog] = useState(false);
   const [showMachineDialog, setShowMachineDialog] = useState(false);
   const [openDetailDialogID, setOpenDetailDialogID] = useState(false);
   const [openAssignDialogID, setOpenAssignDialogID] = useState(false);
@@ -85,9 +91,11 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
   const [turnaroundDate, setTurnaroundDate] = useState(false);
   const [auxState, setauxState] = useState(-1);
   const [selectedMachineID, setSelectedMachineID] = useState([]);
+  const [selectedDepartmentID, setSelectedDepartmentID] = useState([]);
   const [checkTask, setcheckTask] = useState(false);
   const [checkTaskID, setcheckTaskID] = useState(-1);
   const [reservedTask, setreservedTask] = useState(false);
+  const [reservedTaskPersonnel, setreservedTaskPersonnel] = useState(false);
   let filterValues: any[] = [];
   const getList = async () => {
     setIsFilteredResults(false);
@@ -124,10 +132,10 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
     await fetchData().catch(console.error);
   };
 
-  const postMachine = async () => {
+  const getPersonnelList = async () => {
     const fetchData = async () => {
       try {
-        const url = "/api/machinesList";
+        const url = "/api/personnelList";
         const requestOptions = {
           method: "POST",
           body: JSON.stringify({
@@ -136,17 +144,12 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log("machines list", result);
-            setMachinesarrayList(Object.values(result));
-            if (result?.[0]?.["status"] === 400) {
-              console.log("entro");
-            } else {
-            }
+            setPersonnelListArray(Object.values(result));
+            console.log("Personnel List Array", result);
           })
         );
       } catch (error) {
         console.error("Error geting user", error);
-
         return;
       }
     };
@@ -230,9 +233,38 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log("machines reservation list", result);
+            console.log("personnel reservation list", result);
             setPersonnelReservationsarrayList(Object.values(result));
 
+            if (result?.[0]?.["status"] === 400) {
+              console.log("entro");
+            } else {
+            }
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
+  const getPersonnelDepartments = async () => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/getPersonnelDepartmentsList";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            console.log("getPersonnelDepartments", result);
+            setPersonnelDepartmentsarrayList(Object.values(result));
             if (result?.[0]?.["status"] === 400) {
               console.log("entro");
             } else {
@@ -338,6 +370,40 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
     await fetchData().catch(console.error);
   };
 
+  const postPersonReservartion = async (personID: any) => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/postPersonReservation";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+            hora_inicio: horaInicioPersonnel + ":" + minutosInicioPersonnel,
+            hora_fin: horaFinPersonnel + ":" + minutosFinPersonnel,
+            fecha: turnaroundDate,
+            fk_usuario: personID,
+            fk_turnaround: openAssignDialogID,
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            console.log("Guardar", result);
+
+            if (result?.[0]?.["status"] === 400) {
+              console.log("entro");
+            } else {
+            }
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
   const postMachineReservartion = async (machineryID: any) => {
     const fetchData = async () => {
       try {
@@ -402,6 +468,10 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
     await setSelectedMachineID(machineCategoryID);
     await setAddMachineDialog(true);
   };
+  const handleAddPersonnel = async (departmentID: any) => {
+    await setSelectedDepartmentID(departmentID);
+    await setAddPersonnelDialog(true);
+  };
 
   const handleShowMachinery = async (machineCategoryID: any) => {
     await setSelectedMachineID(machineCategoryID);
@@ -453,6 +523,77 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
     });
     //setMachinesToPostArray(machinesToPostArray);
     //getMachinesList();
+    return y;
+  };
+
+  const PersonnelQuantitiesArrayPrinter = () => {
+    let y: any = [];
+    let auxtitle = "";
+    let auxtitleBoolean = true;
+    let counter = 0;
+    personnelDepartmentsarrayList.map((index: any) => {
+      y[counter] = (
+        <div className={styles.detailDialogInfoRow1}>
+          <Dialog
+            className={styles.dialogDelete}
+            open={addPersonnelDialog}
+            onClose={() => setAddPersonnelDialog(false)}
+          >
+            <div className={styles.dialogAddMachine}>
+              Cliquea una persona para añadirla:
+              {arrayPrinterPersonnelSelection(index?.id)}
+              <div>
+                <GreenButton
+                  executableFunction={() => setAddPersonnelDialog(false)}
+                  buttonText="Confirmar"
+                />
+              </div>
+              {reservedTask && (
+                <div className={styles.machineReservedContainer}>
+                  <p>La persona que intentas añadir esta reservada!</p>
+                  <div
+                    className={styles.closeIconContainer}
+                    onClick={() => setreservedTask(false)}
+                  >
+                    <CloseRoundedIcon htmlColor="#bbb" />
+                  </div>
+                </div>
+              )}
+            </div>
+          </Dialog>
+          <Dialog
+            className={styles.dialogDelete}
+            open={showMachineDialog}
+            onClose={() => setShowMachineDialog(false)}
+          >
+            <div className={styles.dialogAddMachine}>
+              Lista de personas añadidas:
+              {arrayPrinterShowSelectedMachines(index?.fk_categoria?.id)}
+            </div>
+          </Dialog>
+          <div className={styles.addMachineItem}>
+            <span className={styles.detailDialogInfoItemValueText2}>
+              {index?.nombre} :
+            </span>
+
+            <span className={styles.detailDialogInfoItemValueText2}>
+              {/**array printer de machinesToPostArray que haga match con la categoria */}
+              {arrayPrinterSelectedMachinesForCategory(index?.fk_categoria?.id)}
+            </span>
+            <div className={styles.addMachineryButtonIcon}>
+              <AddCircleRoundedIcon
+                htmlColor="#bbb"
+                onClick={() => {
+                  handleAddPersonnel(index?.id);
+                }}
+              />
+            </div>
+          </div>
+        </div>
+      );
+      counter++;
+    });
+
     return y;
   };
 
@@ -548,6 +689,9 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
       await postMachineReservartion(machinesToPostArray[i]?.machineID);
     }
     //luego lo mismo para personal, un for para cada personal
+    for (let i = 0; i < personnelToPostArray.length; i++) {
+      await postPersonReservartion(personnelToPostArray[i]?.personID);
+    }
 
     //router reload
   };
@@ -560,11 +704,30 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
     }
     return false;
   };
+  const findPersonInPostArray = (selectedPersonID: any) => {
+    for (let i = 0; i < personnelToPostArray.length; i++) {
+      if (personnelToPostArray[i]?.personID === selectedPersonID) {
+        return true;
+      }
+    }
+    return false;
+  };
   const findMachineInReservationsArray = (selectedMachineModelID: any) => {
     for (let i = 0; i < machinesReservationsarrayList.length; i++) {
       if (
         machinesReservationsarrayList[i]?.fk_maquinaria?.id ===
         selectedMachineModelID
+      ) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  const findPersonInReservationsArray = (selectedPersonID: any) => {
+    for (let i = 0; i < personnelReservationsarrayList.length; i++) {
+      if (
+        personnelReservationsarrayList[i]?.fk_usuario?.id === selectedPersonID
       ) {
         return true;
       }
@@ -593,6 +756,28 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
     x = 0;
 
     console.log("machinesToPostArray after delete", machinesToPostArray);
+  };
+
+  const removePersonfromPage = (selectedPersonID: any) => {
+    console.log("selectedMachineModelID", selectedPersonID);
+    let arrayOfPersonsToPush: any = [];
+    let x = 0;
+    let machineCategory = -1;
+    let nombre = "";
+    while (x <= machinesToPostArray.length) {
+      if (personnelToPostArray[x]?.personID === selectedPersonID) {
+        //delete that instance from posting array
+        arrayOfPersonsToPush = personnelToPostArray;
+        arrayOfPersonsToPush.splice(x, 1);
+        setPersonnelToPostArray(arrayOfPersonsToPush);
+        x++;
+      } else {
+        x++;
+      }
+    }
+    x = 0;
+
+    console.log("personnelToPostArray after delete", personnelToPostArray);
   };
 
   const addMachineToPage = (selectedMachineModelID: any) => {
@@ -641,6 +826,42 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
     console.log("machinesToPostArray", machinesToPostArray);
   };
 
+  const addPersonToPage = (selectedPersonID: any) => {
+    console.log("selectedPersonID", selectedPersonID);
+    console.log("machineryQuantityArrayAux", machineryQuantityArrayAux);
+    let arrayOfPersonnelToPush: any = [];
+    let x = 0;
+    let cantidad = -1;
+    let personDepartment = -1;
+    let nombre = "";
+    while (x <= personnelListArray.length) {
+      if (personnelListArray[x]?.id === selectedPersonID) {
+        personDepartment = personnelListArray[x]?.fk_departamento?.id;
+        //push into array the machine added
+        nombre =
+          personnelListArray[x]?.fk_user?.first_name +
+          personnelListArray[x]?.fk_user?.last_name;
+        //console.log("x1", personDepartment);
+      }
+      x++;
+    }
+    x = 0;
+
+    if (findPersonInPostArray(selectedPersonID) === false) {
+      arrayOfPersonnelToPush = personnelToPostArray;
+      arrayOfPersonnelToPush.push({
+        personID: selectedPersonID,
+        departmentID: personDepartment,
+        machineName: nombre,
+      });
+      setPersonnelToPostArray(arrayOfPersonnelToPush);
+    } else {
+      //remove from array the added object
+    }
+
+    console.log("personnelToPostArray", personnelToPostArray);
+  };
+
   const arrayPrinterMachinesSelection = (machineCategoryID: any) => {
     let y: any = [];
 
@@ -671,6 +892,61 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
               }}
             >
               <p className={styles.taskTextText}> {index?.identificador}</p>
+              {(checkTask && checkTaskID === index?.id) ||
+              findMachineInPostArray(index?.id) ? (
+                <div className={styles.checkIcon}>
+                  <CheckCircleRoundedIcon
+                    htmlColor="#00A75D"
+                    fontSize="small"
+                  />
+                </div>
+              ) : (
+                <></>
+              )}
+            </div>
+          );
+        }
+      }
+    });
+
+    return y;
+  };
+
+  const arrayPrinterPersonnelSelection = (departmentID: any) => {
+    let y: any = [];
+
+    personnelListArray.map((index: any) => {
+      if (index?.fk_departamento?.id === selectedDepartmentID) {
+        if (index?.fk_user?.is_active) {
+          y[index?.id] = (
+            <div
+              key={index?.id}
+              className={styles.machineContainer}
+              onClick={async () => {
+                if (findPersonInReservationsArray(index?.id)) {
+                  setreservedTask(true);
+                  setTimeout(() => {
+                    setreservedTask(false);
+                  }, 5000);
+                } else {
+                  if (findPersonInPostArray(index?.id)) {
+                    console.log("entro al remover");
+                    await removePersonfromPage(index?.id);
+                    await setcheckTask(false);
+                    await setcheckTaskID(checkTaskID - 1);
+                  } else {
+                    console.log("entro al anadir");
+                    await addPersonToPage(index?.id);
+                    await setcheckTask(true);
+                    await setcheckTaskID(index?.id);
+                  }
+                }
+              }}
+            >
+              <p className={styles.taskTextText}>
+                {" "}
+                {index?.fk_user?.first_name} {index?.fk_user?.last_name}
+              </p>
               {(checkTask && checkTaskID === index?.id) ||
               findMachineInPostArray(index?.id) ? (
                 <div className={styles.checkIcon}>
@@ -1026,6 +1302,7 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
                             </span>
                           </div>
                         </div>
+                        {PersonnelQuantitiesArrayPrinter()}
                       </div>
                     ) : (
                       <div className={styles.detailDialogInfoContainer}>
@@ -1083,6 +1360,7 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
                               await getPersonnelReservationList(
                                 index?.fecha_inicio
                               );
+
                               await setPersonnelDateTimeSelected(true);
                             }}
                             buttonText="Confirmar"
@@ -1182,7 +1460,7 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
                       <GreenButton2
                         executableFunction={async () => {
                           await handleSaveData();
-                          router.reload();
+                          //router.reload();
                         }}
                         buttonText={"Guardar"}
                       />
@@ -1313,6 +1591,7 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
               await getMachineryQuantityByTemplate(
                 index?.fk_vuelo?.fk_plantilla?.id
               );
+              await getPersonnelDepartments();
               await setOpenAssignDialogID(index.id);
               await setTurnaroundDate(index?.fecha_inicio);
               await setOpenAssignDialog(true);
