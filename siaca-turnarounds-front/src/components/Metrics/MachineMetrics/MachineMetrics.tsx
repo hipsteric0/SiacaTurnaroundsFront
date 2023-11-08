@@ -99,10 +99,12 @@ const MachineMetrics: React.FC<PageProps> = ({ setStep }) => {
     let y: any = [];
     let arrayMachine: any[] = []
     let arrayUses: any[] = []
+    let arrayDate : any = []
     const arrayAux = parametro.filter(parametro => parametro["fk_maquinaria__fk_categoria__nombre"] === category);
     arrayAux.map((index: any) => {
       arrayMachine.push(index?.fk_maquinaria__identificador)
       arrayUses.push(index?.contador)
+      arrayDate.push(index?.fecha)
       y =(
         <BarChart
         xAxis={[

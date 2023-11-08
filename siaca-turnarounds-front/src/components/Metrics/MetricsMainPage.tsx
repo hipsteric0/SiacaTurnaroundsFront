@@ -36,6 +36,10 @@ const MetricsPage: React.FC<PageProps> = ({ setStep }) => {
   const [arraySLA, setArraySLA] = useState(['']);
   const [arrayAirline, setArrayAirline] = useState(['']);
 
+  const [data, setData] = useState(['']);
+
+
+
   let arrayMachineNumber: any[] = []
   let arrayMachineCount: any[] = []
 
@@ -47,6 +51,7 @@ const MetricsPage: React.FC<PageProps> = ({ setStep }) => {
 
   let arraySLAName: any[] = []
   let arraySLATime: any[] = []
+
 
   useEffect(() => {
     getMachine();
@@ -162,6 +167,11 @@ const MetricsPage: React.FC<PageProps> = ({ setStep }) => {
             console.log("SLA RESULTADO",result);
 
             setArraySLA(Object.values(result));
+            const array = Object.values(result).map((index: any) => ({
+              label: index.fk_vuelo__fk_aerolinea__nombre,
+              value: index.porcentaje,
+            }));
+            setData(Object(array));
 
           })
         );
@@ -172,8 +182,6 @@ const MetricsPage: React.FC<PageProps> = ({ setStep }) => {
     };
     await fetchData().catch(console.error);
   };
-
-
 
   const arrayPrinterMachine = () => {
     let y: any = [];
@@ -211,8 +219,8 @@ const MetricsPage: React.FC<PageProps> = ({ setStep }) => {
   const arrayPrinterSLA = () => {
     let y: any = [];
     arraySLA.map((index: any) => {
-      arraySLAName.push(index?.fk_vuelo__numero_vuelo)
-      arraySLATime.push(index?.tiempo)
+      arraySLAName.push(index?.fk_vuelo__fk_aerolinea__nombre)
+      arraySLATime.push(index?.porcentaje)
       
     });
 
@@ -228,6 +236,7 @@ const MetricsPage: React.FC<PageProps> = ({ setStep }) => {
 {arrayPrinterPersonnel()}
 {arrayPrinterAirline()}
 {arrayPrinterSLA()}
+
 <div className={styles.divPersonnel} onClick={() => router.push("/Metrics/MetricsPersonnel")}> Personal
 <center>
 
@@ -280,25 +289,15 @@ const MetricsPage: React.FC<PageProps> = ({ setStep }) => {
 </div>
 <div className={styles.divSLA} onClick={() => router.push("/Metrics/MetricsSLA")}> Métricas SLA
 <center>
-
-<BarChart
-  xAxis={[
-    {
-      id: 'barCategories',
-      data: arraySLAName,
-      scaleType: 'band',
-      label: 'Número de vuelo'
-    },
-  ]}
+<br/>
+<PieChart
   series={[
     {
-      data: arraySLATime,
-      label: 'Tiempo del turnaround (minutos)',
-      color: '#00A75D'
+      data: data,
     },
   ]}
-  width={500}
-  height={300}
+  width={400}
+  height={200}
 />
 
 </center>

@@ -19,6 +19,14 @@ import { LineChart } from '@mui/x-charts/LineChart';
 import { ChartContainer, BarPlot } from '@mui/x-charts';
 import { PieChart } from '@mui/x-charts/PieChart';
 
+import Timeline from '@mui/lab/Timeline';
+import TimelineItem from '@mui/lab/TimelineItem';
+import TimelineSeparator from '@mui/lab/TimelineSeparator';
+import TimelineConnector from '@mui/lab/TimelineConnector';
+import TimelineContent from '@mui/lab/TimelineContent';
+import TimelineDot from '@mui/lab/TimelineDot';
+import TimelineOppositeContent from '@mui/lab/TimelineOppositeContent';
+
 interface PageProps {
   setStep: (value: number) => void;
 }
@@ -30,19 +38,38 @@ const SLAMetrics: React.FC<PageProps> = ({ setStep }) => {
   const [arrayList3, setArrayList3] = useState(['']);
   const [deleteDialog, setDeleteDialog] = useState(false);
   const [parametro, setParametro] = useState(['']);
+  const [templateStart, setTemplateStart] = useState(['']);
+  const [templateStartAndFinish, setTemplateStartAndFinish] = useState(['']);
+  const [turnaround, setTurnaround] = useState('');
+  const [turnaround2, setTurnaround2] = useState('');
+
 
   let array1: any[] = []
   let array2: any[] = []
   let array3: any[] = []
 
+
   useEffect(() => {
-    getList();
+    getTemplateStart();
   }, []);
 
-  const getList = async () => {
+  useEffect(() => {
+    getTemplateStartAndFinish();
+  }, []);
+
+  useEffect(() => {
+    if (templateStart.length > 0) {
+      setTurnaround(templateStart[0]?.fk_turnaround__hora_inicio);
+      setTurnaround2(templateStart[0]?.fk_turnaround__hora_fin);
+
+    }
+ }, [templateStart]);
+
+
+  const getTemplateStart = async () => {
     const fetchData = async () => {
       try {
-        const url = "/api/metricMachineUse";
+        const url = "/api/TemplateDetailsStart";
         const requestOptions = {
           method: "POST",
           body: JSON.stringify({
@@ -51,11 +78,10 @@ const SLAMetrics: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log(result);
-            console.log("values", Object.values(result));
+            console.log("TEMPLATE RESULTADO",result);
 
-            setArrayList3(Object.values(result));
-            setParametro(Object.values(result));
+            setTemplateStart(Object.values(result));
+            console.log("template:", templateStart)
 
           })
         );
@@ -67,71 +93,207 @@ const SLAMetrics: React.FC<PageProps> = ({ setStep }) => {
     await fetchData().catch(console.error);
   };
 
+  const getTemplateStartAndFinish = async () => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/TemplateDetailsStartAndFinish";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            console.log("TEMPLATE RESULTADO",result);
 
-  const arrayPrinter = () => {
+            setTemplateStartAndFinish(Object.values(result));
+
+            console.log("HORA INICIO Y FIN:", templateStartAndFinish)
+
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
+  const arrayPrinterStart = () => {
     let y: any = [];
     console.log("arrayList3", arrayList3.length);
 
-    arrayList3.map((index: any) => {
-      y[index?.fk_maquinaria_id] = (
-        <div key={index?.fk_maquinaria_id} className={styles.tableInfoRow}>
-          <td>{index?.fk_maquinaria__fk_categoria__nombre}</td>
-          <td>{index?.fk_maquinaria__identificador}</td>
-          <td>{index?.contador}</td>
+    templateStart.map((index: any) => {
+      y[index?.id] = (
+        <div key={index?.id} className={styles.tableInfoRow}>
+
+          <td>{index?.fk_subtarea__fk_tarea__titulo}</td>
+          <td>{index?.fk_subtarea__titulo}</td>
+          <td>{index?.fk_subtarea__fk_tipo__nombre}</td>
+          <td> minuto {index?.tiempo}</td>
         </div>
-        
       );
     });
     
     return y;
   };
 
-  const arrayPrinter2 = () => {
+
+  const arrayPrinterStartAndFinish = () => {
     let y: any = [];
-    parametro.map((index: any) => {
-      array1.push(index?.fk_maquinaria__identificador)
-      array2.push(index?.contador)
-      array3.push(index?.fk_maquinaria__fk_categoria__nombre)
+    console.log("arrayList3", arrayList3.length);
+
+    templateStartAndFinish.map((index: any) => {
+      y[index?.id] = (
+        <div key={index?.id} className={styles.tableInfoRow}>
+
+          <td>{index?.fk_subtarea__fk_tarea__titulo}</td>
+          <td>{index?.fk_subtarea__titulo}</td>
+          <td>{index?.fk_subtarea__fk_tipo__nombre}</td>
+          <td>{index?.hora_inicio} - {index?.hora_fin}</td>
+          <td>{index?.tiempo} min</td>
+        </div>
+      );
+    });
+    
+    return y;
+  };
+  
+
+  const arrayPrinterTimelineStart = () => {
+    let y: any = [];
+    templateStart.map((index: any) => {
+      y[index?.id] = (
+        <div key={index?.id} >
+       
+      <TimelineItem>
+        <TimelineOppositeContent color="text.secondary">
+          {index?.hora_inicio}
+        </TimelineOppositeContent>
+        <TimelineSeparator>
+          <TimelineDot color="primary"/>
+          <TimelineConnector />
+        </TimelineSeparator>
+        <TimelineContent>{index?.fk_subtarea__titulo}</TimelineContent>
+      </TimelineItem>
+        </div>
+      );
       
     });
     return y;
   };
-  
+
+  const arrayPrinterTimelineStartAndFinish = () => {
+    let y: any = [];
+    templateStartAndFinish.map((index: any) => {
+      y[index?.id] = (
+          <div key={index?.id}>
+            <TimelineItem>
+              <TimelineOppositeContent color="text.secondary">
+                {index?.hora_inicio}
+              </TimelineOppositeContent>
+              <TimelineContent>
+                {index?.hora_fin}
+              </TimelineContent>
+              <TimelineSeparator>
+                <TimelineDot color="primary" />
+                <TimelineConnector />
+              </TimelineSeparator>
+              <TimelineContent>{index?.fk_subtarea__titulo}</TimelineContent>
+            </TimelineItem>
+          </div>
+      );
+      
+    });
+    return y;
+  };
   
 
   return (
     <main className={styles.containerAirlinesMainPage}>
       <div className={styles.airlinesListContainer}>
       <p>MÉTRICAS SLA</p>
-      {arrayPrinter2()}
-      <BarChart
-  xAxis={[
-    {
-      id: 'barCategories',
-      data: array1,
-      scaleType: 'band',
-      label: 'Maquinarias'
-    },
-  ]}
-  series={[
-    {
-      data: array2,
-      label: 'Número de usos'
-    },
-  ]}
-  width={500}
-  height={400}
-/>
+      
+      <div className={styles.parent}>
+      <div className={styles.div1}>
 
-        <div>
+      <Timeline position="alternate">
+      <TimelineItem>
+        <TimelineOppositeContent color="text.secondary">
+          {turnaround}
+        </TimelineOppositeContent>
+        <TimelineSeparator>
+          <TimelineDot color="success"/>
+          <TimelineConnector />
+        </TimelineSeparator>
+        <TimelineContent>Inicio del turnaround</TimelineContent>
+      </TimelineItem>
+      {arrayPrinterTimelineStart()}
+      <TimelineItem>
+        <TimelineOppositeContent color="text.secondary">
+          {turnaround2}
+        </TimelineOppositeContent>
+        <TimelineSeparator>
+          <TimelineDot color="grey"/>
+        </TimelineSeparator>
+        <TimelineContent>Fin del turnaround</TimelineContent>
+      </TimelineItem>
+      </Timeline>
+    </div>
+
+
+    <div className={styles.div2}>
+    <Timeline position="alternate">
+    <TimelineItem>
+      <TimelineOppositeContent color="text.secondary">
+        
+      </TimelineOppositeContent>
+        <TimelineContent>
+        {turnaround}
+        </TimelineContent>
+           <TimelineSeparator>
+          <TimelineDot color="success" />
+            <TimelineConnector />
+        </TimelineSeparator>
+        <TimelineContent>Inicio del turnaround</TimelineContent>
+       </TimelineItem>
+      {arrayPrinterTimelineStartAndFinish()}
+      <TimelineItem>
+        <TimelineOppositeContent color="text.secondary">
+          {turnaround2}
+        </TimelineOppositeContent>
+        <TimelineSeparator>
+          <TimelineDot color="grey"/>
+        </TimelineSeparator>
+        <TimelineContent>Fin del turnaround</TimelineContent>
+      </TimelineItem>
+      </Timeline>
+    </div>
+        <div className={styles.div3}>
           <div className={styles.tableTitlesContainer}>
-            <span>Categoria</span>
-            <span>Identificador</span>
-            <span>Numero de usos</span>
+
+            <span>Tarea</span>
+            <span>Subtarea</span>
+            <span>Tipo de subtarea</span>
+            <span>Minuto de inicio</span>
           </div>
-          {arrayPrinter()}
+          {arrayPrinterStart()}
+
+          <div className={styles.tableTitlesContainer}>
+
+            <span>Tarea</span>
+            <span>Subtarea</span>
+            <span>Tipo de subtarea</span>
+            <span>Hora de inicio y fin</span>
+            <span>Tiempo de ejecución</span>
+          </div>
+          {arrayPrinterStartAndFinish()}
+
         </div>
-        </div>
+      </div>
+      </div>
     </main>
   );
 };
