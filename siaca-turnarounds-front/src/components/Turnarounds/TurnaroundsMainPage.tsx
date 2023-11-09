@@ -1460,7 +1460,7 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
                       <GreenButton2
                         executableFunction={async () => {
                           await handleSaveData();
-                          //router.reload();
+                          router.reload();
                         }}
                         buttonText={"Guardar"}
                       />
