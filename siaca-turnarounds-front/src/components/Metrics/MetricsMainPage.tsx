@@ -21,6 +21,8 @@ import { PieChart } from '@mui/x-charts/PieChart';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import AirportShuttleIcon from '@mui/icons-material/AirportShuttle';
 
+import { Typography } from '@mui/material';
+
 interface PageProps {
   setStep: (value: number) => void;
 }
@@ -37,6 +39,8 @@ const MetricsPage: React.FC<PageProps> = ({ setStep }) => {
   const [arrayAirline, setArrayAirline] = useState(['']);
 
   const [data, setData] = useState(['']);
+  const [data2, setData2] = useState(['']);
+  const [data3, setData3] = useState(['']);
 
 
 
@@ -73,7 +77,7 @@ const MetricsPage: React.FC<PageProps> = ({ setStep }) => {
   const getMachine = async () => {
     const fetchData = async () => {
       try {
-        const url = "/api/metricMachineUse";
+        const url = "/api/percentageMachine";
         const requestOptions = {
           method: "POST",
           body: JSON.stringify({
@@ -87,6 +91,11 @@ const MetricsPage: React.FC<PageProps> = ({ setStep }) => {
 
             setArrayList3(Object.values(result));
             setArrayMachine(Object.values(result));
+            const array = Object.values(result).map((index: any) => ({
+              label: index.categoria,
+              value: parseFloat((index.porcentaje).toString() + '%'),
+            }));
+            setData3(Object(array));
 
           })
         );
@@ -140,6 +149,11 @@ const MetricsPage: React.FC<PageProps> = ({ setStep }) => {
             console.log(result);
 
             setArrayAirline(Object.values(result));
+            const array = Object.values(result).map((index: any) => ({
+              label: index.fk_vuelo__fk_aerolinea__nombre,
+              value: index.porcentaje,
+            }));
+            setData2(Object(array));
 
           })
         );
@@ -168,8 +182,8 @@ const MetricsPage: React.FC<PageProps> = ({ setStep }) => {
 
             setArraySLA(Object.values(result));
             const array = Object.values(result).map((index: any) => ({
-              label: index.fk_vuelo__fk_aerolinea__nombre,
-              value: index.porcentaje,
+              label: index.fk_plantilla__titulo,
+              value: parseFloat((index.porcentaje).toString() + '%'),
             }));
             setData(Object(array));
 
@@ -186,8 +200,8 @@ const MetricsPage: React.FC<PageProps> = ({ setStep }) => {
   const arrayPrinterMachine = () => {
     let y: any = [];
     arrayMachine.map((index: any) => {
-      arrayMachineNumber.push(index?.fk_maquinaria__identificador)
-      arrayMachineCount.push(index?.contador)
+      arrayMachineNumber.push(index?.categoria)
+      arrayMachineCount.push(index?.porcentaje)
       
     });
     return y;
@@ -227,7 +241,13 @@ const MetricsPage: React.FC<PageProps> = ({ setStep }) => {
     return y;
   };
 
-  
+  const palette = ['#0d47a1',
+    '#00b0ff',
+    '#0097a7',
+    '#00695c',
+    '#388e3c',
+    '#b2ff59'];
+
 
   return (
     <main>
@@ -253,7 +273,7 @@ const MetricsPage: React.FC<PageProps> = ({ setStep }) => {
     {
       data: arrayPersonnelCount,
       label: 'Número de turnarounds',
-      color: '#00A75D'
+      color: '#00A75D',
     },
   ]}
   width={500}
@@ -264,25 +284,16 @@ const MetricsPage: React.FC<PageProps> = ({ setStep }) => {
 </div>
 <div className={styles.divMachine} onClick={() => router.push("/Metrics/MetricsMachine")}> Maquinarias 
 <center>
-
-<BarChart
-  xAxis={[
-    {
-      id: 'barCategories',
-      data: arrayMachineNumber,
-      scaleType: 'band',
-      label: 'Maquinas'
-    },
-  ]}
+<br/>
+<PieChart
+colors={palette}
   series={[
     {
-      data: arrayMachineCount,
-      label: 'Número de usos',
-      color: '#00A75D'
+      data: data3,
     },
   ]}
-  width={500}
-  height={300}
+  width={400}
+  height={200}
 />
 
 </center>
@@ -291,6 +302,7 @@ const MetricsPage: React.FC<PageProps> = ({ setStep }) => {
 <center>
 <br/>
 <PieChart
+colors={palette}
   series={[
     {
       data: data,
@@ -304,25 +316,16 @@ const MetricsPage: React.FC<PageProps> = ({ setStep }) => {
 </div>
 <div className={styles.divAirline} onClick={() => router.push("/Metrics/MetricsAirline")}> Aerolineas
 <center>
-
-<BarChart
-  xAxis={[
-    {
-      id: 'barCategories',
-      data: arrayAirlineName,
-      scaleType: 'band',
-      label: 'Aerolineas'
-    },
-  ]}
+<br/>
+<PieChart
+colors={palette}
   series={[
     {
-      data: arrayAirlineCount,
-      label: 'Turnarounds',
-      color: '#00A75D'
+      data: data2,
     },
   ]}
-  width={500}
-  height={300}
+  width={400}
+  height={200}
 />
 
 </center>

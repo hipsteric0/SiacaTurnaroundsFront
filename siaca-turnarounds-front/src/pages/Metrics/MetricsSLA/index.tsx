@@ -6,6 +6,8 @@ import AirlineMetrics from "@/components/Metrics/AirlineMetrics/AirlineMetrics";
 import MachineMetrics from "@/components/Metrics/MachineMetrics/MachineMetrics";
 import PersonnelMetrics from "@/components/Metrics/PersonnelMetrics/PersonnelMetrics";
 import SLAMetrics from "@/components/Metrics/SLAMetrics/SLAMetrics";
+import SLAMetricsTemplate from "@/components/Metrics/SLAMetrics/SLAMetricsTemplate/SLAMetricsTemplate"
+import SLAMetricsAirlines from "@/components/Metrics/SLAMetrics/SLAMetricsAirlines/SLAMetricsAirlines"
 
 export default function Metrics() {
   //if token exists show regular html else show not signed in screen
@@ -14,7 +16,27 @@ export default function Metrics() {
   return (
       <main className={styles.mainContainerMachinesPage}>
         <SiacaNavbar />
-        <SLAMetrics setStep={setStep} />
+        {
+        step === 0 && (
+          <>
+            <SLAMetrics setStep={setStep} />
+          </>
+        ) /*el step 0 es la pagina principal de maquinarias*/
+      }
+      {
+        step === 1 && (
+          <>
+            <SLAMetricsTemplate setStep={setStep} />
+          </>
+        ) /*el step 1 es la pagina de registrar maquinaria*/
+      }
+      {
+        step === 2 && (
+          <>
+            <SLAMetricsAirlines setStep={setStep}  />
+          </>
+        ) /*el step 1 es la pagina de editar maquinaria*/
+      }
       </main>
     );
   }

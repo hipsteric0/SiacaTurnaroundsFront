@@ -153,7 +153,7 @@ export default async function handler(
     }
 
     // Backend URL
-    const url = `${BACKEND_BASE_URL}/metricas/turnaround-aerolineas/?token=` + body?.["userToken"];
+    const url = `${BACKEND_BASE_URL}/metricas/promedio-hora/?token=` + body?.["userToken"];
 
     // Make the actual request to backend
     const response = await fetch(url, fetchOptions);

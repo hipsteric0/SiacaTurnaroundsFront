@@ -17,8 +17,9 @@ import {Card, Image} from "@nextui-org/react";
 import { BarChart } from '@mui/x-charts/BarChart';
 import { LineChart } from '@mui/x-charts/LineChart';
 import { ChartContainer, BarPlot } from '@mui/x-charts';
-import { PieChart } from '@mui/x-charts/PieChart';
+import { PieChart, pieArcLabelClasses  } from '@mui/x-charts/PieChart';
 import BackArrow from "@/components/Reusables/BackArrow";
+
 
 interface PageProps {
   setStep: (value: number) => void;
@@ -31,19 +32,26 @@ const AirlineMetrics: React.FC<PageProps> = ({ setStep }) => {
   const [arrayList3, setArrayList3] = useState(['']);
   const [deleteDialog, setDeleteDialog] = useState(false);
   const [parametro, setParametro] = useState(['']);
+  const [arrayAirline, setArrayAirline] = useState(['']);
+
+  const [data, setData] = useState(['']);
 
   let array1: any[] = []
   let array2: any[] = []
   let array3: any[] = []
 
+  let arrayAirlineName: any[] = []
+  let arrayAirlineCount: any[] = []
+
   useEffect(() => {
-    getList();
+    getAirline();
   }, []);
 
-  const getList = async () => {
+
+  const getAirline = async () => {
     const fetchData = async () => {
       try {
-        const url = "/api/metricMachineUse";
+        const url = "/api/metricAirline";
         const requestOptions = {
           method: "POST",
           body: JSON.stringify({
@@ -53,10 +61,13 @@ const AirlineMetrics: React.FC<PageProps> = ({ setStep }) => {
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
             console.log(result);
-            console.log("values", Object.values(result));
 
-            setArrayList3(Object.values(result));
-            setParametro(Object.values(result));
+            setArrayAirline(Object.values(result));
+            const array = Object.values(result).map((index: any) => ({
+              label: index.fk_vuelo__fk_aerolinea__nombre,
+              value: index.porcentaje,
+            }));
+            setData(Object(array));
 
           })
         );
@@ -68,17 +79,36 @@ const AirlineMetrics: React.FC<PageProps> = ({ setStep }) => {
     await fetchData().catch(console.error);
   };
 
+  const arrayPrinterAirline = () => {
+    let y: any = [];
+    arrayAirline.map((index: any) => {
+      arrayAirlineName.push(index?.fk_aerolinea__nombre)
+      arrayAirlineCount.push(index?.contador)
+      
+    });
+
+    return y;
+  };
+
+  const palette = ['#0d47a1',
+  '#00b0ff',
+  '#0097a7',
+  '#00695c',
+  '#388e3c',
+  '#b2ff59'];
+
+
 
   const arrayPrinter = () => {
     let y: any = [];
     console.log("arrayList3", arrayList3.length);
 
-    arrayList3.map((index: any) => {
-      y[index?.fk_maquinaria_id] = (
-        <div key={index?.fk_maquinaria_id} className={styles.tableInfoRow}>
-          <td>{index?.fk_maquinaria__fk_categoria__nombre}</td>
-          <td>{index?.fk_maquinaria__identificador}</td>
+    arrayAirline.map((index: any) => {
+      y[index?.fk_vuelo__fk_aerolinea__id] = (
+        <div key={index?.fk_vuelo__fk_aerolinea__id} className={styles.tableInfoRow}>
+         <b><td>{index?.fk_vuelo__fk_aerolinea__nombre}</td></b> 
           <td>{index?.contador}</td>
+          <td>{index?.percent}</td>
         </div>
         
       );
@@ -103,35 +133,36 @@ const AirlineMetrics: React.FC<PageProps> = ({ setStep }) => {
   return (
     <main className={styles.containerAirlinesMainPage}>
       <div className={styles.airlinesListContainer}>
-        <p>AEROLINEAS</p>
       {arrayPrinter2()}
-      <BarChart
-  xAxis={[
-    {
-      id: 'barCategories',
-      data: array1,
-      scaleType: 'band',
-      label: 'Maquinarias'
-    },
-  ]}
-  series={[
-    {
-      data: array2,
-      label: 'Número de usos'
-    },
-  ]}
-  width={500}
-  height={400}
-/>
+      {arrayPrinterAirline()}
 
-        <div>
+      <div className={styles.div1}>
           <div className={styles.tableTitlesContainer}>
-            <span>Categoria</span>
-            <span>Identificador</span>
-            <span>Numero de usos</span>
+            <span>Aerolinea</span>
+            <span>No. de turnarounds</span>
+            <span>Porcentaje</span>
           </div>
           {arrayPrinter()}
         </div>
+
+<div className={styles.div2}>
+<br/>
+<div className={styles.charts}>
+<PieChart 
+colors={palette}
+  series={[
+    {
+      data: data,
+      highlightScope: { faded: 'global', highlighted: 'item' },
+    },
+  ]}
+  width={800}
+  height={550}
+  
+/>
+</div>
+</div>
+
         </div>
     </main>
   );
