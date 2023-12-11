@@ -1,0 +1,276 @@
+.mainFlightsContainer {
+  background: white;
+  color: #4d4e56;
+  font-family: Montserrat, Poppins, sans-serif;
+  padding: 100px 14px 30px 14px;
+}
+.upperSection {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.calendarContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 600;
+  color: #4d4e56;
+}
+.dateAndCalendarContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.flightsListContainer {
+  padding-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+.tableInfoRow {
+  padding: 16px 8px 15px 8px;
+  border-radius: 12px;
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.25);
+  display: grid;
+  grid-template-columns: 25% 15% 25% 20% 15%;
+  position: relative;
+}
+
+.column1Container {
+  font-size: 12px;
+  font-weight: bold;
+  color: #4d4e56;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.column2Container {
+  font-size: 12px;
+  font-weight: bold;
+  color: #4d4e56;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.greenTextCol2 {
+  font-size: 12px;
+  font-weight: bold;
+  color: #00a75d;
+}
+.yellowTextCol2 {
+  font-size: 12px;
+  font-weight: bold;
+  color: #f1c31f;
+}
+.redTextCol2 {
+  font-size: 12px;
+  font-weight: bold;
+  color: #d83a3a;
+}
+.column3Container {
+  font-size: 12px;
+  font-weight: bold;
+  color: #4d4e56;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+.column3Icon {
+}
+.column4Container {
+  font-size: 12px;
+  font-weight: bold;
+  color: #4d4e56;
+  display: flex;
+  align-items: center;
+}
+.menuContainer {
+  position: absolute;
+  right: 15px;
+  top: 20px;
+}
+.openDetailContainer {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+}
+
+.openDetailContainerText {
+  color: lightgray;
+  text-decoration: underline;
+  font-size: 12px;
+}
+
+.pointer {
+  cursor: pointer;
+  width: fit-content;
+  height: fit-content;
+}
+.pointerMorevert {
+  cursor: pointer;
+  width: fit-content;
+  height: fit-content;
+  z-index: 9;
+  position: relative;
+}
+.menuAppearingContainer {
+  height: 38px;
+  width: 100px;
+  padding: 5px;
+  background: #fff;
+  box-shadow: 0 5px 10px 0 rgba(187, 187, 187, 0.5);
+  position: absolute;
+  right: 30px;
+  border-radius: 8px;
+}
+
+.optionsText {
+  font-size: 12px;
+  cursor: pointer;
+}
+.optionsTextHover {
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.stateAndSwitchContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 30px;
+}
+
+.optionsText {
+  font-size: 12px;
+  cursor: pointer;
+}
+.optionsTextHover {
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.stateAndSwitchContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 30px;
+}
+
+.dialogText {
+  text-align: center;
+  font-family: Montserrat, Poppins, sans-serif;
+  padding-top: 5%;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-bottom: 30px;
+}
+
+.dialogButtons {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  gap: 10px;
+  padding: 16px;
+}
+
+.warningIcon {
+  font-size: 70px;
+}
+
+.dialogBack {
+  background: #f1f3f5;
+  border-radius: 12px;
+}
+.detailDialog {
+  border-radius: 12px !important;
+}
+
+.detailDialogInfoContainer {
+}
+.dialogDetail {
+  padding: 50px 15px;
+  font-family: Montserrat, Poppins, sans-serif;
+  color: #4d4e56;
+  font-size: 16px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.detailDialogInfoContainer {
+  padding: 17px 42px 15px 43px;
+  border-radius: 12px;
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.25);
+}
+.detailDialogInfoContainerTitleText {
+  font-size: 16px;
+  color: #08a75a;
+  font-weight: 600;
+  margin-bottom: 28px;
+}
+.detailDialogInfoRow1 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-bottom: 1px solid #bbb;
+  padding-bottom: 7px;
+  margin-bottom: 15px;
+}
+.detailDialogInfoRow2 {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  border-bottom: 1px solid #bbb;
+  padding-bottom: 7px;
+  margin-bottom: 15px;
+}
+.detailDialogInfoItem {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  align-items: center;
+}
+.detailDialogInfoItemTitle {
+  font-size: 12px;
+  font-weight: 800;
+  color: #4d4e56;
+}
+.detailDialogInfoItemTitle2 {
+  font-size: 12px;
+  font-weight: 800;
+  color: #08a75a;
+}
+.detailDialogInfoItemValueText {
+  font-size: 12px;
+  color: #4d4e56;
+}
+.detailDialogInfoItemValueText2 {
+  font-size: 12px;
+  color: #4d4e56;
+  font-weight: bold;
+}
+.closeIconDialog {
+  position: absolute;
+  top: 20px;
+  right: 25px;
+  cursor: pointer;
+}
+.flightIframe {
+  width: 100%;
+  height: 500px;
+  border-radius: 10px;
+}
+.redButton {
+  width: 95px;
+}
+.redButtonContainer {
+  display: flex;
+  justify-content: center;
+}
+.imageContainer {
+  width: 68px;
+}

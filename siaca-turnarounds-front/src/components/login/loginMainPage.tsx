@@ -16,6 +16,7 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   let token = "";
+  let userFullName = "";
 
   let validLogin = false;
   const validateLogin = () => {
@@ -24,6 +25,7 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
     setTimeout(() => {
       if (validLogin) {
         localStorage.setItem("userToken", token);
+        localStorage.setItem("userFullName", userFullName);
         router.push("/Flights");
       } else {
         //mostrar pop up de que login invalido
@@ -44,8 +46,10 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
+            console.log("result", result);
             validLogin = result.value;
             token = result.token;
+            userFullName = result.first_name + " " + result.last_name;
           })
         );
       } catch (error) {
