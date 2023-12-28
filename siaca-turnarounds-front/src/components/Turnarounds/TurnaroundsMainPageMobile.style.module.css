@@ -1,0 +1,386 @@
+.mainFlightsContainer {
+  background: white;
+  color: #4d4e56;
+  font-family: Montserrat, Poppins, sans-serif;
+  padding: 100px 14px 30px 14px;
+}
+.upperSection {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.calendarContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 600;
+  color: #4d4e56;
+}
+.dateAndCalendarContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.flightsListContainer {
+  padding-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+.tableInfoRow {
+  padding: 16px 8px 15px 8px;
+  border-radius: 12px;
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.25);
+  display: grid;
+  grid-template-columns: 25% 15% 25% 20% 15%;
+  position: relative;
+}
+.column1Container {
+  font-size: 12px;
+  font-weight: bold;
+  color: #4d4e56;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.column2Container {
+  font-size: 12px;
+  font-weight: bold;
+  color: #4d4e56;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.greenTextCol2 {
+  font-size: 12px;
+  font-weight: bold;
+  color: #00a75d;
+}
+.yellowTextCol2 {
+  font-size: 12px;
+  font-weight: bold;
+  color: #f1c31f;
+}
+.redTextCol2 {
+  font-size: 12px;
+  font-weight: bold;
+  color: #d83a3a;
+}
+.column3Container {
+  font-size: 12px;
+  font-weight: bold;
+  color: #4d4e56;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+.column3Icon {
+}
+.column4Container {
+  font-size: 12px;
+  font-weight: bold;
+  color: #4d4e56;
+  display: flex;
+  align-items: center;
+}
+.menuContainer {
+  position: absolute;
+  right: 15px;
+  top: 20px;
+}
+.pointer {
+  cursor: pointer;
+  width: fit-content;
+  height: fit-content;
+}
+.menuAppearingContainer {
+  height: 38px;
+  width: 100px;
+  padding: 5px;
+  background: #fff;
+  box-shadow: 0 5px 10px 0 rgba(187, 187, 187, 0.5);
+  position: absolute;
+  right: 30px;
+  border-radius: 8px;
+}
+
+.optionsText {
+  font-size: 12px;
+  cursor: pointer;
+}
+.optionsTextHover {
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.stateAndSwitchContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 30px;
+}
+
+.optionsText {
+  font-size: 12px;
+  cursor: pointer;
+}
+.optionsTextHover {
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.stateAndSwitchContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 30px;
+}
+
+.dialogText {
+  text-align: center;
+  font-family: Montserrat, Poppins, sans-serif;
+  padding-top: 5%;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-bottom: 30px;
+}
+
+.dialogButtons {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  gap: 10px;
+  padding: 16px;
+}
+
+.warningIcon {
+  font-size: 70px;
+}
+
+.dialogBack {
+  background: #f1f3f5;
+  border-radius: 12px;
+}
+.dialogAddMachine {
+  background: #f1f3f5;
+  border-radius: 12px;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  font-family: Montserrat, Poppins, sans-serif;
+  gap: 15px;
+  height: 400px;
+}
+.machineContainer {
+  width: 100%;
+  min-height: 40px;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  cursor: pointer;
+}
+.machineContainerNoHover {
+  width: 100%;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  cursor: pointer;
+}
+.machineContainer:hover {
+  width: 100%;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  cursor: pointer;
+  border: 2px solid #00a75d;
+}
+.openDetailContainer {
+  position: absolute;
+  right: 15px;
+  bottom: 10px;
+}
+
+.openDetailContainerText {
+  color: lightgray;
+  text-decoration: underline;
+  font-size: 12px;
+}
+.openDetailContainerText:hover {
+  color: #bbb;
+  text-decoration: underline;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.dialogBack {
+  background: #f1f3f5;
+  border-radius: 12px;
+}
+.detailDialog {
+  border-radius: 12px !important;
+}
+
+.dialogDetail {
+  padding: 50px 15px;
+  font-family: Montserrat, Poppins, sans-serif;
+  color: #4d4e56;
+  font-size: 16px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.detailDialogInfoContainer {
+  padding: 17px 42px 15px 43px;
+  border-radius: 12px;
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.25);
+}
+.detailDialogInfoContainerAssign {
+  padding: 17px 42px 15px 43px;
+  border-radius: 12px;
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.25);
+}
+.detailDialogInfoContainerTitleText {
+  font-size: 16px;
+  color: #08a75a;
+  font-weight: 600;
+  margin-bottom: 28px;
+}
+.detailDialogInfoContainerTitleTextNoMargin {
+  font-size: 12px;
+  color: #08a75a;
+  font-weight: 600;
+}
+.detailDialogInfoRow1 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-bottom: 1px solid #bbb;
+  padding-bottom: 7px;
+  margin-bottom: 15px;
+}
+.detailDialogInfoRow2 {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  border-bottom: 1px solid #bbb;
+  padding-bottom: 7px;
+  margin-bottom: 15px;
+}
+.detailDialogInfoItem {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}
+.detailDialogInfoItemTitle {
+  font-size: 12px;
+  font-weight: 800;
+  color: #4d4e56;
+}
+.detailDialogInfoItemText {
+  margin-top: 16px;
+  font-size: 14px;
+  color: #4d4e56;
+}
+.detailDialogInfoItemTitle2 {
+  font-size: 12px;
+  font-weight: 800;
+  color: #08a75a;
+}
+.detailDialogInfoItemValueText {
+  font-size: 12px;
+  color: #4d4e56;
+}
+.detailDialogInfoItemValueText2 {
+  font-size: 12px;
+  color: #4d4e56;
+  font-weight: bold;
+}
+.closeIconDialog {
+  position: absolute;
+  top: 20px;
+  right: 25px;
+  cursor: pointer;
+}
+.redButton {
+  width: 95px;
+}
+.redButtonContainer {
+  display: flex;
+  justify-content: center;
+}
+.taskText {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.taskTextTitle {
+  padding-top: 15px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #4d4e56;
+}
+.taskTextText {
+  font-size: 12px;
+  color: #4d4e56;
+}
+.assignContainers {
+  display: grid;
+  grid-template-columns: 45% 45%;
+  grid-column-gap: 10%;
+}
+.greenButtonAssignContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+.dateContainerRowItem {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+  margin-top: 30px;
+}
+.addMachineryButtonIcon {
+  cursor: pointer;
+  object-fit: contain;
+  display: flex;
+}
+.addMachineItem {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+.checkIcon {
+  margin-left: 10px;
+}
+.machineReservedContainer {
+  background: #f4f3f3;
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.25);
+  padding: 10px;
+  width: 100%;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+}
+.closeIconContainer {
+  right: 5px;
+  top: 5px;
+  position: absolute;
+}

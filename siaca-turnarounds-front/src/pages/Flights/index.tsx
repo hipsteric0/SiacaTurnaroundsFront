@@ -46,30 +46,13 @@ export default function Flights() {
         //si es mobile mostrara lo siguiente:
         <>
           <SiacaNavbarMobile activeFlightsValue={true} />
-          {
-            step === 0 && (
-              <>
-                <FlightsMainPageMobile
-                  setStep={setStep}
-                  setflightID={setFlightID}
-                />
-              </>
-            ) /*el step 0 es la pagina principal de aerolineas*/
-          }
-          {
-            step === 1 && (
-              <>
-                <CreateFlightMainPage setStep={setStep} />
-              </>
-            ) /*el step 1 es la pagina de registrar aerolinea*/
-          }
-          {
-            step === 2 && (
-              <>
-                <EditFlight setStep={setStep} flightID={flightID} />
-              </>
-            ) /*el step 1 es la pagina de registrar aerolinea*/
-          }
+
+          <>
+            <FlightsMainPageMobile
+              setStep={setStep}
+              setflightID={setFlightID}
+            />
+          </>
         </>
       )}
     </>
