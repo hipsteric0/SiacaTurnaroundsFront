@@ -1054,7 +1054,19 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
     console.log("arrayList3aux", arrayList3aux);
     arrayList3aux.map((index: any) => {
       y[index.id] = (
-        <div key={index.id} className={styles.tableInfoRow}>
+        <div
+          key={index.id}
+          className={styles.tableInfoRow}
+          onClick={() => {
+            getTemplateTasks(index?.fk_vuelo?.fk_plantilla?.id);
+            getMachinesByTurnaround(index?.id);
+            setOpenDetailDialogID(index.id);
+
+            if (openDetailDialog == false) {
+              setOpenDetailDialog(true);
+            }
+          }}
+        >
           <div className={styles.menuContainer}>
             {openDetailDialogID === index?.id && (
               <Dialog
@@ -1583,18 +1595,6 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                 </div>
               </div>
             )}
-          </div>
-          <div
-            className={styles.openDetailContainer}
-            onClick={() => {
-              getTemplateTasks(index?.fk_vuelo?.fk_plantilla?.id);
-              getMachinesByTurnaround(index?.id);
-              setOpenDetailDialogID(index.id);
-
-              setOpenDetailDialog(true);
-            }}
-          >
-            <p className={styles.openDetailContainerText}>Ver mas</p>
           </div>
 
           <div className={styles.imageContainer}>

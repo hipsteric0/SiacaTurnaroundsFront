@@ -187,6 +187,7 @@
 }
 .detailDialog {
   border-radius: 12px !important;
+  z-index: 9999;
 }
 
 .detailDialogInfoContainer {
@@ -258,6 +259,7 @@
   top: 20px;
   right: 25px;
   cursor: pointer;
+  z-index: 9999;
 }
 .flightIframe {
   width: 100%;

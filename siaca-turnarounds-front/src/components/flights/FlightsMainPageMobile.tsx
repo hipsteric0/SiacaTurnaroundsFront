@@ -157,7 +157,16 @@ const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
         console.log("clickedIndex", index);
       }
       y[index.id] = (
-        <div key={index.id} className={styles.tableInfoRow}>
+        <div
+          key={index.id}
+          className={styles.tableInfoRow}
+          onClick={() => {
+            setOpenDetailDialogID(index.id);
+            if (openDetailDialog == false) {
+              setOpenDetailDialog(true);
+            }
+          }}
+        >
           <div className={styles.menuContainer}>
             {openDetailDialogID === index?.id && (
               <Dialog
@@ -478,15 +487,7 @@ const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
               </div>
             )}
           </div>
-          <div
-            className={styles.openDetailContainer}
-            onClick={() => {
-              setOpenDetailDialogID(index.id);
-              setOpenDetailDialog(true);
-            }}
-          >
-            <p className={styles.openDetailContainerText}>Ver mas</p>
-          </div>
+
           <div className={styles.imageContainer}>
             {index?.fk_aerolinea?.nombre} image not found
           </div>
