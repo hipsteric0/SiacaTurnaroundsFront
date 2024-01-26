@@ -26,6 +26,9 @@ import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import StandardInputV2 from "../Reusables/StandardInputV2";
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+
 interface PageProps {
   setStep: (value: number) => void;
 }
@@ -1567,7 +1570,11 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
                   : () => setOpenCardMenu(index.id)
               }
             >
+              <Tooltip title="Opciones">
+              <IconButton>
               <MoreVertIcon />
+              </IconButton>
+              </Tooltip>
             </div>
           </div>
           <div

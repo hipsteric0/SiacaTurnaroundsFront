@@ -1,5 +1,5 @@
 .containerAirlinesMainPage {
-  padding: 93px 115px;
+  padding: 30px 115px;
 }
 .registerbuttoncontainer {
   width: 100%;
@@ -47,6 +47,7 @@
 
 .dialogText{
   text-align: center;
+  background: #ffffff;
   font-family: Montserrat, Poppins, sans-serif;
   padding-top: 5%;
   padding-left: 30px;
@@ -75,4 +76,27 @@
   flex-direction: row;
   gap: 10px;
   padding-left: 85px;
+}
+
+.closeIconDialog {
+  position: absolute;
+  top: 20px;
+  right: 25px;
+  cursor: pointer;
+  bottom: 20px;
+}
+
+
+.dialogTextAirline{
+  background: #ffffff;
+  font-family: Montserrat, Poppins, sans-serif;
+  padding-top: 5%;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-bottom: 30px;
+}
+
+.dividerText {
+  font-weight: bold;
+  color: #08a75a;
 }

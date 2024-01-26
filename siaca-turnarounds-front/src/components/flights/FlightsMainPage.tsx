@@ -23,6 +23,9 @@ import RedButton2 from "../Reusables/RedButton2";
 import GreenButton2 from "@/components/Reusables/GreenButton2";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+
 interface PageProps {
   setStep: (value: number) => void;
   setflightID: (value: number) => void;
@@ -454,7 +457,11 @@ const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
                   : () => setOpenCardMenu(index.id)
               }
             >
+              <Tooltip title="Opciones">
+              <IconButton>
               <MoreVertIcon />
+              </IconButton>
+              </Tooltip>
             </div>
           </div>
           <div

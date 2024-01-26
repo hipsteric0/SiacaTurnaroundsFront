@@ -12,6 +12,7 @@ import DriveFolderUploadRoundedIcon from "@mui/icons-material/DriveFolderUploadR
 import FileUploadRoundedIcon from "@mui/icons-material/FileUploadRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import SiacaNavbar from "@/components/Reusables/Navbar/SiacaNavbar";
+import BackArrow from "@/components/Reusables/BackArrow";
 interface PageProps {
   setStep: (value: number) => void;
 }
@@ -73,6 +74,13 @@ const RegisterCity: React.FC<PageProps> = ({ setStep }) => {
 
   return (
     <main className={styles.RegisterAirlineContainer}>
+      <div className={styles.backArrowIcon}>
+        <BackArrow
+          executableFunction={() => {
+            router.reload();
+          }}
+        />
+      </div>
       <div className={styles.airlinesListContainer}>
         <span className={styles.titleText}>Codigos</span>
         <div className={styles.inputsList}>

@@ -29,6 +29,11 @@
   color: #98989a;
   cursor: pointer;
 }
+
+.inactiveItemText:hover{
+  color: #08a75a;
+}
+
 .closeSesionText {
   font-size: 12px;
   color: #98989a;

@@ -153,7 +153,7 @@ export default async function handler(
           codigo: body?.["codigo"],
           pais: body?.["pais"],
           ciudad: body?.["ciudad"],
-
+          imagen: body?.["imagen"]
         }),
         /*body: JSON.stringify({
           username: "hola9",

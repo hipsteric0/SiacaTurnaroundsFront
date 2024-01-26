@@ -68,6 +68,7 @@
 
 .warningIcon {
   font-size: 70px;
+  color: #08a75a;
 }
 
 .dialogBack {
@@ -105,4 +106,19 @@
 }
 .personnelListDialogContainer {
   padding: 60px 20px 20px 20px;
+}
+
+
+.dialogTextPersonnel{
+  background: #ffffff;
+  font-family: Montserrat, Poppins, sans-serif;
+  padding-top: 5%;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-bottom: 30px;
+}
+
+.dividerText {
+  font-weight: bold;
+  color: #08a75a;
 }

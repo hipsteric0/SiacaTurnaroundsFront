@@ -16,6 +16,14 @@ import { text } from "stream/consumers";
 import RedButton2 from "../Reusables/RedButton2";
 import GreenButton2 from "@/components/Reusables/GreenButton2";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
+
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+
+import Divider from '@mui/material/Divider';
+import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
+
 
 interface PageProps {
   setStep: (value: number) => void;
@@ -37,6 +45,18 @@ const AirlinesMainPage: React.FC<PageProps> = ({
   const [citiesDialog, setCitiesDialog] = useState(false);
   const [registerDialog, setRegisterDialog] = useState(false);
   const [deleteCitiesDialog, setDeleteCitiesDialog] = useState(false);
+
+  const [aerolinea, setAerolinea] = useState("");
+  const [codigo, setCodigo] = useState("");
+  const [correoPrincipal, setCorreoPrincipal] = useState("");
+  const [correoSecundario, setCorreoSecundario] = useState("");
+  const [telefonoPrincipal, setTelefonoPrincipal] = useState("");
+  const [telefonoSecundario, setTelefonoSecundario] = useState("");
+  const [pais, setPais] = useState("");
+  const [ciudad, setCiudad] = useState("");
+
+  const [arrayAirline, setArrayAirline] = useState([]);
+  const [airlineDialog, setAirlineDialog] = useState(false);
 
   useEffect(() => {
     getList();
@@ -144,6 +164,49 @@ const AirlinesMainPage: React.FC<PageProps> = ({
     await fetchData().catch(console.error);
   };
 
+
+  /* DATOS DE LA AEROLINEA */
+  const getAirline = async ( airlineID : number) => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/specificAirlineByID";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+            flightID: airlineID,
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            setArrayAirline(Object.values(result));
+            console.log("result", result);
+
+            setAerolinea(result?.nombre);
+            setCodigo(result?.codigo);
+            setCorreoPrincipal(result?.correo);
+            setCorreoSecundario(result?.correo_secundario);
+            setTelefonoPrincipal(result?.telefono);
+            setTelefonoSecundario(result?.telefono_secundario);
+            setPais(result?.pais);
+            setCiudad(result?.ciudad);
+
+
+            if (result?.[0]?.["status"] === 400) {
+              console.log("entro");
+            } else {
+            }
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
   const handleDeleteAirline = async (airlineID: number) => {
     deleteAirline(airlineID);
   };
@@ -151,6 +214,12 @@ const AirlinesMainPage: React.FC<PageProps> = ({
   const handleDeleteCity = async (cityID: number) => {
     deleteCity(cityID);
   };
+
+  const handleAirline = async (airlineID: number) => {
+    getAirline(airlineID);
+    console.log("DATOS DE AEROLINEA",airlineID)
+  };
+
 
   const arrayPrinter = () => {
     let y: any = [];
@@ -206,7 +275,73 @@ const AirlinesMainPage: React.FC<PageProps> = ({
               </div>
             </Dialog>
           }
-          <td>Logo</td>
+
+
+{
+            <Dialog
+              className={styles.dialogTextAirline}
+              open={airlineDialog}
+              fullWidth={true}
+              maxWidth= "sm"
+              scroll="paper"
+              onClose={() => setAirlineDialog(false)}
+            >
+              <div className={styles.dialogBack}>
+              <div
+              className={styles.closeIconDialog}
+              onClick={() => setAirlineDialog(false)}
+            >
+              <Tooltip title="Cerrar">
+              <IconButton>
+              <CloseRoundedIcon htmlColor="#4d4e56" />
+              </IconButton>
+              </Tooltip>
+            </div>
+                <div className={styles.dialogTextAirline}>
+                  <div className={styles.warningIcon}>
+                  <div className={styles.dividerText}>
+                   <center> <AirplaneTicketIcon fontSize="inherit" /></center>
+                   </div>
+                   <Spacer/>
+                  </div>
+
+                      <div className={styles.dividerText}>
+                      <Divider> Aerolinea </Divider> 
+                      </div>
+                      <br/>
+                      {arrayList3.find((o) => o.id === clickID)?.nombre}
+                      <Spacer/>
+
+                      <div className={styles.dividerText}>
+                      <Divider> Código </Divider> 
+                      </div>
+                      <br/>
+                      {arrayList3.find((o) => o.id === clickID)?.codigo}
+                      <Spacer/>
+
+                      <div className={styles.dividerText}>
+                      <Divider> Correos </Divider> 
+                      </div>
+                    <br/>
+                     <strong>Principal:</strong> {arrayList3.find((o) => o.id === clickID)?.correo} 
+                      <Spacer/> 
+                      <strong>Secundario:</strong>  {arrayList3.find((o) => o.id === clickID)?.correo_secundario}
+                      <Spacer/>
+
+                      <div className={styles.dividerText}>
+                      <Divider> Teléfonos </Divider> 
+                      </div>
+                    <br/>
+                    <strong>Principal:</strong>  {arrayList3.find((o) => o.id === clickID)?.telefono}
+                      <Spacer/>
+                      <strong>Secundario:</strong>  {arrayList3.find((o) => o.id === clickID)?.telefono_secundario}
+                      <Spacer/>
+                </div>
+              </div>
+            </Dialog>
+          }
+          
+          <td><img src={"http://127.0.0.1:8000"+index.imagen} alt="Logo" width={50} height={50}/></td>
           <td>{index.nombre}</td>
           <td>{index.correo}</td>
           <td>{index.telefono}</td>
@@ -221,10 +356,18 @@ const AirlinesMainPage: React.FC<PageProps> = ({
                 sethoverEyeId(-1);
               }}
             >
+              <Tooltip title="Detalles">
+              <IconButton>
               <RemoveRedEyeIcon
                 htmlColor={hoverEyeId === index.id ? "#00A75D" : "#4D4E56"}
-                onClick={() => {}}
+                onClick={() => {
+                  handleAirline(index.id)
+                  setclickID(index.id);
+                  setAirlineDialog(true);
+                }}
               />{" "}
+              </IconButton>
+            </Tooltip>
             </div>
 
             <div
@@ -236,6 +379,8 @@ const AirlinesMainPage: React.FC<PageProps> = ({
                 sethoverPencilId(-1);
               }}
             >
+              <Tooltip title="Editar">
+              <IconButton>
               <BorderColorOutlinedIcon
                 htmlColor={hoverPencilId === index.id ? "#00A75D" : "#4D4E56"}
                 onClick={() => {
@@ -243,6 +388,8 @@ const AirlinesMainPage: React.FC<PageProps> = ({
                   setStep(2);
                 }}
               />{" "}
+              </IconButton>
+              </Tooltip>
             </div>
 
             <div
@@ -254,6 +401,8 @@ const AirlinesMainPage: React.FC<PageProps> = ({
                 sethoverTrashId(-1);
               }}
             >
+              <Tooltip title="Eliminar">
+              <IconButton>
               <DeleteOutlineOutlinedIcon
                 htmlColor={hoverTrashId === index.id ? "#f10303" : "#4D4E56"}
                 onClick={() => {
@@ -261,6 +410,8 @@ const AirlinesMainPage: React.FC<PageProps> = ({
                   setDeleteDialog(true);
                 }}
               />
+              </IconButton>
+              </Tooltip>
             </div>
           </td>
         </div>
@@ -334,6 +485,8 @@ const AirlinesMainPage: React.FC<PageProps> = ({
                 sethoverPencilId(-1);
               }}
             >
+              <Tooltip title="Editar">
+              <IconButton>
               <BorderColorOutlinedIcon
                 htmlColor={hoverPencilId === index.id ? "#00A75D" : "#4D4E56"}
                 onClick={() => {
@@ -341,6 +494,8 @@ const AirlinesMainPage: React.FC<PageProps> = ({
                   setStep(4);
                 }}
               />{" "}
+              </IconButton>
+              </Tooltip>
             </div>
 
             <div
@@ -352,6 +507,8 @@ const AirlinesMainPage: React.FC<PageProps> = ({
                 sethoverTrashId(-1);
               }}
             >
+              <Tooltip title="Eliminar">
+              <IconButton>
               <DeleteOutlineOutlinedIcon
                 htmlColor={hoverTrashId === index.id ? "#f10303" : "#4D4E56"}
                 onClick={() => {
@@ -359,6 +516,8 @@ const AirlinesMainPage: React.FC<PageProps> = ({
                   setDeleteCitiesDialog(true);
                 }}
               />
+              </IconButton>
+              </Tooltip>
             </div>
           </td>
         </div>
@@ -381,6 +540,16 @@ const AirlinesMainPage: React.FC<PageProps> = ({
             onClose={() => setCitiesDialog(false)}
           >
             <div className={styles.dialogBack}>
+            <div
+              className={styles.closeIconDialog}
+              onClick={() => setCitiesDialog(false)}
+            >
+              <Tooltip title="Cerrar">
+              <IconButton>
+              <CloseRoundedIcon htmlColor="#4d4e56" />
+              </IconButton>
+              </Tooltip>
+            </div>
               <div className={styles.dialogText}>
                 <GreenButton
                   executableFunction={() => setStep(3)}
@@ -404,7 +573,7 @@ const AirlinesMainPage: React.FC<PageProps> = ({
             </div>
           </Dialog>
         }
-
+        
         <GreenButton
           executableFunction={() => setCitiesDialog(true)}
           buttonText="Ciudades"

@@ -21,6 +21,15 @@ import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import BlockIcon from "@mui/icons-material/Block";
 
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+
+import Badge from '@mui/material/Badge';
+import Divider from '@mui/material/Divider';
+
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { AccessAlarmOutlined } from "@mui/icons-material";
+
 interface PageProps {
   setStep: (value: number) => void;
 }
@@ -39,6 +48,9 @@ const PersonnelMainPage: React.FC = () => {
   const [denyDialog, setDenyDialog] = useState(false);
   const [aceptDialog, setAceptDialog] = useState(false);
   const [listDialog, setListDialog] = useState(false);
+
+  const [infoDialog, setInfoDialog] = useState(false);
+  
   const [solicitudeCounter, setSolicitudeCounter] = useState(-1);
   let filterValues: any[] = [];
 
@@ -257,6 +269,71 @@ const PersonnelMainPage: React.FC = () => {
             </Dialog>
           }
 
+
+{
+            <Dialog
+              className={styles.dialogTextPersonnel}
+              open={infoDialog}
+              fullWidth={true}
+              maxWidth= "sm"
+              scroll="paper"
+              onClose={() => setInfoDialog(false)}
+            >
+              <div className={styles.dialogBack}>
+              <div>
+            <div
+              className={styles.closeIconDialog}
+              onClick={() => setInfoDialog(false)}
+            >
+              <Tooltip title="Cerrar">
+              <IconButton>
+              <CloseRoundedIcon htmlColor="#4d4e56" />
+              </IconButton>
+              </Tooltip>
+            </div>
+          </div>
+                <div className={styles.dialogTextPersonnel}>
+                  <div className={styles.warningIcon}>
+                  <center>  <AccountCircleIcon fontSize="inherit" /> </center>
+                  </div>
+                  <div className={styles.dividerText}>
+                      <Divider> Nombre </Divider> 
+                      </div>
+                      <br/>
+                      {arrayList3.find((o) => o.fk_user?.id === clickID)?.fk_user?.first_name} {" "} {arrayList3.find((o) => o.fk_user?.id  === clickID)?.fk_user?.last_name}
+                      <Spacer/>
+
+                      <div className={styles.dividerText}>
+                      <Divider> Cédula </Divider> 
+                      </div>
+                      <br/>
+                      {arrayList3.find((o) => o.fk_user?.id  === clickID)?.cedula}
+                      <Spacer/>
+
+                      <div className={styles.dividerText}>
+                      <Divider> Contacto </Divider> 
+                      </div>
+                    <br/>
+                     <strong>Teléfono:</strong> {arrayList3.find((o) => o.fk_user?.id  === clickID)?.telefono} 
+                      <Spacer/>
+                      <strong>Correo:</strong>  {arrayList3.find((o) => o.fk_user?.id === clickID)?.fk_user?.username}
+                      <Spacer/>
+
+                      <div className={styles.dividerText}>
+                      <Divider> Información </Divider> 
+                      </div>
+                    <br/>
+                    <strong>Departamento:</strong>  {arrayList3.find((o) => o.fk_user?.id  === clickID)?.fk_departamento?.nombre}
+                      <Spacer/>
+                      <strong>Cargo:</strong>  {arrayList3.find((o) => o.fk_user?.id  === clickID)?.fk_cargo?.nombre}
+                      <Spacer/>
+                      <strong>Turno:</strong>  {arrayList3.find((o) => o.fk_user?.id  === clickID)?.turno}
+                      <Spacer/>
+                </div>
+              </div>
+            </Dialog>
+          }
+
           <td>
             {index?.fk_user?.first_name} {index?.fk_user?.last_name}
           </td>
@@ -277,10 +354,17 @@ const PersonnelMainPage: React.FC = () => {
                 sethoverEyeId(-1);
               }}
             >
+              <Tooltip title="Detalles">
+              <IconButton>
               <RemoveRedEyeIcon
                 htmlColor={hoverEyeId === index.id ? "#00A75D" : "#4D4E56"}
-                onClick={() => {}}
+                onClick={() => {
+                  setclickID(index?.fk_user?.id);
+                  setInfoDialog(true);
+                }}
               />{" "}
+              </IconButton>
+              </Tooltip>
             </div>
 
             <div
@@ -292,10 +376,14 @@ const PersonnelMainPage: React.FC = () => {
                 sethoverPencilId(-1);
               }}
             >
+               <Tooltip title="Editar">
+              <IconButton>
               <BorderColorOutlinedIcon
                 htmlColor={hoverPencilId === index.id ? "#00A75D" : "#4D4E56"}
                 onClick={() => {}}
               />{" "}
+              </IconButton>
+              </Tooltip>
             </div>
 
             <div
@@ -307,6 +395,8 @@ const PersonnelMainPage: React.FC = () => {
                 sethoverTrashId(-1);
               }}
             >
+               <Tooltip title="Eliminar">
+              <IconButton>
               <DeleteOutlineOutlinedIcon
                 htmlColor={hoverTrashId === index.id ? "#f10303" : "#4D4E56"}
                 onClick={() => {
@@ -314,6 +404,8 @@ const PersonnelMainPage: React.FC = () => {
                   setDeleteDialog(true);
                 }}
               />
+              </IconButton>
+              </Tooltip>
             </div>
           </td>
         </div>
@@ -432,6 +524,8 @@ const PersonnelMainPage: React.FC = () => {
                 sethoverEyeId(-1);
               }}
             >
+              <Tooltip title="Aceptar">
+              <IconButton>
               <CheckCircleOutlineIcon
                 htmlColor={hoverEyeId === index.id ? "#00A75D" : "#4D4E56"}
                 onClick={() => {
@@ -439,6 +533,8 @@ const PersonnelMainPage: React.FC = () => {
                   setAceptDialog(true);
                 }}
               />{" "}
+              </IconButton>
+              </Tooltip>
             </div>
 
             <div
@@ -450,6 +546,8 @@ const PersonnelMainPage: React.FC = () => {
                 sethoverTrashId(-1);
               }}
             >
+              <Tooltip title="Denegar">
+              <IconButton>
               <BlockIcon
                 htmlColor={hoverTrashId === index.id ? "#f10303" : "#4D4E56"}
                 onClick={() => {
@@ -457,6 +555,8 @@ const PersonnelMainPage: React.FC = () => {
                   setDenyDialog(true);
                 }}
               />
+              </IconButton>
+              </Tooltip>
             </div>
           </td>
         </div>
@@ -481,7 +581,11 @@ const PersonnelMainPage: React.FC = () => {
               className={styles.closeIconDialog}
               onClick={() => setListDialog(false)}
             >
+              <Tooltip title="Cerrar">
+              <IconButton>
               <CloseRoundedIcon htmlColor="#4d4e56" />
+              </IconButton>
+              </Tooltip>
             </div>
           </div>
 
@@ -516,11 +620,13 @@ const PersonnelMainPage: React.FC = () => {
           </div>
         </div>
         <div className={styles.greenbuttonSuperContainer}>
+        <Badge badgeContent={solicitudeCounter} color="error">
           <GreenButton
             executableFunction={() => setListDialog(true)}
-            buttonText={"Solicitudes" + " (" + solicitudeCounter + ")"}
+            buttonText={"Solicitudes"}
             disabled={solicitudeCounter < 1}
           />
+          </Badge>
         </div>
       </div>
 

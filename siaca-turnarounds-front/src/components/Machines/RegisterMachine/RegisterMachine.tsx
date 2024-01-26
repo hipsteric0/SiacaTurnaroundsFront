@@ -32,10 +32,11 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep }) => {
   const [modelo, setModelo] = useState("");
   const [combustible, setCombustible] = useState("");
   const [estado, setEstado] = useState("");
-  const [imagen, setImagen] = useState("");
+  const [imagen, setImagen] = useState(new Blob());
   const [fkcategoria, setFkCategoria] = useState("");
   const [arrayList, setArrayList] = useState([]);
   const [stringValue, setStringValue] = useState("");
+  const [preview, setPreview] = useState("");
 
   let responseValue = false;
 
@@ -118,8 +119,25 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep }) => {
     fetchData().catch(console.error);
   };
 
+
+  const newMachine = () => {
+    const uploadData = new FormData();
+    uploadData.append('imagen', imagen, imagen.name);
+    uploadData.append('identificador', identificador);
+    uploadData.append('modelo', modelo);
+    uploadData.append('combustible', combustible);
+    uploadData.append('fk_categoria', fkcategoria);
+
+    fetch('http://127.0.0.1:8000/maquinarias/?token='+localStorage.getItem("userToken"), {
+      method: 'POST',
+      body: uploadData
+    })
+    .then( res => console.log(res))
+    .catch(error => console.log(error))
+  }
+
   const continueButton = () => {
-    registerMachines();
+    newMachine();
   };
 
   const category = (id: number) => {
@@ -134,6 +152,13 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep }) => {
     setCombustible(fuelArray[id]?.name);
   };
 
+  const subirArchivo = (e : any) =>{
+    setImagen(e);
+    setPreview(URL.createObjectURL(e))
+    console.log("Imagen", e.name)
+    console.log("Image", e)
+  }
+
   return (
     <main className={styles.RegisterMachineContainer}>
       <div className={styles.backArrowIcon}>
@@ -145,14 +170,22 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep }) => {
       </div>
       <div className={styles.machinesListContainer}>
         <span className={styles.titleTextImagen}>Imagen</span>
+
         <div className={styles.inputsListImage}>
-          <div className={styles.uploadContainer}>
+        <input type="file" name="Archivos" onChange={(e : any)=>subirArchivo(e.target.files[0])}/>
+        {preview && (
+        <div>
+         <center><img src={preview} alt="Preview" width={200} height={200}/></center> 
+        </div>
+      )}
+
+{/*          <div className={styles.uploadContainer}>
             <DriveFolderUploadRoundedIcon fontSize="inherit" />
             <div className={styles.uploadCancelButtons}>
               <FileUploadRoundedIcon htmlColor="#08a75a" />
               <CloseRoundedIcon htmlColor="red" />
             </div>
-          </div>
+        </div> */}
         </div>
         <span className={styles.titleTextDates}>Datos</span>
         <div className={styles.inputsList}>

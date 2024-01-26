@@ -18,6 +18,9 @@ import GreenButton2 from "@/components/Reusables/GreenButton2";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+
 interface PageProps {
   setStep: (value: number) => void;
   setmachineID: (value: number) => void;
@@ -219,7 +222,11 @@ const MachinesMainPage: React.FC<PageProps> = ({ setStep, setmachineID }) => {
                     : () => setOpenCardMenu(index.id)
                 }
               >
+              <Tooltip title="Opciones">
+              <IconButton>
                 <MoreVertIcon />
+                </IconButton>
+                </Tooltip>
               </div>
             </div>
           </div>
