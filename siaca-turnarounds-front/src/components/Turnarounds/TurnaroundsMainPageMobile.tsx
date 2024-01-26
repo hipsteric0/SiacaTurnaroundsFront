@@ -9,7 +9,7 @@ import React, { useEffect, useState } from "react";
 import router, { Router } from "next/router";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Table, Spacer } from "@nextui-org/react";
-import { TableBody, Dialog } from "@mui/material";
+import { TableBody, Dialog, Input, TextField } from "@mui/material";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
@@ -25,6 +25,9 @@ import GreenButton2 from "@/components/Reusables/GreenButton2";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import StandardInputV2 from "../Reusables/StandardInputV2";
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
+import Checkbox from "@mui/material/Checkbox";
+import AddAPhotoRoundedIcon from "@mui/icons-material/AddAPhotoRounded";
+import { get } from "http";
 
 interface PageProps {
   setStep: (value: number) => void;
@@ -58,6 +61,10 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
     useState([]);
   let date = new Date();
   const [arrayFilteredList3, setArrayFilteredList3] = useState([]);
+  const [arrayOfCheckedHours, setArrayOfCheckedHours] = useState([]);
+  const [arrayOfComments, setArrayOfComments] = useState([]);
+  const [arrayOfCheckedHoursStartEnd, setArrayOfCheckedHoursStartEnd] =
+    useState([]);
   const [machinesToPostArray, setMachinesToPostArray] = useState([]);
   const [personnelToPostArray, setPersonnelToPostArray] = useState([]);
   const [openCardMenu, setOpenCardMenu] = useState(-1);
@@ -96,6 +103,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
   const [checkTaskID, setcheckTaskID] = useState(-1);
   const [reservedTask, setreservedTask] = useState(false);
   const [reservedTaskPersonnel, setreservedTaskPersonnel] = useState(false);
+  const [openedTurnaroundID, setOpenedTurnaroundID] = useState(-1);
   let filterValues: any[] = [];
   const getList = async () => {
     setIsFilteredResults(false);
@@ -436,6 +444,144 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
       }
     };
     await fetchData().catch(console.error);
+  };
+
+  const PostTaskResolutionComment = async (
+    turnaroundID: any,
+    subtaskID: any,
+    commentText: any
+  ) => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/postTaskResolutionComment";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+            comentario: commentText,
+            fk_subtarea: subtaskID,
+            fk_turnaround: turnaroundID,
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            console.log("postTaskResolutionComment", result);
+
+            if (result?.[0]?.["status"] === 400) {
+              console.log("entro");
+            } else {
+            }
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
+  const PostTaskResolutionSimpleCheck = async (
+    turnaroundID: any,
+    subtaskID: any,
+    timestamp: any
+  ) => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/postTaskResolutionSimpleCheck";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+            hora_inicio: timestamp,
+            fk_subtarea: subtaskID,
+            fk_turnaround: turnaroundID,
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            console.log("postTaskResolutionSimpleCheck", result);
+
+            if (result?.[0]?.["status"] === 400) {
+              console.log("entro");
+            } else {
+            }
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
+  const PostTaskResolutionDoubleCheck = async (
+    turnaroundID: any,
+    subtaskID: any,
+    timestampStart: any,
+    timestampEnd: any
+  ) => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/postTaskResolutionSimpleCheck";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+            hora_inicio: timestampStart,
+            hora_fin: timestampEnd,
+            fk_subtarea: subtaskID,
+            fk_turnaround: turnaroundID,
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            console.log("postTaskResolutionDoubleCheck", result);
+
+            if (result?.[0]?.["status"] === 400) {
+              console.log("entro");
+            } else {
+            }
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
+  const handleSendData = () => {
+    //openDetailDialogID es el id del turnaround
+
+    //arrayOfComments es el arrlego de comentarios
+    arrayOfComments.map((index: any) => {
+      PostTaskResolutionComment(openDetailDialogID, index?.key, index?.text); //para cada instancia del arreglo de comentarios
+    });
+
+    //arrayOfCheckedHours es el arrlego de checks individiales
+    arrayOfCheckedHours.map((index: any) => {
+      PostTaskResolutionSimpleCheck(
+        openDetailDialogID,
+        index?.key,
+        index?.timestamp
+      ); //para cada instancia del arreglo de comentarios
+    });
+
+    //arrayOfCheckedHoursStartEnd es el arrlego de cchecks dobles
+    arrayOfCheckedHoursStartEnd.map((index: any) => {
+      PostTaskResolutionDoubleCheck(
+        openDetailDialogID,
+        index?.key,
+        index?.timestampStart,
+        index?.timestampEnd
+      ); //para cada instancia del arreglo de comentarios
+    });
   };
 
   const getDateForCalendar = () => {
@@ -1017,6 +1163,210 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
     return y;
   };
 
+  const GetTaskArrayCheckTimestamp = (idSubtarea: any) => {
+    let auxiliaryArray = [];
+    auxiliaryArray = arrayOfCheckedHours; //array con las que ya estan checkeadas
+
+    let x = auxiliaryArray.find((o) => o.key === idSubtarea);
+    //encuentra la tarea
+    let result = arrayOfCheckedHours.filter((item) => item?.key == idSubtarea);
+
+    if (result.length === 0) {
+      return (
+        <>
+          <p className={styles.checkTaskText}></p>{" "}
+        </>
+      );
+    } else {
+      return (
+        <>
+          <p className={styles.checkTaskText}>Inicio: {result[0]?.timestamp}</p>{" "}
+        </>
+      );
+    }
+  };
+
+  const GetTaskArrayCheckTimestampOnlyStart = (idSubtarea: any) => {
+    let auxiliaryArray = [];
+    auxiliaryArray = arrayOfCheckedHoursStartEnd; //array con las que ya estan checkeadas
+
+    let x = auxiliaryArray.find((o) => o.key === idSubtarea);
+    //si existe la borro
+    let result = arrayOfCheckedHoursStartEnd.filter(
+      (item) => item?.key == idSubtarea
+    );
+
+    if (result.length === 0) {
+      return (
+        <>
+          <p className={styles.checkTaskText}></p>{" "}
+        </>
+      );
+    } else {
+      return (
+        <>
+          <p className={styles.checkTaskText}>
+            Inicio: {result[0]?.timestampStart}
+          </p>{" "}
+        </>
+      );
+    }
+  };
+
+  const GetTaskArrayCheckTimestampOnlyEnd = (idSubtarea: any) => {
+    let auxiliaryArray = [];
+    auxiliaryArray = arrayOfCheckedHoursStartEnd; //array con las que ya estan checkeadas
+
+    let x = auxiliaryArray.find((o) => o.key === idSubtarea);
+    //si existe la borro
+    let result = arrayOfCheckedHoursStartEnd.filter(
+      (item) => item?.key == idSubtarea
+    );
+
+    if (result.length === 0) {
+      return (
+        <>
+          <p className={styles.checkTaskText}></p>{" "}
+        </>
+      );
+    } else {
+      return (
+        <>
+          <p className={styles.checkTaskText}>Fin: {result[0]?.timestampEnd}</p>{" "}
+        </>
+      );
+    }
+  };
+
+  const SetInputInArray = (idSubtarea: any, textoValue: any) => {
+    let auxiliaryArray = [];
+    auxiliaryArray = arrayOfComments; //array con las que ya estan checkeadas
+    let x = auxiliaryArray.find((o) => o.key === idSubtarea);
+
+    if (x == undefined) {
+      //si no existe, la meto en el array
+
+      auxiliaryArray.push({
+        key: idSubtarea,
+        text: textoValue,
+      });
+      setArrayOfComments(auxiliaryArray);
+    } else {
+      //si existe la edito
+      auxiliaryArray.find((o) => o.key === idSubtarea).text = textoValue;
+
+      setArrayOfComments(auxiliaryArray);
+    }
+    console.log("arrayOfComments", auxiliaryArray);
+  };
+
+  const SetTaskArrayChecks = (idSubtarea: any, tituloSubtarea: any) => {
+    let auxiliaryArray = [];
+    auxiliaryArray = arrayOfCheckedHours; //array con las que ya estan checkeadas
+
+    let x = auxiliaryArray.find((o) => o.key === idSubtarea);
+
+    if (x == undefined) {
+      //si no existe, la meto en el array
+      let currentTimestamp = new Date();
+      let currentTimestampString =
+        currentTimestamp.getHours().toString() +
+        ":" +
+        currentTimestamp.getMinutes().toString() +
+        ":" +
+        currentTimestamp.getSeconds().toString();
+
+      auxiliaryArray.push({
+        key: idSubtarea,
+        name: tituloSubtarea,
+        timestamp: currentTimestampString,
+      });
+      setArrayOfCheckedHours(auxiliaryArray);
+    } else {
+      //si existe la borro
+      let filteredArray = auxiliaryArray.filter(
+        (item) => item.key !== idSubtarea
+      );
+      setArrayOfCheckedHours(filteredArray);
+    }
+    console.log("arrayOfCheckedHours", arrayOfCheckedHours);
+  };
+
+  const SetTaskArrayChecksOnlyStart = (
+    idSubtarea: any,
+    tituloSubtarea: any
+  ) => {
+    let auxiliaryArray = [];
+    auxiliaryArray = arrayOfCheckedHoursStartEnd; //array con las que ya estan checkeadas
+
+    let x = auxiliaryArray.find((o) => o.key === idSubtarea);
+
+    if (x == undefined) {
+      //si no existe, la meto en el array
+      let currentTimestamp = new Date();
+      let currentTimestampString =
+        currentTimestamp.getHours().toString() +
+        ":" +
+        currentTimestamp.getMinutes().toString() +
+        ":" +
+        currentTimestamp.getSeconds().toString();
+
+      auxiliaryArray.push({
+        key: idSubtarea,
+        name: tituloSubtarea,
+        timestampStart: currentTimestampString,
+        timestampEnd: "",
+      });
+      setArrayOfCheckedHoursStartEnd(auxiliaryArray);
+    } else {
+      //si existe la borro
+      let filteredArray = auxiliaryArray.filter(
+        (item) => item.key !== idSubtarea
+      );
+      setArrayOfCheckedHoursStartEnd(filteredArray);
+    }
+    console.log("arrayOfCheckedHoursStartEnd", arrayOfCheckedHoursStartEnd);
+  };
+
+  const SetTaskArrayChecksOnlyEnd = (idSubtarea: any, tituloSubtarea: any) => {
+    let auxiliaryArray = [];
+    auxiliaryArray = arrayOfCheckedHoursStartEnd; //array con las que ya estan checkeadas
+
+    let x = auxiliaryArray.find((o) => o.key === idSubtarea);
+
+    if (x == undefined) {
+      //si no existe
+
+      setArrayOfCheckedHoursStartEnd(auxiliaryArray);
+    } else {
+      //existe
+      //si  timestampEnd NO existe meto el valor de finalizacion
+      if (
+        auxiliaryArray.find((o) => o.key === idSubtarea).timestampEnd === ""
+      ) {
+        let currentTimestamp = new Date();
+        let currentTimestampString =
+          currentTimestamp.getHours().toString() +
+          ":" +
+          currentTimestamp.getMinutes().toString() +
+          ":" +
+          currentTimestamp.getSeconds().toString();
+
+        auxiliaryArray.find((o) => o.key === idSubtarea).timestampEnd =
+          currentTimestampString;
+        console.log(
+          "auxiliaryArray.find",
+          auxiliaryArray.find((o) => o.key === idSubtarea)
+        );
+
+        setArrayOfCheckedHoursStartEnd(auxiliaryArray);
+      } else {
+        auxiliaryArray.find((o) => o.key === idSubtarea).timestampEnd = "";
+      }
+    }
+    console.log("arrayOfCheckedHoursStartEnd", arrayOfCheckedHoursStartEnd);
+  };
+
   const TasksArrayPrinter = () => {
     let y: any = [];
     let auxtitle = "";
@@ -1031,9 +1381,64 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
           {auxtitleBoolean && (
             <p className={styles.taskTextTitle}>{index?.fk_tarea?.titulo}</p>
           )}
-          <p className={styles.detailDialogInfoItemValueText}>
-            - {index?.titulo}
-          </p>
+          <div className={styles.taskAndCheckContainer}>
+            <p className={styles.detailDialogInfoItemValueText}>
+              {index?.titulo}
+            </p>
+            {index?.fk_tipo == 1 ? ( //comentario
+              <div className={styles.inputBox}>
+                <Input
+                  color="success"
+                  disableUnderline
+                  className={styles.inputText}
+                  onChange={({ target: { value } }) =>
+                    SetInputInArray(index?.id, value)
+                  }
+                />
+              </div>
+            ) : index?.fk_tipo == 2 ? ( //hora de inicio
+              <div className={styles.checksAndTimestampsContainer}>
+                {GetTaskArrayCheckTimestamp(index?.id)}
+                <Checkbox
+                  sx={{ "& .MuiSvgIcon-root": { fontSize: 16 } }}
+                  color="success"
+                  onChange={() => {
+                    console.log("click " + index?.titulo);
+                    SetTaskArrayChecks(index?.id, index?.titulo); //anade al arreglo de insercion el item y hora de clickeado
+                  }}
+                />
+              </div>
+            ) : index?.fk_tipo == 3 ? ( //hora de inicio y fin
+              <div className={styles.checksAndTimestampsContainer}>
+                {GetTaskArrayCheckTimestampOnlyStart(index?.id)}
+                <Checkbox
+                  sx={{ "& .MuiSvgIcon-root": { fontSize: 16 } }}
+                  color="success"
+                  onChange={() => {
+                    console.log("click " + index?.titulo);
+                    SetTaskArrayChecksOnlyStart(index?.id, index?.titulo); //anade al arreglo de insercion el item y hora de clickeado
+                  }}
+                />
+                {GetTaskArrayCheckTimestampOnlyEnd(index?.id)}
+                <Checkbox
+                  sx={{ "& .MuiSvgIcon-root": { fontSize: 16 } }}
+                  color="success"
+                  onChange={() => {
+                    console.log("click " + index?.titulo);
+                    SetTaskArrayChecksOnlyEnd(index?.id, index?.titulo); //anade al arreglo de insercion el item y hora de clickeado
+                  }}
+                />
+              </div>
+            ) : (
+              <div
+                onClick={() => {
+                  /**anadir fotos */
+                }}
+              >
+                <AddAPhotoRoundedIcon />
+              </div>
+            )}
+          </div>
         </div>
       );
       auxtitleBoolean = true;
@@ -1061,7 +1466,6 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
             getTemplateTasks(index?.fk_vuelo?.fk_plantilla?.id);
             getMachinesByTurnaround(index?.id);
             setOpenDetailDialogID(index.id);
-
             if (openDetailDialog == false) {
               setOpenDetailDialog(true);
             }
@@ -1096,198 +1500,12 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                         </span>
                       </div>
                     </div>
-                    <div className={styles.detailDialogInfoRow1}>
-                      <div className={styles.detailDialogInfoItem}>
-                        <span className={styles.detailDialogInfoItemTitle}>
-                          ICAO HEX:
-                        </span>
-                        <span className={styles.detailDialogInfoItemValueText}>
-                          {" "}
-                          {index?.fk_vuelo?.icao_hex === null
-                            ? "Indefinido"
-                            : index?.fk_vuelo?.icao_hex}
-                        </span>
-                      </div>
-                    </div>
-                    <div className={styles.detailDialogInfoRow1}>
-                      <div className={styles.detailDialogInfoItem}>
-                        <span className={styles.detailDialogInfoItemTitle}>
-                          STN:
-                        </span>
-                        <span className={styles.detailDialogInfoItemValueText}>
-                          {index?.fk_vuelo?.stn?.codigo}
-                        </span>
-                      </div>
-                    </div>
-                    <div className={styles.detailDialogInfoRow1}>
-                      <div className={styles.detailDialogInfoItem}>
-                        <span className={styles.detailDialogInfoItemTitle}>
-                          CARRIER:
-                        </span>
-                        <span className={styles.detailDialogInfoItemValueText}>
-                          {index?.fk_vuelo?.fk_aerolinea?.nombre}
-                        </span>
-                      </div>
-                    </div>
-                    <div className={styles.detailDialogInfoRow1}>
-                      <div className={styles.detailDialogInfoItem}>
-                        <span className={styles.detailDialogInfoItemTitle}>
-                          Charges Payable By:
-                        </span>
-                        <span className={styles.detailDialogInfoItemValueText}>
-                          {index?.fk_vuelo?.ente_pagador}
-                        </span>
-                      </div>
-                    </div>
-                    <div className={styles.detailDialogInfoRow1}>
-                      <div className={styles.detailDialogInfoItem}>
-                        <span className={styles.detailDialogInfoItemTitle}>
-                          No.:
-                        </span>
-                        <span className={styles.detailDialogInfoItemValueText}>
-                          {index?.fk_vuelo?.id}
-                        </span>
-                      </div>
-                    </div>
-                    <div className={styles.detailDialogInfoRow1}>
-                      <div className={styles.detailDialogInfoItem}>
-                        <span className={styles.detailDialogInfoItemTitle}>
-                          Routing:
-                        </span>
-                        <span className={styles.detailDialogInfoItemValueText}>
-                          {index?.fk_vuelo?.lugar_salida?.codigo}/
-                          {index?.fk_vuelo?.lugar_destino?.codigo}
-                        </span>
-                      </div>
-                    </div>
-                    <div className={styles.detailDialogInfoRow1}>
-                      <div className={styles.detailDialogInfoItem}>
-                        <span className={styles.detailDialogInfoItemTitle}>
-                          Tipo de vuelo:
-                        </span>
-                        <span className={styles.detailDialogInfoItemValueText}>
-                          {index?.fk_vuelo?.tipo_vuelo?.nombre}
-                        </span>
-                      </div>
-                    </div>
-                    <div className={styles.detailDialogInfoRow1}>
-                      <div className={styles.detailDialogInfoItem}>
-                        <span className={styles.detailDialogInfoItemTitle}>
-                          Flight No.:
-                        </span>
-                        <span className={styles.detailDialogInfoItemValueText}>
-                          {index?.fk_vuelo?.numero_vuelo}
-                        </span>
-                      </div>
-                    </div>
-                    <div className={styles.detailDialogInfoRow1}>
-                      <div className={styles.detailDialogInfoItem}>
-                        <span className={styles.detailDialogInfoItemTitle}>
-                          Gate/Gate:
-                        </span>
-                        <span className={styles.detailDialogInfoItemValueText}>
-                          {index?.fk_vuelo?.gate}
-                        </span>
-                      </div>
-                    </div>
-                    <div className={styles.detailDialogInfoRow1}>
-                      <div className={styles.detailDialogInfoItem}>
-                        <span className={styles.detailDialogInfoItemTitle}>
-                          A/C Reg:
-                        </span>
-                        <span className={styles.detailDialogInfoItemValueText}>
-                          {index?.fk_vuelo?.ac_reg}
-                        </span>
-                      </div>
-                    </div>
-                    <div className={styles.detailDialogInfoRow1}>
-                      <div className={styles.detailDialogInfoItem}>
-                        <span className={styles.detailDialogInfoItemTitle}>
-                          A/C Type:
-                        </span>
-                        <span className={styles.detailDialogInfoItemValueText}>
-                          {index?.fk_vuelo?.ac_type}
-                        </span>
-                      </div>
-                    </div>
 
-                    <div className={styles.detailDialogInfoRow1}>
-                      <div className={styles.detailDialogInfoItem}>
-                        <span className={styles.detailDialogInfoItemTitle}>
-                          ETA:
-                        </span>
-                        <span className={styles.detailDialogInfoItemValueText}>
-                          {index?.fk_vuelo?.ETA}
-                        </span>
-                      </div>
-                    </div>
-                    <div className={styles.detailDialogInfoRow1}>
-                      <div className={styles.detailDialogInfoItem}>
-                        <span className={styles.detailDialogInfoItemTitle}>
-                          ATA:
-                        </span>
-                        <span className={styles.detailDialogInfoItemValueText}>
-                          {index?.fk_vuelo?.ATA === null
-                            ? "Indefinido"
-                            : index?.ATA}
-                        </span>
-                      </div>
-                    </div>
-                    <div className={styles.detailDialogInfoRow1}>
-                      <div className={styles.detailDialogInfoItem}>
-                        <span className={styles.detailDialogInfoItemTitle}>
-                          Fecha de llegada:
-                        </span>
-                        <span className={styles.detailDialogInfoItemValueText}>
-                          {index?.fk_vuelo?.ETA_fecha}
-                        </span>
-                      </div>
-                    </div>
-                    <div className={styles.detailDialogInfoRow1}>
-                      <div className={styles.detailDialogInfoItem}>
-                        <span className={styles.detailDialogInfoItemTitle}>
-                          ETD:
-                        </span>
-                        <span className={styles.detailDialogInfoItemValueText}>
-                          {index?.fk_vuelo?.ETD}
-                        </span>
-                      </div>
-                    </div>
-                    <div className={styles.detailDialogInfoRow1}>
-                      <div className={styles.detailDialogInfoItem}>
-                        <span className={styles.detailDialogInfoItemTitle}>
-                          ATD:
-                        </span>
-                        <span className={styles.detailDialogInfoItemValueText}>
-                          {index?.fk_vuelo?.ATD === null
-                            ? "Indefinido"
-                            : index?.ATD}
-                        </span>
-                      </div>
-                    </div>
-                    <div className={styles.detailDialogInfoRow1}>
-                      <div className={styles.detailDialogInfoItem}>
-                        <span className={styles.detailDialogInfoItemTitle}>
-                          DATE:
-                        </span>
-                        <span className={styles.detailDialogInfoItemValueText}>
-                          {index?.fk_vuelo?.ETD_fecha}
-                        </span>
-                      </div>
-                    </div>
-                    <div className={styles.detailDialogInfoRow1}>
-                      <div className={styles.detailDialogInfoItem}>
-                        <span className={styles.detailDialogInfoItemTitle2}>
-                          PLANTILLA:
-                        </span>
-                        <span className={styles.detailDialogInfoItemValueText2}>
-                          {index?.fk_vuelo?.fk_plantilla?.titulo}
-                        </span>
-                      </div>
-                    </div>
                     <p className={styles.detailDialogInfoItemTitle2}>Tareas</p>
                     <div className={styles.detailDialogInfoRow1}>
-                      <div>{TasksArrayPrinter()}</div>
+                      <div className={styles.TasksArrayPrinterContainer}>
+                        {TasksArrayPrinter()}
+                      </div>
                     </div>
                     <p className={styles.detailDialogInfoItemTitle2}>
                       Maquinarias
@@ -1300,6 +1518,15 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                     </p>
                     <div className={styles.detailDialogInfoRow1}>
                       lista de personal y seleccion: -1 -2 -3
+                    </div>
+                  </div>
+
+                  <div className={styles.redButtonContainer}>
+                    <div className={styles.redButton}>
+                      <GreenButton
+                        executableFunction={() => handleSendData()}
+                        buttonText="ENVIAR"
+                      />
                     </div>
                   </div>
 

@@ -318,7 +318,7 @@
   cursor: pointer;
 }
 .redButton {
-  width: 95px;
+  min-width: 95px;
 }
 .redButtonContainer {
   display: flex;
@@ -383,4 +383,34 @@
   right: 5px;
   top: 5px;
   position: absolute;
+}
+.TasksArrayPrinterContainer {
+  width: 100%;
+}
+.taskAndCheckContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 2.5px 0px;
+}
+.checksAndTimestampsContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.checkTaskText {
+  font-weight: bold;
+  color: #98989a;
+  font-size: 9px;
+}
+.inputBox {
+  border-radius: 5px;
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.25);
+  border: solid 0.1px #bbb;
+  padding: 0px 5px;
+}
+.inputText {
+  font-size: 12px;
 }
