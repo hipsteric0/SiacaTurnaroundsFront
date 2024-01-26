@@ -556,17 +556,21 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
     await fetchData().catch(console.error);
   };
 
-  const handleSendData = () => {
+  const handleSendData = async () => {
     //openDetailDialogID es el id del turnaround
 
     //arrayOfComments es el arrlego de comentarios
-    arrayOfComments.map((index: any) => {
-      PostTaskResolutionComment(openDetailDialogID, index?.key, index?.text); //para cada instancia del arreglo de comentarios
+    await arrayOfComments.map(async (index: any) => {
+      await PostTaskResolutionComment(
+        openDetailDialogID,
+        index?.key,
+        index?.text
+      ); //para cada instancia del arreglo de comentarios
     });
 
     //arrayOfCheckedHours es el arrlego de checks individiales
-    arrayOfCheckedHours.map((index: any) => {
-      PostTaskResolutionSimpleCheck(
+    await arrayOfCheckedHours.map(async (index: any) => {
+      await PostTaskResolutionSimpleCheck(
         openDetailDialogID,
         index?.key,
         index?.timestamp
@@ -574,14 +578,15 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
     });
 
     //arrayOfCheckedHoursStartEnd es el arrlego de cchecks dobles
-    arrayOfCheckedHoursStartEnd.map((index: any) => {
-      PostTaskResolutionDoubleCheck(
+    await arrayOfCheckedHoursStartEnd.map(async (index: any) => {
+      await PostTaskResolutionDoubleCheck(
         openDetailDialogID,
         index?.key,
         index?.timestampStart,
         index?.timestampEnd
       ); //para cada instancia del arreglo de comentarios
     });
+    router.reload();
   };
 
   const getDateForCalendar = () => {
