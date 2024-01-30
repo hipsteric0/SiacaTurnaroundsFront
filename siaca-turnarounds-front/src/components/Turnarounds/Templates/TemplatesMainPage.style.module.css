@@ -31,7 +31,7 @@
 }
 .tableTitlesContainer {
   display: grid;
-  grid-template-columns: 20% 20% 20% 20% 20%;
+  grid-template-columns: 50% 50%;
   background: #f1f3f5;
   padding: 16px;
   border-radius: 10px;
@@ -40,7 +40,7 @@
 }
 .tableInfoRow {
   display: grid;
-  grid-template-columns: 20% 20% 20% 20% 20%;
+  grid-template-columns: 50% 50%;
   padding: 16px;
   border-bottom: 1px solid #f1f3f5;
 }
@@ -55,6 +55,7 @@
 }
 
 .dialogText {
+  background: #ffffff;
   text-align: center;
   font-family: Montserrat, Poppins, sans-serif;
   padding-top: 5%;
@@ -89,4 +90,44 @@
   display: flex;
   flex-direction: row;
   gap: 10px;
+}
+
+.closeIconDialog {
+  position: absolute;
+  top: 20px;
+  right: 25px;
+  cursor: pointer;
+}
+
+
+
+.detailsListContainer {
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.25);
+}
+
+.tableContainer {
+  display: grid;
+  grid-template-columns: 33% 33% 33%;
+  background: #f1f3f5;
+  padding: 16px;
+  border-radius: 10px;
+  color: #7e868c;
+  font-size: 12px;
+}
+
+.tableDetailsRow {
+  display: grid;
+  grid-template-columns: 33% 33% 33%;
+  padding: 16px;
+  border-bottom: 1px solid #f1f3f5;
+  background: #ffffff;
+  border-radius: 10px;
+}
+
+.dialogDelete{
+  background: #ffffff;
+  color: #ffffff;
+  font-family: Montserrat, Poppins, sans-serif;
 }

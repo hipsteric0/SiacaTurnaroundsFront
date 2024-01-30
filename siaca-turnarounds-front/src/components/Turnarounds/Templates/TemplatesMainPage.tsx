@@ -19,6 +19,11 @@ import GreenButton2 from "@/components/Reusables/GreenButton2";
 import RedButton2 from "@/components/Reusables/RedButton2";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
+
 interface PageProps {
   setStep: (value: number) => void;
 }
@@ -33,6 +38,9 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
   const [deleteCitiesDialog, setDeleteCitiesDialog] = useState(false);
   const [hoverTrashId, sethoverTrashId] = useState(-1);
   const [hoverPencilId, sethoverPencilId] = useState(-1);
+
+  const [detailsDialog, setDetailsDialog] = useState(false);
+  const [arrayTemplate, setArrayTemplate] = useState([]);
 
   useEffect(() => {
     getList();
@@ -78,6 +86,56 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
     });
 
     return y;
+  };
+
+  const deleteTemplate = async (templateID: number) => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/deleteTemplate";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+            templateId: templateID,
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            router.reload();
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
+  const detailsTemplate = async (templateID: number) => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/templatesDetails";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+            templateId: templateID,
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            console.log(result);
+            console.log("values", Object.values(result));
+            setArrayTemplate(Object.values(result));
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
   };
 
   const arrayPrinter = () => {
@@ -126,6 +184,39 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
               </div>
             </Dialog>
           }
+
+          {
+            <Dialog
+              className={styles.dialogDelete}
+              open={detailsDialog}
+              fullScreen={true}
+              onClose={() => setDetailsDialog(false)}
+            >
+              <div className={styles.dialogBack}>
+                <div
+                className={styles.closeIconDialog}
+                onClick={() => setDetailsDialog(false)}
+              >
+                <CloseRoundedIcon htmlColor="#4d4e56" />
+              </div>
+
+                <div className={styles.dialogText}>
+                    <div className={styles.detailsListContainer}>
+                      <div>
+                      <div className={styles.tableContainer}>
+                        <span>Tarea</span>
+                        <span>Subtarea</span>
+                        <span>Tipo</span>
+                      </div>
+                      {arrayPrinter2()}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </Dialog>
+          }
+
           <td>{index.titulo}</td>
           <td>
             <div className={styles.iconRow}>
@@ -138,13 +229,19 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
                   sethoverPencilId(-1);
                 }}
               >
+              <Tooltip title="Detalles">
+                <IconButton>
                 <RemoveRedEyeIcon
                   htmlColor={hoverPencilId === index.id ? "#00A75D" : "#4D4E56"}
                   onClick={() => {
                     //setCityID(index.id);
-                    setStep(4);
+                    //setStep(4);
+                    setDetailsDialog(true);
+                    handleDetailsTemplate(index.id)
                   }}
                 />{" "}
+                </IconButton>
+              </Tooltip>
               </div>
               <div
                 className={styles.functionIcon}
@@ -155,16 +252,39 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
                   sethoverTrashId(-1);
                 }}
               >
+              <Tooltip title="Eliminar">
+                <IconButton>
                 <DeleteOutlineOutlinedIcon
                   htmlColor={hoverTrashId === index.id ? "#f10303" : "#4D4E56"}
                   onClick={() => {
                     setclickID(index.id);
                     setDeleteDialog(true);
                   }}
-                />
+                />{" "}
+              </IconButton>
+            </Tooltip>
               </div>
             </div>
           </td>
+        </div>
+      );
+    });
+
+    return y;
+  };
+
+
+  const arrayPrinter2 = () => {
+    let y: any = [];
+    console.log("arrayTemplate", arrayTemplate.length);
+    arrayTemplate.map((index: any) => {
+      y[index.id] = (
+        <div key={index.id} className={styles.tableDetailsRow}>
+
+          <td><strong>{index?.fk_tarea?.titulo}</strong></td>
+          <td>{index?.titulo}</td>
+          <td>{index?.fk_tipo?.nombre}</td>
+
         </div>
       );
     });
@@ -176,29 +296,11 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
     deleteTemplate(templateID);
   };
 
-  const deleteTemplate = async (templateID: number) => {
-    const fetchData = async () => {
-      try {
-        const url = "/api/deleteTemplate";
-        const requestOptions = {
-          method: "POST",
-          body: JSON.stringify({
-            userToken: localStorage.getItem("userToken"),
-            templateId: templateID,
-          }),
-        };
-        const response = await fetch(url, requestOptions).then((res) =>
-          res.json().then((result) => {
-            router.reload();
-          })
-        );
-      } catch (error) {
-        console.error("Error geting user", error);
-        return;
-      }
-    };
-    await fetchData().catch(console.error);
+  const handleDetailsTemplate = async (templateID: number) => {
+    detailsTemplate(templateID);
   };
+
+
 
   return (
     <main className={styles.containerAirlinesMainPage}>
@@ -226,17 +328,4 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
 
 export default TurnaroundsMainPage;
 
-let arrayAux = [
-  {
-    id: 0,
-    titulo: "Plantilla 1",
-  },
-  {
-    id: 1,
-    titulo: "Plantilla 2",
-  },
-  {
-    id: 2,
-    titulo: "Plantilla 3",
-  },
-];
+
