@@ -1498,6 +1498,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                 <input
                   type="file"
                   name="Archivos"
+                  className={styles.imageInputContainer}
                   onChange={(e: any) =>
                     SetTaskArrayImages(index?.id, e.target.files[0])
                   }

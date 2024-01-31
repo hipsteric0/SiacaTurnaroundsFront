@@ -414,3 +414,6 @@
 .inputText {
   font-size: 12px;
 }
+.imageInputContainer {
+  width: 180px;
+}
