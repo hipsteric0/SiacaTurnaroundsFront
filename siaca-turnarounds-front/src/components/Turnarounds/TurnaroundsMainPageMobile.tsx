@@ -1390,7 +1390,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
             <p className={styles.detailDialogInfoItemValueText}>
               {index?.titulo}
             </p>
-            {index?.fk_tipo == 1 ? ( //comentario
+            {index?.fk_tipo?.id == 1 ? ( //comentario
               <div className={styles.inputBox}>
                 <Input
                   color="success"
@@ -1401,7 +1401,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                   }
                 />
               </div>
-            ) : index?.fk_tipo == 2 ? ( //hora de inicio
+            ) : index?.fk_tipo?.id == 2 ? ( //hora de inicio
               <div className={styles.checksAndTimestampsContainer}>
                 {GetTaskArrayCheckTimestamp(index?.id)}
                 <Checkbox
@@ -1413,7 +1413,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                   }}
                 />
               </div>
-            ) : index?.fk_tipo == 3 ? ( //hora de inicio y fin
+            ) : index?.fk_tipo?.id == 3 ? ( //hora de inicio y fin
               <div className={styles.checksAndTimestampsContainer}>
                 {GetTaskArrayCheckTimestampOnlyStart(index?.id)}
                 <Checkbox
