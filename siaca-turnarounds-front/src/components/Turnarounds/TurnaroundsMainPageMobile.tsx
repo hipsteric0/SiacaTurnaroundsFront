@@ -104,6 +104,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
   const [reservedTask, setreservedTask] = useState(false);
   const [reservedTaskPersonnel, setreservedTaskPersonnel] = useState(false);
   const [openedTurnaroundID, setOpenedTurnaroundID] = useState(-1);
+  const [arrayOfImages, setArrayOfImages] = useState([]);
   let filterValues: any[] = [];
   const getList = async () => {
     setIsFilteredResults(false);
@@ -556,6 +557,28 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
     await fetchData().catch(console.error);
   };
 
+  const PostTaskImage = async (
+    turnaroundID: any,
+    subtaskID: any,
+    imageFile: any
+  ) => {
+    const uploadData = new FormData();
+    uploadData.append("imagen", imageFile, imageFile?.name);
+    uploadData.append("fk_turnaround_id", turnaroundID);
+    uploadData.append("fk_subtarea_id", subtaskID);
+
+    fetch(
+      "http://127.0.0.1:8000/documentos/imagen/?token=" +
+        localStorage.getItem("userToken"),
+      {
+        method: "POST",
+        body: uploadData,
+      }
+    )
+      .then((res) => console.log(res))
+      .catch((error) => console.log(error));
+  };
+
   const handleSendData = async () => {
     //openDetailDialogID es el id del turnaround
 
@@ -586,6 +609,12 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         index?.timestampEnd
       ); //para cada instancia del arreglo de comentarios
     });
+
+    //arrayOfCheckedHours es el arrlego de checks individiales
+    await arrayOfImages.map(async (index: any) => {
+      await PostTaskImage(openDetailDialogID, index?.key, index?.taskImage); //para cada instancia del arreglo de comentarios
+    });
+
     router.reload();
   };
 
@@ -1372,6 +1401,35 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
     console.log("arrayOfCheckedHoursStartEnd", arrayOfCheckedHoursStartEnd);
   };
 
+  const SetTaskArrayImages = (idSubtarea: any, metadataBlob: any) => {
+    let auxiliaryArray = [];
+    auxiliaryArray = arrayOfImages; //array con las que ya estan checkeadas
+
+    let x = auxiliaryArray.find((o) => o.key === idSubtarea);
+
+    if (x == undefined) {
+      //si no existe, la meto en el array
+      let currentTimestamp = new Date();
+
+      auxiliaryArray.push({
+        key: idSubtarea,
+        taskImage: metadataBlob,
+      });
+      setArrayOfImages(auxiliaryArray);
+    } else {
+      //si existe la borro e inserto la nueva
+      let filteredArray = auxiliaryArray.filter(
+        (item) => item.key !== idSubtarea
+      );
+      filteredArray.push({
+        key: idSubtarea,
+        taskImage: metadataBlob,
+      });
+      setArrayOfImages(filteredArray);
+    }
+    console.log("arrayOfImages", arrayOfImages);
+  };
+
   const TasksArrayPrinter = () => {
     let y: any = [];
     let auxtitle = "";
@@ -1435,12 +1493,15 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                 />
               </div>
             ) : (
-              <div
-                onClick={() => {
-                  /**anadir fotos */
-                }}
-              >
-                <AddAPhotoRoundedIcon />
+              <div>
+                {/*<AddAPhotoRoundedIcon />*/}
+                <input
+                  type="file"
+                  name="Archivos"
+                  onChange={(e: any) =>
+                    SetTaskArrayImages(index?.id, e.target.files[0])
+                  }
+                />
               </div>
             )}
           </div>
@@ -1501,7 +1562,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                           Tipo de servicio:
                         </span>
                         <span className={styles.detailDialogInfoItemValueText}>
-                          {index?.fk_vuelo?.tipo_servicio}
+                          {index?.fk_vuelo?.tipo_servicio?.nombre}
                         </span>
                       </div>
                     </div>
