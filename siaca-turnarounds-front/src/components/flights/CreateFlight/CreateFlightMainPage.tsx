@@ -20,6 +20,8 @@ import RedButton from "@/components/Reusables/RedButton";
 import { Suspense } from "react";
 import StandardInputAutocomplete from "@/components/Reusables/StandardInputAutocomplete";
 
+import LoadingScreen from '../../Reusables/LoadingScreen';
+
 interface PageProps {
   setStep: (value: number) => void;
 }
@@ -82,6 +84,8 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
   const [stringValueRouting2, setStringValueRouting2] = useState("");
   const [stringFlightType, setStringFlightType] = useState("");
   const [stringTemplate, setStringTemplate] = useState("");
+
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -497,6 +501,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
     } else {
       //vuelo unico
       await registerFlight(dateETAyear + "-" + dateETAmonth + "-" + dateETAday);
+      setLoading(true);
       router.reload();
     }
   };
@@ -551,12 +556,18 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
 
   const formatAutocompleteArray = () => {};
 
+  const Back = () => {
+    setLoading(true);
+    router.reload();
+  };
+
   return (
     <>
       <Suspense fallback={<>loadig</>}>
         <main className={styles.containerCreateFlightMainPage}>
           <div className={styles.backArrowIcon}>
-            <BackArrow executableFunction={() => router.reload()} />
+            <BackArrow executableFunction={() => Back()} />
+            {loading && <LoadingScreen />}
           </div>
 
           <div className={styles.dataContainer}>
@@ -970,6 +981,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
               buttonText="Registrar vuelo"
               disabled={checkDisabledRegisterButton()}
             />
+            {loading && <LoadingScreen />}
           </div>
         </main>
       </Suspense>

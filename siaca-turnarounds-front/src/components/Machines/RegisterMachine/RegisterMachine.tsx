@@ -16,6 +16,8 @@ import { imageConfigDefault } from "next/dist/shared/lib/image-config";
 import DropdownMenu from "@/components/Reusables/DropdownMenu";
 import BackArrow from "@/components/Reusables/BackArrow";
 
+import LoadingScreen from '../../Reusables/LoadingScreen';
+
 interface PageProps {
   setStep: (value: number) => void;
 }
@@ -37,6 +39,8 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep }) => {
   const [arrayList, setArrayList] = useState([]);
   const [stringValue, setStringValue] = useState("");
   const [preview, setPreview] = useState("");
+
+  const [loading, setLoading] = useState(false);
 
   let responseValue = false;
 
@@ -137,7 +141,9 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep }) => {
   }
 
   const continueButton = () => {
+    setLoading(true);
     newMachine();
+    router.reload();
   };
 
   const category = (id: number) => {
@@ -159,14 +165,20 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep }) => {
     console.log("Image", e)
   }
 
+  const Back = () => {
+    setLoading(true);
+    router.reload();
+  };
+
   return (
     <main className={styles.RegisterMachineContainer}>
       <div className={styles.backArrowIcon}>
         <BackArrow
           executableFunction={() => {
-            router.reload();
+            Back();
           }}
         />
+         {loading && <LoadingScreen />}
       </div>
       <div className={styles.machinesListContainer}>
         <span className={styles.titleTextImagen}>Imagen</span>
@@ -233,6 +245,7 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep }) => {
             fkcategoria === ""
           }
         />
+        {loading && <LoadingScreen />}
       </div>
     </main>
   );

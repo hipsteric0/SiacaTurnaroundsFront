@@ -35,6 +35,8 @@ import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
 import { CountUp } from 'use-count-up'
 import { Gantt, GanttDataType } from "react-virtual-gantt";
 
+import LoadingScreen from '../../Reusables/LoadingScreen';
+
 interface PageProps {
   setStep: (value: number) => void;
 }
@@ -52,6 +54,8 @@ const SLAMetrics: React.FC<PageProps> = ({ setStep }) => {
   const [turnaround2, setTurnaround2] = useState('');
   const [countFlights, setCountFlights] = useState(['']);
   const [countService, setCountService] = useState(['']);
+
+  const [loading, setLoading] = useState(false);
 
 
   let array1: any[] = []
@@ -298,6 +302,16 @@ const SLAMetrics: React.FC<PageProps> = ({ setStep }) => {
     return y;
   };
   
+  const Template = () =>{
+    setLoading(true);
+    setStep(1)
+  }
+
+  const Airline = () =>{
+    setLoading(true);
+    setStep(2)
+  }
+
 
   return (
     <main className={styles.containerAirlinesMainPage}>
@@ -331,8 +345,10 @@ const SLAMetrics: React.FC<PageProps> = ({ setStep }) => {
         </div>
       </div>
       <div className={styles.opciones}>
-      <div onClick={() => setStep(1)} className={styles.opcion1} > Estadisticas Plantillas </div>
-      <div className={styles.opcion2}  onClick={() => setStep(2)}> Estadisticas Aerolineas</div>
+      <div onClick={() => Template()} className={styles.opcion1} > Estadisticas Plantillas </div>
+      {loading && <LoadingScreen />}
+      <div className={styles.opcion2}  onClick={() => Airline()}> Estadisticas Aerolineas</div>
+      {loading && <LoadingScreen />}
       <div className={styles.opcion3}  onClick={() => setStep(3)}> </div>
       </div>
       </center>

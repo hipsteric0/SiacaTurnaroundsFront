@@ -7,6 +7,9 @@ import { useRouter } from "next/navigation";
 import router from "next/router";
 import { useState } from "react";
 
+import { motion } from 'framer-motion';
+import LoadingScreen from '../Reusables/LoadingScreen';
+
 interface PageProps {
   setStep: (value: number) => void;
 }
@@ -15,15 +18,19 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
   const isMobile = useMediaQuery("(max-width: 1270px)");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
   let token = "";
   let userFullName = "";
 
   let validLogin = false;
   const validateLogin = () => {
     registerStep2requestSecond();
+    
 
     setTimeout(() => {
       if (validLogin) {
+        setLoading(true);
         localStorage.setItem("userToken", token);
         localStorage.setItem("userFullName", userFullName);
         router.push("/Flights");
@@ -110,6 +117,7 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
       >
         INGRESAR
       </button>
+      {loading && <LoadingScreen />}
       <div
         className={styles.forgotPasswordText}
         onClick={() => router.push("/RecoverPassword")}

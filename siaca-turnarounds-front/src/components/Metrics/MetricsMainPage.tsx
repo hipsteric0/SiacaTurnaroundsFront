@@ -23,6 +23,8 @@ import AirportShuttleIcon from '@mui/icons-material/AirportShuttle';
 
 import { Typography } from '@mui/material';
 
+import LoadingScreen from '../Reusables/LoadingScreen';
+
 interface PageProps {
   setStep: (value: number) => void;
 }
@@ -42,6 +44,7 @@ const MetricsPage: React.FC<PageProps> = ({ setStep }) => {
   const [data2, setData2] = useState(['']);
   const [data3, setData3] = useState(['']);
 
+  const [loading, setLoading] = useState(false);
 
 
   let arrayMachineNumber: any[] = []
@@ -249,6 +252,28 @@ const MetricsPage: React.FC<PageProps> = ({ setStep }) => {
     '#b2ff59'];
 
 
+  const Personnel = () =>{
+    setLoading(true);
+    router.push("/Metrics/MetricsPersonnel")
+  }
+
+
+  const Machine = () =>{
+    setLoading(true);
+    router.push("/Metrics/MetricsMachine")
+  }
+
+  const SLA = () =>{
+    setLoading(true);
+    router.push("/Metrics/MetricsSLA")
+  }
+
+  const Airline = () =>{
+    setLoading(true);
+    router.push("/Metrics/MetricsAirline")
+  }
+
+
   return (
     <main>
 <div className={styles.containerMetrics}>
@@ -257,7 +282,8 @@ const MetricsPage: React.FC<PageProps> = ({ setStep }) => {
 {arrayPrinterAirline()}
 {arrayPrinterSLA()}
 
-<div className={styles.divPersonnel} onClick={() => router.push("/Metrics/MetricsPersonnel")}> Personal
+<div className={styles.divPersonnel} onClick={() => Personnel()}> Personal
+{loading && <LoadingScreen />}
 <center>
 
 <BarChart
@@ -282,7 +308,8 @@ const MetricsPage: React.FC<PageProps> = ({ setStep }) => {
 
 </center>
 </div>
-<div className={styles.divMachine} onClick={() => router.push("/Metrics/MetricsMachine")}> Maquinarias 
+<div className={styles.divMachine} onClick={() => Machine()}> Maquinarias 
+{loading && <LoadingScreen />}
 <center>
 <br/>
 <PieChart
@@ -298,7 +325,8 @@ colors={palette}
 
 </center>
 </div>
-<div className={styles.divSLA} onClick={() => router.push("/Metrics/MetricsSLA")}> Métricas SLA
+<div className={styles.divSLA} onClick={() => SLA()}> Métricas SLA
+{loading && <LoadingScreen />}
 <center>
 <br/>
 <PieChart
@@ -314,7 +342,8 @@ colors={palette}
 
 </center>
 </div>
-<div className={styles.divAirline} onClick={() => router.push("/Metrics/MetricsAirline")}> Aerolineas
+<div className={styles.divAirline} onClick={() => Airline()}> Aerolineas
+{loading && <LoadingScreen />}
 <center>
 <br/>
 <PieChart

@@ -26,6 +26,8 @@ import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 
+import LoadingScreen from '../Reusables/LoadingScreen';
+
 interface PageProps {
   setStep: (value: number) => void;
   setflightID: (value: number) => void;
@@ -52,6 +54,8 @@ const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
   const [hoverOptionValue, setHoverOptionValue] = useState(-1);
   const [isFilteredResults, setIsFilteredResults] = useState(false);
   const [deleteDialog, setDeleteDialog] = useState(false);
+
+  const [loading, setLoading] = useState(false);
 
   let filterValues: any[] = [];
   const getList = async () => {
@@ -467,10 +471,13 @@ const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
           <div
             className={styles.openDetailContainer}
             onClick={() => {
+              setLoading(true);
               setOpenDetailDialogID(index.id);
               setOpenDetailDialog(true);
+              setLoading(false);
             }}
           >
+            {loading && <LoadingScreen />}
             <p className={styles.openDetailContainerText}>Ver mas</p>
           </div>
           <div className={styles.imageContainer}>
@@ -532,6 +539,11 @@ const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
     setArrayFilteredList3(filteredUsers);
   };
 
+  const NewFlight = () => {
+    setLoading(true);
+    setStep(1);
+  };
+
   return (
     <main className={styles.mainFlightsContainer}>
       <div className={styles.upperSection}>
@@ -564,9 +576,10 @@ const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
         </div>
 
         <GreenButton
-          executableFunction={() => setStep(1)}
+          executableFunction={() => NewFlight()}
           buttonText="Crear vuelo "
         />
+        {loading && <LoadingScreen />}
       </div>
       <div className={styles.flightsListContainer}>
         {arrayList3?.[0]?.["status"] != 400 ? arrayPrinter() : undefined}
