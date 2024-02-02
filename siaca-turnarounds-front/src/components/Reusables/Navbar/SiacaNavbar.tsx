@@ -4,6 +4,8 @@ import SiacaLogo from "../../../images/logos/siacaLogo.png";
 import Image from "next/image";
 import router from "next/router";
 
+import LoadingScreen from '../../Reusables/LoadingScreen';
+
 interface PageProps {
   activeFlightsValue?: boolean;
   activeTurnaroundsValue?: boolean;
@@ -41,6 +43,8 @@ const SiacaNavbar: React.FC<PageProps> = ({
   const [activeDocs, setActiveDocs] = useState(false);
   const [activeAirlines, setActiveAirlines] = useState(false);
 
+  const [loading, setLoading] = useState(false);
+
   const Logout = async () => {
     const fetchData = async () => {
       try {
@@ -65,6 +69,11 @@ const SiacaNavbar: React.FC<PageProps> = ({
     
   };
 
+  const Vuelos = () =>{
+    setLoading(true);
+    router.push("/Flights")
+  }
+
 
   return (
 
@@ -77,8 +86,9 @@ const SiacaNavbar: React.FC<PageProps> = ({
         className={
           activeFlights ? styles.activeItemText : styles.inactiveItemText
         }
-        onClick={() => router.push("/Flights")}
+        onClick={() => Vuelos()}
       >
+        {loading && <LoadingScreen />}
         Vuelos
       </h1>
       <h1

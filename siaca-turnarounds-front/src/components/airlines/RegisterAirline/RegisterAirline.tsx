@@ -21,6 +21,9 @@ import Image from 'next/image';
 import BackArrow from "@/components/Reusables/BackArrow";
 
 
+import LoadingScreen from '../../Reusables/LoadingScreen';
+
+
 
 interface PageProps {
   setStep: (value: number) => void;
@@ -40,6 +43,9 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep }) => {
   const [preview, setPreview] = useState("");
 
   const [imagen, setImagen]  = useState(new Blob());
+
+  
+  const [loading, setLoading] = useState(false);
 
   let responseValue = false;
 
@@ -109,6 +115,7 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep }) => {
   const continueButton = () => {
 
     newAirline();
+    setLoading(true);
     router.reload();
  
   };
@@ -121,15 +128,20 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep }) => {
     console.log("Image", e)
   }
 
+  const Back = () => {
+    setLoading(true);
+    router.reload();
+  };
 
   return (
     <main className={styles.RegisterAirlineContainer}>
       <div className={styles.backArrowIcon}>
         <BackArrow
           executableFunction={() => {
-            router.reload();
+            Back();
           }}
         />
+        {loading && <LoadingScreen />}
       </div>
       <div className={styles.airlinesListContainer}>
         <span className={styles.titleText}>Logo</span>
@@ -195,6 +207,7 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep }) => {
           }
           
         />
+        {loading && <LoadingScreen />}
       </div>
     </main>
   );

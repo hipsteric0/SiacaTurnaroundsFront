@@ -29,6 +29,8 @@ import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 
+import LoadingScreen from '../Reusables/LoadingScreen';
+
 interface PageProps {
   setStep: (value: number) => void;
 }
@@ -99,6 +101,10 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
   const [checkTaskID, setcheckTaskID] = useState(-1);
   const [reservedTask, setreservedTask] = useState(false);
   const [reservedTaskPersonnel, setreservedTaskPersonnel] = useState(false);
+
+  const [loading, setLoading] = useState(false);
+
+
   let filterValues: any[] = [];
   const getList = async () => {
     setIsFilteredResults(false);
@@ -1080,7 +1086,7 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
                           Tipo de servicio:
                         </span>
                         <span className={styles.detailDialogInfoItemValueText}>
-                          {index?.fk_vuelo?.tipo_servicio}
+                          {index?.fk_vuelo?.tipo_servicio?.nombre}
                         </span>
                       </div>
                       <div className={styles.detailDialogInfoItem}>
@@ -1580,18 +1586,22 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
           <div
             className={styles.openDetailContainer}
             onClick={() => {
+              setLoading(true);
               getTemplateTasks(index?.fk_vuelo?.fk_plantilla?.id);
               getMachinesByTurnaround(index?.id);
               setOpenDetailDialogID(index.id);
 
               setOpenDetailDialog(true);
+              setLoading(false);
             }}
           >
+            {loading && <LoadingScreen />}
             <p className={styles.openDetailContainerText}>Ver mas</p>
           </div>
           <div
             className={styles.openDetailContainer2}
             onClick={async () => {
+              await setLoading(true);
               await getMachinesList();
               await getTemplateTasks(index?.fk_vuelo?.fk_plantilla?.id);
               await getMachinesByTurnaround(index?.id);
@@ -1602,8 +1612,10 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
               await setOpenAssignDialogID(index.id);
               await setTurnaroundDate(index?.fecha_inicio);
               await setOpenAssignDialog(true);
+              await setLoading(false);
             }}
           >
+            {loading && <LoadingScreen />}
             <p className={styles.openDetailContainerText}>Asignar</p>
           </div>
           <div className={styles.imageContainer}>

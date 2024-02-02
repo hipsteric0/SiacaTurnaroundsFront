@@ -20,6 +20,9 @@ import StandardInputV2 from "@/components/Reusables/StandardInputV2";
 import RedButton from "@/components/Reusables/RedButton";
 import { Suspense } from "react";
 
+import LoadingScreen from '../../Reusables/LoadingScreen';
+
+
 interface PageProps {
   setStep: (value: number) => void;
   flightID: number;
@@ -83,6 +86,8 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
 
   const [stringValue, setStringValue] = useState("");
   const [stringValueSTN, setStringValueSTN] = useState("");
+
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -433,6 +438,12 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
   const handleRegisterButton = async () => {
     //vuelo unico
     await registerFlight();
+    setLoading(true);
+    router.reload();
+  };
+
+  const Back = () => {
+    setLoading(true);
     router.reload();
   };
 
@@ -441,7 +452,8 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
       <Suspense fallback={<>loadig</>}>
         <main className={styles.containerCreateFlightMainPage}>
           <div className={styles.backArrowIcon}>
-            <BackArrow executableFunction={() => router.reload()} />
+            <BackArrow executableFunction={() => Back()} />
+            {loading && <LoadingScreen />}
           </div>
 
           <div className={styles.dataContainer}>
@@ -690,6 +702,7 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
               executableFunction={() => handleRegisterButton()}
               buttonText="Registrar vuelo"
             />
+            {loading && <LoadingScreen />}
           </div>
         </main>
       </Suspense>

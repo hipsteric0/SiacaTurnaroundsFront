@@ -17,6 +17,8 @@ import DropdownMenu from "@/components/Reusables/DropdownMenu";
 import StandardInputV2 from "@/components/Reusables/StandardInputV2";
 import BackArrow from "@/components/Reusables/BackArrow";
 
+import LoadingScreen from '../../Reusables/LoadingScreen';
+
 interface PageProps {
   setStep: (value: number) => void;
   machineID: number;
@@ -36,6 +38,8 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep, machineID }) => {
   const [imagen, setImagen] = useState("");
   const [fkcategoria, setFkCategoria] = useState("");
   const [arrayList, setArrayList] = useState([]);
+
+  const [loading, setLoading] = useState(false);
 
   let responseValue = false;
 
@@ -113,6 +117,7 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep, machineID }) => {
 
   const continueButton = () => {
     registerMachines();
+    setLoading(true);
     router.reload();
   };
 
@@ -128,14 +133,20 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep, machineID }) => {
     setCombustible(fuelArray[id].name);
   };
 
+  const Back = () => {
+    setLoading(true);
+    router.reload();
+  };
+
   return (
     <main className={styles.RegisterMachineContainer}>
       <div className={styles.backArrowIcon}>
         <BackArrow
           executableFunction={() => {
-            router.reload();
+            Back();
           }}
         />
+        {loading && <LoadingScreen />}
       </div>
       <div className={styles.machinesListContainer}>
         <span className={styles.titleTextImagen}>Imagen</span>

@@ -105,6 +105,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
   const [reservedTaskPersonnel, setreservedTaskPersonnel] = useState(false);
   const [openedTurnaroundID, setOpenedTurnaroundID] = useState(-1);
   const [arrayOfImages, setArrayOfImages] = useState([]);
+  const [turnaroundState, setTurnaroundState] = useState(1); //1 no ha llegado; 2 en proceso; 3 culminado
   let filterValues: any[] = [];
   const getList = async () => {
     setIsFilteredResults(false);
@@ -581,7 +582,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
 
   const handleSendData = async () => {
     //openDetailDialogID es el id del turnaround
-
+    await handleSetTurnaroundStateTo3(openDetailDialogID);
     //arrayOfComments es el arrlego de comentarios
     await arrayOfComments.map(async (index: any) => {
       await PostTaskResolutionComment(
@@ -1430,6 +1431,12 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
     console.log("arrayOfImages", arrayOfImages);
   };
 
+  const handleSetTurnaroundStateTo2 = async (turnaroundID: any) => {
+    //request para updatear el estado dew turnaround a "enb proceso"
+  };
+  const handleSetTurnaroundStateTo3 = async (turnaroundID: any) => {
+    //request para updatear el estado dew turnaround a "finalizado"
+  };
   const TasksArrayPrinter = () => {
     let y: any = [];
     let auxtitle = "";
@@ -1530,6 +1537,12 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
           key={index.id}
           className={styles.tableInfoRow}
           onClick={() => {
+            if (index?.fk_vuelo?.estado === "En proceso") {
+              setTurnaroundState(2);
+            } else if (index?.fk_vuelo?.estado === "Atendido") {
+              setTurnaroundState(3);
+            }
+
             getTemplateTasks(index?.fk_vuelo?.fk_plantilla?.id);
             getMachinesByTurnaround(index?.id);
             setOpenDetailDialogID(index.id);
@@ -1546,68 +1559,92 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                 className={styles.detailDialog}
                 fullScreen={true}
               >
-                <div className={styles.dialogDetail}>
-                  <div
-                    className={styles.closeIconDialog}
-                    onClick={() => setOpenDetailDialog(false)}
-                  >
-                    <CloseRoundedIcon htmlColor="#4d4e56" />
+                {turnaroundState === 1 ? (
+                  <div className={styles.dialogDetailStartTurnaround}>
+                    <div className={styles.redButtonContainer}>
+                      <div className={styles.redButton}>
+                        <GreenButton
+                          executableFunction={() => {
+                            setTurnaroundState(2);
+                            handleSetTurnaroundStateTo2(openDetailDialogID);
+                          }}
+                          buttonText="Comenzar turnaround"
+                        />
+                      </div>
+                    </div>
                   </div>
-                  <div className={styles.detailDialogInfoContainer}>
-                    <p className={styles.detailDialogInfoContainerTitleText}>
-                      Datos de vuelo
-                    </p>
-                    <div className={styles.detailDialogInfoRow1}>
-                      <div className={styles.detailDialogInfoItem}>
-                        <span className={styles.detailDialogInfoItemTitle}>
-                          Tipo de servicio:
-                        </span>
-                        <span className={styles.detailDialogInfoItemValueText}>
-                          {index?.fk_vuelo?.tipo_servicio?.nombre}
-                        </span>
+                ) : turnaroundState === 2 ? (
+                  <div className={styles.dialogDetail}>
+                    <div
+                      className={styles.closeIconDialog}
+                      onClick={() => setOpenDetailDialog(false)}
+                    >
+                      <CloseRoundedIcon htmlColor="#4d4e56" />
+                    </div>
+                    <div className={styles.detailDialogInfoContainer}>
+                      <p className={styles.detailDialogInfoContainerTitleText}>
+                        Datos de vuelo
+                      </p>
+                      <div className={styles.detailDialogInfoRow1}>
+                        <div className={styles.detailDialogInfoItem}>
+                          <span className={styles.detailDialogInfoItemTitle}>
+                            Tipo de servicio:
+                          </span>
+                          <span
+                            className={styles.detailDialogInfoItemValueText}
+                          >
+                            {index?.fk_vuelo?.tipo_servicio?.nombre}
+                          </span>
+                        </div>
+                      </div>
+
+                      <p className={styles.detailDialogInfoItemTitle2}>
+                        Tareas
+                      </p>
+                      <div className={styles.detailDialogInfoRow1}>
+                        <div className={styles.TasksArrayPrinterContainer}>
+                          {TasksArrayPrinter()}
+                        </div>
+                      </div>
+                      <p className={styles.detailDialogInfoItemTitle2}>
+                        Maquinarias
+                      </p>
+                      <div className={styles.detailDialogInfoRow1}>
+                        <div>{MachinesArrayPrinter()}</div>
+                      </div>
+                      <p className={styles.detailDialogInfoItemTitle2}>
+                        Personal
+                      </p>
+                      <div className={styles.detailDialogInfoRow1}>
+                        lista de personal y seleccion: -1 -2 -3
                       </div>
                     </div>
 
-                    <p className={styles.detailDialogInfoItemTitle2}>Tareas</p>
-                    <div className={styles.detailDialogInfoRow1}>
-                      <div className={styles.TasksArrayPrinterContainer}>
-                        {TasksArrayPrinter()}
+                    <div className={styles.redButtonContainer}>
+                      <div className={styles.redButton}>
+                        <GreenButton
+                          executableFunction={() => handleSendData()}
+                          buttonText="ENVIAR"
+                        />
                       </div>
                     </div>
-                    <p className={styles.detailDialogInfoItemTitle2}>
-                      Maquinarias
-                    </p>
-                    <div className={styles.detailDialogInfoRow1}>
-                      <div>{MachinesArrayPrinter()}</div>
-                    </div>
-                    <p className={styles.detailDialogInfoItemTitle2}>
-                      Personal
-                    </p>
-                    <div className={styles.detailDialogInfoRow1}>
-                      lista de personal y seleccion: -1 -2 -3
-                    </div>
-                  </div>
 
-                  <div className={styles.redButtonContainer}>
-                    <div className={styles.redButton}>
-                      <GreenButton
-                        executableFunction={() => handleSendData()}
-                        buttonText="ENVIAR"
-                      />
+                    <div className={styles.redButtonContainer}>
+                      <div className={styles.redButton}>
+                        <RedButton2
+                          executableFunction={() => {
+                            setOpenDetailDialog(false);
+                          }}
+                          buttonText={"Cerrar"}
+                        />
+                      </div>
                     </div>
                   </div>
-
-                  <div className={styles.redButtonContainer}>
-                    <div className={styles.redButton}>
-                      <RedButton2
-                        executableFunction={() => {
-                          setOpenDetailDialog(false);
-                        }}
-                        buttonText={"Cerrar"}
-                      />
-                    </div>
-                  </div>
-                </div>
+                ) : turnaroundState === 3 ? (
+                  <>Turnaround Culminado</>
+                ) : (
+                  <>Error, consulte al administrador</>
+                )}
               </Dialog>
             )}
             {openAssignDialogID === index?.id && (

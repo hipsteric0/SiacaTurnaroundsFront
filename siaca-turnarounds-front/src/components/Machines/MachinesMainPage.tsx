@@ -21,6 +21,8 @@ import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 
+import LoadingScreen from '../Reusables/LoadingScreen';
+
 interface PageProps {
   setStep: (value: number) => void;
   setmachineID: (value: number) => void;
@@ -35,6 +37,8 @@ const MachinesMainPage: React.FC<PageProps> = ({ setStep, setmachineID }) => {
   const [hover, setHover] = useState(false);
   const [hoverOptionValue, setHoverOptionValue] = useState(-1);
   const [deleteDialog, setDeleteDialog] = useState(false);
+
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     getList();
@@ -258,13 +262,19 @@ const MachinesMainPage: React.FC<PageProps> = ({ setStep, setmachineID }) => {
     return y;
   };
 
+  const NewMachine = () =>{
+    setLoading(true);
+    setStep(1)
+  }
+
   return (
     <main className={styles.containerMachineMainPage}>
       <div className={styles.createMachineButton}>
         <GreenButton
-          executableFunction={() => setStep(1)}
+          executableFunction={() => NewMachine()}
           buttonText="Crear maquinaria"
         />
+        {loading && <LoadingScreen />}
       </div>
       <Spacer />
       <div className={styles.machineListContainer}>

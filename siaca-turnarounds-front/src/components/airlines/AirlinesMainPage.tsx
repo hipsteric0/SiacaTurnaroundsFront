@@ -25,6 +25,11 @@ import Divider from '@mui/material/Divider';
 import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
 
 
+import { motion } from 'framer-motion';
+import LoadingScreen from '../Reusables/LoadingScreen';
+
+
+
 interface PageProps {
   setStep: (value: number) => void;
   setflightID: (value: number) => void;
@@ -57,6 +62,8 @@ const AirlinesMainPage: React.FC<PageProps> = ({
 
   const [arrayAirline, setArrayAirline] = useState([]);
   const [airlineDialog, setAirlineDialog] = useState(false);
+
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     getList();
@@ -527,6 +534,15 @@ const AirlinesMainPage: React.FC<PageProps> = ({
     return y;
   };
 
+
+  const Load = () => {
+  
+
+    setLoading(true);
+    setStep(1);
+
+  }
+
   return (
     <main className={styles.containerAirlinesMainPage}>
       <div className={styles.registerbuttoncontainer}>
@@ -580,9 +596,10 @@ const AirlinesMainPage: React.FC<PageProps> = ({
         />
         <Spacer />
         <GreenButton
-          executableFunction={() => setStep(1)}
+          executableFunction={() => Load()}
           buttonText="Registrar aerolinea"
         />
+        {loading && <LoadingScreen />}
       </div>
       <div className={styles.airlinesListContainer}>
         <div>

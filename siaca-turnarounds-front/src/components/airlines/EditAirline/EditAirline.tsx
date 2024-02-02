@@ -14,6 +14,9 @@ import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import SiacaNavbar from "@/components/Reusables/Navbar/SiacaNavbar";
 import StandardInputV2 from "@/components/Reusables/StandardInputV2";
 import BackArrow from "@/components/Reusables/BackArrow";
+
+import LoadingScreen from '../../Reusables/LoadingScreen';
+
 interface PageProps {
   setStep: (value: number) => void;
   flightID: number;
@@ -36,6 +39,9 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep, flightID }) => {
   const [ciudad, setCiudad] = useState("");
   const [arrayList, setArrayList] = useState([]);
   let responseValue = false;
+
+  const [loading, setLoading] = useState(false);
+
 
   const getList = async () => {
     const fetchData = async () => {
@@ -121,6 +127,12 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep, flightID }) => {
 
   const continueButton = () => {
     registerAirlines();
+    setLoading(true);
+    router.reload();
+  };
+
+  const Back = () => {
+    setLoading(true);
     router.reload();
   };
 
@@ -129,9 +141,10 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep, flightID }) => {
       <div className={styles.backArrowIcon}>
         <BackArrow
           executableFunction={() => {
-            router.reload();
+            Back();
           }}
         />
+        {loading && <LoadingScreen />}
       </div>
       <div className={styles.airlinesListContainer}>
         <span className={styles.titleText}>Logo</span>
@@ -199,6 +212,7 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep, flightID }) => {
           executableFunction={() => continueButton()}
           buttonText="Registrar"
         />
+        {loading && <LoadingScreen />}
       </div>
     </main>
   );

@@ -14,6 +14,9 @@ import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import SiacaNavbar from "@/components/Reusables/Navbar/SiacaNavbar";
 import StandardInputV2 from "@/components/Reusables/StandardInputV2";
 import BackArrow from "@/components/Reusables/BackArrow";
+
+import LoadingScreen from '../../Reusables/LoadingScreen';
+
 interface PageProps {
   setStep: (value: number) => void;
   cityID : number;
@@ -32,6 +35,8 @@ const RegisterCity: React.FC<PageProps> = ({ setStep , cityID}) => {
   const [codigoOACI, setCodigoOACI] = useState("");
   const [pais, setPais] = useState("");
   const [arrayList, setArrayList] = useState([]);
+
+  const [loading, setLoading] = useState(false);
 
 
   let responseValue = false;
@@ -116,8 +121,14 @@ const RegisterCity: React.FC<PageProps> = ({ setStep , cityID}) => {
   const continueButton = () => {
 
     registerCities();
+    setLoading(true);
     router.reload();
  
+  };
+
+  const Back = () => {
+    setLoading(true);
+    router.reload();
   };
 
   return (
@@ -125,7 +136,7 @@ const RegisterCity: React.FC<PageProps> = ({ setStep , cityID}) => {
       <div className={styles.backArrowIcon}>
         <BackArrow
           executableFunction={() => {
-            router.reload();
+            Back();
           }}
         />
       </div>
@@ -168,6 +179,7 @@ const RegisterCity: React.FC<PageProps> = ({ setStep , cityID}) => {
           buttonText="Registrar"
           
         />
+        {loading && <LoadingScreen />}
       </div>
     </main>
   );
