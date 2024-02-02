@@ -106,6 +106,9 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
   const [openedTurnaroundID, setOpenedTurnaroundID] = useState(-1);
   const [arrayOfImages, setArrayOfImages] = useState([]);
   const [turnaroundState, setTurnaroundState] = useState(1); //1 no ha llegado; 2 en proceso; 3 culminado
+  const [flightID, setFlightID] = useState(-1);
+  const [state1Overider, setState1Overider] = useState(false);
+
   let filterValues: any[] = [];
   const getList = async () => {
     setIsFilteredResults(false);
@@ -414,6 +417,66 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
     await fetchData().catch(console.error);
   };
 
+  const updateFlightStateInProgress = async (flightIDvalue: any) => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/updateFlightStateInProcess";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+            flightID: flightIDvalue,
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            console.log("Guardar", result);
+
+            if (result?.[0]?.["status"] === 400) {
+              console.log("entro");
+            } else {
+            }
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
+  const updateFlightStateFinalized = async (flightIDvalue: any) => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/updateFlightStateInFinalized";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+            flightID: flightIDvalue,
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            console.log("Guardar", result);
+
+            if (result?.[0]?.["status"] === 400) {
+              console.log("entro");
+            } else {
+            }
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
   const postMachineReservartion = async (machineryID: any) => {
     const fetchData = async () => {
       try {
@@ -582,7 +645,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
 
   const handleSendData = async () => {
     //openDetailDialogID es el id del turnaround
-    await handleSetTurnaroundStateTo3(openDetailDialogID);
+    await handleSetTurnaroundStateTo3(flightID);
     //arrayOfComments es el arrlego de comentarios
     await arrayOfComments.map(async (index: any) => {
       await PostTaskResolutionComment(
@@ -1431,11 +1494,19 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
     console.log("arrayOfImages", arrayOfImages);
   };
 
-  const handleSetTurnaroundStateTo2 = async (turnaroundID: any) => {
+  const handleSetTurnaroundStateTo2 = async (
+    flightIdentificationValue: any
+  ) => {
     //request para updatear el estado dew turnaround a "enb proceso"
+    await setState1Overider(true);
+    await updateFlightStateInProgress(flightID);
+    await setTurnaroundState(2);
   };
-  const handleSetTurnaroundStateTo3 = async (turnaroundID: any) => {
+  const handleSetTurnaroundStateTo3 = async (
+    flightIdentificationValue: any
+  ) => {
     //request para updatear el estado dew turnaround a "finalizado"
+    await updateFlightStateFinalized(flightID);
   };
   const TasksArrayPrinter = () => {
     let y: any = [];
@@ -1541,11 +1612,19 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
               setTurnaroundState(2);
             } else if (index?.fk_vuelo?.estado === "Atendido") {
               setTurnaroundState(3);
+            } else if (
+              index?.fk_vuelo?.estado === "No ha llegado" &&
+              state1Overider === false
+            ) {
+              setTurnaroundState(1);
+            } else if (state1Overider === false) {
+              setTurnaroundState(4);
             }
 
             getTemplateTasks(index?.fk_vuelo?.fk_plantilla?.id);
             getMachinesByTurnaround(index?.id);
             setOpenDetailDialogID(index.id);
+            setFlightID(index?.fk_vuelo?.id);
             if (openDetailDialog == false) {
               setOpenDetailDialog(true);
             }
@@ -1561,12 +1640,22 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
               >
                 {turnaroundState === 1 ? (
                   <div className={styles.dialogDetailStartTurnaround}>
+                    <div
+                      className={styles.closeIconDialog}
+                      onClick={() => router.reload()}
+                    >
+                      <CloseRoundedIcon htmlColor="#4d4e56" />
+                    </div>
+                    <p className={styles.detailDialogInfoItemTitleWarning}>
+                      AVISO: comenzar el turnaround cambiara su estado a "En
+                      proceso"
+                    </p>
                     <div className={styles.redButtonContainer}>
                       <div className={styles.redButton}>
                         <GreenButton
                           executableFunction={() => {
                             setTurnaroundState(2);
-                            handleSetTurnaroundStateTo2(openDetailDialogID);
+                            handleSetTurnaroundStateTo2(flightID);
                           }}
                           buttonText="Comenzar turnaround"
                         />
@@ -1577,7 +1666,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                   <div className={styles.dialogDetail}>
                     <div
                       className={styles.closeIconDialog}
-                      onClick={() => setOpenDetailDialog(false)}
+                      onClick={() => router.reload()}
                     >
                       <CloseRoundedIcon htmlColor="#4d4e56" />
                     </div>
@@ -1619,7 +1708,11 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                         lista de personal y seleccion: -1 -2 -3
                       </div>
                     </div>
-
+                    <p className={styles.detailDialogInfoItemTitleWarning}>
+                      AVISO: Asegúrate de llenar todos los campos antes de
+                      enviar el turnaround, pues este será clasificado como
+                      "Atendido"
+                    </p>
                     <div className={styles.redButtonContainer}>
                       <div className={styles.redButton}>
                         <GreenButton
@@ -1633,7 +1726,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                       <div className={styles.redButton}>
                         <RedButton2
                           executableFunction={() => {
-                            setOpenDetailDialog(false);
+                            router.reload();
                           }}
                           buttonText={"Cerrar"}
                         />
@@ -1641,9 +1734,47 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                     </div>
                   </div>
                 ) : turnaroundState === 3 ? (
-                  <>Turnaround Culminado</>
+                  <div className={styles.attendedTurnaroundContainer}>
+                    <div
+                      className={styles.closeIconDialog}
+                      onClick={() => router.reload()}
+                    >
+                      <CloseRoundedIcon htmlColor="#4d4e56" />
+                    </div>
+                    <p className={styles.detailDialogInfoContainerTitleText}>
+                      Turnaround atendido exitosamente!
+                    </p>
+                    <div className={styles.redButtonContainer}>
+                      <div className={styles.redButton}>
+                        <RedButton2
+                          executableFunction={() => {
+                            router.reload();
+                          }}
+                          buttonText={"Cerrar"}
+                        />
+                      </div>
+                    </div>
+                  </div>
                 ) : (
-                  <>Error, consulte al administrador</>
+                  <div className={styles.attendedTurnaroundContainer}>
+                    <div
+                      className={styles.closeIconDialog}
+                      onClick={() => router.reload()}
+                    >
+                      <CloseRoundedIcon htmlColor="#4d4e56" />
+                    </div>
+                    <p>ERROR, CONTACTE AL ADMINISTRADOR</p>
+                    <div className={styles.redButtonContainer}>
+                      <div className={styles.redButton}>
+                        <RedButton2
+                          executableFunction={() => {
+                            router.reload();
+                          }}
+                          buttonText={"Cerrar"}
+                        />
+                      </div>
+                    </div>
+                  </div>
                 )}
               </Dialog>
             )}

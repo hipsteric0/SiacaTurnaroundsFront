@@ -292,6 +292,13 @@
   font-weight: 800;
   color: #4d4e56;
 }
+.detailDialogInfoItemTitleWarning {
+  font-size: 12px;
+  font-weight: 800;
+  color: #4d4e56;
+  text-align: center;
+  padding-bottom: 30px;
+}
 .detailDialogInfoItemText {
   margin-top: 16px;
   font-size: 14px;
@@ -416,4 +423,14 @@
 }
 .imageInputContainer {
   width: 180px;
+}
+.dialogDetailStartTurnaround {
+  padding: 70px 20px;
+}
+.attendedTurnaroundContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 }
