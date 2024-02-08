@@ -36,6 +36,7 @@ import { CountUp } from 'use-count-up'
 import { Gantt, GanttDataType } from "react-virtual-gantt";
 
 import LoadingScreen from '../../Reusables/LoadingScreen';
+import BackArrow from "@/components/Reusables/BackArrow";
 
 interface PageProps {
   setStep: (value: number) => void;
@@ -315,6 +316,13 @@ const SLAMetrics: React.FC<PageProps> = ({ setStep }) => {
 
   return (
     <main className={styles.containerAirlinesMainPage}>
+    <div className={styles.backArrowIcon}>
+        <BackArrow
+          executableFunction={() => {
+            router.push("/Metrics/")
+          }}
+        />
+      </div>
       <center>
      <div className={styles.contadorVuelos}>
      <p className={styles.texto}>

@@ -15,6 +15,12 @@
   padding: 16px;
 }
 
+.backArrowIcon {
+  position: absolute;
+  top: 170px;
+  left: 10px;
+}
+
 .filtro {
   justify-content: right;
   bottom: 12px;

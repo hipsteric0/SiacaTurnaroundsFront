@@ -37,6 +37,9 @@ import { Gantt, GanttDataType } from "react-virtual-gantt";
 import { axisClasses } from '@mui/x-charts';
 
 
+import BackArrow from "@/components/Reusables/BackArrow";
+
+
 interface PageProps {
   setStep: (value: number) => void;
 }
@@ -229,6 +232,14 @@ const SLAMetricsAirlines: React.FC<PageProps> = ({ setStep }) => {
 
   return (
     <main className={styles.containerAirlinesMainPage}>
+
+      <div className={styles.backArrowIcon}>
+        <BackArrow
+          executableFunction={() => {
+            router.push("/Metrics/")
+          }}
+        />
+      </div>
       <div className={styles.parent}>
 
           Aerolineas con más servicos
@@ -267,18 +278,7 @@ const SLAMetricsAirlines: React.FC<PageProps> = ({ setStep }) => {
         <div className={styles.divChart}>
       <center>
       {arrayPrinterSLA()}
-      <BarChart
-      dataset={countService}
-      xAxis={[{ scaleType: 'band', dataKey: 'nombre_aerolinea' }]}
-      series={[
-        { dataKey: 'turnaround_entrante', label: 'T. Entrante'},
-        { dataKey: 'turnaround_saliente', label: 'T. Saliente'},
-        { dataKey: 'inbound', label: 'Inbound'},
-        { dataKey: 'outbound', label: 'Outbound'},
-        
-      ]}
-      {...chartSetting}
-    />
+
       </center>
       </div>
 

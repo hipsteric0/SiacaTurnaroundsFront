@@ -8,6 +8,13 @@
   margin-bottom: 35px;
 }
 
+.backArrowIcon {
+  position: absolute;
+  top: 170px;
+  left: 10px;
+}
+
+
 .airlinesListContainer {
   width: 100%;
   border-radius: 12px;

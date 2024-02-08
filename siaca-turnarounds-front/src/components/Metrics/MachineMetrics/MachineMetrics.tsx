@@ -19,6 +19,8 @@ import { LineChart } from '@mui/x-charts/LineChart';
 import { ChartContainer, BarPlot } from '@mui/x-charts';
 import { PieChart } from '@mui/x-charts/PieChart';
 
+import BackArrow from "@/components/Reusables/BackArrow";
+
 interface PageProps {
   setStep: (value: number) => void;
 }
@@ -252,6 +254,15 @@ colors={palette}
 
   return (
     <main className={styles.containerAirlinesMainPage}>
+
+      <div className={styles.backArrowIcon}>
+        <BackArrow
+          executableFunction={() => {
+            router.push("/Metrics/")
+          }}
+        />
+      </div>
+
       <div className={styles.container}>
       <div className={styles.div2}>
       <center>

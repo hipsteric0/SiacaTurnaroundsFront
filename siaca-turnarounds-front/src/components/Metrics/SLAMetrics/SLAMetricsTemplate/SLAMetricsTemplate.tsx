@@ -35,6 +35,8 @@ import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
 import { CountUp } from 'use-count-up'
 import { Gantt, GanttDataType } from "react-virtual-gantt";
 
+import BackArrow from "@/components/Reusables/BackArrow";
+
 
 
 
@@ -226,6 +228,14 @@ const SLAMetricsTemplate: React.FC<PageProps> = ({ setStep }) => {
 
   return (
     <main className={styles.containerAirlinesMainPage}>
+
+      <div className={styles.backArrowIcon}>
+        <BackArrow
+          executableFunction={() => {
+            router.push("/Metrics/")
+          }}
+        />
+      </div>
 
       <div className={styles.title}>
         <p>Tiempo promedio general por plantilla</p>

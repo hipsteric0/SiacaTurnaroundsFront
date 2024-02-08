@@ -18,6 +18,7 @@ import { BarChart } from '@mui/x-charts/BarChart';
 import { LineChart } from '@mui/x-charts/LineChart';
 import { ChartContainer, BarPlot } from '@mui/x-charts';
 import { PieChart } from '@mui/x-charts/PieChart';
+import BackArrow from "@/components/Reusables/BackArrow";
 
 interface PageProps {
   setStep: (value: number) => void;
@@ -42,7 +43,7 @@ const PersonnelMetrics: React.FC<PageProps> = ({ setStep }) => {
   const getList = async () => {
     const fetchData = async () => {
       try {
-        const url = "/api/metricMachineUse";
+        const url = "/api/metricPersonnelDetails";
         const requestOptions = {
           method: "POST",
           body: JSON.stringify({
@@ -67,70 +68,50 @@ const PersonnelMetrics: React.FC<PageProps> = ({ setStep }) => {
     await fetchData().catch(console.error);
   };
 
-
-  const arrayPrinter = () => {
-    let y: any = [];
-    console.log("arrayList3", arrayList3.length);
-
+  const arrayPrinterStart = () => {
+    let groupedData = {};
+  
     arrayList3.map((index: any) => {
-      y[index?.fk_maquinaria_id] = (
-        <div key={index?.fk_maquinaria_id} className={styles.tableInfoRow}>
-          <td>{index?.fk_maquinaria__fk_categoria__nombre}</td>
-          <td>{index?.fk_maquinaria__identificador}</td>
-          <td>{index?.contador}</td>
-        </div>
-        
+      if (!groupedData[index?.fk_usuario__fk_departamento__nombre]) {
+        groupedData[index?.fk_usuario__fk_departamento__nombre] = [];
+      }
+      groupedData[index?.fk_usuario__fk_departamento__nombre].push(index);
+    });
+  
+    let y: any = [];
+    Object.keys(groupedData).map((key: any) => {
+      const content = groupedData[key].map((index: any) => {
+        return (
+          
+          <div key={index?.fk_usuario__id} className={styles.tableInfoRow}>
+            <td>{index?.full_name}</td>
+            <td><strong>Crago: </strong>{index?.fk_usuario__fk_cargo__nombre}</td>
+            <td><strong>Número de participaciones: </strong>{index?.contador}</td>
+          </div>
+        );
+      });
+      y.push(
+        <Collapse title={key} key={key}>
+          {content}
+        </Collapse>
       );
     });
-    
+  
     return y;
   };
-
-  const arrayPrinter2 = () => {
-    let y: any = [];
-    parametro.map((index: any) => {
-      array1.push(index?.fk_maquinaria__identificador)
-      array2.push(index?.contador)
-      array3.push(index?.fk_maquinaria__fk_categoria__nombre)
-      
-    });
-    return y;
-  };
-  
-  
 
   return (
     <main className={styles.containerAirlinesMainPage}>
+      <div className={styles.backArrowIcon}>
+        <BackArrow
+          executableFunction={() => {
+            router.push("/Metrics/")
+          }}
+        />
+      </div>
       <div className={styles.airlinesListContainer}>
-      <p>PERSONAL</p>
-      {arrayPrinter2()}
-      <BarChart
-  xAxis={[
-    {
-      id: 'barCategories',
-      data: array1,
-      scaleType: 'band',
-      label: 'Maquinarias'
-    },
-  ]}
-  series={[
-    {
-      data: array2,
-      label: 'Número de usos'
-    },
-  ]}
-  width={500}
-  height={400}
-/>
 
-        <div>
-          <div className={styles.tableTitlesContainer}>
-            <span>Categoria</span>
-            <span>Identificador</span>
-            <span>Numero de usos</span>
-          </div>
-          {arrayPrinter()}
-        </div>
+      {arrayPrinterStart()}
         </div>
     </main>
   );

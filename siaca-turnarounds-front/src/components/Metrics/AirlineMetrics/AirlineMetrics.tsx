@@ -132,6 +132,15 @@ const AirlineMetrics: React.FC<PageProps> = ({ setStep }) => {
 
   return (
     <main className={styles.containerAirlinesMainPage}>
+      
+      <div className={styles.backArrowIcon}>
+        <BackArrow
+          executableFunction={() => {
+            router.push("/Metrics/")
+          }}
+        />
+      </div>
+      
       <div className={styles.airlinesListContainer}>
       {arrayPrinter2()}
       {arrayPrinterAirline()}

@@ -43,6 +43,7 @@ const MetricsPage: React.FC<PageProps> = ({ setStep }) => {
   const [data, setData] = useState(['']);
   const [data2, setData2] = useState(['']);
   const [data3, setData3] = useState(['']);
+  const [data4, setData4] = useState(['']);
 
   const [loading, setLoading] = useState(false);
 
@@ -126,6 +127,14 @@ const MetricsPage: React.FC<PageProps> = ({ setStep }) => {
             console.log("ARRAY PERSONAL", Object.values(result));
 
             setArrayPersonnel(Object.values(result));
+
+            const array = Object.values(result).map((index: any) => ({
+              label: index.departamentos,
+              value: parseFloat((index.porcentaje).toString() + '%'),
+            }));
+            
+            setData4(Object(array));
+
 
           })
         );
@@ -214,8 +223,8 @@ const MetricsPage: React.FC<PageProps> = ({ setStep }) => {
   const arrayPrinterPersonnel = () => {
     let y: any = [];
     arrayPersonnel.map((index: any) => {
-      arrayPersonnelName.push(index?.full_name)
-      arrayPersonnelCount.push(index?.contador)
+      arrayPersonnelName.push(index?.departamentos)
+      arrayPersonnelCount.push(index?.porcentaje)
       
     });
 
@@ -286,25 +295,17 @@ const MetricsPage: React.FC<PageProps> = ({ setStep }) => {
 {loading && <LoadingScreen />}
 <center>
 
-<BarChart
-  xAxis={[
-    {
-      id: 'barCategories',
-      data: arrayPersonnelName,
-      scaleType: 'band',
-      label: 'Personal'
-    },
-  ]}
+<PieChart
+colors={palette}
   series={[
     {
-      data: arrayPersonnelCount,
-      label: 'Número de turnarounds',
-      color: '#00A75D',
+      data: data4,
     },
   ]}
-  width={500}
-  height={300}
+  width={400}
+  height={200}
 />
+
 
 </center>
 </div>

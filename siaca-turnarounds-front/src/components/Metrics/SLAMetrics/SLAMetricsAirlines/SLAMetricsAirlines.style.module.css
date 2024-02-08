@@ -51,6 +51,13 @@
     color: #4D4E56;
   }
 
+  .backArrowIcon {
+    position: absolute;
+    top: 170px;
+    left: 10px;
+  }
+  
+
   .contador {
     display: grid;
     grid-template-columns: repeat(4, 1fr);

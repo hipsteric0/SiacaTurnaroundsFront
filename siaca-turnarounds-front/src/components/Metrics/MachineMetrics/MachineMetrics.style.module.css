@@ -95,3 +95,9 @@
     grid-area: 1 / 2 / 2 / 3; 
   }
 
+  .backArrowIcon {
+    position: absolute;
+    top: 170px;
+    left: 10px;
+  }
+
