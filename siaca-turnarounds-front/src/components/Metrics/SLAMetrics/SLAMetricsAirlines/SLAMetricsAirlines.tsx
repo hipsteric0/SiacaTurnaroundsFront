@@ -242,7 +242,7 @@ const SLAMetricsAirlines: React.FC<PageProps> = ({ setStep }) => {
       </div>
       <div className={styles.parent}>
 
-          Aerolineas con más servicos
+    <h1>Aerolineas con más servicos</h1>      
 <center>
         <div className={styles.contador}>
       <div className={styles.divcontador}>

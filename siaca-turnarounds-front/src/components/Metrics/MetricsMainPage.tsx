@@ -302,17 +302,16 @@ colors={palette}
       data: data4,
     },
   ]}
-  width={400}
-  height={200}
+  width={500}
+  height={250}
 />
-
-
+<br/>
 </center>
 </div>
 <div className={styles.divMachine} onClick={() => Machine()}> Maquinarias 
 {loading && <LoadingScreen />}
 <center>
-<br/>
+
 <PieChart
 colors={palette}
   series={[
@@ -320,16 +319,16 @@ colors={palette}
       data: data3,
     },
   ]}
-  width={400}
-  height={200}
+  width={500}
+  height={250}
 />
-
+<br/>
 </center>
 </div>
 <div className={styles.divSLA} onClick={() => SLA()}> Métricas SLA
 {loading && <LoadingScreen />}
 <center>
-<br/>
+
 <PieChart
 colors={palette}
   series={[
@@ -337,16 +336,16 @@ colors={palette}
       data: data,
     },
   ]}
-  width={400}
-  height={200}
+  width={500}
+  height={250}
 />
-
+<br/>
 </center>
 </div>
 <div className={styles.divAirline} onClick={() => Airline()}> Aerolineas
 {loading && <LoadingScreen />}
 <center>
-<br/>
+
 <PieChart
 colors={palette}
   series={[
@@ -354,10 +353,10 @@ colors={palette}
       data: data2,
     },
   ]}
-  width={400}
-  height={200}
+  width={500}
+  height={250}
 />
-
+<br/>
 </center>
 </div>
         </div>
