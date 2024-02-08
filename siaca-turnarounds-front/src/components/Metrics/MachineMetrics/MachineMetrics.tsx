@@ -149,80 +149,6 @@ const MachineMetrics: React.FC<PageProps> = ({ setStep }) => {
     await fetchData().catch(console.error);
   };
 
-  
-
-  const arrayPrinter = () => {
-    let y: any = [];
-    console.log("arrayList3", arrayList3.length);
-
-    arrayList3.map((index: any) => {
-      y[index?.fk_maquinaria_id] = (
-        <div key={index?.fk_maquinaria_id} className={styles.tableInfoRow}>
-          <td>{index?.fk_maquinaria__fk_categoria__nombre}</td>
-          <td>{index?.fk_maquinaria__identificador}</td>
-          <td>{index?.contador}</td>
-        </div>
-        
-      );
-    });
-    
-    return y;
-  };
-
-  const arrayPrinterMachine = (category: string) => {
-    let y: any = [];
-    let arrayMachine: any[] = []
-    let arrayUses: any[] = []
-    let arrayDate : any = []
-    const arrayAux = parametro.filter(parametro => parametro["fk_maquinaria__fk_categoria__nombre"] === category);
-    const arrayAux2 = machineAirline.filter(machineAirline => machineAirline["fk_maquinaria__fk_categoria__nombre"] === category)
-    arrayAux.map((index: any) => {
-      arrayMachine.push(index?.fk_maquinaria__identificador)
-      arrayUses.push(index?.contador)
-      arrayDate.push(index?.fecha)
-      y =(
-        <center>
-        <BarChart
-        xAxis={[
-          {
-            id: 'barCategories',
-            data: arrayMachine,
-            scaleType: 'band',
-            label: 'Maquinarias'
-          },
-        ]}
-        series={[
-          {
-            data: arrayUses,
-            label: 'Número de usos',
-            color: '#00A75D'
-          },
-        ]}
-        width={500}
-        height={400}
-      />
-      </center>
-      );
-      
-    });
-    return y;
-  };
-
-
-  const arrayPrinterMachineAirline = (category: string) => {
-    let y: any = [];
-    const arrayAux = machineAirline.filter(machineAirline => machineAirline["fk_maquinaria__fk_categoria__nombre"] === category)
-    arrayAux.map((index: any) => {
-      y =(
-        <center>
-        <p>{index?.aerolinea}</p>
-        <p>{index?.maquinaria_max}</p>
-      </center>
-      );
-      
-    });
-    return y;
-  };
 
   const palette = ['#0d47a1',
   '#00b0ff',
@@ -232,8 +158,7 @@ const MachineMetrics: React.FC<PageProps> = ({ setStep }) => {
   '#b2ff59'];
 
   
-function StraightAnglePieChart() {
-  console.log("PARAMETRO 2", dataMachine)
+function MachineChart() {
     return (
 
 <PieChart 
@@ -250,6 +175,44 @@ colors={palette}
 />
     );
   }
+
+
+  const arrayPrinterMachine = () => {
+    let groupedData = {};
+   
+    // Merge both arrays
+    const mergedArray = [...arrayList3];
+   
+    mergedArray.map((index: any) => {
+       if (!groupedData[index?.fk_maquinaria__fk_categoria__nombre]) {
+         groupedData[index?.fk_maquinaria__fk_categoria__nombre] = [];
+       }
+       groupedData[index?.fk_maquinaria__fk_categoria__nombre].push(index);
+    });
+   
+    let y: any = [];
+    Object.keys(groupedData).map((key: any) => {
+      let count = 0;
+        const content = groupedData[key].map((item: any) => {
+          return (
+            <div key={count} className={styles.tableInfoRow}>
+              <td><strong>Identificador: </strong>{item?.fk_maquinaria__identificador}</td>
+              <td><strong>Fecha: </strong>{item?.fecha}</td>
+              <td><strong>No. de servicios: </strong>{item?.contador}</td>
+            </div>
+          );
+          
+        });
+        count++;
+        y.push(
+          <Collapse title={key} key={key}>
+            {content}
+          </Collapse>
+        );
+    });
+   
+    return y;
+   };  
   
 
   return (
@@ -266,91 +229,14 @@ colors={palette}
       <div className={styles.container}>
       <div className={styles.div2}>
       <center>
-    {StraightAnglePieChart()}
+    {MachineChart()}
     </center>
     </div>
     <div className={styles.div1}>
       <div className={styles.airlinesListContainer}>
 
-      <Collapse.Group id="group">
-        <Collapse title="Aguas Servidas" >
-        <div className={styles.machinesgrid}>
-        {arrayPrinterMachine("Aguas servidas")}
-        {arrayPrinterMachineAirline("Aguas servidas")}
-        </div>
-        </Collapse>
-            
-            <Collapse title="Tractor de arrastre">
-            <div className={styles.machinesgrid}>
-            {arrayPrinterMachine("Tractor de arrastre")}
-            {arrayPrinterMachineAirline("Tractor de arrastre")}
-            </div>
-            </Collapse>
+          {arrayPrinterMachine()}
 
-            <Collapse title="Escalera" >
-            <div className={styles.machinesgrid}>
-            {arrayPrinterMachine("Escalera")}
-            {arrayPrinterMachineAirline("Escalera")}
-            </div>
-            </Collapse>
-
-            <Collapse title="Cinta transportadora" >
-            <div className={styles.machinesgrid}>
-            {arrayPrinterMachine("Cinta transportadora")}
-            {arrayPrinterMachineAirline("Cinta transportadora")}
-            </div>
-            </Collapse>
-
-            <Collapse title="Loader" >
-            <div className={styles.machinesgrid}>
-            {arrayPrinterMachine("Loader")}
-            {arrayPrinterMachineAirline("Loader")}
-            </div>
-            </Collapse>
-
-            <Collapse title="Tractor de empuje" >
-            <div className={styles.machinesgrid}>
-            {arrayPrinterMachine("Tractor de empuje")}
-            {arrayPrinterMachineAirline("Tractor de empuje")}
-            </div>
-            </Collapse>
-
-            <Collapse title="Aire acondicionado" >
-            <div className={styles.machinesgrid}>
-            {arrayPrinterMachine("Aire acondicionado")}
-            {arrayPrinterMachineAirline("Aire acondicionado")}
-            </div>
-            </Collapse>
-
-            <Collapse title="Planta neumática" >
-            <div className={styles.machinesgrid}>
-            {arrayPrinterMachine("Planta neumática")}
-            {arrayPrinterMachineAirline("Planta neumática")}
-            </div>
-            </Collapse>
-
-            <Collapse title="GPU Planta eléctrica" >
-            <div className={styles.machinesgrid}>
-            {arrayPrinterMachine("GPU Planta eléctrica")}
-            {arrayPrinterMachineAirline("GPU Planta eléctrica")}
-            </div>
-            </Collapse>
-
-            <Collapse title="Agua Potable" >
-            <div className={styles.machinesgrid}>
-            {arrayPrinterMachine("Agua Potable")}
-            {arrayPrinterMachineAirline("Agua Potable")}
-            </div>
-            </Collapse>
-
-            <Collapse title="Barra de tiro" >
-            <div className={styles.machinesgrid}>
-            {arrayPrinterMachine("Barra de tiro")}
-            {arrayPrinterMachineAirline("Barra de tiro")}
-            </div>
-            </Collapse>
-            
-      </Collapse.Group>
       </div>
       </div>
         <div>
