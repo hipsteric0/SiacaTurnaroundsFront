@@ -12,30 +12,16 @@ import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import { Dropdown } from "@nextui-org/react";
 import { useMediaQuery } from "@mui/material";
-import { Collapse, Text } from "@nextui-org/react";
+import { Collapse, Grid, Text } from "@nextui-org/react";
 import {Card, Image} from "@nextui-org/react";
 import { BarChart } from '@mui/x-charts/BarChart';
 import { LineChart } from '@mui/x-charts/LineChart';
 import { ChartContainer, BarPlot } from '@mui/x-charts';
 import { PieChart } from '@mui/x-charts/PieChart';
 
-import Timeline from '@mui/lab/Timeline';
-import TimelineItem from '@mui/lab/TimelineItem';
-import TimelineSeparator from '@mui/lab/TimelineSeparator';
-import TimelineConnector from '@mui/lab/TimelineConnector';
-import TimelineContent from '@mui/lab/TimelineContent';
-import TimelineDot from '@mui/lab/TimelineDot';
-import TimelineOppositeContent from '@mui/lab/TimelineOppositeContent';
-
-import ElectricRickshawIcon from '@mui/icons-material/ElectricRickshaw';
-import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
-import FlightLandIcon from '@mui/icons-material/FlightLand';
-import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
-
-import { CountUp } from 'use-count-up'
-import { Gantt, GanttDataType } from "react-virtual-gantt";
-
 import BackArrow from "@/components/Reusables/BackArrow";
+import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
+
 
 
 
@@ -175,37 +161,60 @@ const SLAMetricsTemplate: React.FC<PageProps> = ({ setStep }) => {
 
   const arrayPrinterStart = () => {
     let groupedData = {};
-   
+  
     // Merge both arrays
     const mergedArray = [...templateStart, ...templateStartAndFinish];
-   
-    mergedArray.map((index: any) => {
-       if (!groupedData[index?.fk_subtarea__fk_tarea__fk_plantilla__titulo]) {
-         groupedData[index?.fk_subtarea__fk_tarea__fk_plantilla__titulo] = [];
-       }
-       groupedData[index?.fk_subtarea__fk_tarea__fk_plantilla__titulo].push(index);
+  
+    mergedArray.map((index) => {
+      const key =
+        index.fk_subtarea__fk_tarea__fk_plantilla__titulo +
+        '_' +
+        index.fk_turnaround__fk_vuelo__fk_aerolinea__nombre;
+  
+      if (!groupedData[key]) {
+        groupedData[key] = [];
+      }
+      groupedData[key].push(index);
     });
-   
-    let y: any = [];
-    Object.keys(groupedData).map((key: any) => {
-        const content = groupedData[key].map((item: any) => {
-          return (
-            <div key={item?.fk_subtarea_id} className={styles.tableInfoRow}>
-              <td>{item?.fk_subtarea__titulo}</td>
-              <td >{item?.average_tiempo_transcurrido} <b>{item?.fk_subtarea__fk_tipo_id === 2 ? 'inicio' : 'tiempo de ejecución'}</b></td>
-            </div>
-          );
-        });
-        y.push(
-          <Collapse title={key} key={key}>
-            {content}
-          </Collapse>
+  
+    let y = [];
+    Object.keys(groupedData).map((key) => {
+      const [titulo, aerolinea] = key.split('_');
+  
+      const content = groupedData[key].map((item) => {
+        return (
+          <div key={item?.fk_subtarea_id} className={styles.tableInfoRow}>
+            <td>{item?.fk_subtarea__titulo}</td>
+            <td >{item?.average_tiempo_transcurrido} <b>{item?.fk_subtarea__fk_tipo_id === 2 ? 'inicio' : 'tiempo de ejecución'}</b></td>
+          </div>
         );
+      });
+  
+      if (!y[titulo]) {
+        y[titulo] = [];
+      }
+  
+      y[titulo].push(
+        <Collapse.Group bordered >
+        <Collapse title={aerolinea} key={aerolinea}>
+          {content}
+        </Collapse>
+        </Collapse.Group>
+      );
     });
-   
-    return y;
-   };
-
+  
+    const collapseArray = Object.keys(y).map((title) => {
+      return (
+        <Collapse.Group bordered>
+        <Collapse title={title} key={title}>
+          {y[title]}
+        </Collapse>
+        </Collapse.Group>
+      );
+    });
+  
+    return collapseArray;
+  };
 
    const arrayPrinterSLA = () => {
     let y: any = [];
