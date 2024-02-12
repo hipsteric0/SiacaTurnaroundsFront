@@ -274,14 +274,6 @@ const SLAMetricsAirlines: React.FC<PageProps> = ({ setStep }) => {
       <div className={styles.list}>
         {arrayPrinterStart()}
         </div>
-
-        <div className={styles.divChart}>
-      <center>
-      {arrayPrinterSLA()}
-
-      </center>
-      </div>
-
     </main>
   );
 };

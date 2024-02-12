@@ -153,6 +153,7 @@ export default async function handler(
           codigo: body?.["codigo"],
           pais: body?.["pais"],
           ciudad: body?.["ciudad"],
+          codigo_OACI: body?.["codigo_OACI"]
 
         }),
         /*body: JSON.stringify({

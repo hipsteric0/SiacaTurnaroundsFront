@@ -50,9 +50,7 @@
     }
 
 .data { 
-  grid-area: 1 / 1 / 2 / 2; 
-  padding-right: 60px;
-}
+  grid-area: 1 / 1 / 2 / 2; }
 
 .chart { 
 
@@ -70,11 +68,10 @@
     align-items: center;
     gap: 8px;
     padding: 24px;
+    border-radius: 4px;
     width: 700px;
-    border-radius: 12px;
-    border: 1px solid #ccc;
+    
   }
-  
   
   .container label {
     font-weight: bold;
@@ -82,17 +79,17 @@
   
   .container input {
     padding: 8px;
-    border-radius: 5px;
+    border-radius: 4px;
     border: 1px solid #ccc;
   }
   
   .container button {
     padding: 8px 16px;
-    border-radius: 5px;
-    border-color: #00A75D;
+    border-radius: 4px;
+    border: none;
     background-color: white;
     color: #00A75D;
-
+    cursor: pointer;
   }
   
   .container button:hover {
@@ -104,15 +101,29 @@
     display: grid;
     grid-template-columns: 50% 50%;
     border-bottom: 1px solid #f1f3f5;
-    width: 600px;
-    padding-top: 20px;
-    padding-left: 40px;
-    padding-bottom: 20px;
+    width: 500px;
   }
 
-  .containerList{
-    width: 650px;
+  .airlinesListContainer {
+    width: 100%;
     border-radius: 12px;
-    border: 1px solid #ccc;
+    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.25);
+    padding: 16px;
+    padding-bottom: 16px;
+  }
 
+  .tableTitlesContainer {
+    display: grid;
+    grid-template-columns: 20% 20% 20% 20% 20%;
+    background: #f1f3f5;
+    padding: 16px;
+    border-radius: 10px;
+    color: #7e868c;
+    font-size: 12px;
+  }
+  .tableInfoRow {
+    display: grid;
+    grid-template-columns: 20% 20% 20% 20% 20%;
+    padding: 16px;
+    border-bottom: 1px solid #f1f3f5;
   }

@@ -33,6 +33,7 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep }) => {
   //if token exists show regular html else show not signed in screen
   const [aerolinea, setAerolinea] = useState("");
   const [codigo, setCodigo] = useState("");
+  const [codigoOACI, setCodigoOACI] = useState("");
   const [correoPrincipal, setCorreoPrincipal] = useState("");
   const [correoSecundario, setCorreoSecundario] = useState("");
   const [telefonoPrincipal, setTelefonoPrincipal] = useState("");
@@ -49,48 +50,6 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep }) => {
 
   let responseValue = false;
 
-  const registerAirlines = () => {
-    const fetchData = async () => {
-      try {
-        const url = "/api/registerAirline";
-        const uploadData = new FormData();
-        const requestOptions = {
-          method: "POST",
-          body: JSON.stringify({
-            nombre: aerolinea,
-            correo: correoPrincipal,
-            correo_secundario: correoSecundario,
-            telefono: telefonoPrincipal,
-            telefono_secundario: telefonoSecundario,
-            codigo: codigo,
-            pais: pais,
-            ciudad: ciudad,
-            imagen: uploadData.append('imagen', imagen, imagen.name),
-            userToken: localStorage.getItem("userToken"),
-          }),
-        };
-        const response = await fetch(url, requestOptions).then((value) => {
-          if (value?.status === 400) {
-            responseValue = false;
-          } else {
-            responseValue = true;
-            console.log("value", value)
-          }
-          return true;
-        });
-        if (!response) {
-          responseValue = false;
-
-          throw new Error("Error in response registering user");
-        }
-      } catch (error) {
-        responseValue = false;
-        //mostrar mensaje de no se pudo validasr usuario, ya existe o su conexion es limitada
-      }
-    };
-    fetchData().catch(console.error);
-  };
-
   const newAirline = () => {
     const uploadData = new FormData();
     uploadData.append('imagen', imagen, imagen.name);
@@ -102,6 +61,7 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep }) => {
     uploadData.append('codigo', codigo);
     uploadData.append('pais', pais);
     uploadData.append('ciudad', ciudad);
+    uploadData.append('codigo_OACI', codigoOACI);
 
     fetch('http://127.0.0.1:8000/aerolineas/?token='+localStorage.getItem("userToken"), {
       method: 'POST',
@@ -164,7 +124,8 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep }) => {
         <span className={styles.titleText}>Datos</span>
         <div className={styles.inputsList}>
           <StandardInput setValue={setAerolinea} inputText="Aerolínea" />
-          <StandardInput setValue={setCodigo} inputText="Código" />
+          <StandardInput setValue={setCodigo} inputText="Código IATA" />
+          <StandardInput setValue={setCodigoOACI} inputText="Código OACI" />
         </div>
         <span className={styles.titleText}>Contacto</span>
         <div className={styles.inputsList}>
@@ -198,6 +159,7 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep }) => {
           disabled={
             aerolinea === "" ||
             codigo === "" ||
+            codigoOACI === "" ||
             correoPrincipal === "" ||
             correoSecundario === "" ||
             telefonoPrincipal === "" ||

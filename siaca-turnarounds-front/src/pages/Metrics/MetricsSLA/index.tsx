@@ -8,6 +8,7 @@ import PersonnelMetrics from "@/components/Metrics/PersonnelMetrics/PersonnelMet
 import SLAMetrics from "@/components/Metrics/SLAMetrics/SLAMetrics";
 import SLAMetricsTemplate from "@/components/Metrics/SLAMetrics/SLAMetricsTemplate/SLAMetricsTemplate"
 import SLAMetricsAirlines from "@/components/Metrics/SLAMetrics/SLAMetricsAirlines/SLAMetricsAirlines"
+import SLAMetricsFlights from "@/components/Metrics/SLAMetrics/SLAMetricsFlights/SLAMetricsFlights"
 
 export default function Metrics() {
   //if token exists show regular html else show not signed in screen
@@ -34,6 +35,13 @@ export default function Metrics() {
         step === 2 && (
           <>
             <SLAMetricsAirlines setStep={setStep}  />
+          </>
+        ) /*el step 1 es la pagina de editar maquinaria*/
+      }
+      {
+        step === 3 && (
+          <>
+            <SLAMetricsFlights setStep={setStep}  />
           </>
         ) /*el step 1 es la pagina de editar maquinaria*/
       }

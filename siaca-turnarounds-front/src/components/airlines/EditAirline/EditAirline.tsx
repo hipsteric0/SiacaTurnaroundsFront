@@ -31,6 +31,7 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep, flightID }) => {
 
   const [aerolinea, setAerolinea] = useState("");
   const [codigo, setCodigo] = useState("");
+  const [codigoOACI, setCodigoOACI] = useState("");
   const [correoPrincipal, setCorreoPrincipal] = useState("");
   const [correoSecundario, setCorreoSecundario] = useState("");
   const [telefonoPrincipal, setTelefonoPrincipal] = useState("");
@@ -67,6 +68,7 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep, flightID }) => {
             setTelefonoSecundario(result?.telefono_secundario);
             setPais(result?.pais);
             setCiudad(result?.ciudad);
+            setCodigoOACI(result?.codigo_OACI);
 
 
             if (result?.[0]?.["status"] === 400) {
@@ -99,6 +101,7 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep, flightID }) => {
             codigo: codigo,
             pais: pais,
             ciudad: ciudad,
+            codigo_OACI: codigoOACI,
             userToken: localStorage.getItem("userToken"),
             flightID: flightID
           }),
@@ -166,8 +169,13 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep, flightID }) => {
           />
           <StandardInputV2 
           setValue={setCodigo} 
-          labelText="Código"
+          labelText="Código IATA"
           placeholderText={codigo} 
+          />
+          <StandardInputV2 
+          setValue={setCodigoOACI} 
+          labelText="Código OACI"
+          placeholderText={codigoOACI} 
           />
         </div>
         <span className={styles.titleText}>Contacto</span>

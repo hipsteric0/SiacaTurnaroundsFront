@@ -352,7 +352,7 @@ const AirlinesMainPage: React.FC<PageProps> = ({
           <td>{index.nombre}</td>
           <td>{index.correo}</td>
           <td>{index.telefono}</td>
-          <td>{index.codigo}</td>
+          <td><strong>IATA:</strong>{index.codigo} - <strong>OACI:</strong>{index.codigo_OACI} </td>
           <td className={styles.iconsContainer}>
             <div
               className={styles.functionIcon}

@@ -313,6 +313,11 @@ const SLAMetrics: React.FC<PageProps> = ({ setStep }) => {
     setStep(2)
   }
 
+  const Flight = () =>{
+    setLoading(true);
+    setStep(3)
+  }
+
 
   return (
     <main className={styles.containerAirlinesMainPage}>
@@ -353,11 +358,12 @@ const SLAMetrics: React.FC<PageProps> = ({ setStep }) => {
         </div>
       </div>
       <div className={styles.opciones}>
-      <div onClick={() => Template()} className={styles.opcion1} > Estadisticas Plantillas </div>
+      <div className={styles.opcion1} onClick={() => Template()}> Estadisticas Plantillas </div>
       {loading && <LoadingScreen />}
       <div className={styles.opcion2}  onClick={() => Airline()}> Estadisticas Aerolineas</div>
       {loading && <LoadingScreen />}
-      <div className={styles.opcion3}  onClick={() => setStep(3)}> </div>
+      <div className={styles.opcion3}  onClick={() => Flight()}> Estadisticas Vuelos </div>
+      {loading && <LoadingScreen />}
       </div>
       </center>
     </main>

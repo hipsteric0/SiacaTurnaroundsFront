@@ -1,5 +1,5 @@
 import GreenButton from "@/components/Reusables/GreenButton";
-import styles from "./SLAMetricsTemplate.style.module.css";
+import styles from "./SLAMetricsFlights.style.module.css";
 import KeyboardArrowLeftRoundedIcon from "@mui/icons-material/KeyboardArrowLeftRounded";
 import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRightRounded";
 import { log } from "console";
@@ -27,7 +27,7 @@ interface PageProps {
   setStep: (value: number) => void;
 }
 
-const SLAMetricsTemplate: React.FC<PageProps> = ({ setStep }) => {
+const SLAMetricsFlights: React.FC<PageProps> = ({ setStep }) => {
   //if token exists show regular html else show not signed in screen
   const isMobile = useMediaQuery("(max-width: 1270px)");
   const [allowContinue, setAllowContinue] = useState(false);
@@ -57,6 +57,7 @@ const SLAMetricsTemplate: React.FC<PageProps> = ({ setStep }) => {
   useEffect(() => {
     getTemplateStartAndFinish();
     getSLA();
+    handleButtonClickStart();
   }, []);
 
   useEffect(() => {
@@ -238,23 +239,31 @@ const SLAMetricsTemplate: React.FC<PageProps> = ({ setStep }) => {
 
  
    const handleButtonClickStart = () => {
-     fetch(`http://127.0.0.1:8000/metricas/tiempo-vuelos-hora-inicio/${code}/${date}/?token=`+localStorage.getItem("userToken"))
+     fetch(`http://127.0.0.1:8000/metricas/vuelos-on-time/?token=`+localStorage.getItem("userToken"))
        .then((response) => response.json())
        .then((data) => setStart(data))
        .catch((error) => console.error('Error fetching ', error));
    };
 
-   const handleButtonClickStartFinish = () => {
-    fetch(`http://127.0.0.1:8000/metricas/tiempo-vuelos-hora-inicio-fin/${code}/${date}/?token=`+localStorage.getItem("userToken"))
-      .then((response) => response.json())
-      .then((data) => setStartFinish(data))
-      .catch((error) => console.error('Error fetching ', error));
+
+  const arrayPrinter2 = () => {
+    let y: any = [];
+
+    start.map((index: any) => {
+      y[index.id] = (
+        <div key={index.id} className={styles.tableInfoRow}>
+          <td>{index.identificador}</td>
+          <td>{index.descripcion}</td>
+          <td>{index.categoria}</td>
+          <td>{index.contador}</td>
+          <td>{index.porcentaje}%</td>
+        </div>
+      );
+    });
+
+    return y;
   };
-  
-  const Times = () => {
-    handleButtonClickStart();
-    handleButtonClickStartFinish();
-  }
+
 
   return (
     <main className={styles.containerAirlinesMainPage}>
@@ -268,77 +277,26 @@ const SLAMetricsTemplate: React.FC<PageProps> = ({ setStep }) => {
       </div>
 
       <div className={styles.title}>
-        <p>Tiempo promedio general por plantilla</p>
+        <p>Porcentajes de códigos de demora</p>
       </div>
-      <div className={styles.list}>
-        <div className={styles.data}>
-          
-          {arrayPrinterStart()}
 
-        </div>
-
-        <div className={styles.chart}>
-
-        <div className={styles.container}>
-      <label >Número de vuelo:</label>
-      <input
-        type="text"
-        id="code"
-        value={code}
-        onChange={(e) => setCode(e.target.value)}
-      />
-      <br />
-
-      <label >Fecha:</label>
-      <input
-        type="date"
-        id="date"
-        value={date}
-        onChange={(e) => setDate(e.target.value)}
-      />
-      <br />
-
-      <button onClick={Times}>Buscar vuelo</button>
-
-            <div className={styles.containerList}>
-        {start.map((option) => (
-          <div key={option?.fk_subtarea_id} className={styles.table}>
-          <td>{option?.fk_subtarea__titulo}</td>
-          <td>{option?.average_tiempo_transcurrido} <strong>inicio</strong></td>
-        </div>
-        ))}
-          {startFinish.map((option) => (
-          <div key={option?.fk_subtarea_id} className={styles.table}>
-          <td>{option?.fk_subtarea__titulo}</td>
-          <td>{option?.average_tiempo_transcurrido} <strong>tiempo transcurrido</strong></td>
-        </div>
-        ))}
-            </div>
-            </div>
-            </div>
-        </div>
-        <center>
-              <p>Número de usos</p>
-            <br/>
-            <PieChart 
-            colors={palette}
-              series={[
-                {
-                  data: data,
-                  highlightScope: { faded: 'global', highlighted: 'item' },
-                },
-              ]}
-              width={400}
-              height={300}
-                
-              />
-
-            </center>
+      <div className={styles.airlinesListContainer}>
+                  <div>
+                    <div className={styles.tableTitlesContainer}>
+                      <span>Alpha</span>
+                      <span>Descripción</span>
+                      <span>Categoría</span>
+                      <span>Contador</span>
+                      <span>Porcentaje</span>
+                    </div>
+                    {arrayPrinter2()}
+                  </div>
+                </div>
     </main>
   );
 };
 
-export default SLAMetricsTemplate;
+export default SLAMetricsFlights;
 
 
 
