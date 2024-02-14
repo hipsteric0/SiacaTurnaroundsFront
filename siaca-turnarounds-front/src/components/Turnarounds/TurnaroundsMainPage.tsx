@@ -1030,6 +1030,214 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
 
     return y;
   };
+  const arrayPrinterPDFGeneratorSpanish = (indexTurnaroundData: any) => {
+    let y;
+
+    y = (
+      <>
+        <Image
+          style={PDFstyles.image}
+          //src="https://siacaservicios.com/es-VE/assets/imagenes/siaca-logo-gris.png"
+          src={
+            "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAARcAAABJCAMAAAAg/pLVAAACWFBMVEUAAABNTVYBply6urpNTVZNTVZNTVZNTVZNTVZNTVZNTVZNTVZNTVaXmJlNTVZNTVZNTVZNTVYBplwBplxNTVZNTVZNTVZNTVZNTVZNTVZNTVZNTVa6urpNTVZNTVZNTVZNTVZNTVZNTVZNTVYBplwBplxNTVYBplwBplxNTVZNTVYBplwBplxNTVYBplyXmJm3uLdNTVZNTVaXmJkBplxNTVZNTVZNTVZNTVYBplwBplxNTVZNTVYBplxNTVacnZ5NTVZNTVYBplwBplxNTVYBplxNTVZNTVYBplwBplwBplwBplxNTVYBplwBplwBplwBplwBplwBplyfoKBNTVYBplxNTVYBplwBplwBplwBplwBplxNTVa6uroBplwBply0tLQBplwBplxNTVZNTVZNTVanp6gBply6urq6urq6urq6urpNTVYBplwBplwBplxNTVaXmJlNTVYBplwBplwBply6urqXmJmXmJm6urq6urqXmJkBply6urqXmJmYmZq6urqXmJmtra6hoqOXmJm6urqYmZq6urqXmJkBplyXmJmXmJmXmJmYmZq6urq6urqXmJm6urqysrK6urqXmJm6urqutrO6urqXmJm6urq5ubmXmJmXmJmXmJm6urq6urq6urqqqqu6urqXmJm6urqXmJm6urpynIoCpl1+s5yXmJkgqWxDn3cuom4Lp2K6uroeqWtFrX5Qr4Sqqquvr7A9rHoFpl6cnZ6srK0iqm26urpOn3tRr4VgsI2puLE8rHqOtaRmsY+NtaOAmpC1tbWysrMuq3MVqGaNRvyDAAAAyHRSTlMA////E94Y4/EkQ1D1/7xABAL9AtgN+aotcoX7/csQ/grvuAYGExzp9YzVHAp+Mfz9qOsFIohVbV/dxXeR4s78ma/ujzqBICj58jpwwg+/sUfKW/fH2FnOJlOIfDRtnUH5qi3nTkj5Y/ACDs9muHdNniCyo9OWhxHtUvm4aQiv3hxF+/yC2k5J9jV08RjF4MOdJvZkKuX+QlmYLCRrzDaPoPy403c4XAP//5D/BQX/gRnkQQ29jg2l2OCtB7H/1v//S/QHD8vg/5KZu+YAAAsESURBVHic7Zz3X1PJGocnVWpIARMIhAAJKCUgoXdCAOlFOgjSUapi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"
+          }
+        />
+        <View style={PDFstyles.mainbox}>
+          <Text style={PDFstyles.titleText}>Resumen de Servicios de Vuelo</Text>
+          <View style={PDFstyles.innerContainerRow}>
+            <View style={PDFstyles.innerContainer1}>
+              <Text style={PDFstyles.regularText}>
+                STN: {indexTurnaroundData?.fk_vuelo?.stn?.codigo}
+              </Text>
+            </View>
+            <View style={PDFstyles.innerContainer1}>
+              <Text style={PDFstyles.regularText}>
+                CARRIER:{" "}
+                {indexTurnaroundData?.fk_vuelo?.fk_aerolinea?.nombre +
+                  " " +
+                  indexTurnaroundData?.fk_vuelo?.fk_aerolinea?.codigo}
+              </Text>
+            </View>
+          </View>
+          <View style={PDFstyles.innerContainerRow}>
+            <View style={PDFstyles.innerContainer1}>
+              <Text style={PDFstyles.regularText}>
+                Cargos pagados por:{" "}
+                {indexTurnaroundData?.fk_vuelo?.fk_aerolinea?.nombre}
+              </Text>
+            </View>
+            <View style={PDFstyles.innerContainer1}>
+              <Text style={PDFstyles.regularText}>
+                Identificador Nro: {indexTurnaroundData?.fk_vuelo?.id}
+              </Text>
+            </View>
+          </View>
+          <Text style={PDFstyles.regularText}>
+            Dirección completa:{" "}
+            {indexTurnaroundData?.fk_vuelo?.fk_aerolinea?.ciudad +
+              " " +
+              indexTurnaroundData?.fk_vuelo?.fk_aerolinea?.pais}
+          </Text>
+          <View style={PDFstyles.innerContainerRow}>
+            <View style={PDFstyles.innerContainer2}>
+              <Text style={PDFstyles.regularText}>
+                Vuelo Nro: {indexTurnaroundData?.fk_vuelo?.numero_vuelo}
+              </Text>
+            </View>
+            <View style={PDFstyles.innerContainer2}>
+              <Text style={PDFstyles.regularText}>
+                A/C Reg: {indexTurnaroundData?.fk_vuelo?.ac_reg}
+              </Text>
+            </View>
+            <View style={PDFstyles.innerContainer2}>
+              <Text style={PDFstyles.regularText}>
+                Tipo de A/C: {indexTurnaroundData?.fk_vuelo?.ac_type}
+              </Text>
+            </View>
+          </View>
+          <View style={PDFstyles.innerContainerRow}>
+            <View style={PDFstyles.innerContainer2}>
+              <Text style={PDFstyles.regularText}>
+                ETA: {indexTurnaroundData?.fk_vuelo?.ETA}
+              </Text>
+            </View>
+            <View style={PDFstyles.innerContainer2}>
+              <Text style={PDFstyles.regularText}>
+                ATA: {indexTurnaroundData?.fk_vuelo?.ATA}
+              </Text>
+            </View>
+            <View style={PDFstyles.innerContainer2}>
+              <Text style={PDFstyles.regularText}>
+                FECHA: {indexTurnaroundData?.fk_vuelo?.ETA_fecha}
+              </Text>
+            </View>
+          </View>
+          <View style={PDFstyles.innerContainerRow}>
+            <View style={PDFstyles.innerContainer2}>
+              <Text style={PDFstyles.regularText}>
+                FECHA: {indexTurnaroundData?.fk_vuelo?.ETD}
+              </Text>
+            </View>
+            <View style={PDFstyles.innerContainer2}>
+              <Text style={PDFstyles.regularText}>
+                ATD: {indexTurnaroundData?.fk_vuelo?.ATD}
+              </Text>
+            </View>
+            <View style={PDFstyles.innerContainer2}>
+              <Text style={PDFstyles.regularText}>
+                FECHA: {indexTurnaroundData?.fk_vuelo?.ETD_fecha}
+              </Text>
+            </View>
+          </View>
+          <View style={PDFstyles.innerContainerRow}>
+            <View style={PDFstyles.innerContainer2}>
+              <Text style={PDFstyles.regularText}>
+                Routing:{" "}
+                {indexTurnaroundData?.fk_vuelo?.lugar_salida?.codigo +
+                  "/" +
+                  indexTurnaroundData?.fk_vuelo?.lugar_destino?.codigo}
+              </Text>
+            </View>
+            <View style={PDFstyles.innerContainer2}>
+              <Text style={PDFstyles.regularText}>
+                Puerta: {indexTurnaroundData?.fk_vuelo?.gate}
+              </Text>
+            </View>
+            <View style={PDFstyles.innerContainer2}>
+              <Text style={PDFstyles.regularText}>
+                Tipo de vuelo:{" "}
+                {indexTurnaroundData?.fk_vuelo?.tipo_vuelo?.nombre}
+              </Text>
+            </View>
+          </View>
+        </View>
+        <View style={PDFstyles.mainbox}>
+          <View style={PDFstyles.innerContainerRow}>
+            <View style={PDFstyles.innerContainerTasksSection1}>
+              <Text style={PDFstyles.titleTextUncentered}>No.</Text>
+            </View>
+            <View style={PDFstyles.innerContainerTasksSection2}>
+              <Text style={PDFstyles.titleTextUncentered}>
+                SERVICIOS PROPORCIONADOS
+              </Text>
+            </View>
+            <View style={PDFstyles.innerContainerTasksSection3}>
+              <Text style={PDFstyles.titleTextUncentered}>
+                Resultado al completar la tarea
+              </Text>
+            </View>
+          </View>
+          {GetTaskDataForPDF(indexTurnaroundData)}
+        </View>
+
+        <View style={PDFstyles.mainbox}>
+          <View style={PDFstyles.innerContainer0}>
+            <Text style={PDFstyles.regularText}>
+              Cualquier discrepancia sobre los servicios prestados y reclamados
+              en este documento deberá comunicarse dentro de los 7 días
+              posteriores a la recepción de la factura mensual.
+            </Text>
+          </View>
+          <View style={PDFstyles.innerContainer0}>
+            <Text style={PDFstyles.smallerText}>
+              Por la presente certifico, como representante autorizado del
+              Transportista, que reconozco y acepto las condiciones de
+              responsabilidad del Acuerdo Estándar de Handling en Tierra de
+              IATA, según se ha modificado (que aparece al dorso) para la
+              prestación del servicio solicitado por el Transportista.
+            </Text>
+            <Text style={PDFstyles.smallerText}>
+              Aceptación de las condiciones y recepción del servicio como se
+              indica anteriormente:
+            </Text>
+            <View style={PDFstyles.innerContainerRow}>
+              <View style={PDFstyles.innerContainer1}>
+                <Text style={PDFstyles.smallerText}>Nombre:</Text>
+              </View>
+              <View style={PDFstyles.innerContainer1}>
+                <Text style={PDFstyles.smallerText}>
+                  Firma del representante:
+                </Text>
+                <Text style={PDFstyles.smallerText}></Text>
+                <Text style={PDFstyles.smallerText}></Text>
+              </View>
+            </View>
+          </View>
+          <View style={PDFstyles.innerContainer0}>
+            <Text style={PDFstyles.smallerText}>
+              La prestación de los servicios mencionados se ha realizado en base
+              a la hora local.
+            </Text>
+            <View style={PDFstyles.innerContainerRow}>
+              <View style={PDFstyles.innerContainer1}>
+                <Text style={PDFstyles.smallerText}>Nombre:</Text>
+              </View>
+              <View style={PDFstyles.innerContainer1}>
+                <Text style={PDFstyles.smallerText}>
+                  Firma del representante de la compañia de handling:
+                </Text>
+                <Text style={PDFstyles.smallerText}></Text>
+              </View>
+            </View>
+          </View>
+          <Text style={PDFstyles.smallerText}>
+            Todos los servicios indicados en este formulario están sujetos a la
+            aprobación del departamento de contabilidad de la empresa de
+            Handling. Los cobros en exceso se reembolsarán y los cobros
+            insuficientes se facturarán.
+          </Text>
+        </View>
+        <Text style={PDFstyles.smallerText}>
+          Este documento fué autogenerado en la fecha:{" "}
+          {date.getDate().toString()}-{(date.getMonth() + 1).toString()}-
+          {date.getFullYear().toString()} a las {date.getHours()}:
+          {date.getMinutes()}:{date.getSeconds()}.
+        </Text>
+      </>
+    );
+
+    return y;
+  };
 
   const arrayPrinterPDFGenerator = (indexTurnaroundData: any) => {
     let y;
@@ -1075,7 +1283,8 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
           </View>
           <Text style={PDFstyles.regularText}>
             Full Address:{" "}
-            {indexTurnaroundData?.fk_vuelo?.fk_aerolinea?.pais +
+            {indexTurnaroundData?.fk_vuelo?.fk_aerolinea?.ciudad +
+              " " +
               indexTurnaroundData?.fk_vuelo?.fk_aerolinea?.pais}
           </Text>
           <View style={PDFstyles.innerContainerRow}>
@@ -1225,7 +1434,7 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
         </View>
         <Text style={PDFstyles.smallerText}>
           This document was autogenerated on the following date:{" "}
-          {date.getDate().toString()}-{(date.getMonth() + 1).toString()}-
+          {(date.getMonth() + 1).toString()}-{date.getDate().toString()}-
           {date.getFullYear().toString()} at {date.getHours()}:
           {date.getMinutes()}:{date.getSeconds()}.
         </Text>
@@ -1645,40 +1854,76 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
                           </p>
                         </>
                       ) : (
-                        <PDFDownloadLink
-                          document={
-                            <Document
-                              title={
-                                "Registro del servicio al turnaround Nro: " +
-                                index?.id
-                              }
-                              author={"SIACA"}
-                            >
-                              <Page size="A4" style={PDFstyles.page}>
-                                {arrayPrinterPDFGenerator(index)}
-                              </Page>
-                            </Document>
-                          }
-                          fileName={
-                            "Turnaround_Data_" +
-                            index?.fk_vuelo?.ETA_fecha +
-                            "_" +
-                            index?.fk_vuelo?.ETA +
-                            "_" +
-                            index?.fk_vuelo?.fk_aerolinea?.nombre +
-                            "_puerta:" +
-                            index?.fk_vuelo?.gate +
-                            "_id:" +
-                            index?.id +
-                            ".pdf"
-                          }
-                        >
-                          {({ blob, url, loading, error }) =>
-                            loading
-                              ? "Loading document..."
-                              : "Descargar documento del turnaround"
-                          }
-                        </PDFDownloadLink>
+                        <div className={styles.turnaroundPDFSLinksContainers}>
+                          <PDFDownloadLink
+                            document={
+                              <Document
+                                title={
+                                  "Registro del servicio al turnaround Nro: " +
+                                  index?.id
+                                }
+                                author={"SIACA"}
+                              >
+                                <Page size="A4" style={PDFstyles.page}>
+                                  {arrayPrinterPDFGenerator(index)}
+                                </Page>
+                              </Document>
+                            }
+                            fileName={
+                              "Turnaround_Data_" +
+                              index?.fk_vuelo?.ETA_fecha +
+                              "_" +
+                              index?.fk_vuelo?.ETA +
+                              "_" +
+                              index?.fk_vuelo?.fk_aerolinea?.nombre +
+                              "_puerta:" +
+                              index?.fk_vuelo?.gate +
+                              "_id:" +
+                              index?.id +
+                              ".pdf"
+                            }
+                          >
+                            {({ blob, url, loading, error }) =>
+                              loading
+                                ? "Loading document..."
+                                : "Descargar documento del turnaround en inglés"
+                            }
+                          </PDFDownloadLink>
+                          <PDFDownloadLink
+                            document={
+                              <Document
+                                title={
+                                  "Registro del servicio al turnaround Nro: " +
+                                  index?.id
+                                }
+                                author={"SIACA"}
+                              >
+                                <Page size="A4" style={PDFstyles.page}>
+                                  {arrayPrinterPDFGeneratorSpanish(index)}
+                                </Page>
+                              </Document>
+                            }
+                            fileName={
+                              "Turnaround_Data_" +
+                              index?.fk_vuelo?.ETA_fecha +
+                              "_" +
+                              index?.fk_vuelo?.ETA +
+                              "_" +
+                              index?.fk_vuelo?.fk_aerolinea?.nombre +
+                              "_puerta:" +
+                              index?.fk_vuelo?.gate +
+                              "_id:" +
+                              index?.id +
+                              ".pdf"
+                            }
+                          >
+                            {({ blob, url, loading, error }) =>
+                              loading
+                                ? "Loading document..."
+                                : "Descargar documento del turnaround en español"
+                            }
+                          </PDFDownloadLink>
+                        </div>
                       )}
                     </div>
                   </div>
