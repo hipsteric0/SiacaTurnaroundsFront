@@ -25,11 +25,13 @@ import GreenButton2 from "@/components/Reusables/GreenButton2";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import StandardInputV2 from "../Reusables/StandardInputV2";
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
+import SiacaLogo from "../../images/logos/siacaLogo.png";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
 
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
-
-import LoadingScreen from '../Reusables/LoadingScreen';
+import LoadingScreen from "../Reusables/LoadingScreen";
+import { Image, PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
+import { Page, Text, View, Document, StyleSheet } from "@react-pdf/renderer";
 
 interface PageProps {
   setStep: (value: number) => void;
@@ -63,6 +65,7 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
     useState([]);
   let date = new Date();
   const [arrayFilteredList3, setArrayFilteredList3] = useState([]);
+  const [tasksCompletionValues, setTasksCompletionValues] = useState([]);
   const [machinesToPostArray, setMachinesToPostArray] = useState([]);
   const [personnelToPostArray, setPersonnelToPostArray] = useState([]);
   const [openCardMenu, setOpenCardMenu] = useState(-1);
@@ -101,9 +104,77 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
   const [checkTaskID, setcheckTaskID] = useState(-1);
   const [reservedTask, setreservedTask] = useState(false);
   const [reservedTaskPersonnel, setreservedTaskPersonnel] = useState(false);
-
+  const [clickedFlightState, setclickedFlightState] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const PDFstyles = StyleSheet.create({
+    page: {
+      flexDirection: "column",
+      //backgroundColor: "#E4E4E4",
+      padding: 10,
+      gap: 20,
+    },
+    section: {
+      margin: 10,
+      padding: 10,
+      flexGrow: 1,
+    },
+    mainbox: {
+      border: "1px solid black",
+    },
+    titleText: {
+      fontSize: 14,
+      color: "black",
+      fontWeight: 700,
+      textAlign: "center",
+    },
+    titleTextUncentered: {
+      fontSize: 14,
+      color: "black",
+      fontWeight: 700,
+      paddingLeft: 6,
+    },
+    regularText: {
+      fontSize: 14,
+      color: "#4d4e56",
+      paddingLeft: 6,
+    },
+    smallerText: {
+      fontSize: 12,
+      color: "#4d4e56",
+      padding: 6,
+    },
+    innerContainerRow: {
+      flexDirection: "row",
+    },
+    innerContainer0: {
+      border: "1px solid black",
+      width: "100%",
+    },
+    innerContainer1: {
+      border: "1px solid black",
+      width: "50%",
+    },
+    innerContainer2: {
+      border: "1px solid black",
+      width: "33.3%",
+    },
+    innerContainerTasksSection1: {
+      border: "1px solid black",
+      width: "10%",
+    },
+    innerContainerTasksSection2: {
+      border: "1px solid black",
+      width: "45%",
+    },
+    innerContainerTasksSection3: {
+      border: "1px solid black",
+      width: "45%",
+    },
+    image: {
+      width: 80,
+    },
+  });
 
   let filterValues: any[] = [];
   const getList = async () => {
@@ -155,6 +226,30 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
           res.json().then((result) => {
             setPersonnelListArray(Object.values(result));
             console.log("Personnel List Array", result);
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+  const getTasksCompletionsList = async (turnaroundID: any) => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/getTasksCompletionList";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+            turnaroundID: turnaroundID,
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            formatTasksForPDFArray(result);
+            console.log("getTasksCompletionsList  Array", result);
           })
         );
       } catch (error) {
@@ -516,6 +611,46 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
     flightMachine(flightID);
   };
 
+  const formatTasksForPDFArray = (result: any) => {
+    let y: any[] = [];
+
+    result?.comentarios.map((value: any) => {
+      //console.log("value", value);
+      y.push({
+        key: value?.fk_subtarea__id,
+        name: value?.fk_subtarea__titulo,
+        value: "Comentario: " + value?.comentario,
+      });
+    });
+    result?.horas.map((value: any) => {
+      //console.log("value", value);
+      y.push({
+        key: value?.fk_subtarea__id,
+        name: value?.fk_subtarea__titulo,
+        value: "Hora inicio: " + value?.hora_inicio,
+      });
+    });
+    result?.horas_inicio_fin.map((value: any) => {
+      //console.log("value", value);
+      y.push({
+        key: value?.fk_subtarea__id,
+        name: value?.fk_subtarea__titulo,
+        value:
+          "hora inicio: " +
+          value?.hora_inicio +
+          " - " +
+          "hora fin: " +
+          value?.hora_fin,
+      });
+    });
+
+    console.log("array of tasks unorderred", y);
+    let resultOfSorting: any[] = [];
+    resultOfSorting = y.sort((a, b) => a.key - b.key);
+    console.log("resultOfSorting", resultOfSorting);
+    setTasksCompletionValues(resultOfSorting);
+  };
+
   const arrayPrinterSelectedMachinesForCategory = (category: any) => {
     let y: any = [];
     machinesToPostArray.map((index: any) => {
@@ -869,6 +1004,235 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
     }
 
     console.log("personnelToPostArray", personnelToPostArray);
+  };
+  const GetTaskDataForPDF = (indexTurnaroundData: any) => {
+    let y: any = [];
+    let cont = 0;
+    console.log("indexTurnaroundData", indexTurnaroundData);
+    tasksCompletionValues.map((index: any) => {
+      cont++;
+      y[index?.key] = (
+        <>
+          <View style={PDFstyles.innerContainerRow}>
+            <View style={PDFstyles.innerContainerTasksSection1}>
+              <Text style={PDFstyles.regularText}>{cont}</Text>
+            </View>
+            <View style={PDFstyles.innerContainerTasksSection2}>
+              <Text style={PDFstyles.regularText}>{index?.name}</Text>
+            </View>
+            <View style={PDFstyles.innerContainerTasksSection3}>
+              <Text style={PDFstyles.regularText}>{index?.value}</Text>
+            </View>
+          </View>
+        </>
+      );
+    });
+
+    return y;
+  };
+
+  const arrayPrinterPDFGenerator = (indexTurnaroundData: any) => {
+    let y;
+
+    y = (
+      <>
+        <Image
+          style={PDFstyles.image}
+          //src="https://siacaservicios.com/es-VE/assets/imagenes/siaca-logo-gris.png"
+          src={
+            "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAARcAAABJCAMAAAAg/pLVAAACWFBMVEUAAABNTVYBply6urpNTVZNTVZNTVZNTVZNTVZNTVZNTVZNTVZNTVaXmJlNTVZNTVZNTVZNTVYBplwBplxNTVZNTVZNTVZNTVZNTVZNTVZNTVZNTVa6urpNTVZNTVZNTVZNTVZNTVZNTVZNTVYBplwBplxNTVYBplwBplxNTVZNTVYBplwBplxNTVYBplyXmJm3uLdNTVZNTVaXmJkBplxNTVZNTVZNTVZNTVYBplwBplxNTVZNTVYBplxNTVacnZ5NTVZNTVYBplwBplxNTVYBplxNTVZNTVYBplwBplwBplwBplxNTVYBplwBplwBplwBplwBplwBplyfoKBNTVYBplxNTVYBplwBplwBplwBplwBplxNTVa6uroBplwBply0tLQBplwBplxNTVZNTVZNTVanp6gBply6urq6urq6urq6urpNTVYBplwBplwBplxNTVaXmJlNTVYBplwBplwBply6urqXmJmXmJm6urq6urqXmJkBply6urqXmJmYmZq6urqXmJmtra6hoqOXmJm6urqYmZq6urqXmJkBplyXmJmXmJmXmJmYmZq6urq6urqXmJm6urqysrK6urqXmJm6urqutrO6urqXmJm6urq5ubmXmJmXmJmXmJm6urq6urq6urqqqqu6urqXmJm6urqXmJm6urpynIoCpl1+s5yXmJkgqWxDn3cuom4Lp2K6uroeqWtFrX5Qr4Sqqquvr7A9rHoFpl6cnZ6srK0iqm26urpOn3tRr4VgsI2puLE8rHqOtaRmsY+NtaOAmpC1tbWysrMuq3MVqGaNRvyDAAAAyHRSTlMA////E94Y4/EkQ1D1/7xABAL9AtgN+aotcoX7/csQ/grvuAYGExzp9YzVHAp+Mfz9qOsFIohVbV/dxXeR4s78ma/ujzqBICj58jpwwg+/sUfKW/fH2FnOJlOIfDRtnUH5qi3nTkj5Y/ACDs9muHdNniCyo9OWhxHtUvm4aQiv3hxF+/yC2k5J9jV08RjF4MOdJvZkKuX+QlmYLCRrzDaPoPy403c4XAP//5D/BQX/gRnkQQ29jg2l2OCtB7H/1v//S/QHD8vg/5KZu+YAAAsESURBVHic7Zz3X1PJGocnVWpIARMIhAAJKCUgoXdCAOlFOgjSUapiQ7B30bXurn3d1e19b+/93n/rnnCSnDll5szJvSF8dL+/eTLznpmHae/7zhEAIRnsE4P1q+2lTXJKlWWrS2NZNsGC75JszUuLpfvlbGW0D980hLplIVT2WF2lXi4o/fGlgncUjb2lCwGFlmvUEeomhkD2pUoclC3tWZ14x8aMrbtUlIpHTfX2UDd1O5XVwV1qkeode2eGjKGTbLDQ2j+UHeoGb48M3U0SsFDqyAp1k7dDhtk90rBQc2ki1I3eBg3isLgW6zaWbzocjubBltEyf8nKt3/HdrhQTPT9ww6bAThvH6V0ykmNLFtzfT/NJqM51O0Ostq6UFgqu7OB89Gtc6/Pb25unj7/4tyVa7epDd0xtLVIZxSEuuXBVR0KS1kWcF67cyMaUu6NF1c+PfV5W3cZdS4+/lYvvg7U4pKRBZ6t53qBVB+gVE2zeX3lkdM22E/tSm+xk20YRw2XegBunfdwOfDxg7y8REp5eQ8+nqmmHt1Yv/iH7NkMef3be8CbQJ5cxqhfnY/PzxxSsHXo0mVq0KxfdGaNNnWGuvlB0xIKi5zeb56+p+Ar79KB6Bvnjn7bvSjqK+m0ePFL6YLaX1ItIrnM0gUeCnBRKBIPXY4+/dw5sIy2rFOP9OXUGDVYFdJl3dCjkeB3mkBov6iDXjzuC3LxzKfLuV85USuvLrxcM7lbJqpUungk9ChiezouInTIRU9PpOsoLhSZ6ntOQaPWotZkcSY7mksZkou8rI36/cgnaC6KvJnHQjZNqYRUdjCXITQXeccPR17exWCh9Eu+RV1kCimVHcwFeazz6N9/PoPHopjnGdSVRJFj2blcDLgBI//6ryJcXvEMxoRJwLJzuYBs9E5N6bs/fYDDMveSa06ZKQXLDuYC7B243MgXX3956MyZRAEmZ+bee/L0MMeYrpB4yd3pXIBtyYUbMl/87ld/u762tvbwIKXvT3r0/cGDn629vMCFQqkhXxKWHc0FGCbGsckAfW/9AKHrXM7udnKYpqI8HqNIupppL6Pw4HVUun768T84MnJ9/1AnSe4+iYVFtWAJftODqQt3FR98+ZfvsGjkGV11g3Z8ZEHN2owyG7ap+cHS06tbK2ne3//YXolPr+m7hsYwPnSMGcKSYiJugFXNKI1+pFMjZInTittT8qrRldJQVuOsfD/+vjeWMHf9MLA7WjrwWRN96egYakYVwcPFSB4xmN7FyE0/Uqp2CSs2M+nY3qJ0tDFTcW0VvzJdwY222mPMmWJN+wtXfVjofxvss+1iaIaFr3ywuJQTYxHaj9RYbzx5d2tfnJAlS0mPWbAGzSVG+Eef1bDaaavP0lmfZ/iGsW5oXhVJtWXUCUW9WVwqgsjF04kq/o6ujaxCFSfhQsmc6pv9b7xY7p6F3yC2d1NkNvhZ6mn4tZnKoHKRyaLiOSuNcgXdbUIuMll+5Nb8vz/nPb5e57TVsHwcD0Y/zluBG1k+YwXxAhMYF5m5mGUlvRVTlpiLLMzTgsNPfJ7xWcCV/QT29pRcXsYFo1PBL0iuUROSCZALe8uz4rBI4CJTUQP9wvteLh8JNNcwK3LPYZy7MVWw3zBZU2RqUFr8Elwq/wcusto05m+Cd80kcEnOAeAznxv4UKi9hmWRjYmbKBnhvTcqH9oNVZmamvgIC+8AEjCXqEa/DTc+wCGBiyxWCV75uKwJ/yUH8SOmg1NcayTpjKa4gT3BhLhMhgmKg8t/GNCyZ1Eyt573/JJPYjU5Asz7uBwU5mIYxnKp5JY3pZD8QWT5FSwfQYCLNlxYje74WKh0rc/ENDyLqhZGuPXoMWpFWDXF5MCRgBzgW14UT4S5AAPyuoNHGbzyC0QjlVoyF5ilQWKcwdLDlM70PtOlMs94+zeRTLsYC/sYLlePIMp34jYlPhdtISEYcwIDRmL8BSqe4n3UmMIYLg4sZZnAWNUAf5o1UXDhpZTdj+FSyi+vLScMfCfHC3WUhEs6UzrK+yieeZSahq2M1DRjIgkweRDkgEFekKHULlRhijDGG+VPuUrkouZx0R5jHpVIJkIrAuZykgnYvuKf7La0geFSJ1gjrjiTaDJprN4KWC66tDiOwnlc4ib9T8xk7ofOyrU6BXP5kAlpJ54UBtON4dKNeKs1oqJKHI15WpRLXESOsSeWI+hU7eXSwDyJJYCinkqoTeJahdbdJPCLfzEDJvEjwamE2an3YK6SWcOLCmsz81MghUVxWBlFuCgLVSJ0vVygOWDkNoSn8JVJkaxFEgDX4Hs/89f5MX5DB5rLoqSbZGnq9IgV1qIcFYfl4hZfqLxcSpgnYuENXZF4ziIJTDh/A4M588naEQ6aggwkFj1qGmFaNcU6rkfguIxMykTF55Ij0oI+gu0yCQzbT925pIA19/s3H96/cOQsOPzPU0cfPcJtR71tkrlQXYBnRjmGS7qK29z/Bxd3CoHVJNC9anj2eiZPwdbc+1fn5+d/e/705sUBjOe4EQAWYIWP8TVoLtoagg5Inkf4YATDpa33hO3onepLXDKeyy3R0bm3ft2OxtIV2D3VFagBmHyjieh4KHXdLUKbYnEBLfrR7FP3cqs59y4TL1VTWK58U4/2AvaMBYSFFaPBcCkk6oHUfToVbYrNJbtXXjbw+bUXudHVM1v3dBWJiXkPZjx3mDeffzuLcY6GAry9Cx1NcVygCPbuJCNLkAXfuY45fJjVmHcrU5iqYa1sq9AMo7iA5f3yjA2b8/H6ja173ZcvHzhA3/Fe//SbFsziUhbgx1ms1P4KkkscM43Cijj+Md4P6MO83M0EWlTci58sP4A6n5ygNtz2MZvz2a07m75777mb5y7+AxvfLQ3wswnrPnjA5iC5hDM92Mf1j/lcYL9Rg/EboRfx0lscLqDNc/dQvzhIbbq3Lz7/6t76uXueD0eyu3vRVOSum4FhaWBhkU0huZgYLrydV4ALHGfIQccZoGU3UowLKNi6rKovPdHZZqPXDIOtYKkfF3dxCV9otsSgNdXXV1JuZJ81zRYkl3SGC2/nFeCigyaSuRB5jQJKcPHcbh4X4PDdbm7qWh1qaWmpG+/FZ0hciA8DyMLKjLzLrhAXHUNwF/cCgAAXEAG7PKrCGBNHtMcBJbh6uCluPhfgEP+iHBbyewmJXJKL0FzgbWvSWJgAC9rp/Vy4ce8ojugZq4XO0KoVltEEaIb7uIACzP1mnnqRa4tELj1WDJcSZDVYfi5gBJ8n8S4ne4ms+rkA+yoxlnb0TiSNy26/KyTERUniHkFcdAnY4IGXSyPRKZrhAgyDZHPJtYE5/UviYmb2GUG/kSizwHABaRpcQS8X3V6SC6MQFwCy6sQ/o96/iv1wWgoXc6FIPiCtlsAKxAWft/dty0rkTRBILC7AMDDqwo+VcZH/HEcCl/xi6BArHH9RasT/tjAXYKlBJ2/9x5VwgvnJ5kKpYBidFTleP4CFIoVLWE0jXA8Rr1PWiNpjcQG66R5UQeYYF34MVcYvHhfKj2yu73JxTy/6pv76ZgJ/iIiLOaWVID+9Ja17Xxh+zLC5eD590kQJ1oCOt2mRGhGrAlyA54JdZ8to+/FK136KiKu0a3x4OYvMd3bHqjCKrarSGPcuxPATGdNQKTf7J3VRTWsm2mYmzxZoXNjXw2/HNKtM+MKKQBm/avlW/XDa7FkFAwMFWXYJ0ac0JU4Wq5WgHt/r08ZhjArbs/DK8cwKlGFaSt7ln/WzAPgvW97mlzZ2lmoAAAAASUVORK5CYII="
+          }
+        />
+        <View style={PDFstyles.mainbox}>
+          <Text style={PDFstyles.titleText}>Flight Services Summary</Text>
+          <View style={PDFstyles.innerContainerRow}>
+            <View style={PDFstyles.innerContainer1}>
+              <Text style={PDFstyles.regularText}>
+                STN: {indexTurnaroundData?.fk_vuelo?.stn?.codigo}
+              </Text>
+            </View>
+            <View style={PDFstyles.innerContainer1}>
+              <Text style={PDFstyles.regularText}>
+                CARRIER:{" "}
+                {indexTurnaroundData?.fk_vuelo?.fk_aerolinea?.nombre +
+                  " " +
+                  indexTurnaroundData?.fk_vuelo?.fk_aerolinea?.codigo}
+              </Text>
+            </View>
+          </View>
+          <View style={PDFstyles.innerContainerRow}>
+            <View style={PDFstyles.innerContainer1}>
+              <Text style={PDFstyles.regularText}>
+                Charges Payable By:{" "}
+                {indexTurnaroundData?.fk_vuelo?.fk_aerolinea?.nombre}
+              </Text>
+            </View>
+            <View style={PDFstyles.innerContainer1}>
+              <Text style={PDFstyles.regularText}>
+                Identifier No: {indexTurnaroundData?.fk_vuelo?.id}
+              </Text>
+            </View>
+          </View>
+          <Text style={PDFstyles.regularText}>
+            Full Address:{" "}
+            {indexTurnaroundData?.fk_vuelo?.fk_aerolinea?.pais +
+              indexTurnaroundData?.fk_vuelo?.fk_aerolinea?.pais}
+          </Text>
+          <View style={PDFstyles.innerContainerRow}>
+            <View style={PDFstyles.innerContainer2}>
+              <Text style={PDFstyles.regularText}>
+                Flight No: {indexTurnaroundData?.fk_vuelo?.numero_vuelo}
+              </Text>
+            </View>
+            <View style={PDFstyles.innerContainer2}>
+              <Text style={PDFstyles.regularText}>
+                A/C Reg: {indexTurnaroundData?.fk_vuelo?.ac_reg}
+              </Text>
+            </View>
+            <View style={PDFstyles.innerContainer2}>
+              <Text style={PDFstyles.regularText}>
+                A/C Type: {indexTurnaroundData?.fk_vuelo?.ac_type}
+              </Text>
+            </View>
+          </View>
+          <View style={PDFstyles.innerContainerRow}>
+            <View style={PDFstyles.innerContainer2}>
+              <Text style={PDFstyles.regularText}>
+                ETA: {indexTurnaroundData?.fk_vuelo?.ETA}
+              </Text>
+            </View>
+            <View style={PDFstyles.innerContainer2}>
+              <Text style={PDFstyles.regularText}>
+                ATA: {indexTurnaroundData?.fk_vuelo?.ATA}
+              </Text>
+            </View>
+            <View style={PDFstyles.innerContainer2}>
+              <Text style={PDFstyles.regularText}>
+                DATE: {indexTurnaroundData?.fk_vuelo?.ETA_fecha}
+              </Text>
+            </View>
+          </View>
+          <View style={PDFstyles.innerContainerRow}>
+            <View style={PDFstyles.innerContainer2}>
+              <Text style={PDFstyles.regularText}>
+                ETD: {indexTurnaroundData?.fk_vuelo?.ETD}
+              </Text>
+            </View>
+            <View style={PDFstyles.innerContainer2}>
+              <Text style={PDFstyles.regularText}>
+                ATD: {indexTurnaroundData?.fk_vuelo?.ATD}
+              </Text>
+            </View>
+            <View style={PDFstyles.innerContainer2}>
+              <Text style={PDFstyles.regularText}>
+                DATE: {indexTurnaroundData?.fk_vuelo?.ETD_fecha}
+              </Text>
+            </View>
+          </View>
+          <View style={PDFstyles.innerContainerRow}>
+            <View style={PDFstyles.innerContainer2}>
+              <Text style={PDFstyles.regularText}>
+                Routing:{" "}
+                {indexTurnaroundData?.fk_vuelo?.lugar_salida?.codigo +
+                  "/" +
+                  indexTurnaroundData?.fk_vuelo?.lugar_destino?.codigo}
+              </Text>
+            </View>
+            <View style={PDFstyles.innerContainer2}>
+              <Text style={PDFstyles.regularText}>
+                Gate: {indexTurnaroundData?.fk_vuelo?.gate}
+              </Text>
+            </View>
+            <View style={PDFstyles.innerContainer2}>
+              <Text style={PDFstyles.regularText}>
+                Flight Type: {indexTurnaroundData?.fk_vuelo?.tipo_vuelo?.nombre}
+              </Text>
+            </View>
+          </View>
+        </View>
+        <View style={PDFstyles.mainbox}>
+          <View style={PDFstyles.innerContainerRow}>
+            <View style={PDFstyles.innerContainerTasksSection1}>
+              <Text style={PDFstyles.titleTextUncentered}>No.</Text>
+            </View>
+            <View style={PDFstyles.innerContainerTasksSection2}>
+              <Text style={PDFstyles.titleTextUncentered}>
+                SERVICES PROVIDED
+              </Text>
+            </View>
+            <View style={PDFstyles.innerContainerTasksSection3}>
+              <Text style={PDFstyles.titleTextUncentered}>
+                Task completion result
+              </Text>
+            </View>
+          </View>
+          {GetTaskDataForPDF(indexTurnaroundData)}
+        </View>
+
+        <View style={PDFstyles.mainbox}>
+          <View style={PDFstyles.innerContainer0}>
+            <Text style={PDFstyles.regularText}>
+              Any dispute on the provided services claimed in this document
+              shall be raised within 7 days of receiving the monthly invoice.
+            </Text>
+          </View>
+          <View style={PDFstyles.innerContainer0}>
+            <Text style={PDFstyles.smallerText}>
+              I hereby certify, as authorised representative of the Carrier,
+              that I recognise and accept the liability conditions of the IATA
+              Standard Ground Handling Agreement, as amended (appearing
+              overleaf) for the performence of the service requested by the
+              Carner
+            </Text>
+            <Text style={PDFstyles.smallerText}>
+              Acceptance of conditions and receipt of service as indicated
+              above:
+            </Text>
+            <View style={PDFstyles.innerContainerRow}>
+              <View style={PDFstyles.innerContainer1}>
+                <Text style={PDFstyles.smallerText}>Name:</Text>
+              </View>
+              <View style={PDFstyles.innerContainer1}>
+                <Text style={PDFstyles.smallerText}>
+                  Representative Signature:
+                </Text>
+                <Text style={PDFstyles.smallerText}></Text>
+                <Text style={PDFstyles.smallerText}></Text>
+              </View>
+            </View>
+          </View>
+          <View style={PDFstyles.innerContainer0}>
+            <Text style={PDFstyles.smallerText}>
+              The above services have been rendered based on local time
+            </Text>
+            <View style={PDFstyles.innerContainerRow}>
+              <View style={PDFstyles.innerContainer1}>
+                <Text style={PDFstyles.smallerText}>Name:</Text>
+              </View>
+              <View style={PDFstyles.innerContainer1}>
+                <Text style={PDFstyles.smallerText}>
+                  Handling Company's Representative Signature:
+                </Text>
+                <Text style={PDFstyles.smallerText}></Text>
+              </View>
+            </View>
+          </View>
+          <Text style={PDFstyles.smallerText}>
+            All services shown on this form are subject to approval by the
+            Handling company's accounting department, Over-collections will be
+            refunded, undercollections will be invoiced.
+          </Text>
+        </View>
+        <Text style={PDFstyles.smallerText}>
+          This document was autogenerated on the following date:{" "}
+          {date.getDate().toString()}-{(date.getMonth() + 1).toString()}-
+          {date.getFullYear().toString()} at {date.getHours()}:
+          {date.getMinutes()}:{date.getSeconds()}.
+        </Text>
+      </>
+    );
+
+    return y;
   };
 
   const arrayPrinterMachinesSelection = (machineCategoryID: any) => {
@@ -1267,10 +1631,55 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
                       <div>{MachinesArrayPrinter()}</div>
                     </div>
                     <p className={styles.detailDialogInfoContainerTitleText}>
-                      personal
+                      Personal
                     </p>
                     <div className={styles.detailDialogInfoRow1}>
                       lista de personal y seleccion: -1 -2 -3
+                    </div>
+                    <div className={styles.messageContainer}>
+                      {clickedFlightState != "Atendido" ? (
+                        <>
+                          <p className={styles.messageText}>
+                            Tu Documento será generado automaticamente cuando el
+                            servicio sea completado y enviado!.
+                          </p>
+                        </>
+                      ) : (
+                        <PDFDownloadLink
+                          document={
+                            <Document
+                              title={
+                                "Registro del servicio al turnaround Nro: " +
+                                index?.id
+                              }
+                              author={"SIACA"}
+                            >
+                              <Page size="A4" style={PDFstyles.page}>
+                                {arrayPrinterPDFGenerator(index)}
+                              </Page>
+                            </Document>
+                          }
+                          fileName={
+                            "Turnaround_Data_" +
+                            index?.fk_vuelo?.ETA_fecha +
+                            "_" +
+                            index?.fk_vuelo?.ETA +
+                            "_" +
+                            index?.fk_vuelo?.fk_aerolinea?.nombre +
+                            "_puerta:" +
+                            index?.fk_vuelo?.gate +
+                            "_id:" +
+                            index?.id +
+                            ".pdf"
+                          }
+                        >
+                          {({ blob, url, loading, error }) =>
+                            loading
+                              ? "Loading document..."
+                              : "Descargar documento del turnaround"
+                          }
+                        </PDFDownloadLink>
+                      )}
                     </div>
                   </div>
 
@@ -1577,9 +1986,9 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
               }
             >
               <Tooltip title="Opciones">
-              <IconButton>
-              <MoreVertIcon />
-              </IconButton>
+                <IconButton>
+                  <MoreVertIcon />
+                </IconButton>
               </Tooltip>
             </div>
           </div>
@@ -1589,8 +1998,9 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
               setLoading(true);
               getTemplateTasks(index?.fk_vuelo?.fk_plantilla?.id);
               getMachinesByTurnaround(index?.id);
-              setOpenDetailDialogID(index.id);
-
+              getTasksCompletionsList(index?.id);
+              setOpenDetailDialogID(index?.id);
+              setclickedFlightState(index?.fk_vuelo?.estado);
               setOpenDetailDialog(true);
               setLoading(false);
             }}

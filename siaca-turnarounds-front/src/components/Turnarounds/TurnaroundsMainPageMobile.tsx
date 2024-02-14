@@ -591,7 +591,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
   ) => {
     const fetchData = async () => {
       try {
-        const url = "/api/postTaskResolutionSimpleCheck";
+        const url = "/api/postTaskResolutionDoubleCheck";
         const requestOptions = {
           method: "POST",
           body: JSON.stringify({

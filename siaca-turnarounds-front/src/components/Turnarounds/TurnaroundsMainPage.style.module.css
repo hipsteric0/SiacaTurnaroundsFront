@@ -356,6 +356,14 @@
   font-size: 16px;
   color: #4d4e56;
 }
+.messageContainer {
+  padding: 16px 0px;
+}
+.messageText {
+  font-size: 16px;
+  color: #4d4e56;
+  font-weight: bold;
+}
 .assignContainers {
   display: grid;
   grid-template-columns: 45% 45%;
