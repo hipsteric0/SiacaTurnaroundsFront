@@ -434,3 +434,14 @@
   justify-content: center;
   height: 100%;
 }
+.taskDetailContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  margin-bottom: 10px;
+  width: 100%;
+  padding: 0px 10px 10px 20px;
+}
+.taskDetailTitleText {
+  font-weight: 700;
+}

@@ -108,6 +108,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
   const [turnaroundState, setTurnaroundState] = useState(1); //1 no ha llegado; 2 en proceso; 3 culminado
   const [flightID, setFlightID] = useState(-1);
   const [state1Overider, setState1Overider] = useState(false);
+  const [tasksCompletionValues, setTasksCompletionValues] = useState([]);
 
   let filterValues: any[] = [];
   const getList = async () => {
@@ -621,6 +622,31 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
     await fetchData().catch(console.error);
   };
 
+  const getTasksCompletionsList = async (turnaroundID: any) => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/getTasksCompletionList";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+            turnaroundID: turnaroundID,
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            formatTasksForPDFArray(result);
+            console.log("getTasksCompletionsList  Array", result);
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
   const PostTaskImage = async (
     turnaroundID: any,
     subtaskID: any,
@@ -680,6 +706,66 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
     });
 
     router.reload();
+  };
+
+  //ordenar y formatear el arreglo
+  const formatTasksForPDFArray = (result: any) => {
+    let y: any[] = [];
+
+    result?.comentarios.map((value: any) => {
+      //console.log("value", value);
+      y.push({
+        key: value?.fk_subtarea__id,
+        name: value?.fk_subtarea__titulo,
+        value: "Comentario: " + value?.comentario,
+      });
+    });
+    result?.horas.map((value: any) => {
+      //console.log("value", value);
+      y.push({
+        key: value?.fk_subtarea__id,
+        name: value?.fk_subtarea__titulo,
+        value: "Hora inicio: " + value?.hora_inicio,
+      });
+    });
+    result?.horas_inicio_fin.map((value: any) => {
+      //console.log("value", value);
+      y.push({
+        key: value?.fk_subtarea__id,
+        name: value?.fk_subtarea__titulo,
+        value:
+          "hora inicio: " +
+          value?.hora_inicio +
+          " - " +
+          "hora fin: " +
+          value?.hora_fin,
+      });
+    });
+
+    console.log("array of tasks unorderred", y);
+    let resultOfSorting: any[] = [];
+    resultOfSorting = y.sort((a, b) => a.key - b.key);
+    console.log("resultOfSorting", resultOfSorting);
+    setTasksCompletionValues(resultOfSorting);
+  };
+
+  const ArrayPrinterTaskDataForSummary = () => {
+    let y: any = [];
+    let cont = 0;
+    console.log("tasksCompletionValues", tasksCompletionValues);
+    tasksCompletionValues.map((index: any) => {
+      cont++;
+      y[index?.key] = (
+        <>
+          <div className={styles.taskDetailContainer}>
+            <span className={styles.taskDetailTitleText}>{index?.name}:</span>
+            <span className={styles.taskDetailText}> {index?.value}</span>
+          </div>
+        </>
+      );
+    });
+
+    return y;
   };
 
   const getDateForCalendar = () => {
@@ -1620,7 +1706,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
             } else if (state1Overider === false) {
               setTurnaroundState(4);
             }
-
+            getTasksCompletionsList(index?.id);
             getTemplateTasks(index?.fk_vuelo?.fk_plantilla?.id);
             getMachinesByTurnaround(index?.id);
             setOpenDetailDialogID(index.id);
@@ -1744,6 +1830,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                     <p className={styles.detailDialogInfoContainerTitleText}>
                       Turnaround atendido exitosamente!
                     </p>
+                    {ArrayPrinterTaskDataForSummary()}
                     <div className={styles.redButtonContainer}>
                       <div className={styles.redButton}>
                         <RedButton2
