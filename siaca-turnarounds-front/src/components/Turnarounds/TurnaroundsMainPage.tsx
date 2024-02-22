@@ -984,7 +984,12 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
         //push into array the machine added
         nombre =
           personnelListArray[x]?.fk_user?.first_name +
-          personnelListArray[x]?.fk_user?.last_name;
+          " " +
+          personnelListArray[x]?.fk_user?.last_name +
+          " - " +
+          personnelListArray[x]?.fk_departamento?.nombre +
+          " - " +
+          personnelListArray[x]?.fk_cargo?.nombre;
         //console.log("x1", personDepartment);
       }
       x++;
@@ -1527,8 +1532,15 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
             >
               <p className={styles.taskTextText}>
                 {" "}
-                {index?.fk_user?.first_name} {index?.fk_user?.last_name}
+                <strong>
+                  {index?.fk_user?.first_name +
+                    "   " +
+                    index?.fk_user?.last_name}
+                </strong>{" "}
+                <br />
+                {index?.fk_cargo?.nombre}
               </p>
+
               {(checkTask && checkTaskID === index?.id) ||
               findMachineInPostArray(index?.id) ? (
                 <div className={styles.checkIcon}>
