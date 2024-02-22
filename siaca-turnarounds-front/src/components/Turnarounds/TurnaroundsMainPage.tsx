@@ -2012,9 +2012,10 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
                         </div>
                         {
                           <p className={styles.detailDialogInfoItemText}>
-                            *El sistema tomará la reserva desde 30 minutos antes
-                            de la hora de inicio hasta una hora después de la
-                            hora final.
+                            *El sistema tomará la reserva en las horas que
+                            insertaste. Se recomienda tomar la reserva al menos
+                            media hora antes y una hora despues de la hora de
+                            inicio del turnaround señalada arriba.
                           </p>
                         }
                         <div className={styles.greenButtonAssignContainer}>
@@ -2094,9 +2095,10 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
                           />
                         </div>
                         <p className={styles.detailDialogInfoItemText}>
-                          *El sistema tomará la reserva desde 30 minutos antes
-                          de la hora de inicio hasta una hora después de la hora
-                          final.
+                          *El sistema tomará la reserva en las horas que
+                          insertaste. Se recomienda tomar la reserva al menos
+                          media hora antes y una hora despues de la hora de
+                          inicio del turnaround señalada arriba.
                         </p>
                         <div className={styles.greenButtonAssignContainer}>
                           <GreenButton2
