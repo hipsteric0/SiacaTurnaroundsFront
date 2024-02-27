@@ -28,6 +28,7 @@ import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 import Checkbox from "@mui/material/Checkbox";
 import AddAPhotoRoundedIcon from "@mui/icons-material/AddAPhotoRounded";
 import { get } from "http";
+import StandardInput from "../Reusables/StandardInput";
 
 interface PageProps {
   setStep: (value: number) => void;
@@ -109,6 +110,10 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
   const [flightID, setFlightID] = useState(-1);
   const [state1Overider, setState1Overider] = useState(false);
   const [tasksCompletionValues, setTasksCompletionValues] = useState([]);
+  const [manualHourDialog, setmanualHourDialog] = useState(false);
+  const [manualHourValue, setmanualHourValue] = useState("0");
+  const [manualMinuteValue, setmanualMinuteValue] = useState("0");
+  const [manualSecondsValue, setmanualSecondsValue] = useState("0");
 
   let filterValues: any[] = [];
   const getList = async () => {
@@ -1347,7 +1352,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
     return y;
   };
 
-  const GetTaskArrayCheckTimestamp = (idSubtarea: any) => {
+  const GetTaskArrayCheckTimestamp = (idSubtarea: any, title: any) => {
     let auxiliaryArray = [];
     auxiliaryArray = arrayOfCheckedHours; //array con las que ya estan checkeadas
 
@@ -1364,7 +1369,71 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
     } else {
       return (
         <>
-          <p className={styles.checkTaskText}>Inicio: {result[0]?.timestamp}</p>{" "}
+          <Dialog
+            className={styles.dialogDelete}
+            open={manualHourDialog}
+            onClose={() => setmanualHourDialog(false)}
+          >
+            <div className={styles.dialogBack}>
+              <div className={styles.dialogText}>
+                <p>
+                  <strong>
+                    Introduzca la hora manual que desea introducir a la tarea
+                    (formato 24hrs):{" "}
+                  </strong>
+                </p>
+                <div className={styles.manualHoursInputsContainer}>
+                  <p>Horas:</p>
+                  <StandardInput
+                    setValue={setmanualHourValue}
+                    inputText=""
+                    inputWidth="55px"
+                  />
+                  <p>Minuto:</p>
+                  <StandardInput
+                    setValue={setmanualMinuteValue}
+                    inputText=""
+                    inputWidth="55px"
+                  />
+                  <p>Segundos:</p>
+                  <StandardInput
+                    setValue={setmanualSecondsValue}
+                    inputText=""
+                    inputWidth="55px"
+                  />
+                </div>
+                <div className={styles.dialogButtons}>
+                  <GreenButton2
+                    executableFunction={() => {
+                      SetTaskArrayChecks2(
+                        idSubtarea,
+                        title,
+                        manualHourValue +
+                          ":" +
+                          manualMinuteValue +
+                          ":" +
+                          manualSecondsValue
+                      );
+                      setmanualHourDialog(false);
+                    }}
+                    buttonText="Confirmar"
+                  />
+                  <RedButton2
+                    executableFunction={() => setmanualHourDialog(false)}
+                    buttonText="Cancelar"
+                  />
+                </div>
+              </div>
+            </div>
+          </Dialog>
+          <p
+            className={styles.checkTaskText}
+            onClick={() => {
+              setmanualHourDialog(true);
+            }}
+          >
+            Inicio: {result[0]?.timestamp}
+          </p>{" "}
         </>
       );
     }
@@ -1452,6 +1521,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
 
     if (x == undefined) {
       //si no existe, la meto en el array
+
       let currentTimestamp = new Date();
       let currentTimestampString =
         currentTimestamp.getHours().toString() +
@@ -1473,6 +1543,32 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
       );
       setArrayOfCheckedHours(filteredArray);
     }
+    console.log("arrayOfCheckedHours", arrayOfCheckedHours);
+  };
+
+  const SetTaskArrayChecks2 = (
+    idSubtarea: any,
+    tituloSubtarea: any,
+    manualTime: string
+  ) => {
+    let auxiliaryArray = [];
+    auxiliaryArray = arrayOfCheckedHours; //array con las que ya estan checkeadas
+
+    let x = auxiliaryArray.find((o) => o.key === idSubtarea);
+
+    //si existe la borro
+    console.log("entro por el onclick de la hora");
+    let filteredArray = auxiliaryArray.filter(
+      (item) => item.key !== idSubtarea
+    );
+    setArrayOfCheckedHours(filteredArray);
+    filteredArray.push({
+      key: idSubtarea,
+      name: tituloSubtarea,
+      timestamp: manualTime,
+    });
+    setArrayOfCheckedHours(filteredArray);
+
     console.log("arrayOfCheckedHours", arrayOfCheckedHours);
   };
 
@@ -1625,7 +1721,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
               </div>
             ) : index?.fk_tipo?.id == 2 ? ( //hora de inicio
               <div className={styles.checksAndTimestampsContainer}>
-                {GetTaskArrayCheckTimestamp(index?.id)}
+                {GetTaskArrayCheckTimestamp(index?.id, index?.titulo)}
                 <Checkbox
                   sx={{ "& .MuiSvgIcon-root": { fontSize: 16 } }}
                   color="success"

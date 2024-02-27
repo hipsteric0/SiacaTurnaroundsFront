@@ -445,3 +445,10 @@
 .taskDetailTitleText {
   font-weight: 700;
 }
+.manualHoursInputsContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px;
+  gap: 8px;
+}
