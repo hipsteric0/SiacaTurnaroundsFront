@@ -218,7 +218,7 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
   const getPersonnelList = async () => {
     const fetchData = async () => {
       try {
-        const url = "/api/personnelList";
+        const url = "/api/personnelListTurnaround";
         const requestOptions = {
           method: "POST",
           body: JSON.stringify({
@@ -361,7 +361,7 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
   const getPersonnelDepartments = async () => {
     const fetchData = async () => {
       try {
-        const url = "/api/getPersonnelDepartmentsList";
+        const url = "/api/getPersonnelDepartmentsListTurnaround";
         const requestOptions = {
           method: "POST",
           body: JSON.stringify({
