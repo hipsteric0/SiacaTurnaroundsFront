@@ -32,6 +32,7 @@ import Tooltip from "@mui/material/Tooltip";
 import LoadingScreen from "../Reusables/LoadingScreen";
 import { Image, PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
 import { Page, Text, View, Document, StyleSheet } from "@react-pdf/renderer";
+import RedButton from "../Reusables/RedButton2";
 
 interface PageProps {
   setStep: (value: number) => void;
@@ -106,6 +107,8 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
   const [reservedTaskPersonnel, setreservedTaskPersonnel] = useState(false);
   const [clickedFlightState, setclickedFlightState] = useState("");
   const [loading, setLoading] = useState(false);
+  const [saveSummaryDialog, setsaveSummaryDialog] = useState(false);
+  const [saveSummaryDialogUpdate, setsaveSummaryDialogUpdate] = useState(false);
 
   const PDFstyles = StyleSheet.create({
     page: {
@@ -936,7 +939,10 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
       if (machinesarrayList[x]?.id === selectedMachineModelID) {
         machineCategory = machinesarrayList[x]?.fk_categoria?.id;
         //push into array the machine added
-        nombre = machinesarrayList[x]?.identificador;
+        nombre =
+          machinesarrayList[x]?.identificador +
+          " - " +
+          machinesarrayList[x]?.fk_categoria?.nombre;
         console.log("x1", machineCategory);
       }
       x++;
@@ -968,6 +974,41 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
     }
 
     console.log("machinesToPostArray", machinesToPostArray);
+  };
+
+  const personnelReservationSummaryArrayPrinter = () => {
+    //.map
+    let y: any = [];
+    //setsaveSummaryDialogUpdate(!saveSummaryDialogUpdate);
+    //console.log("ENTERING POST ARRAY", personnelToPostArray);
+
+    personnelToPostArray.map((index: any) => {
+      //console.log("ENTERING POST ARRAY .MAP", index?.machineName);
+      y[index?.personID] = (
+        <>
+          <p className={styles.summaryListText}>• {index?.machineName}</p>
+        </>
+      );
+    });
+
+    return y;
+  };
+  const machinesReservationSummaryArrayPrinter = () => {
+    //.map
+    let y: any = [];
+    //setsaveSummaryDialogUpdate(!saveSummaryDialogUpdate);
+    console.log("ENTERING POST ARRAY", machinesToPostArray);
+
+    machinesToPostArray.map((index: any) => {
+      console.log("ENTERING POST ARRAY .MAP", index?.machineName);
+      y[index?.machineID] = (
+        <>
+          <p className={styles.summaryListText}>• {index?.machineName}</p>
+        </>
+      );
+    });
+
+    return y;
   };
 
   const addPersonToPage = (selectedPersonID: any) => {
@@ -1960,6 +2001,39 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
                 className={styles.detailDialog}
                 fullScreen={true}
               >
+                {(personnelToPostArray.length > 0 ||
+                  machinesToPostArray.length > 0) && (
+                  <Dialog
+                    className={styles.dialogDelete}
+                    open={saveSummaryDialog}
+                    onClose={() => setsaveSummaryDialog(false)}
+                  >
+                    <div className={styles.dialogAddMachine}>
+                      <p className={styles.taskTextTitle}>
+                        Resumen de la reservacion:
+                      </p>
+                      <p className={styles.taskTextSubTitle}>Personal:</p>
+                      <div>{personnelReservationSummaryArrayPrinter()}</div>
+                      <p className={styles.taskTextSubTitle}>Maquinarias:</p>
+                      <div>{machinesReservationSummaryArrayPrinter()}</div>
+                      <div>
+                        <GreenButton
+                          executableFunction={async () => {
+                            await handleSaveData();
+                            router.reload();
+                          }}
+                          buttonText="Confirmar"
+                        />
+                      </div>
+                      <div className={styles.closeDialogSummaryContainer}>
+                        <RedButton
+                          executableFunction={() => setsaveSummaryDialog(false)}
+                          buttonText="Volver"
+                        />
+                      </div>
+                    </div>
+                  </Dialog>
+                )}
                 <div className={styles.dialogDetail}>
                   <div
                     className={styles.closeIconDialog}
@@ -2136,8 +2210,8 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
                     <div className={styles.redButton}>
                       <GreenButton2
                         executableFunction={async () => {
-                          await handleSaveData();
-                          router.reload();
+                          setsaveSummaryDialogUpdate(!saveSummaryDialogUpdate);
+                          setsaveSummaryDialog(true);
                         }}
                         buttonText={"Guardar"}
                       />
