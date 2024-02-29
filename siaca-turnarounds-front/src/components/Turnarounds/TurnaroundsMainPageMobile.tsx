@@ -111,6 +111,10 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
   const [state1Overider, setState1Overider] = useState(false);
   const [tasksCompletionValues, setTasksCompletionValues] = useState([]);
   const [manualHourDialog, setmanualHourDialog] = useState(false);
+  const [manualHourDialogOnlyStart, setmanualHourDialogOnlyStart] =
+    useState(false);
+  const [subtaskIDForchange, setsubtaskIDForchange] = useState("0");
+  const [subtaskTitleForchange, setsubtaskTitleForchange] = useState("");
   const [manualHourValue, setmanualHourValue] = useState("0");
   const [manualMinuteValue, setmanualMinuteValue] = useState("0");
   const [manualSecondsValue, setmanualSecondsValue] = useState("0");
@@ -133,7 +137,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log("turnarounds list", Object.values(result));
+            //console.log("turnarounds list", Object.values(result));
             setArrayList3(Object.values(result));
 
             if (result?.[0]?.["status"] === 400) {
@@ -164,7 +168,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
             setPersonnelListArray(Object.values(result));
-            console.log("Personnel List Array", result);
+            //console.log("Personnel List Array", result);
           })
         );
       } catch (error) {
@@ -219,7 +223,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log("machines reservation list", result);
+            //console.log("machines reservation list", result);
             setMachinesReservationsarrayList(Object.values(result));
 
             if (result?.[0]?.["status"] === 400) {
@@ -252,7 +256,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log("personnel reservation list", result);
+            //console.log("personnel reservation list", result);
             setPersonnelReservationsarrayList(Object.values(result));
 
             if (result?.[0]?.["status"] === 400) {
@@ -282,7 +286,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log("getPersonnelDepartments", result);
+            //console.log("getPersonnelDepartments", result);
             setPersonnelDepartmentsarrayList(Object.values(result));
             if (result?.[0]?.["status"] === 400) {
               console.log("entro");
@@ -312,7 +316,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log("MachinesQuantityByTemplatearrayList", result);
+            //console.log("MachinesQuantityByTemplatearrayList", result);
             setMachinesQuantityByTemplatearrayList(Object.values(result));
             if (result?.[0]?.["status"] === 400) {
               console.log("entro");
@@ -342,7 +346,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log("templateTasks list", result);
+            //console.log("templateTasks list", result);
             setTasksarrayList(Object.values(result));
             if (result?.[0]?.["status"] === 400) {
               console.log("entro");
@@ -372,7 +376,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log("Machines By Turnaround list", result);
+            //console.log("Machines By Turnaround list", result);
             setMachinesByTurnaroundArrayList(Object.values(result));
             if (result?.[0]?.["status"] === 400) {
               console.log("entro");
@@ -406,7 +410,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log("Guardar", result);
+            //console.log("Guardar", result);
 
             if (result?.[0]?.["status"] === 400) {
               console.log("entro");
@@ -436,7 +440,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log("Guardar", result);
+            //console.log("Guardar", result);
 
             if (result?.[0]?.["status"] === 400) {
               console.log("entro");
@@ -466,7 +470,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log("Guardar", result);
+            // console.log("Guardar", result);
 
             if (result?.[0]?.["status"] === 400) {
               console.log("entro");
@@ -500,7 +504,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log("Guardar", result);
+            //console.log("Guardar", result);
 
             if (result?.[0]?.["status"] === 400) {
               console.log("entro");
@@ -536,7 +540,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log("postTaskResolutionComment", result);
+            //("postTaskResolutionComment", result);
 
             if (result?.[0]?.["status"] === 400) {
               console.log("entro");
@@ -572,7 +576,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log("postTaskResolutionSimpleCheck", result);
+            //console.log("postTaskResolutionSimpleCheck", result);
 
             if (result?.[0]?.["status"] === 400) {
               console.log("entro");
@@ -610,7 +614,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log("postTaskResolutionDoubleCheck", result);
+            //console.log("postTaskResolutionDoubleCheck", result);
 
             if (result?.[0]?.["status"] === 400) {
               console.log("entro");
@@ -641,7 +645,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
             formatTasksForPDFArray(result);
-            console.log("getTasksCompletionsList  Array", result);
+            //console.log("getTasksCompletionsList  Array", result);
           })
         );
       } catch (error) {
@@ -747,17 +751,14 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
       });
     });
 
-    console.log("array of tasks unorderred", y);
     let resultOfSorting: any[] = [];
     resultOfSorting = y.sort((a, b) => a.key - b.key);
-    console.log("resultOfSorting", resultOfSorting);
     setTasksCompletionValues(resultOfSorting);
   };
 
   const ArrayPrinterTaskDataForSummary = () => {
     let y: any = [];
     let cont = 0;
-    console.log("tasksCompletionValues", tasksCompletionValues);
     tasksCompletionValues.map((index: any) => {
       cont++;
       y[index?.key] = (
@@ -845,9 +846,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
   const arrayPrinterSelectedMachinesForCategory = (category: any) => {
     let y: any = [];
     machinesToPostArray.map((index: any) => {
-      //console.log("the current category index is:", index);
       if (index?.categoryID === category) {
-        console.log("entro", index);
         y[index.id] = (
           <div key={index.id} className={styles.tableInfoRow}>
             <p>{index?.machineID}</p>
@@ -1071,8 +1070,6 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
   };
 
   const removeMachinefromPage = (selectedMachineModelID: any) => {
-    console.log("selectedMachineModelID", selectedMachineModelID);
-    console.log("machineryQuantityArrayAux", machineryQuantityArrayAux);
     let arrayOfMachinesToPush: any = [];
     let x = 0;
     let machineCategory = -1;
@@ -1089,12 +1086,9 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
       }
     }
     x = 0;
-
-    console.log("machinesToPostArray after delete", machinesToPostArray);
   };
 
   const removePersonfromPage = (selectedPersonID: any) => {
-    console.log("selectedMachineModelID", selectedPersonID);
     let arrayOfPersonsToPush: any = [];
     let x = 0;
     let machineCategory = -1;
@@ -1111,13 +1105,9 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
       }
     }
     x = 0;
-
-    console.log("personnelToPostArray after delete", personnelToPostArray);
   };
 
   const addMachineToPage = (selectedMachineModelID: any) => {
-    console.log("selectedMachineModelID", selectedMachineModelID);
-    console.log("machineryQuantityArrayAux", machineryQuantityArrayAux);
     let arrayOfMachinesToPush: any = [];
     let x = 0;
     let cantidad = -1;
@@ -1141,8 +1131,6 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
       ) {
         cantidad = machinesQuantityByTemplatearrayList[x]?.cantidad;
         //push into array the machine added
-
-        console.log("x2", cantidad);
       }
       x++;
     }
@@ -1157,13 +1145,9 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
     } else {
       //remove from array the added object
     }
-
-    console.log("machinesToPostArray", machinesToPostArray);
   };
 
   const addPersonToPage = (selectedPersonID: any) => {
-    console.log("selectedPersonID", selectedPersonID);
-    console.log("machineryQuantityArrayAux", machineryQuantityArrayAux);
     let arrayOfPersonnelToPush: any = [];
     let x = 0;
     let cantidad = -1;
@@ -1176,7 +1160,6 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         nombre =
           personnelListArray[x]?.fk_user?.first_name +
           personnelListArray[x]?.fk_user?.last_name;
-        //console.log("x1", personDepartment);
       }
       x++;
     }
@@ -1193,8 +1176,6 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
     } else {
       //remove from array the added object
     }
-
-    console.log("personnelToPostArray", personnelToPostArray);
   };
 
   const arrayPrinterMachinesSelection = (machineCategoryID: any) => {
@@ -1265,12 +1246,10 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                   }, 5000);
                 } else {
                   if (findPersonInPostArray(index?.id)) {
-                    console.log("entro al remover");
                     await removePersonfromPage(index?.id);
                     await setcheckTask(false);
                     await setcheckTaskID(checkTaskID - 1);
                   } else {
-                    console.log("entro al anadir");
                     await addPersonToPage(index?.id);
                     await setcheckTask(true);
                     await setcheckTaskID(index?.id);
@@ -1307,10 +1286,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
     let enoughMachines = false;
 
     machinesToPostArray.map((index: any) => {
-      console.log("machinesToPostArray", machinesToPostArray);
-
       if (index?.categoryID === machineCategoryID) {
-        console.log("index?.machineName", index?.machineName);
         enoughMachines = true;
         y[index?.id] = (
           <div key={index?.id} className={styles.machineContainerNoHover}>
@@ -1379,7 +1355,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                 <p>
                   <strong>
                     Introduzca la hora manual que desea introducir a la tarea
-                    (formato 24hrs):{" "}
+                    tipo check (formato 24hrs):{" "}
                   </strong>
                 </p>
                 <div className={styles.manualHoursInputsContainer}>
@@ -1406,8 +1382,8 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                   <GreenButton2
                     executableFunction={() => {
                       SetTaskArrayChecks2(
-                        idSubtarea,
-                        title,
+                        subtaskIDForchange,
+                        subtaskTitleForchange,
                         manualHourValue +
                           ":" +
                           manualMinuteValue +
@@ -1429,7 +1405,11 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
           <p
             className={styles.checkTaskText}
             onClick={() => {
+              //chenge id subtarea and title of subtarea to a state variable
+              setsubtaskIDForchange(idSubtarea);
+              setsubtaskTitleForchange(title);
               setmanualHourDialog(true);
+              console.log("Se hizo tap en ", idSubtarea, title);
             }}
           >
             Inicio: {result[0]?.timestamp}
@@ -1439,7 +1419,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
     }
   };
 
-  const GetTaskArrayCheckTimestampOnlyStart = (idSubtarea: any) => {
+  const GetTaskArrayCheckTimestampOnlyStart = (idSubtarea: any, title: any) => {
     let auxiliaryArray = [];
     auxiliaryArray = arrayOfCheckedHoursStartEnd; //array con las que ya estan checkeadas
 
@@ -1458,7 +1438,75 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
     } else {
       return (
         <>
-          <p className={styles.checkTaskText}>
+          <Dialog
+            className={styles.dialogDelete}
+            open={manualHourDialogOnlyStart}
+            onClose={() => setmanualHourDialogOnlyStart(false)}
+          >
+            <div className={styles.dialogBack}>
+              <div className={styles.dialogText}>
+                <p>
+                  <strong>
+                    Introduzca la hora manual que desea introducir a la tarea
+                    tipo doble check (formato 24hrs):{" "}
+                  </strong>
+                </p>
+                <div className={styles.manualHoursInputsContainer}>
+                  <p>Horas:</p>
+                  <StandardInput
+                    setValue={setmanualHourValue}
+                    inputText=""
+                    inputWidth="55px"
+                  />
+                  <p>Minuto:</p>
+                  <StandardInput
+                    setValue={setmanualMinuteValue}
+                    inputText=""
+                    inputWidth="55px"
+                  />
+                  <p>Segundos:</p>
+                  <StandardInput
+                    setValue={setmanualSecondsValue}
+                    inputText=""
+                    inputWidth="55px"
+                  />
+                </div>
+                <div className={styles.dialogButtons}>
+                  <GreenButton2
+                    executableFunction={() => {
+                      SetTaskArrayChecksOnlyStart2(
+                        subtaskIDForchange,
+                        subtaskTitleForchange,
+                        manualHourValue +
+                          ":" +
+                          manualMinuteValue +
+                          ":" +
+                          manualSecondsValue
+                      );
+                      setmanualHourDialogOnlyStart(false);
+                    }}
+                    buttonText="Confirmar"
+                  />
+                  <RedButton2
+                    executableFunction={() =>
+                      setmanualHourDialogOnlyStart(false)
+                    }
+                    buttonText="Cancelar"
+                  />
+                </div>
+              </div>
+            </div>
+          </Dialog>
+          <p
+            className={styles.checkTaskText}
+            onClick={() => {
+              setmanualHourDialogOnlyStart(true);
+              setsubtaskIDForchange(idSubtarea);
+              setsubtaskTitleForchange(title);
+              //
+              console.log("Se hizo tap en ", idSubtarea, title);
+            }}
+          >
             Inicio: {result[0]?.timestampStart}
           </p>{" "}
         </>
@@ -1510,7 +1558,6 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
 
       setArrayOfComments(auxiliaryArray);
     }
-    console.log("arrayOfComments", auxiliaryArray);
   };
 
   const SetTaskArrayChecks = (idSubtarea: any, tituloSubtarea: any) => {
@@ -1551,13 +1598,21 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
     tituloSubtarea: any,
     manualTime: string
   ) => {
+    console.log(
+      "se va a proceder a cambiar la subtarea" +
+        tituloSubtarea +
+        " de id: " +
+        idSubtarea +
+        " con la hora : " +
+        manualTime
+    );
     let auxiliaryArray = [];
     auxiliaryArray = arrayOfCheckedHours; //array con las que ya estan checkeadas
 
     let x = auxiliaryArray.find((o) => o.key === idSubtarea);
 
     //si existe la borro
-    console.log("entro por el onclick de la hora");
+
     let filteredArray = auxiliaryArray.filter(
       (item) => item.key !== idSubtarea
     );
@@ -1608,6 +1663,32 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
     console.log("arrayOfCheckedHoursStartEnd", arrayOfCheckedHoursStartEnd);
   };
 
+  const SetTaskArrayChecksOnlyStart2 = (
+    idSubtarea: any,
+    tituloSubtarea: any,
+    manualTime: string
+  ) => {
+    let auxiliaryArray = [];
+    auxiliaryArray = arrayOfCheckedHoursStartEnd; //array con las que ya estan checkeadas
+
+    let x = auxiliaryArray.find((o) => o.key === idSubtarea);
+
+    //si existe la borro
+
+    let filteredArray = auxiliaryArray.filter(
+      (item) => item.key !== idSubtarea
+    );
+    setArrayOfCheckedHoursStartEnd(filteredArray);
+    filteredArray.push({
+      key: idSubtarea,
+      name: tituloSubtarea,
+      timestampStart: manualTime,
+      timestampEnd: "",
+    });
+    setArrayOfCheckedHoursStartEnd(filteredArray);
+    console.log("arrayOfCheckedHoursStartEnd", filteredArray);
+  };
+
   const SetTaskArrayChecksOnlyEnd = (idSubtarea: any, tituloSubtarea: any) => {
     let auxiliaryArray = [];
     auxiliaryArray = arrayOfCheckedHoursStartEnd; //array con las que ya estan checkeadas
@@ -1634,10 +1715,6 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
 
         auxiliaryArray.find((o) => o.key === idSubtarea).timestampEnd =
           currentTimestampString;
-        console.log(
-          "auxiliaryArray.find",
-          auxiliaryArray.find((o) => o.key === idSubtarea)
-        );
 
         setArrayOfCheckedHoursStartEnd(auxiliaryArray);
       } else {
@@ -1673,7 +1750,6 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
       });
       setArrayOfImages(filteredArray);
     }
-    console.log("arrayOfImages", arrayOfImages);
   };
 
   const handleSetTurnaroundStateTo2 = async (
@@ -1726,19 +1802,17 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                   sx={{ "& .MuiSvgIcon-root": { fontSize: 16 } }}
                   color="success"
                   onChange={() => {
-                    console.log("click " + index?.titulo);
                     SetTaskArrayChecks(index?.id, index?.titulo); //anade al arreglo de insercion el item y hora de clickeado
                   }}
                 />
               </div>
             ) : index?.fk_tipo?.id == 3 ? ( //hora de inicio y fin
               <div className={styles.checksAndTimestampsContainer}>
-                {GetTaskArrayCheckTimestampOnlyStart(index?.id)}
+                {GetTaskArrayCheckTimestampOnlyStart(index?.id, index?.titulo)}
                 <Checkbox
                   sx={{ "& .MuiSvgIcon-root": { fontSize: 16 } }}
                   color="success"
                   onChange={() => {
-                    console.log("click " + index?.titulo);
                     SetTaskArrayChecksOnlyStart(index?.id, index?.titulo); //anade al arreglo de insercion el item y hora de clickeado
                   }}
                 />
@@ -1747,7 +1821,6 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                   sx={{ "& .MuiSvgIcon-root": { fontSize: 16 } }}
                   color="success"
                   onChange={() => {
-                    console.log("click " + index?.titulo);
                     SetTaskArrayChecksOnlyEnd(index?.id, index?.titulo); //anade al arreglo de insercion el item y hora de clickeado
                   }}
                 />
@@ -1783,7 +1856,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
     isFilteredResults
       ? (arrayList3aux = arrayFilteredList3)
       : (arrayList3aux = arrayList3);
-    console.log("arrayList3aux", arrayList3aux);
+
     arrayList3aux.map((index: any) => {
       y[index.id] = (
         <div
