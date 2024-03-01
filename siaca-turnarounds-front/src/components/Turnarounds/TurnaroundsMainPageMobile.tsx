@@ -113,6 +113,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
   const [manualHourDialog, setmanualHourDialog] = useState(false);
   const [manualHourDialogOnlyStart, setmanualHourDialogOnlyStart] =
     useState(false);
+  const [manualHourDialogOnlyEnd, setmanualHourDialogOnlyEnd] = useState(false);
   const [subtaskIDForchange, setsubtaskIDForchange] = useState("0");
   const [subtaskTitleForchange, setsubtaskTitleForchange] = useState("");
   const [manualHourValue, setmanualHourValue] = useState("0");
@@ -1470,6 +1471,12 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                     inputText=""
                     inputWidth="55px"
                   />
+                  <p className={styles.dialogTextRed}>
+                    <strong>
+                      ASEGURATE DE QUE EL CHECK DE FIN NO ESTÉ CLIQUEADO AL
+                      CAMBIAR ESTA HORA
+                    </strong>
+                  </p>
                 </div>
                 <div className={styles.dialogButtons}>
                   <GreenButton2
@@ -1514,7 +1521,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
     }
   };
 
-  const GetTaskArrayCheckTimestampOnlyEnd = (idSubtarea: any) => {
+  const GetTaskArrayCheckTimestampOnlyEnd = (idSubtarea: any, title: any) => {
     let auxiliaryArray = [];
     auxiliaryArray = arrayOfCheckedHoursStartEnd; //array con las que ya estan checkeadas
 
@@ -1533,7 +1540,75 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
     } else {
       return (
         <>
-          <p className={styles.checkTaskText}>Fin: {result[0]?.timestampEnd}</p>{" "}
+          <Dialog
+            className={styles.dialogDelete}
+            open={manualHourDialogOnlyEnd}
+            onClose={() => setmanualHourDialogOnlyStart(false)}
+          >
+            <div className={styles.dialogBack}>
+              <div className={styles.dialogText}>
+                <p>
+                  <strong>
+                    Introduzca la hora manual que desea introducir a la tarea
+                    tipo doble check (formato 24hrs):{" "}
+                  </strong>
+                </p>
+                <div className={styles.manualHoursInputsContainer}>
+                  <p>Horas:</p>
+                  <StandardInput
+                    setValue={setmanualHourValue}
+                    inputText=""
+                    inputWidth="55px"
+                  />
+                  <p>Minuto:</p>
+                  <StandardInput
+                    setValue={setmanualMinuteValue}
+                    inputText=""
+                    inputWidth="55px"
+                  />
+                  <p>Segundos:</p>
+                  <StandardInput
+                    setValue={setmanualSecondsValue}
+                    inputText=""
+                    inputWidth="55px"
+                  />
+                </div>
+                <div className={styles.dialogButtons}>
+                  <GreenButton2
+                    executableFunction={() => {
+                      SetTaskArrayChecksOnlyEnd2(
+                        subtaskIDForchange,
+                        subtaskTitleForchange,
+                        manualHourValue +
+                          ":" +
+                          manualMinuteValue +
+                          ":" +
+                          manualSecondsValue
+                      );
+                      setmanualHourDialogOnlyEnd(false);
+                    }}
+                    buttonText="Confirmar"
+                  />
+                  <RedButton2
+                    executableFunction={() => setmanualHourDialogOnlyEnd(false)}
+                    buttonText="Cancelar"
+                  />
+                </div>
+              </div>
+            </div>
+          </Dialog>
+          <p
+            className={styles.checkTaskText}
+            onClick={() => {
+              setmanualHourDialogOnlyEnd(true);
+              setsubtaskIDForchange(idSubtarea);
+              setsubtaskTitleForchange(title);
+              //
+              console.log("Se hizo tap en ", idSubtarea, title);
+            }}
+          >
+            Fin: {result[0]?.timestampEnd}
+          </p>{" "}
         </>
       );
     }
@@ -1724,6 +1799,27 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
     console.log("arrayOfCheckedHoursStartEnd", arrayOfCheckedHoursStartEnd);
   };
 
+  const SetTaskArrayChecksOnlyEnd2 = (
+    idSubtarea: any,
+    tituloSubtarea: any,
+    timestampToEdit: any
+  ) => {
+    let auxiliaryArray = [];
+    auxiliaryArray = arrayOfCheckedHoursStartEnd; //array con las que ya estan checkeadas
+
+    let x = auxiliaryArray.find((o) => o.key === idSubtarea);
+
+    //existe
+    //si  timestampEnd NO existe meto el valor de finalizacion
+
+    auxiliaryArray.find((o) => o.key === idSubtarea).timestampEnd =
+      timestampToEdit;
+
+    setArrayOfCheckedHoursStartEnd(auxiliaryArray);
+
+    console.log("arrayOfCheckedHoursStartEnd changed", auxiliaryArray);
+  };
+
   const SetTaskArrayImages = (idSubtarea: any, metadataBlob: any) => {
     let auxiliaryArray = [];
     auxiliaryArray = arrayOfImages; //array con las que ya estan checkeadas
@@ -1816,7 +1912,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                     SetTaskArrayChecksOnlyStart(index?.id, index?.titulo); //anade al arreglo de insercion el item y hora de clickeado
                   }}
                 />
-                {GetTaskArrayCheckTimestampOnlyEnd(index?.id)}
+                {GetTaskArrayCheckTimestampOnlyEnd(index?.id, index?.titulo)}
                 <Checkbox
                   sx={{ "& .MuiSvgIcon-root": { fontSize: 16 } }}
                   color="success"

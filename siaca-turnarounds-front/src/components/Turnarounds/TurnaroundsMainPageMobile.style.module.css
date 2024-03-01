@@ -150,6 +150,16 @@
   padding-right: 30px;
   padding-bottom: 30px;
 }
+.dialogTextRed {
+  text-align: center;
+  font-family: Montserrat, Poppins, sans-serif;
+  padding-top: 5%;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-bottom: 30px;
+  color: red;
+  font-size: 14px;
+}
 
 .dialogButtons {
   display: grid;
