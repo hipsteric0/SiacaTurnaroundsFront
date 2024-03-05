@@ -34,7 +34,7 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep }) => {
   const [modelo, setModelo] = useState("");
   const [combustible, setCombustible] = useState("");
   const [estado, setEstado] = useState("");
-  const [imagen, setImagen] = useState(new Blob());
+  const [imagen, setImagen] = useState(null);
   const [fkcategoria, setFkCategoria] = useState("");
   const [arrayList, setArrayList] = useState([]);
   const [stringValue, setStringValue] = useState("");
@@ -85,52 +85,20 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep }) => {
     await fetchData().catch(console.error);
   };
 
-  const registerMachines = () => {
-    const fetchData = async () => {
-      try {
-        const url = "/api/registerMachine";
-        const requestOptions = {
-          method: "POST",
-          body: JSON.stringify({
-            identificador: identificador,
-            modelo: modelo,
-            combustible: combustible,
-            estado: estado,
-            fk_categoria: fkcategoria,
-            userToken: localStorage.getItem("userToken"),
-          }),
-        };
-        const response = await fetch(url, requestOptions).then((value) => {
-          if (value?.status === 400) {
-            responseValue = false;
-          } else {
-            responseValue = true;
-            console.log("value", value);
-            router.reload();
-          }
-          return true;
-        });
-        if (!response) {
-          responseValue = false;
-
-          throw new Error("Error in response registering user");
-        }
-      } catch (error) {
-        responseValue = false;
-        //mostrar mensaje de no se pudo validasr usuario, ya existe o su conexion es limitada
-      }
-    };
-    fetchData().catch(console.error);
-  };
-
 
   const newMachine = () => {
     const uploadData = new FormData();
-    uploadData.append('imagen', imagen, imagen.name);
+    
     uploadData.append('identificador', identificador);
     uploadData.append('modelo', modelo);
     uploadData.append('combustible', combustible);
     uploadData.append('fk_categoria', fkcategoria);
+    uploadData.append('estado', estado)
+
+    // Agregar el campo "imagen" solo si hay una imagen seleccionada
+    if (imagen !== null) {
+      uploadData.append('imagen', imagen);
+    }
 
     fetch('http://127.0.0.1:8000/maquinarias/?token='+localStorage.getItem("userToken"), {
       method: 'POST',
@@ -158,12 +126,12 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep }) => {
     setCombustible(fuelArray[id]?.name);
   };
 
-  const subirArchivo = (e : any) =>{
-    setImagen(e);
-    setPreview(URL.createObjectURL(e))
-    console.log("Imagen", e.name)
-    console.log("Image", e)
-  }
+  const subirArchivo = (e: any) => {
+    setImagen(e.target.files[0]);
+    setPreview(URL.createObjectURL(e.target.files[0]));
+    console.log('Imagen', URL.createObjectURL(e.target.files[0]));
+    console.log('Image', e.target.files[0]);
+  };
 
   const Back = () => {
     setLoading(true);
@@ -184,7 +152,7 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep }) => {
         <span className={styles.titleTextImagen}>Imagen</span>
 
         <div className={styles.inputsListImage}>
-        <input type="file" name="Archivos" onChange={(e : any)=>subirArchivo(e.target.files[0])}/>
+        <input type="file" name="Archivos" onChange={(e : any)=>subirArchivo(e)}/>
         {preview && (
         <div>
          <center><img src={preview} alt="Preview" width={200} height={200}/></center> 

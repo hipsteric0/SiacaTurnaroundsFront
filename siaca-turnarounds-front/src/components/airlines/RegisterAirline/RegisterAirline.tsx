@@ -43,8 +43,7 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep }) => {
 
   const [preview, setPreview] = useState("");
 
-  const [imagen, setImagen]  = useState(new Blob());
-
+  const [imagen, setImagen] = useState(null);
   
   const [loading, setLoading] = useState(false);
 
@@ -52,7 +51,6 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep }) => {
 
   const newAirline = () => {
     const uploadData = new FormData();
-    uploadData.append('imagen', imagen, imagen.name);
     uploadData.append('nombre', aerolinea);
     uploadData.append('correo', correoPrincipal);
     uploadData.append('correo_secundario', correoSecundario);
@@ -62,15 +60,19 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep }) => {
     uploadData.append('pais', pais);
     uploadData.append('ciudad', ciudad);
     uploadData.append('codigo_OACI', codigoOACI);
-
+  
+    // Agregar el campo "imagen" solo si hay una imagen seleccionada
+    if (imagen !== null) {
+      uploadData.append('imagen', imagen);
+    }
+  
     fetch('http://127.0.0.1:8000/aerolineas/?token='+localStorage.getItem("userToken"), {
       method: 'POST',
       body: uploadData
     })
     .then( res => console.log(res))
     .catch(error => console.log(error))
-  }
-  
+  };
 
   const continueButton = () => {
 
@@ -81,12 +83,12 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep }) => {
   };
 
 
-  const subirArchivo = (e : any) =>{
-    setImagen(e);
-    setPreview(URL.createObjectURL(e))
-    console.log("Imagen", URL.createObjectURL(e))
-    console.log("Image", e)
-  }
+  const subirArchivo = (e: any) => {
+    setImagen(e.target.files[0]);
+    setPreview(URL.createObjectURL(e.target.files[0]));
+    console.log('Imagen', URL.createObjectURL(e.target.files[0]));
+    console.log('Image', e.target.files[0]);
+  };
 
   const Back = () => {
     setLoading(true);
@@ -106,7 +108,7 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep }) => {
       <div className={styles.airlinesListContainer}>
         <span className={styles.titleText}>Logo</span>
         <div className={styles.inputsListImage}>
-          <input type="file" name="Archivos" onChange={(e : any)=>subirArchivo(e.target.files[0])}/>
+          <input type="file" name="Archivos" onChange={(e : any)=>subirArchivo(e)}/>
           <div className={styles.uploadContainer}>
           
           {preview && (
