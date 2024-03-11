@@ -33,6 +33,7 @@ import LoadingScreen from "../Reusables/LoadingScreen";
 import { Image, PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
 import { Page, Text, View, Document, StyleSheet } from "@react-pdf/renderer";
 import RedButton from "../Reusables/RedButton2";
+import StandardInput from "../Reusables/StandardInput";
 
 interface PageProps {
   setStep: (value: number) => void;
@@ -109,7 +110,18 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
   const [loading, setLoading] = useState(false);
   const [saveSummaryDialog, setsaveSummaryDialog] = useState(false);
   const [saveSummaryDialogUpdate, setsaveSummaryDialogUpdate] = useState(false);
-
+  const [manualHourDialog, setmanualHourDialog] = useState(false);
+  const [manualHourValue, setmanualHourValue] = useState("0");
+  const [manualMinuteValue, setmanualMinuteValue] = useState("0");
+  const [manualSecondsValue, setmanualSecondsValue] = useState("0");
+  const [manualHourValueOnlyEnd, setmanualHourValueOnlyEnd] = useState("0");
+  const [manualMinuteValueOnlyEnd, setmanualMinuteValueOnlyEnd] = useState("0");
+  const [manualSecondsValueOnlyEnd, setmanualSecondsValueOnlyEnd] =
+    useState("0");
+  const [taskNameToEdit, settaskNameToEdit] = useState("");
+  const [taskIDToEdit, settaskIDToEdit] = useState("");
+  const [taskTypeToEdit, settaskTypeToEdit] = useState(-1);
+  const [CommentTaskToEdit, setCommentTaskToEdit] = useState("");
   const PDFstyles = StyleSheet.create({
     page: {
       flexDirection: "column",
@@ -545,6 +557,92 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
     await fetchData().catch(console.error);
   };
 
+  const updateTaskTypeComment = async (
+    commentToUpdate: string,
+    subtaskID: any
+  ) => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/updateTaskTypeComment";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+            comentario: commentToUpdate,
+            subtaskID: subtaskID,
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            console.log("updateTaskTypeStartHour", result);
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
+  const updateTaskTypeStartHour = async (
+    hourToUpdate: string,
+    subtaskID: any
+  ) => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/updateTaskTypeStartHour";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+            hora_inicio: hourToUpdate,
+            subtaskID: subtaskID,
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            console.log("updateTaskTypeStartHour", result);
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
+  const updateTaskTypeStartHourStartEnd = async (
+    hourToUpdateStart: string,
+    hourToUpdateEnd: string,
+    subtaskID: any
+  ) => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/updateTaskTypeStartEndHour";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+            hora_inicio: hourToUpdateStart,
+            hora_fin: hourToUpdateEnd,
+            subtaskID: subtaskID,
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            console.log("updateTaskTypeStartHour", result);
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
   const getDateForCalendar = () => {
     let x =
       date.getDate().toString() +
@@ -617,26 +715,35 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
   const formatTasksForPDFArray = (result: any) => {
     let y: any[] = [];
 
+    //comentario === id =1
+    //hora inicio === id =2
+    //hora inicio y fin === id =3
+    //hora imagen === id =4
     result?.comentarios.map((value: any) => {
       //console.log("value", value);
       y.push({
         key: value?.fk_subtarea__id,
+        type: 1,
         name: value?.fk_subtarea__titulo,
         value: "Comentario: " + value?.comentario,
+        idForEdition: value?.id,
       });
     });
     result?.horas.map((value: any) => {
       //console.log("value", value);
       y.push({
         key: value?.fk_subtarea__id,
+        type: 2,
         name: value?.fk_subtarea__titulo,
         value: "Hora inicio: " + value?.hora_inicio,
+        idForEdition: value?.id,
       });
     });
     result?.horas_inicio_fin.map((value: any) => {
       //console.log("value", value);
       y.push({
         key: value?.fk_subtarea__id,
+        type: 3,
         name: value?.fk_subtarea__titulo,
         value:
           "hora inicio: " +
@@ -644,6 +751,7 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
           " - " +
           "hora fin: " +
           value?.hora_fin,
+        idForEdition: value?.id,
       });
     });
 
@@ -670,6 +778,239 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
     });
     //setMachinesToPostArray(machinesToPostArray);
     //getMachinesList();
+    return y;
+  };
+
+  const tasksCompletionValuesArrayPrinter = () => {
+    let y: any = [];
+    let auxtitle = "";
+    let auxtitleBoolean = true;
+    let counter = 0;
+    tasksCompletionValues.map((index: any) => {
+      y[counter] = (
+        <div className={styles.detailDialogInfoRow1}>
+          {taskTypeToEdit === 1 && (
+            <>
+              <Dialog
+                className={styles.dialogDelete}
+                open={manualHourDialog}
+                onClose={() => setmanualHourDialog(false)}
+              >
+                <div className={styles.dialogBack}>
+                  <div className={styles.dialogHourInputsContainer}>
+                    <p>
+                      <strong>
+                        Introduzca el comentario que desea introducir a la tarea{" "}
+                        {taskNameToEdit} :
+                      </strong>
+                    </p>
+                    <div className={styles.manualHoursInputsContainer}>
+                      <p>Comentario:</p>
+                      <StandardInput
+                        setValue={setCommentTaskToEdit}
+                        inputText=""
+                        inputWidth="255px"
+                      />
+                    </div>
+                    <div className={styles.dialogButtons}>
+                      <GreenButton2
+                        executableFunction={() => {
+                          {
+                            updateTaskTypeComment(
+                              CommentTaskToEdit,
+                              taskIDToEdit
+                            );
+                            router.reload();
+                          }
+                        }}
+                        buttonText="Confirmar"
+                      />
+                      <RedButton2
+                        executableFunction={() => setmanualHourDialog(false)}
+                        buttonText="Cancelar"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </Dialog>
+            </>
+          )}
+          {taskTypeToEdit === 2 && (
+            <>
+              <Dialog
+                className={styles.dialogDelete}
+                open={manualHourDialog}
+                onClose={() => setmanualHourDialog(false)}
+              >
+                <div className={styles.dialogBack}>
+                  <div className={styles.dialogHourInputsContainer}>
+                    <p>
+                      <strong>
+                        Introduzca la hora de inicio manual que desea introducir
+                        a la tarea {taskNameToEdit} (formato 24hrs):
+                      </strong>
+                    </p>
+                    <div className={styles.manualHoursInputsContainer}>
+                      <p>Horas:</p>
+                      <StandardInput
+                        setValue={setmanualHourValue}
+                        inputText=""
+                        inputWidth="55px"
+                      />
+                      <p>Minuto:</p>
+                      <StandardInput
+                        setValue={setmanualMinuteValue}
+                        inputText=""
+                        inputWidth="55px"
+                      />
+                      <p>Segundos:</p>
+                      <StandardInput
+                        setValue={setmanualSecondsValue}
+                        inputText=""
+                        inputWidth="55px"
+                      />
+                    </div>
+                    <div className={styles.dialogButtons}>
+                      <GreenButton2
+                        executableFunction={() => {
+                          updateTaskTypeStartHour(
+                            manualHourValue +
+                              ":" +
+                              manualMinuteValue +
+                              ":" +
+                              manualSecondsValue,
+                            taskIDToEdit
+                          );
+                          router.reload();
+                        }}
+                        buttonText="Confirmar"
+                      />
+                      <RedButton2
+                        executableFunction={() => {
+                          setmanualHourDialog(false);
+                        }}
+                        buttonText="Cancelar"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </Dialog>
+            </>
+          )}
+
+          {taskTypeToEdit === 3 && (
+            <>
+              <Dialog
+                className={styles.dialogDelete}
+                open={manualHourDialog}
+                onClose={() => setmanualHourDialog(false)}
+              >
+                <div className={styles.dialogBack}>
+                  <div className={styles.dialogHourInputsContainer}>
+                    <p>
+                      <strong>
+                        Introduzca la hora de inicio y la hora fin manual que
+                        desea introducir a la tarea {taskNameToEdit} (formato
+                        24hrs):
+                      </strong>
+                    </p>
+                    <div className={styles.manualHoursInputsContainer}>
+                      <p>
+                        <strong>INICIO:</strong>
+                      </p>
+                      <p>Horas:</p>
+                      <StandardInput
+                        setValue={setmanualHourValue}
+                        inputText=""
+                        inputWidth="55px"
+                      />
+                      <p>Minuto:</p>
+                      <StandardInput
+                        setValue={setmanualMinuteValue}
+                        inputText=""
+                        inputWidth="55px"
+                      />
+                      <p>Segundos:</p>
+                      <StandardInput
+                        setValue={setmanualSecondsValue}
+                        inputText=""
+                        inputWidth="55px"
+                      />
+                    </div>
+                    <div className={styles.manualHoursInputsContainer}>
+                      <p>
+                        <strong>FIN:</strong>
+                      </p>
+                      <p>Horas:</p>
+                      <StandardInput
+                        setValue={setmanualHourValueOnlyEnd}
+                        inputText=""
+                        inputWidth="55px"
+                      />
+                      <p>Minuto:</p>
+                      <StandardInput
+                        setValue={setmanualMinuteValueOnlyEnd}
+                        inputText=""
+                        inputWidth="55px"
+                      />
+                      <p>Segundos:</p>
+                      <StandardInput
+                        setValue={setmanualSecondsValueOnlyEnd}
+                        inputText=""
+                        inputWidth="55px"
+                      />
+                    </div>
+                    <div className={styles.dialogButtons}>
+                      <GreenButton2
+                        executableFunction={() => {
+                          updateTaskTypeStartHourStartEnd(
+                            manualHourValue +
+                              ":" +
+                              manualMinuteValue +
+                              ":" +
+                              manualSecondsValue,
+                            manualHourValueOnlyEnd +
+                              ":" +
+                              manualMinuteValueOnlyEnd +
+                              ":" +
+                              manualSecondsValueOnlyEnd,
+                            taskIDToEdit
+                          );
+                          router.reload();
+                        }}
+                        buttonText="Confirmar"
+                      />
+                      <RedButton2
+                        executableFunction={() => {
+                          setmanualHourDialog(false);
+                        }}
+                        buttonText="Cancelar"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </Dialog>
+            </>
+          )}
+
+          <p>
+            <strong>{index?.name}:</strong> {index?.value}
+          </p>
+          <button
+            onClick={() => {
+              settaskNameToEdit(index?.name);
+              settaskIDToEdit(index?.idForEdition);
+              settaskTypeToEdit(index?.type);
+              setmanualHourDialog(true);
+            }}
+          >
+            Editar
+          </button>
+        </div>
+      );
+      counter++;
+    });
+
     return y;
   };
 
@@ -1054,7 +1395,7 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
   const GetTaskDataForPDF = (indexTurnaroundData: any) => {
     let y: any = [];
     let cont = 0;
-    console.log("indexTurnaroundData", indexTurnaroundData);
+    console.log("tasksCompletionValues", tasksCompletionValues);
     tasksCompletionValues.map((index: any) => {
       cont++;
       y[index?.key] = (
@@ -1907,78 +2248,92 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
                           </p>
                         </>
                       ) : (
-                        <div className={styles.turnaroundPDFSLinksContainers}>
-                          <PDFDownloadLink
-                            document={
-                              <Document
-                                title={
-                                  "Registro del servicio al turnaround Nro: " +
-                                  index?.id
-                                }
-                                author={"SIACA"}
-                              >
-                                <Page size="A4" style={PDFstyles.page}>
-                                  {arrayPrinterPDFGenerator(index)}
-                                </Page>
-                              </Document>
-                            }
-                            fileName={
-                              "Turnaround_Data_" +
-                              index?.fk_vuelo?.ETA_fecha +
-                              "_" +
-                              index?.fk_vuelo?.ETA +
-                              "_" +
-                              index?.fk_vuelo?.fk_aerolinea?.nombre +
-                              "_puerta:" +
-                              index?.fk_vuelo?.gate +
-                              "_id:" +
-                              index?.id +
-                              ".pdf"
-                            }
-                          >
-                            {({ blob, url, loading, error }) =>
-                              loading
-                                ? "Loading document..."
-                                : "Descargar documento del turnaround en inglés"
-                            }
-                          </PDFDownloadLink>
-                          <PDFDownloadLink
-                            document={
-                              <Document
-                                title={
-                                  "Registro del servicio al turnaround Nro: " +
-                                  index?.id
-                                }
-                                author={"SIACA"}
-                              >
-                                <Page size="A4" style={PDFstyles.page}>
-                                  {arrayPrinterPDFGeneratorSpanish(index)}
-                                </Page>
-                              </Document>
-                            }
-                            fileName={
-                              "Turnaround_Data_" +
-                              index?.fk_vuelo?.ETA_fecha +
-                              "_" +
-                              index?.fk_vuelo?.ETA +
-                              "_" +
-                              index?.fk_vuelo?.fk_aerolinea?.nombre +
-                              "_puerta:" +
-                              index?.fk_vuelo?.gate +
-                              "_id:" +
-                              index?.id +
-                              ".pdf"
-                            }
-                          >
-                            {({ blob, url, loading, error }) =>
-                              loading
-                                ? "Loading document..."
-                                : "Descargar documento del turnaround en español"
-                            }
-                          </PDFDownloadLink>
+                        <div className={styles.detailDialogInfoRow1}>
+                          <div className={styles.turnaroundPDFSLinksContainers}>
+                            <PDFDownloadLink
+                              document={
+                                <Document
+                                  title={
+                                    "Registro del servicio al turnaround Nro: " +
+                                    index?.id
+                                  }
+                                  author={"SIACA"}
+                                >
+                                  <Page size="A4" style={PDFstyles.page}>
+                                    {arrayPrinterPDFGenerator(index)}
+                                  </Page>
+                                </Document>
+                              }
+                              fileName={
+                                "Turnaround_Data_" +
+                                index?.fk_vuelo?.ETA_fecha +
+                                "_" +
+                                index?.fk_vuelo?.ETA +
+                                "_" +
+                                index?.fk_vuelo?.fk_aerolinea?.nombre +
+                                "_puerta:" +
+                                index?.fk_vuelo?.gate +
+                                "_id:" +
+                                index?.id +
+                                ".pdf"
+                              }
+                            >
+                              {({ blob, url, loading, error }) =>
+                                loading
+                                  ? "Loading document..."
+                                  : "Descargar documento del turnaround en inglés"
+                              }
+                            </PDFDownloadLink>
+                            <PDFDownloadLink
+                              document={
+                                <Document
+                                  title={
+                                    "Registro del servicio al turnaround Nro: " +
+                                    index?.id
+                                  }
+                                  author={"SIACA"}
+                                >
+                                  <Page size="A4" style={PDFstyles.page}>
+                                    {arrayPrinterPDFGeneratorSpanish(index)}
+                                  </Page>
+                                </Document>
+                              }
+                              fileName={
+                                "Turnaround_Data_" +
+                                index?.fk_vuelo?.ETA_fecha +
+                                "_" +
+                                index?.fk_vuelo?.ETA +
+                                "_" +
+                                index?.fk_vuelo?.fk_aerolinea?.nombre +
+                                "_puerta:" +
+                                index?.fk_vuelo?.gate +
+                                "_id:" +
+                                index?.id +
+                                ".pdf"
+                              }
+                            >
+                              {({ blob, url, loading, error }) =>
+                                loading
+                                  ? "Loading document..."
+                                  : "Descargar documento del turnaround en español"
+                              }
+                            </PDFDownloadLink>
+                          </div>
                         </div>
                       )}
                     </div>
+                    {index?.fk_vuelo?.estado === "Atendido" && (
+                      <>
+                        <p
+                          className={styles.detailDialogInfoContainerTitleText}
+                        >
+                          Datos de ejecución turnaround{" "}
+                        </p>
+                        <div className={styles.rowOfTurnaroundDataContainer}>
+                          {tasksCompletionValuesArrayPrinter()}
+                        </div>
+                      </>
+                    )}
                   </div>
 
                   <div className={styles.redButtonContainer}>
