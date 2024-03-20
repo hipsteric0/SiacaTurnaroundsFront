@@ -9,7 +9,7 @@ import React, { useEffect, useState } from "react";
 import router, { Router } from "next/router";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Table, Spacer } from "@nextui-org/react";
-import { TableBody, Dialog } from "@mui/material";
+import { TableBody, Dialog, Autocomplete, TextField } from "@mui/material";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
@@ -122,6 +122,11 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
   const [taskIDToEdit, settaskIDToEdit] = useState("");
   const [taskTypeToEdit, settaskTypeToEdit] = useState(-1);
   const [CommentTaskToEdit, setCommentTaskToEdit] = useState("");
+  const [lateCodesArray, setlateCodesArray] = useState([""]);
+  const [lateCodesData, setlateCodesData] = useState();
+  const [lateCodeValue, setlateCodeValue] = useState("");
+  const [lateCodeValueIDForPatchUpdate, setlateCodeValueIDforPatchUpdate] =
+    useState("");
   const PDFstyles = StyleSheet.create({
     page: {
       flexDirection: "column",
@@ -633,6 +638,83 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
             console.log("updateTaskTypeStartHour", result);
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
+  const setlateCodesOptions = (data: any) => {
+    let auxiliaryArray: string[] = [];
+    data.map((element: any) => {
+      auxiliaryArray.push(
+        (
+          element?.identificador +
+          " - " +
+          element?.alpha +
+          " - " +
+          element?.descripcion
+        ).toString()
+      );
+    });
+    setlateCodesArray(auxiliaryArray);
+    console.log("auxiliaryArray", auxiliaryArray);
+  };
+  const getLateCodes = async () => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/getLateCodesList";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            console.log("getLateCodesList", result);
+            setlateCodesOptions(Object.values(result));
+            setlateCodesData(Object.values(result));
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
+  const setlateCodeValueIDForPatch = (value: string) => {
+    let identificadorAuxiliar = value.slice(0, 2).trim();
+    lateCodesData?.map((element: any) => {
+      if (element?.identificador === Number(identificadorAuxiliar)) {
+        setlateCodeValueIDforPatchUpdate(element?.id);
+        console.log("el ID clickeado es ", element?.id);
+      }
+    });
+  };
+
+  const patchLateCode = async () => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/patchLateCode";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+            turnaroundID: openDetailDialogID,
+            fk_codigos_demora_id: lateCodeValueIDForPatchUpdate,
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            console.log("patchLateCode", result);
+            router.reload();
           })
         );
       } catch (error) {
@@ -2048,6 +2130,35 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
                       Datos de vuelo
                     </p>
                     <div className={styles.detailDialogInfoRow1}>
+                      <div className={styles.detailDialogInfoItemLateCodes}>
+                        <span className={styles.detailDialogInfoItemTitle}>
+                          Código de demora:
+                        </span>
+                        <div>
+                          <Autocomplete
+                            size="small"
+                            sx={{ width: "1000px" }}
+                            value={lateCodeValue} //el valor que toma por defecto, esta comentado por que debe ser nulo
+                            onInputChange={(event, newInputValue) => {
+                              setlateCodeValue(newInputValue);
+                              setlateCodeValueIDForPatch(newInputValue);
+                            }}
+                            id="controllable-states-demo"
+                            options={lateCodesArray}
+                            renderInput={(params) => (
+                              <TextField {...params} label={""} />
+                            )}
+                          />
+                        </div>
+                        <GreenButton2
+                          executableFunction={() => {
+                            patchLateCode();
+                          }}
+                          buttonText="Guardar"
+                        />
+                      </div>
+                    </div>
+                    <div className={styles.detailDialogInfoRow1}>
                       <div className={styles.detailDialogInfoItem}>
                         <span className={styles.detailDialogInfoItemTitle}>
                           Tipo de servicio:
@@ -2683,8 +2794,17 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
           <div
             className={styles.openDetailContainer}
             onClick={() => {
+              console.log("se hizo click en vermas", index);
+              setlateCodeValue(
+                index?.fk_codigos_demora?.identificador +
+                  " - " +
+                  index?.fk_codigos_demora?.alpha +
+                  " - " +
+                  index?.fk_codigos_demora?.descripcion
+              );
               setLoading(true);
               getTemplateTasks(index?.fk_vuelo?.fk_plantilla?.id);
+              getLateCodes();
               getMachinesByTurnaround(index?.id);
               getTasksCompletionsList(index?.id);
               setOpenDetailDialogID(index?.id);

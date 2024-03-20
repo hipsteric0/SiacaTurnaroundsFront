@@ -452,3 +452,9 @@
   justify-content: center;
   gap: 10px;
 }
+.detailDialogInfoItemLateCodes {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  align-items: center;
+}
