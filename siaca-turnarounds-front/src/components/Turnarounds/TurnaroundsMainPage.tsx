@@ -55,6 +55,8 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
   const [machinesByTurnaroundArrayList, setMachinesByTurnaroundArrayList] =
     useState([]);
   const [machinesarrayList, setMachinesarrayList] = useState([]);
+  const [personnelByTurnaroundArrayList, setPersonneByTurnaroundArrayList] =
+    useState([]);
   const [machinesReservationsarrayList, setMachinesReservationsarrayList] =
     useState([]);
   const [personnelReservationsarrayList, setPersonnelReservationsarrayList] =
@@ -449,6 +451,36 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
           res.json().then((result) => {
             console.log("templateTasks list", result);
             setTasksarrayList(Object.values(result));
+            if (result?.[0]?.["status"] === 400) {
+              console.log("entro");
+            } else {
+            }
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
+  const getPersonnelByTurnaround = async (turnaroundID: any) => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/getPersonnelByTurnaround";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+            turnaroundID: turnaroundID,
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            //console.log("Machines By Turnaround list", result);
+            setPersonneByTurnaroundArrayList(Object.values(result));
             if (result?.[0]?.["status"] === 400) {
               console.log("entro");
             } else {
@@ -2045,6 +2077,39 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
     });
     return y;
   };
+  const PersonnelArrayPrinter = () => {
+    let y: any = [];
+    let auxtitle = "";
+    let auxtitleBoolean = true;
+    let counter = 0;
+    personnelByTurnaroundArrayList.map((index: any) => {
+      if (auxtitle === index?.fk_usuario?.fk_departamento?.nombre) {
+        auxtitleBoolean = false;
+      }
+      y[counter] = (
+        <div key={index?.id} className={styles.taskText}>
+          {auxtitleBoolean && (
+            <p className={styles.taskTextTitle}>
+              {index?.fk_usuario?.fk_departamento?.nombre}
+            </p>
+          )}
+          <p className={styles.taskTextText}>
+            -{" "}
+            {index?.fk_usuario?.fk_user?.first_name +
+              " " +
+              index?.fk_usuario?.fk_user?.last_name +
+              ", " +
+              index?.fk_usuario?.fk_cargo?.nombre}
+          </p>
+        </div>
+      );
+      auxtitleBoolean = true;
+      counter++;
+      auxtitle = index?.fk_maquinaria?.fk_categoria?.nombre;
+    });
+
+    return y;
+  };
 
   const MachinesArrayPrinter = () => {
     let y: any = [];
@@ -2344,11 +2409,15 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
                     <div className={styles.detailDialogInfoRow1}>
                       <div>{MachinesArrayPrinter()}</div>
                     </div>
-                    <p className={styles.detailDialogInfoContainerTitleText}>
+                    <p
+                      className={
+                        styles.detailDialogInfoContainerTitleTextNoMargin
+                      }
+                    >
                       Personal
                     </p>
                     <div className={styles.detailDialogInfoRow1}>
-                      lista de personal y seleccion: -1 -2 -3
+                      <div>{PersonnelArrayPrinter()}</div>
                     </div>
                     <div className={styles.messageContainer}>
                       {clickedFlightState != "Atendido" ? (
@@ -2806,6 +2875,7 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
               getTemplateTasks(index?.fk_vuelo?.fk_plantilla?.id);
               getLateCodes();
               getMachinesByTurnaround(index?.id);
+              getPersonnelByTurnaround(index?.id);
               getTasksCompletionsList(index?.id);
               setOpenDetailDialogID(index?.id);
               setclickedFlightState(index?.fk_vuelo?.estado);
