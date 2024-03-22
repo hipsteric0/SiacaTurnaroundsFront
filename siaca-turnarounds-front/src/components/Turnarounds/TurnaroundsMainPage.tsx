@@ -2082,6 +2082,7 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
     let auxtitle = "";
     let auxtitleBoolean = true;
     let counter = 0;
+
     personnelByTurnaroundArrayList.map((index: any) => {
       if (auxtitle === index?.fk_usuario?.fk_departamento?.nombre) {
         auxtitleBoolean = false;
@@ -2105,7 +2106,7 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
       );
       auxtitleBoolean = true;
       counter++;
-      auxtitle = index?.fk_maquinaria?.fk_categoria?.nombre;
+      auxtitle = index?.fk_usuario?.fk_departamento?.nombre;
     });
 
     return y;
