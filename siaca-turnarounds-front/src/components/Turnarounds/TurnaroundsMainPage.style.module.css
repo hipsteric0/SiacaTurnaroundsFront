@@ -458,3 +458,10 @@
   gap: 15px;
   align-items: center;
 }
+.date{
+
+  padding: 8px;
+  border-radius: 10px;
+  border: solid 2px #ccc;
+
+}

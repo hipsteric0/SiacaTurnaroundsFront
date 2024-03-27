@@ -320,8 +320,8 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
           body: JSON.stringify({
             userToken: localStorage.getItem("userToken"),
             fecha: turnaroundDate,
-            hora_inicio: horaInicio + ":" + minutosInicio,
-            hora_fin: horaFin + ":" + minutosFin,
+            hora_inicio: horaInicio,
+            hora_fin: horaFin,
           }),
         };
         const response = await fetch(url, requestOptions).then((res) =>
@@ -353,8 +353,8 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
           body: JSON.stringify({
             userToken: localStorage.getItem("userToken"),
             fecha: turnaroundDate,
-            hora_inicio: horaInicioPersonnel + ":" + minutosInicioPersonnel,
-            hora_fin: horaFinPersonnel + ":" + minutosFinPersonnel,
+            hora_inicio: horaInicioPersonnel,
+            hora_fin: horaFinPersonnel,
           }),
         };
         const response = await fetch(url, requestOptions).then((res) =>
@@ -534,8 +534,8 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
           method: "POST",
           body: JSON.stringify({
             userToken: localStorage.getItem("userToken"),
-            hora_inicio: horaInicioPersonnel + ":" + minutosInicioPersonnel,
-            hora_fin: horaFinPersonnel + ":" + minutosFinPersonnel,
+            hora_inicio: horaInicioPersonnel,
+            hora_fin: horaFinPersonnel,
             fecha: turnaroundDate,
             fk_usuario: personID,
             fk_turnaround: openAssignDialogID,
@@ -568,8 +568,8 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
           method: "POST",
           body: JSON.stringify({
             userToken: localStorage.getItem("userToken"),
-            hora_inicio: horaInicio + ":" + minutosInicio,
-            hora_fin: horaFin + ":" + minutosFin,
+            hora_inicio: horaInicio,
+            hora_fin: horaFin,
             fecha: turnaroundDate,
             fk_maquinaria: machineryID,
             fk_turnaround: openAssignDialogID,
@@ -2602,35 +2602,23 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
 
                         <div className={styles.dateContainerRowItem}>
                           <p>Hora inicio:</p>
-                          <StandardInputV2
-                            setValue={setHoraInicioPersonnel}
-                            labelText=""
-                            placeholderText={"HH"}
-                            inputWidth="55px"
-                          />
-                          <p>:</p>
-                          <StandardInputV2
-                            setValue={setMinutosInicioPersonnel}
-                            labelText=""
-                            placeholderText={"MM"}
-                            inputWidth="55px"
-                          />
+                          <input
+                            className={styles.date}
+                            type="time"
+                            id="time"
+                            value={horaInicioPersonnel}
+                            onChange={(e) => setHoraInicioPersonnel(e.target.value)}
+                      />
                         </div>
                         <div className={styles.dateContainerRowItem}>
                           <p>Hora final:</p>
-                          <StandardInputV2
-                            setValue={setHoraFinPersonnel}
-                            labelText=""
-                            placeholderText={"HH"}
-                            inputWidth="55px"
-                          />
-                          <p>:</p>
-                          <StandardInputV2
-                            setValue={setMinutosFinPersonnel}
-                            labelText=""
-                            placeholderText={"MM"}
-                            inputWidth="55px"
-                          />
+                          <input
+                            className={styles.date}
+                            type="time"
+                            id="time"
+                            value={horaFinPersonnel}
+                            onChange={(e) => setHoraFinPersonnel(e.target.value)}
+                      />
                         </div>
                         {
                           <p className={styles.detailDialogInfoItemText}>
@@ -2652,9 +2640,9 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
                             buttonText="Confirmar"
                             disabled={
                               horaInicioPersonnel === "" ||
-                              horaFinPersonnel === "" ||
-                              minutosInicioPersonnel === "" ||
-                              minutosFinPersonnel === ""
+                              
+                              horaFinPersonnel === "" 
+                              
                             }
                           />
                         </div>
@@ -2686,35 +2674,23 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
 
                         <div className={styles.dateContainerRowItem}>
                           <p>Hora inicio:</p>
-                          <StandardInputV2
-                            setValue={setHoraInicio}
-                            labelText=""
-                            placeholderText={"HH"}
-                            inputWidth="55px"
-                          />
-                          <p>:</p>
-                          <StandardInputV2
-                            setValue={setMinutosInicio}
-                            labelText=""
-                            placeholderText={"MM"}
-                            inputWidth="55px"
-                          />
+                          <input
+                            className={styles.date}
+                            type="time"
+                            id="time"
+                            value={horaInicio}
+                            onChange={(e) => setHoraInicio(e.target.value)}
+                      />
                         </div>
                         <div className={styles.dateContainerRowItem}>
                           <p>Hora final:</p>
-                          <StandardInputV2
-                            setValue={setHoraFin}
-                            labelText=""
-                            placeholderText={"HH"}
-                            inputWidth="55px"
-                          />
-                          <p>:</p>
-                          <StandardInputV2
-                            setValue={setMinutosFin}
-                            labelText=""
-                            placeholderText={"MM"}
-                            inputWidth="55px"
-                          />
+                          <input
+                            className={styles.date}
+                            type="time"
+                            id="time"
+                            value={horaFin}
+                            onChange={(e) => setHoraFin(e.target.value)}
+                      />
                         </div>
                         <p className={styles.detailDialogInfoItemText}>
                           *El sistema tomará la reserva en las horas que
@@ -2733,9 +2709,7 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
                             buttonText="Confirmar"
                             disabled={
                               horaInicio === "" ||
-                              horaFin === "" ||
-                              minutosInicio === "" ||
-                              minutosFin === ""
+                              horaFin === ""
                             }
                           />
                         </div>

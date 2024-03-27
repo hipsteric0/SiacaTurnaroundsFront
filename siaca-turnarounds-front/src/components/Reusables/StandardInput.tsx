@@ -7,6 +7,7 @@ interface PageProps {
   inputText: string;
   inputWidth?: string;
   inputHeight?: string;
+  inputMaxLength?: string;
   inputDisabled?: boolean;
 }
 
@@ -14,6 +15,7 @@ const StandardInput: React.FC<PageProps> = ({
   setValue,
   inputText,
   inputWidth,
+  inputMaxLength,
   inputHeight,
   inputDisabled,
 }) => {
@@ -24,6 +26,7 @@ const StandardInput: React.FC<PageProps> = ({
         aria-label="Standard input"
         disabled={inputDisabled}
         bordered
+        maxLength={inputMaxLength}
         labelPlaceholder={inputText}
         color={inputDisabled ? "error" : "success"}
         width={

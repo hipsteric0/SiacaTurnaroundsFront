@@ -83,3 +83,35 @@
   text-decoration: underline;
   cursor: pointer;
 }
+
+
+.warningIcon {
+  font-size: 70px;
+}
+
+.dialogBack{
+  background: #f1f3f5;
+  border-radius: 12px;
+}
+
+.dialogText{
+  text-align: center;
+  background: #ffffff;
+  font-family: Montserrat, Poppins, sans-serif;
+  padding-top: 5%;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-bottom: 30px;
+}
+
+.dialogDelete{
+  position: fixed;
+  background-color: rgba(255, 255, 255, 0.8);
+
+}
+
+.dialogButtons {
+  width: 275px;
+  height: 42px;
+  align-content: center;
+}

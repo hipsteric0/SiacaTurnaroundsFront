@@ -44,8 +44,16 @@ const SiacaNavbar: React.FC<PageProps> = ({
   const [activeAirlines, setActiveAirlines] = useState(false);
 
   const [loading, setLoading] = useState(false);
+  const [loading2, setLoading2] = useState(false);
+  const [loading3, setLoading3] = useState(false);
+  const [loading4, setLoading4] = useState(false);
+  const [loading5, setLoading5] = useState(false);
+  const [loading6, setLoading6] = useState(false);
+  const [loading7, setLoading7] = useState(false);
+  const [loading8, setLoading8] = useState(false);
 
   const Logout = async () => {
+    setLoading8(true);
     const fetchData = async () => {
       try {
         const url = "/api/logout";
@@ -74,6 +82,36 @@ const SiacaNavbar: React.FC<PageProps> = ({
     router.push("/Flights")
   }
 
+  const Turnarounds = () =>{
+    setLoading2(true);
+    router.push("/Turnarounds")
+  }
+
+  const Machines = () =>{
+    setLoading3(true);
+    router.push("/Machines")
+  }
+
+  const Personnel = () =>{
+    setLoading4(true);
+    router.push("/Personnel")
+  }
+
+  const Metrics = () =>{
+    setLoading5(true);
+    router.push("/Metrics")
+  }
+
+  const Docs = () =>{
+    setLoading6(true);
+    router.push("/Docs")
+  }
+
+  const Airlines = () =>{
+    setLoading7(true);
+    router.push("/Airlines")
+  }
+
 
   return (
 
@@ -95,52 +133,59 @@ const SiacaNavbar: React.FC<PageProps> = ({
         className={
           activeTurnarounds ? styles.activeItemText : styles.inactiveItemText
         }
-        onClick={() => router.push("/Turnarounds")}
+        onClick={() => Turnarounds()}
       >
+        {loading2 && <LoadingScreen />}
         Turnarounds
       </h1>
       <h1
         className={
           activeMachines ? styles.activeItemText : styles.inactiveItemText
         }
-        onClick={() => router.push("/Machines")}
+        onClick={() => Machines()}
       >
+        {loading3 && <LoadingScreen />}
         Maquinarias
       </h1>
       <h1
         className={
           activePersonnel ? styles.activeItemText : styles.inactiveItemText
         }
-        onClick={() => router.push("/Personnel")}
+        onClick={() => Personnel()}
       >
+        {loading4 && <LoadingScreen />}
         Personal
       </h1>
       <h1
         className={
           activeMetrics ? styles.activeItemText : styles.inactiveItemText
         }
-        onClick={() => router.push("/Metrics")}
+        onClick={() => Metrics()}
       >
+        {loading5 && <LoadingScreen />}
         Métricas
       </h1>
       <h1
         className={activeDocs ? styles.activeItemText : styles.inactiveItemText}
-        onClick={() => router.push("/Docs")}
+        onClick={() => Docs()}
       >
+        {loading6 && <LoadingScreen />}
         DOCs
       </h1>
       <h1
         className={
           activeAirlines ? styles.activeItemText : styles.inactiveItemText
         }
-        onClick={() => router.push("/Airlines")}
+        onClick={() => Airlines()}
       >
+        {loading7 && <LoadingScreen />}
         Aerolíneas
       </h1>
       <h4 
         className={styles.closeSesionText}
           onClick={() => Logout()}
       >
+        {loading8 && <LoadingScreen />}
         cerrar sesión
       </h4>
     </div>

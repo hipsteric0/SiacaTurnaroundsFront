@@ -19,6 +19,8 @@ import { LineChart } from '@mui/x-charts/LineChart';
 import { ChartContainer, BarPlot } from '@mui/x-charts';
 import { PieChart } from '@mui/x-charts/PieChart';
 
+import StandardInput from "@/components/Reusables/StandardInput";
+
 import BackArrow from "@/components/Reusables/BackArrow";
 
 interface PageProps {
@@ -36,13 +38,19 @@ const MachineMetrics: React.FC<PageProps> = ({ setStep }) => {
   const [machineAirline, setMachineAirline] = useState(['']);
   const [arrayMachine, setArrayMachine] = useState(['']);
 
+  const [dayStart, setDayStart] = useState("");
+  const [monthStart, setMonthStart] = useState("");
+  const [yearStart, setYeartart] = useState("");
+  const [dayFinal, setDayFinal] = useState("");
+  const [monthFinal, setMonthFinal] = useState("");
+  const [yearFinal, setYearFinal] = useState("");
+
   const [dataMachine, setDataMachine] = useState(['']);
 
   let array3: any[] = []
 
   useEffect(() => {
-    getList();
-    getMachineAirline();
+
     getMachine();
   }, []);
 
@@ -178,9 +186,11 @@ colors={palette}
 
 
   const arrayPrinterMachine = () => {
+    if (!Array.isArray(arrayList3) || arrayList3.length === 0) {
+      return <p>No hay existe historial de maquinarias entre estas fechas</p>;
+    }
+  
     let groupedData = {};
-   
-    // Merge both arrays
     const mergedArray = [...arrayList3];
    
     mergedArray.map((index: any) => {
@@ -213,7 +223,20 @@ colors={palette}
    
     return y;
    };  
+
+
+   const handleButtonClickSearch = () => {
+    fetch(`http://127.0.0.1:8000/metricas/maquinarias/${dayStart}/${dayFinal}/?token=`+localStorage.getItem("userToken"))
+      .then((response) => response.json())
+      .then((data) => setArrayList3(data))
+      .catch((error) => console.error('Error fetching ', error));
+  };
   
+
+  const Search = () => {
+    handleButtonClickSearch();
+  }
+
 
   return (
     <main className={styles.containerAirlinesMainPage}>
@@ -225,6 +248,34 @@ colors={palette}
           }}
         />
       </div>
+
+<div className={styles.parent}>
+<div className={styles.search}>
+<div className={styles.div1}>
+      <label >Fecha inicio:</label>
+      <input
+        type="date"
+        id="code"
+        value={dayStart}
+        onChange={(e) => setDayStart(e.target.value)}
+      />
+
+      </div>
+      <div className={styles.div2}>
+      <label >Fecha final:</label>
+      <input
+        type="date"
+        id="date"
+        value={dayFinal}
+        onChange={(e) => setDayFinal(e.target.value)}
+      />
+      </div>
+
+      <div className={styles.div3}>
+      <button onClick={Search}>Buscar maquinarias</button>
+      </div>
+      </div>
+              </div >
 
       <div className={styles.container}>
       <div className={styles.div2}>

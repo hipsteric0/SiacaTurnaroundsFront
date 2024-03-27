@@ -5,6 +5,8 @@ import MailLockIcon from "@mui/icons-material/MailLock";
 import { Input, Grid, Spacer } from "@nextui-org/react";
 import BackArrow from "@/components/Reusables/BackArrow";
 import { useEffect, useState } from "react";
+import LoadingScreen from "@/components/Reusables/LoadingScreen";
+
 
 interface PageProps {
   setStep: (value: number) => void;
@@ -23,6 +25,8 @@ const LoginMainPage: React.FC<PageProps> = ({
   const [allowContinue, setAllowContinue] = useState(false);
   const [response, setResponse] = useState(false);
   const [continueIsClicked, setContinueIsClicked] = useState(false);
+  const [emailExists, setEmailExists] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   let responseValue = false;
 
@@ -72,6 +76,7 @@ const LoginMainPage: React.FC<PageProps> = ({
     return <></>;
   };
   const continueButton = () => {
+    setLoading(true);
     setEmailValue(email);
     setPasswordValue(password);
     registerStep1request();
@@ -91,6 +96,26 @@ const LoginMainPage: React.FC<PageProps> = ({
   };
 
   const isMobile = useMediaQuery("(max-width: 1270px)");
+
+  const handleCheckEmail = (e :any) => {
+    e.preventDefault();
+    const inputEmail = e.target.value;
+    setEmail(inputEmail);
+    fetch(`http://127.0.0.1:8000/usuarios/correos/`)
+      .then((response) => response.json())
+      .then((data) => {
+        // Compureba si el correo se encuentra en el array de los correos registrados
+        setEmailExists(data.some((item : any) => item.username === inputEmail));
+        console.log("CORREO", email);
+      })
+      .catch((error) => console.error("Error fetching ", error));
+  };
+  
+  const Back = () => {
+    setLoading(true);
+    setStep(0);
+  };
+
   return (
     <div
       className={
@@ -100,7 +125,11 @@ const LoginMainPage: React.FC<PageProps> = ({
       }
     >
       {validateContinueButton()}
-      <BackArrow executableFunction={() => setStep(0)} />
+      <BackArrow
+          executableFunction={() => {
+            Back();
+          }}
+        />
       <MailLockIcon sx={{ fontSize: 150 }}></MailLockIcon>
       <strong>
         <p className={styles.welcomeBackText}>Registro de usuario</p>
@@ -119,10 +148,14 @@ const LoginMainPage: React.FC<PageProps> = ({
             labelPlaceholder="Correo Electrónico"
             color="success"
             width={isMobile ? "85%" : "335px"}
-            onChange={({ target: { value } }) => setEmail(value)}
+            onChange={(e) => {setEmail(e.target.value);
+              handleCheckEmail(e);
+          }}
             type="email"
           />
+        {emailExists === true && (<p style={{ color: 'red' }}>Este correo ya se encuentra registrado en el sistema</p>)}
         </div>
+
         <div
           className={isMobile ? styles.singleInputMobile : styles.singleInput}
         >
@@ -148,6 +181,7 @@ const LoginMainPage: React.FC<PageProps> = ({
             width={isMobile ? "85%" : "335px"}
             onChange={({ target: { value } }) => setConfirmPassword(value)}
           />
+          {password != confirmPassword && (<p style={{ color: 'red' }}>Las claves no coinciden</p>)}
         </div>
       </div>
 
@@ -159,6 +193,7 @@ const LoginMainPage: React.FC<PageProps> = ({
       >
         <strong>CONTINUAR</strong>
       </button>
+      {loading && <LoadingScreen />}
     </div>
   );
 };

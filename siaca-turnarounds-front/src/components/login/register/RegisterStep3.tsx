@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useMediaQuery } from "@mui/material";
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { Spacer } from "@nextui-org/react";
+import LoadingScreen from "@/components/Reusables/LoadingScreen";
 
 
 
@@ -12,6 +13,13 @@ interface PageProps {
 
 const LoginMainPage: React.FC <PageProps> = ({setStep}) => {
   const isMobile = useMediaQuery("(max-width: 1270px)");
+  const [loading, setLoading] = useState(false);
+
+  const Continue = () => {
+    setLoading(true);
+    setStep(0);
+  };
+
   return (
 
     <div
@@ -26,9 +34,10 @@ const LoginMainPage: React.FC <PageProps> = ({setStep}) => {
      <center> <p className={styles.welcomeBackText}>Tu registro se ha realizado correctamente ya puedes hacer login </p> </center>
     </strong>
     <Spacer y={2} />
-    <button className={styles.ingresarButton} onClick={() => setStep(0)}>
+    <button className={styles.ingresarButton} onClick={() => Continue()}>
         REGRESAR AL LOGIN
       </button>
+      {loading && <LoadingScreen />}
  </div>
 
   );

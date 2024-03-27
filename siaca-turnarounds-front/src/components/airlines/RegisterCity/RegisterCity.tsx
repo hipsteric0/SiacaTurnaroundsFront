@@ -96,8 +96,8 @@ const RegisterCity: React.FC<PageProps> = ({ setStep }) => {
       <div className={styles.airlinesListContainer}>
         <span className={styles.titleText}>Codigos</span>
         <div className={styles.inputsList}>
-          <StandardInput setValue={setCodigoIATA} inputText="IATA" />
-          <StandardInput setValue={setCodigoOACI} inputText="OACI" />
+          <StandardInput setValue={setCodigoIATA} inputText="IATA" inputMaxLength="3"/>
+          <StandardInput setValue={setCodigoOACI} inputText="OACI" inputMaxLength="4"/>
         </div>
         <span className={styles.titleText}>Datos</span>
         <div className={styles.inputsList}>

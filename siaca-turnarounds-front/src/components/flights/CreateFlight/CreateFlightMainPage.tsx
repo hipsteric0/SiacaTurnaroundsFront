@@ -181,10 +181,10 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
             estado: "No ha llegado",
             ente_pagador: ChargesPayableBy,
             numero_vuelo: flightNumber,
-            ETA: ETA1 + ":" + ETA2,
-            ETD: ETD1 + ":" + ETD2,
+            ETA: ETA1,
+            ETD: ETD1,
             ETA_fecha: ETADateValue,
-            ETD_fecha: dateETDyear + "-" + dateETDmonth + "-" + dateETDday,
+            ETD_fecha: dateETDday,
             gate: gate,
             fk_aerolinea: Carrier,
             fk_plantilla: templateValue,
@@ -425,14 +425,10 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
     if (recurrentFlight === true) {
       //vuelo recurrente
       let initialDate = new Date(
-        dateETAyear + "-" + dateETAmonth + "-" + dateETAday
+         dateETAday
       );
       initialDate.setDate(initialDate.getDate() + 1);
       let finalDate = new Date(
-        recurrentEndDateYear +
-          "-" +
-          recurrentEndDateMonth +
-          "-" +
           recurrentEndDateDay
       );
       finalDate.setDate(finalDate.getDate() + 1);
@@ -500,7 +496,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
       router.reload();
     } else {
       //vuelo unico
-      await registerFlight(dateETAyear + "-" + dateETAmonth + "-" + dateETAday);
+      await registerFlight(dateETAday);
       setLoading(true);
       router.reload();
     }
@@ -517,15 +513,9 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
       ACtype === "" ||
       gate === "" ||
       ETA1 === "" ||
-      ETA2 === "" ||
       dateETAday === "" ||
-      dateETAmonth === "" ||
-      dateETAyear === "" ||
       ETD1 === "" ||
-      ETD2 === "" ||
       dateETDday === "" ||
-      dateETDmonth === "" ||
-      dateETDyear === "" ||
       routing2 === 0 ||
       flightType === 0 ||
       templateValue === 0 ||
@@ -534,9 +524,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
       return true;
     if (clickedRecurrentFlight === true && recurrentFlight === true) {
       if (
-        recurrentEndDateDay === "" ||
-        recurrentEndDateMonth === "" ||
-        recurrentEndDateYear === ""
+        recurrentEndDateDay === ""
       ) {
         return true;
       }
@@ -716,84 +704,47 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
             <div className={styles.dataContainerRowMediumGap}>
               <div className={styles.dataContainerRowItem}>
                 <p>ETA:</p>
-                <StandardInput
-                  setValue={setETA1}
-                  inputText=""
-                  inputWidth="55px"
-                />
-                <p>:</p>
-                <StandardInput
-                  setValue={setETA2}
-                  inputText=""
-                  inputWidth="55px"
-                />
+                <input
+                  className={styles.date}
+                  type="time"
+                  id="time"
+                  value={ETA1}
+                  onChange={(e) => setETA1(e.target.value)}
+            />
               </div>
               <div className={styles.dataContainerRowItem}>
-                <p>DIA:</p>
-                <StandardInput
-                  setValue={setdateETAday}
-                  inputText=""
-                  inputWidth="55px"
-                />
-                <p>MES:</p>
-                <StandardInput
-                  setValue={setdateETAmonth}
-                  inputText=""
-                  inputWidth="55px"
-                />
-                <p>AÑO:</p>
-                <StandardInput
-                  setValue={setdateETAyear}
-                  inputText=""
-                  inputWidth="95px"
-                />
-              </div>
-              <div className={styles.dataContainerRowItem}>
-                <p className={styles.adviceText}>
-                  *Formato de Fecha: AAAA-MM-DD. Formato de Hora: HH:MM:SS 24hrs
-                </p>
+                <p>FECHA:</p>
+              <input
+              className={styles.date}
+              type="date"
+              id="date"
+              value={dateETAday}
+              onChange={(e) => setdateETAday(e.target.value)}
+              min={new Date().toISOString().slice(0, 10)}
+            />
               </div>
             </div>
             <div className={styles.dataContainerRowMediumGap}>
               <div className={styles.dataContainerRowItem}>
                 <p>ETD:</p>
-
-                <StandardInput
-                  setValue={setETD1}
-                  inputText=""
-                  inputWidth="55px"
-                />
-                <p>:</p>
-                <StandardInput
-                  setValue={setETD2}
-                  inputText=""
-                  inputWidth="55px"
-                />
+                <input
+                  className={styles.date}
+                  type="time"
+                  id="time"
+                  value={ETD1}
+                  onChange={(e) => setETD1(e.target.value)}
+            />
               </div>
               <div className={styles.dataContainerRowItem}>
-                <p>DIA:</p>
-                <StandardInput
-                  setValue={setdateETDday}
-                  inputText=""
-                  inputWidth="55px"
-                />
-                <p>MES:</p>
-                <StandardInput
-                  setValue={setdateETDmonth}
-                  inputText=""
-                  inputWidth="55px"
-                />
-                <p>AÑO:</p>
-                <StandardInput
-                  setValue={setdateETDyear}
-                  inputText=""
-                  inputWidth="95px"
-                />
-              </div>
-              <div className={styles.dataContainerRowItem}>
-                <p className={styles.adviceText}>
-                  *Formato de Fecha: AAAA-MM-DD. Formato de Hora: HH:MM:SS 24hrs
-                </p>
+                <p>FECHA:</p>
+                <input
+                  className={styles.date}
+                  type="date"
+                  id="date"
+                  value={dateETDday}
+                  onChange={(e) => setdateETDday(e.target.value)}
+                  min={new Date().toISOString().slice(0, 10)}
+            />
               </div>
             </div>
             <div className={styles.dataContainerRowMediumGap}>
@@ -871,34 +822,20 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
               <div className={styles.recurrencyFormRow}>
                 <p>Fecha de inicio de la serie:</p>
                 <div className={styles.unmodifiableInput}>
-                  {dateETAday + "-" + dateETAmonth + "-" + dateETAyear}{" "}
+                  {dateETAday}{" "}
                 </div>
               </div>
               <div className={styles.recurrencyFormRow}>
                 <p>Fecha de fin de la serie:</p>
-
-                <p>Dia:</p>
-                <StandardInput
-                  setValue={setrecurrentEndDateDay}
-                  inputText=""
-                  inputWidth="55px"
-                />
-                <p>Mes:</p>
-                <StandardInput
-                  setValue={setrecurrentEndDateMonth}
-                  inputText=""
-                  inputWidth="55px"
-                />
-                <p>Año:</p>
-                <StandardInput
-                  setValue={setrecurrentEndDateYear}
-                  inputText=""
-                  inputWidth="95px"
-                />
-                <p className={styles.adviceText2}>
-                  *Formato de Fecha: AAAA-MM-DD mayor a la fecha de inicio de la
-                  serie.
-                </p>
+                <p>FECHA:</p>
+                <input
+                  className={styles.date}
+                  type="date"
+                  id="date"
+                  value={recurrentEndDateDay}
+                  onChange={(e) => setrecurrentEndDateDay(e.target.value)}
+                  min={new Date().toISOString().slice(0, 10)}
+            />
               </div>
               <div className={styles.recurrencyFormRow}>
                 <p>Días de la semana:</p>

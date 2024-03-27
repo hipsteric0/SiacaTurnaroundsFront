@@ -6,6 +6,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { Dropdown } from "@nextui-org/react";
 import { Input, Grid } from "@nextui-org/react";
 import BackArrow from "@/components/Reusables/BackArrow";
+import LoadingScreen from "@/components/Reusables/LoadingScreen";
 import { Telex } from "next/font/google";
 
 interface PageProps {
@@ -57,6 +58,7 @@ const LoginMainPage: React.FC<PageProps> = ({
   const [arrayJobPositionsList, setArrayJobPositionsList] = useState([]);
   const [arrayDepartmentsList, setArrayDepartmentsList] = useState([]);
   const [userID, setUserID] = useState("");
+  const [loading, setLoading] = useState(false);
   let userIDValue;
 
   useEffect(() => {
@@ -223,6 +225,7 @@ const LoginMainPage: React.FC<PageProps> = ({
     //setEmailValue(email);
     //setPasswordValue(password);
     //registerStep2request();
+    setLoading(true);
     let departmentID = 0;
     let jobPositionID = 0;
     departmentID = await getDepartmentFromArray(selectedDepartmentValue);
@@ -260,6 +263,41 @@ const LoginMainPage: React.FC<PageProps> = ({
     return y;
   };
 
+  const [value, setValue] = useState("");
+  const [valuePhone, setValuePhone] = useState("");
+ 
+  //Valida que solo se escriban números
+  const isNumber = (key : any) => {
+    const tildeRegex = /[+-]/;
+    return key.length === 1 && (key.match(/[0-9]/) || key === " " || key.match(tildeRegex));
+  };
+
+  //Valida que se escriban solo letras en el input
+  const isLetter = (key : any) => {
+    const tildeRegex = /[áéíóúüÁÉÍÓÚÜ]/;
+    return key.length === 1 && (key.match(/[a-z]/i) || key === " " || key.match(tildeRegex));
+  };
+
+  //Validación para poder corregir inputs de letras
+  const handleKeyDown = (e : any) => {
+    if (e.key === "Backspace") {
+      return;
+    }
+    if (!isLetter(e.key)) {
+      e.preventDefault();
+    }
+  };
+
+    //Validación para poder corregir inputs de números
+    const handleKeyDown2 = (e : any) => {
+      if (e.key === "Backspace") {
+        return;
+      }
+      if (!isNumber(e.key)) {
+        e.preventDefault();
+      }
+    };
+
   return (
     <div
       className={
@@ -270,7 +308,6 @@ const LoginMainPage: React.FC<PageProps> = ({
     >
       {validateContinueButton()}
 
-      <BackArrow executableFunction={() => setStep(4)} />
       <AccountCircleIcon sx={{ fontSize: 100 }}></AccountCircleIcon>
       <div
         className={
@@ -288,9 +325,13 @@ const LoginMainPage: React.FC<PageProps> = ({
           <Input
             bordered
             labelLeft="Nombres"
+            type="text"
             color="success"
+            onKeyDown={handleKeyDown}
             width={isMobile ? "85%" : "335px"}
-            onChange={({ target: { value } }) => setFirstName(value)}
+            onChange={(e) => {
+              setFirstName(e.target.value);
+              setValue(e.target.value)}}
             aria-label="Input nombre"
           />
         </div>
@@ -300,9 +341,13 @@ const LoginMainPage: React.FC<PageProps> = ({
           <Input
             bordered
             labelLeft="Apellidos"
+            type="text"
             color="success"
+            onKeyDown={handleKeyDown}
             width={isMobile ? "85%" : "335px"}
-            onChange={({ target: { value } }) => setLastName(value)}
+            onChange={(e) => {
+              setLastName(e.target.value);
+              setValue(e.target.value)}}
             aria-label="Input apellido"
           />
         </div>
@@ -312,6 +357,7 @@ const LoginMainPage: React.FC<PageProps> = ({
           <Input
             bordered
             labelLeft="Cédula"
+            type="number"
             color="success"
             width={isMobile ? "85%" : "335px"}
             onChange={({ target: { value } }) => setCedula(value)}
@@ -326,7 +372,10 @@ const LoginMainPage: React.FC<PageProps> = ({
             labelLeft="Teléfono"
             color="success"
             width={isMobile ? "85%" : "335px"}
-            onChange={({ target: { value } }) => setPhoneNumber(value)}
+            onKeyDown={handleKeyDown2}
+            onChange={(e) => {
+              setPhoneNumber(e.target.value);
+              setValuePhone(e.target.value)}}
             type="phone"
             aria-label="Input telefono"
           />
@@ -422,6 +471,7 @@ const LoginMainPage: React.FC<PageProps> = ({
       >
         <strong>REGISTRAR</strong>
       </button>
+      {loading && <LoadingScreen />}
     </div>
   );
 };

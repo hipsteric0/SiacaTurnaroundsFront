@@ -362,7 +362,7 @@ const SLAMetrics: React.FC<PageProps> = ({ setStep }) => {
       {loading && <LoadingScreen />}
       <div className={styles.opcion2}  onClick={() => Airline()}> Estadisticas Aerolineas</div>
       {loading && <LoadingScreen />}
-      <div className={styles.opcion3}  onClick={() => Flight()}> Estadisticas Vuelos </div>
+      <div className={styles.opcion3}  onClick={() => Flight()}> Estadisticas Códigos de Demora </div>
       {loading && <LoadingScreen />}
       </div>
       </center>

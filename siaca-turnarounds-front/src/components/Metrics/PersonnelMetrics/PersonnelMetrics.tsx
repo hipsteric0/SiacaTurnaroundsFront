@@ -32,12 +32,15 @@ const PersonnelMetrics: React.FC<PageProps> = ({ setStep }) => {
   const [deleteDialog, setDeleteDialog] = useState(false);
   const [parametro, setParametro] = useState(['']);
 
+  const [dayStart, setDayStart] = useState("");
+  const [dayFinal, setDayFinal] = useState("");
+
   let array1: any[] = []
   let array2: any[] = []
   let array3: any[] = []
 
   useEffect(() => {
-    getList();
+
   }, []);
 
   const getList = async () => {
@@ -69,6 +72,10 @@ const PersonnelMetrics: React.FC<PageProps> = ({ setStep }) => {
   };
 
   const arrayPrinterStart = () => {
+
+    if (!Array.isArray(arrayList3) || arrayList3.length === 0) {
+      return <p>No hay existe historial de personal entre estas fechas</p>;
+    }
     let groupedData = {};
   
     arrayList3.map((index: any) => {
@@ -100,6 +107,19 @@ const PersonnelMetrics: React.FC<PageProps> = ({ setStep }) => {
     return y;
   };
 
+
+  const handleButtonClickSearch = () => {
+    fetch(`http://127.0.0.1:8000/metricas/personal/${dayStart}/${dayFinal}/?token=`+localStorage.getItem("userToken"))
+      .then((response) => response.json())
+      .then((data) => setArrayList3(data))
+      .catch((error) => console.error('Error fetching ', error));
+  };
+  
+
+  const Search = () => {
+    handleButtonClickSearch();
+  }
+
   return (
     <main className={styles.containerAirlinesMainPage}>
       <div className={styles.backArrowIcon}>
@@ -109,6 +129,35 @@ const PersonnelMetrics: React.FC<PageProps> = ({ setStep }) => {
           }}
         />
       </div>
+
+      <div className={styles.parent}>
+<div className={styles.search}>
+<div className={styles.div1}>
+      <label >Fecha inicio:</label>
+      <input
+        type="date"
+        id="code"
+        value={dayStart}
+        onChange={(e) => setDayStart(e.target.value)}
+      />
+
+      </div>
+      <div className={styles.div2}>
+      <label >Fecha final:</label>
+      <input
+        type="date"
+        id="date"
+        value={dayFinal}
+        onChange={(e) => setDayFinal(e.target.value)}
+      />
+      </div>
+
+      <div className={styles.div3}>
+      <button onClick={Search}>Buscar maquinarias</button>
+      </div>
+      </div>
+              </div >
+
       <div className={styles.airlinesListContainer}>
 
       {arrayPrinterStart()}

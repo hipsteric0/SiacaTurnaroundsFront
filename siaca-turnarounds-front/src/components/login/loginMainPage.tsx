@@ -9,6 +9,10 @@ import { useState } from "react";
 
 import { motion } from 'framer-motion';
 import LoadingScreen from '../Reusables/LoadingScreen';
+import WarningAmberIcon from "@mui/icons-material/WarningAmber";
+import { Dialog, TableBody } from "@mui/material";
+import GreenButton from "@/components/Reusables/GreenButton";
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
 interface PageProps {
   setStep: (value: number) => void;
@@ -19,6 +23,7 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [loginError, setLoginError] = useState(false);
 
   let token = "";
   let userFullName = "";
@@ -35,12 +40,13 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
         localStorage.setItem("userFullName", userFullName);
         router.push("/Flights");
       } else {
-        //mostrar pop up de que login invalido
+        setLoginError(true);
+
       }
     }, 5000);
   };
 
-  const registerStep2requestSecond = () => {
+   const registerStep2requestSecond = () => {
     const fetchData = async () => {
       try {
         const url = "/api/login";
@@ -60,12 +66,16 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
           })
         );
       } catch (error) {
-        console.error("Error geting user", error);
+        console.error("Error getting user", error);
+        
         return;
       }
     };
     fetchData().catch(console.error);
+    
   };
+
+
   return (
     <div
       className={
@@ -74,6 +84,39 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
           : styles.mainContainerLoginMainPage
       }
     >
+      {loginError === true && 
+      (          
+        <Dialog
+          className={styles.dialogDelete}
+          open={loginError}
+          onClose={() => setLoginError(false)}
+        >
+          <div className={styles.dialogBack}>
+            <div className={styles.dialogText}>
+              <div className={styles.warningIcon}>
+                <ErrorOutlineIcon color="error" fontSize="inherit" />
+              </div>
+              <p>
+                <strong>
+                  Su usuario no se encuentra activo o sus datos son erroneos, intentelo de nuevo
+                </strong>
+              </p>
+              <br />
+              <center>
+              <div className={styles.dialogButtons}>
+                <GreenButton
+                  executableFunction={() => {
+                    setLoginError(false);
+                  }}
+                  buttonText="Aceptar"
+                />
+              </div>
+              </center>
+            </div>
+          </div>
+        </Dialog>
+      )}
+
       <Image src={SiacaLogo} alt="Logo" />
       <p className={styles.welcomeBackText}>¡Bienvenido de vuelta!</p>
       <div

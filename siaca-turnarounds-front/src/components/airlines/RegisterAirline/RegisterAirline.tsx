@@ -14,6 +14,8 @@ import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import SiacaNavbar from "@/components/Reusables/Navbar/SiacaNavbar";
 import axios from 'axios';
 
+import { Input, Grid, Spacer } from "@nextui-org/react";
+
 import React, { useCallback} from 'react';
 import { useDropzone } from 'react-dropzone';
 
@@ -22,6 +24,7 @@ import BackArrow from "@/components/Reusables/BackArrow";
 
 
 import LoadingScreen from '../../Reusables/LoadingScreen';
+import { useMediaQuery } from "@mui/material";
 
 
 
@@ -31,6 +34,7 @@ interface PageProps {
 
 const RegisterAirline: React.FC<PageProps> = ({ setStep }) => {
   //if token exists show regular html else show not signed in screen
+  const isMobile = useMediaQuery("(max-width: 1270px)");
   const [aerolinea, setAerolinea] = useState("");
   const [codigo, setCodigo] = useState("");
   const [codigoOACI, setCodigoOACI] = useState("");
@@ -95,6 +99,34 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep }) => {
     router.reload();
   };
 
+  const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+  const [emailError, setEmailError] = useState('');
+  const [emailError2, setEmailError2] = useState('');
+
+  const handleEmailPrincipalChange = (e) => {
+    const inputEmail = e.target.value;
+    setCorreoPrincipal(inputEmail);
+
+    if (!EMAIL_REGEX.test(inputEmail)) {
+      setEmailError('Por favor, introduce una dirección de correo válida.');
+    } else {
+      setEmailError('');
+    }
+  };
+
+  const handleEmailSecundarioChange = (e) => {
+    const inputEmail = e.target.value;
+    setCorreoSecundario(inputEmail);
+
+    if (!EMAIL_REGEX.test(inputEmail)) {
+      setEmailError2('Por favor, introduce una dirección de correo válida.');
+    } else {
+      setEmailError2('');
+    }
+  };
+
+
   return (
     <main className={styles.RegisterAirlineContainer}>
       <div className={styles.backArrowIcon}>
@@ -126,26 +158,49 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep }) => {
         <span className={styles.titleText}>Datos</span>
         <div className={styles.inputsList}>
           <StandardInput setValue={setAerolinea} inputText="Aerolínea" />
-          <StandardInput setValue={setCodigo} inputText="Código IATA" />
-          <StandardInput setValue={setCodigoOACI} inputText="Código OACI" />
+          <StandardInput setValue={setCodigo} inputText="Código IATA" inputMaxLength="3"/>
+          <StandardInput setValue={setCodigoOACI} inputText="Código OACI" inputMaxLength="4" />
         </div>
         <span className={styles.titleText}>Contacto</span>
         <div className={styles.inputsList}>
-          <StandardInput
-            setValue={setCorreoPrincipal}
-            inputText="Correo principal"
+        <label>
+        <Input
+            type="email"
+            bordered
+            labelPlaceholder="Correo principal"
+            color="success"
+            width={isMobile ? "85%" : "225px"}
+            onChange={(e) => {
+              setCorreoPrincipal(e.target.value);
+              handleEmailPrincipalChange(e);
+            }}
+            
           />
-          <StandardInput
-            setValue={setCorreoSecundario}
-            inputText="Correo secundario"
+          {emailError && <p style={{ color: 'red' }}>{emailError}</p>}
+          </label>
+
+          <label>
+        <Input
+            type="email"
+            bordered
+            labelPlaceholder="Correo secundario"
+            color="success"
+            width={isMobile ? "85%" : "225px"}
+            onChange={(e) => {
+              setCorreoSecundario(e.target.value);
+              handleEmailSecundarioChange(e);
+            }}
+            
           />
+          {emailError2 && <p style={{ color: 'red' }}>{emailError2}</p>}
+          </label>
           <StandardInput
             setValue={setTelefonoPrincipal}
             inputText="Teléfono principal"
           />
           <StandardInput
             setValue={setTelefonoSecundario}
-            inputText="Teléfono secundario"
+            inputText="Teléfono secundario (opcional)"
           />
         </div>
         <span className={styles.titleText}>Localización</span>
@@ -154,6 +209,8 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep }) => {
           <StandardInput setValue={setCiudad} inputText="Ciudad" />
         </div>
       </div>
+      <div>
+    </div>
       <div className={styles.registerbuttoncontainer}>
         <GreenButton
           executableFunction={() => continueButton()}
@@ -163,9 +220,7 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep }) => {
             codigo === "" ||
             codigoOACI === "" ||
             correoPrincipal === "" ||
-            correoSecundario === "" ||
             telefonoPrincipal === "" ||
-            telefonoSecundario === "" ||
             pais === "" ||
             ciudad === ""
           }

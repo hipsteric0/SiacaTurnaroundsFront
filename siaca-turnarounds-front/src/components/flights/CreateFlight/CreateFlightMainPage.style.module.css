@@ -237,3 +237,11 @@
   width: 185px;
   height: 40px;
 }
+
+.date{
+
+    padding: 8px;
+    border-radius: 10px;
+    border: solid 2px #ccc;
+
+}

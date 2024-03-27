@@ -240,7 +240,7 @@ const AirlinesMainPage: React.FC<PageProps> = ({
 
     arrayList3.map((index: any) => {
       y[index.id] = (
-        <div key={index.id} className={styles.tableInfoRow}>
+        <div key={index.id } className={styles.tableInfoRow}>
           {
             <Dialog
               className={styles.dialogDelete}
@@ -323,8 +323,9 @@ const AirlinesMainPage: React.FC<PageProps> = ({
                       <Divider> Código </Divider> 
                       </div>
                       <br/>
-                      {arrayList3.find((o) => o.id === clickID)?.codigo}
+                      <strong>IATA:</strong>{arrayList3.find((o) => o.id === clickID)?.codigo}
                       <Spacer/>
+                      <strong>OACI:</strong>{arrayList3.find((o) => o.id === clickID)?.codigo_OACI}
 
                       <div className={styles.dividerText}>
                       <Divider> Correos </Divider> 
@@ -342,6 +343,14 @@ const AirlinesMainPage: React.FC<PageProps> = ({
                     <strong>Principal:</strong>  {arrayList3.find((o) => o.id === clickID)?.telefono}
                       <Spacer/>
                       <strong>Secundario:</strong>  {arrayList3.find((o) => o.id === clickID)?.telefono_secundario}
+                      <Spacer/>
+                      <div className={styles.dividerText}>
+                      <Divider> Localización </Divider> 
+                      </div>
+                    <br/>
+                    <strong>País:</strong>  {arrayList3.find((o) => o.id === clickID)?.pais}
+                      <Spacer/>
+                      <strong>Ciudad:</strong>  {arrayList3.find((o) => o.id === clickID)?.ciudad}
                       <Spacer/>
                 </div>
               </div>
