@@ -6,7 +6,7 @@ import { log } from "console";
 import React, { useEffect, useState } from "react";
 import router from "next/router";
 import { Table, Spacer } from "@nextui-org/react";
-import { TableBody, Dialog } from "@mui/material";
+import { TableBody, Dialog, Autocomplete, TextField } from "@mui/material";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
@@ -28,7 +28,9 @@ import Badge from '@mui/material/Badge';
 import Divider from '@mui/material/Divider';
 
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import EditNoteIcon from '@mui/icons-material/EditNote';
 import { AccessAlarmOutlined } from "@mui/icons-material";
+
 
 interface PageProps {
   setStep: (value: number) => void;
@@ -50,8 +52,17 @@ const PersonnelMainPage: React.FC = () => {
   const [listDialog, setListDialog] = useState(false);
 
   const [infoDialog, setInfoDialog] = useState(false);
+  const [RoleDialog, setRoleDialog] = useState(false);
   
   const [solicitudeCounter, setSolicitudeCounter] = useState(-1);
+
+
+  const [lateCodesArray, setlateCodesArray] = useState([""]);
+  const [lateCodesData, setlateCodesData] = useState();
+  const [lateCodeValue, setlateCodeValue] = useState("");
+  const [lateCodeValueIDForPatchUpdate, setlateCodeValueIDforPatchUpdate] =
+    useState("");
+
   let filterValues: any[] = [];
 
   useEffect(() => {
@@ -185,7 +196,7 @@ const PersonnelMainPage: React.FC = () => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            router.reload();
+          router.reload();
           })
         );
       } catch (error) {
@@ -239,6 +250,18 @@ const PersonnelMainPage: React.FC = () => {
               open={deleteDialog}
               onClose={() => setDeleteDialog(false)}
             >
+          <div>
+            <div
+              className={styles.closeIconDialog}
+              onClick={() => setDeleteDialog(false)}
+            >
+              <Tooltip title="Cerrar">
+              <IconButton>
+              <CloseRoundedIcon htmlColor="#4d4e56" />
+              </IconButton>
+              </Tooltip>
+            </div>
+          </div>
               <div className={styles.dialogBack}>
                 <div className={styles.dialogText}>
                   <div className={styles.warningIcon}>
@@ -268,7 +291,6 @@ const PersonnelMainPage: React.FC = () => {
               </div>
             </Dialog>
           }
-
 
 {
             <Dialog
@@ -334,6 +356,80 @@ const PersonnelMainPage: React.FC = () => {
             </Dialog>
           }
 
+
+            {
+            <Dialog
+              className={styles.dialogDelete}
+              open={RoleDialog}
+              onClose={() => setRoleDialog(false)}
+              fullWidth={true}
+            >
+          <div>
+            <div
+              className={styles.closeIconDialog}
+              onClick={() => setRoleDialog(false)}
+            >
+              <Tooltip title="Cerrar">
+              <IconButton>
+              <CloseRoundedIcon htmlColor="#4d4e56" />
+              </IconButton>
+              </Tooltip>
+            </div>
+          </div>
+              <div className={styles.dialogBack}>
+                <div className={styles.dialogText}>
+                  <div className={styles.warningIcon}>
+                    <EditNoteIcon color="success" fontSize="inherit" />
+                  </div>
+                  
+                    <strong>
+                      Editar rol del usuario:
+                    </strong>
+                    <Spacer/>
+                    <p>{arrayList3.find((o) => o.fk_user?.id === clickID)?.fk_user?.first_name} {" "} {arrayList3.find((o) => o.fk_user?.id  === clickID)?.fk_user?.last_name}</p>
+                    <Spacer/>
+                    <div className={styles.roleList}>
+
+                          <Autocomplete
+                          className={styles.autoComplete}
+                            size="small"
+                            sx={{ width: "400px"}}
+                            value={lateCodeValue} //el valor que toma por defecto, esta comentado por que debe ser nulo
+                            onInputChange={(event, newInputValue) => {
+                              setlateCodeValue(newInputValue);
+                              setlateCodeValueIDForPatch(newInputValue);
+                            }}
+                            id="controllable-states-demo"
+                            options={lateCodesArray}
+                            renderInput={(params) => (
+                              <TextField {...params} label={""} 
+                              />
+                            )}
+                          />
+
+                        </div>
+                        <Spacer/>
+                  <div className={styles.dialogButtons}>
+                    <GreenButton2
+                      executableFunction={() => {
+                        patchLateCode(clickID);
+                        setRoleDialog(false);
+
+                      }}
+                      buttonText="Aceptar"
+                    />
+                    <RedButton2
+                      executableFunction={() => {
+                        setRoleDialog(false);
+                      }}
+                      buttonText="Regresar"
+                    />
+                  </div>
+                </div>
+              </div>
+            </Dialog>
+          }
+
           <td>
             {index?.fk_user?.first_name} {index?.fk_user?.last_name}
           </td>
@@ -376,11 +472,15 @@ const PersonnelMainPage: React.FC = () => {
                 sethoverPencilId(-1);
               }}
             >
-               <Tooltip title="Editar">
+               <Tooltip title="Editar rol">
               <IconButton>
               <BorderColorOutlinedIcon
                 htmlColor={hoverPencilId === index.id ? "#00A75D" : "#4D4E56"}
-                onClick={() => {}}
+                onClick={() => {
+                  getLateCodes();
+                  setclickID(index?.fk_user?.id);
+                  setRoleDialog(true);
+                }}
               />{" "}
               </IconButton>
               </Tooltip>
@@ -435,6 +535,18 @@ const PersonnelMainPage: React.FC = () => {
               open={aceptDialog}
               onClose={() => setAceptDialog(false)}
             >
+          <div>
+            <div
+              className={styles.closeIconDialog}
+              onClick={() => setAceptDialog(false)}
+            >
+              <Tooltip title="Cerrar">
+              <IconButton>
+              <CloseRoundedIcon htmlColor="#4d4e56" />
+              </IconButton>
+              </Tooltip>
+            </div>
+          </div>
               <div className={styles.dialogBack}>
                 <div className={styles.dialogText}>
                   <div className={styles.warningIcon}>
@@ -447,20 +559,43 @@ const PersonnelMainPage: React.FC = () => {
                     <strong>
                       ¿Está seguro que desea aceptar este usuario?
                     </strong>
+                    <Spacer/>
+                    <p>Asignar rol del usuario:</p>
+                    <Spacer/>
+                    <div className={styles.roleList}>
+                      <center>
+                          <Autocomplete
+                            size="small"
+                            sx={{ width: "350px" }}
+                            value={lateCodeValue} //el valor que toma por defecto, esta comentado por que debe ser nulo
+                            onInputChange={(event, newInputValue) => {
+                              setlateCodeValue(newInputValue);
+                              setlateCodeValueIDForPatch(newInputValue);
+                            }}
+                            id="controllable-states-demo"
+                            options={lateCodesArray}
+                            renderInput={(params) => (
+                              <TextField {...params} label={""} />
+                            )}
+                          />
+                          </center>
+                        </div>
+
                   </p>
                   <br />
                   <div className={styles.dialogButtons}>
                     <GreenButton2
                       executableFunction={() => {
                         changePersonnelState(clickID2);
+                        patchLateCode(clickID2);
                       }}
-                      buttonText="Si"
+                      buttonText="Aceptar"
                     />
                     <RedButton2
                       executableFunction={() => {
                         setAceptDialog(false);
                       }}
-                      buttonText="No"
+                      buttonText="Volver"
                     />
                   </div>
                 </div>
@@ -474,6 +609,18 @@ const PersonnelMainPage: React.FC = () => {
               open={denyDialog}
               onClose={() => setDenyDialog(false)}
             >
+          <div>
+            <div
+              className={styles.closeIconDialog}
+              onClick={() => setDenyDialog(false)}
+            >
+              <Tooltip title="Cerrar">
+              <IconButton>
+              <CloseRoundedIcon htmlColor="#4d4e56" />
+              </IconButton>
+              </Tooltip>
+            </div>
+          </div>
               <div className={styles.dialogBack}>
                 <div className={styles.dialogText}>
                   <div className={styles.warningIcon}>
@@ -565,6 +712,88 @@ const PersonnelMainPage: React.FC = () => {
     return y;
   };
 
+
+
+  const setlateCodeValueIDForPatch = (value: string) => {
+    let identificadorAuxiliar = value;
+    lateCodesData?.map((element: any) => {
+      if (element?.rol === identificadorAuxiliar) {
+        setlateCodeValueIDforPatchUpdate(element?.id);
+        console.log("el ID clickeado es ", element?.id);
+      }
+    });
+  };
+
+  
+  const getLateCodes = async () => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/getRoleList";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            console.log("getLateCodesList", result);
+            setlateCodesOptions(Object.values(result));
+            setlateCodesData(Object.values(result));
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
+
+  const setlateCodesOptions = (data: any) => {
+    let auxiliaryArray: string[] = [];
+    data.map((element: any) => {
+      auxiliaryArray.push(
+        (
+          element?.rol
+        ).toString()
+      );
+    });
+    setlateCodesArray(auxiliaryArray);
+    console.log("auxiliaryArray", auxiliaryArray);
+  };
+
+  
+  const patchLateCode = async (userID: any) => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/patchRole";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+            userId: userID,
+            role_id: lateCodeValueIDForPatchUpdate,
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            console.log("patchLateCode", result);
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
+
+
+
+
   return (
     <main className={styles.containerPersonnelMainPage}>
       <Spacer />
@@ -622,7 +851,7 @@ const PersonnelMainPage: React.FC = () => {
         <div className={styles.greenbuttonSuperContainer}>
         <Badge badgeContent={solicitudeCounter} color="error">
           <GreenButton
-            executableFunction={() => setListDialog(true)}
+            executableFunction={() => {setListDialog(true); getLateCodes();}}
             buttonText={"Solicitudes"}
             disabled={solicitudeCounter < 1}
           />
