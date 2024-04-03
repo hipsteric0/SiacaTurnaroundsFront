@@ -1,143 +1,112 @@
-import GreenButton from "@/components/Reusables/GreenButton";
 import styles from "./DocsMainPage.style.module.css";
-import KeyboardArrowLeftRoundedIcon from "@mui/icons-material/KeyboardArrowLeftRounded";
-import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRightRounded";
-import { log } from "console";
+import Web3 from "web3";
 import React, { useEffect, useState } from "react";
-import router from "next/router";
-import { Table , Spacer} from "@nextui-org/react";
-import { TableBody } from "@mui/material";
-import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
-import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-import { Dropdown } from "@nextui-org/react";
 import { useMediaQuery } from "@mui/material";
-import { Collapse, Text } from "@nextui-org/react";
-import {Card, Image} from "@nextui-org/react";
+import SimpleStorage from "../../../build/contracts/SimpleStorage.json";
+import router from "next/router";
+interface PageProps {}
 
-interface PageProps {
-  setStep: (value: number) => void;
-}
-
-const DocsPage: React.FC<PageProps> = ({ setStep }) => {
+const DocsMainPage: React.FC<PageProps> = ({}) => {
   //if token exists show regular html else show not signed in screen
   const isMobile = useMediaQuery("(max-width: 1270px)");
-  const [allowContinue, setAllowContinue] = useState(false);
   const [arrayList3, setArrayList3] = useState([]);
-  const [deleteDialog, setDeleteDialog] = useState(false);
+  const [contractState, setcontractState] = useState({
+    web3: null,
+    contract: null,
+  });
+  const [contractData, setcontractData] = useState(false);
 
   useEffect(() => {
-    getList();
+    const provider = new Web3.providers.HttpProvider("https://rpc.sepolia.org");
+    async function template() {
+      console.log("SimpleStorage", SimpleStorage);
+      console.log("provider", provider);
+      const web3 = new Web3(provider);
+
+      const acc = web3.eth.accounts.privateKeyToAccount(
+        String(
+          "0x9ecf854af884998ab917946adc8a226995b02f10e161e516a383b8c1083d5a87"
+        )
+      );
+      web3.eth.accounts.wallet.add(acc);
+      console.log("acc", acc);
+      console.log("web3", web3);
+      const networkId = await web3.eth.net.getId();
+      console.log("networkId", networkId.toString());
+      const deployedNetwork = SimpleStorage.networks[/*networkId*/ 11155111];
+      console.log("deployedNetwork", deployedNetwork);
+
+      const contract = new web3.eth.Contract(
+        SimpleStorage.abi,
+        deployedNetwork.address
+      );
+      console.log("setcontractState web3", web3);
+      console.log("setcontractState contract", contract);
+      setcontractState({ web3: web3, contract: contract });
+    }
+    provider && template();
   }, []);
 
-  const getList = async () => {
-    const fetchData = async () => {
-      try {
-        const url = "/api/docsList";
-        const requestOptions = {
-          method: "POST",
-          body: JSON.stringify({
-            userToken: localStorage.getItem("userToken"),
-          }),
-        };
-        const response = await fetch(url, requestOptions).then((res) =>
-          res.json().then((result) => {
-            console.log(result);
-            console.log("values", Object.values(result));
+  useEffect(() => {
+    const { contract } = contractState;
+    async function readData() {
+      const data = await contract?.methods?.getter().call();
+      console.log(data);
+      console.log("DATAA", data);
+      setcontractData(data);
+    }
+    contract && readData();
+  }, []);
 
-            setArrayList3(Object.values(result));
-          })
-        );
-      } catch (error) {
-        console.error("Error geting user", error);
-        return;
-      }
-    };
-    await fetchData().catch(console.error);
-  };
+  async function writeData() {
+    const { contract } = contractState;
+    console.log("contract", contract);
+    console.log("contractState", contractState);
+    console.log("contractDATA", contractData);
+    try {
+      await contract?.methods?.setter(30)?.send({
+        from:
+          //"
+          "0x41e2004dC8f0D79042C220A571499ecE2fb7D019",
+      });
+    } catch (error) {
+      console.error("Error blickchain", error);
+      return;
+    }
+    //router.reload();
+  }
 
-  const arrayPrinter = () => {
-    let y: any = [];
-    console.log("arrayList3", arrayList3.length);
-    const [hoverEyeId, sethoverEyeId] = useState(-1);
-    const [hoverPencilId, sethoverPencilId] = useState(-1);
-    const [hoverTrashId, sethoverTrashId] = useState(-1);
+  // async function writeData2() {
+  //   const account = web3.eth.accounts.privateKeyToAccount(privateKey);
+  //   const nonce = await web3.eth.getTransactionCount(account.address);
+  //   const gasPrice = await web3.eth.getGasPrice();
+  //   const gasLimit = 300000; // Adjust gas limit as needed
 
-    arrayList3.map((index: any) => {
-      y[index.id] = (
-        <div key={index.id} className={styles.tableInfoRow}>
-          <td>{index.fk_vuelo.numero_vuelo}</td>
-          <td>{index.fecha}</td>
-          <td className={styles.iconsContainer}>
-            <div
-              className={styles.functionIcon}
-              onMouseEnter={() => {
-                sethoverEyeId(index.id);
-              }}
-              onMouseLeave={() => {              
-                sethoverEyeId(-1);
-              }}
-            >
-              <RemoveRedEyeIcon
-              htmlColor={hoverEyeId === index.id ? "#00A75D" : "#4D4E56"}
-              onClick={() => {
-                
-              }}/>{" "}
-            </div>
+  //   const encodedData = contractInstance.methods.setValue(newValue).encodeABI();
 
-            <div className={styles.functionIcon}
-            onMouseEnter={() => {
-              sethoverPencilId(index.id);
-            }}
-            onMouseLeave={() => {              
-              sethoverPencilId(-1);
-            }}>
-              <BorderColorOutlinedIcon 
-              htmlColor={hoverPencilId === index.id ? "#00A75D" : "#4D4E56"}
-              onClick={() => {
-                
-                
-              }}/>{" "}
-            </div>
+  //   const tx = {
+  //     from: account.address,
+  //     to: contractAddress,
+  //     gas: gasLimit,
+  //     gasPrice: gasPrice,
+  //     data: encodedData,
+  //     nonce: nonce,
+  //   };
 
-            <div className={styles.functionIcon}
-            onMouseEnter={() => {
-              sethoverTrashId(index.id);
-            }}
-            onMouseLeave={() => {              
-              sethoverTrashId(-1);
-            }}>
-              <DeleteOutlineOutlinedIcon
-               htmlColor={hoverTrashId === index.id ? "#f10303" : "#4D4E56"}
-               onClick={() => {
-                setDeleteDialog(true);
-               }}
-              />
-            </div>
-          </td>
-        </div>
-      );
-    });
-    
-    return y;
-  };
+  //   const signedTx = await web3.eth.accounts.signTransaction(tx, privateKey);
+  //   const receipt = await web3.eth.sendSignedTransaction(
+  //     signedTx.rawTransaction
+  //   );
+
+  //   console.log("Transaction hash:", receipt.transactionHash);
+  // }
 
   return (
     <main className={styles.containerAirlinesMainPage}>
-      <div className={styles.airlinesListContainer}>
-        <div>
-          <div className={styles.tableTitlesContainer}>
-            <span>No. vuelo</span>
-            <span>Fecha</span>
-            <span>Opciones</span>
-          </div>
-          {arrayPrinter()}
-        </div>
-        </div>
+      <p>Data de contrato: {contractData.toString()}</p>
+      <button onClick={() => writeData()}>Cambiar</button>
     </main>
   );
 };
 
-export default DocsPage;
-
-
+export default DocsMainPage;
