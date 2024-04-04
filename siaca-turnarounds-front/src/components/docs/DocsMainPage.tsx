@@ -10,24 +10,53 @@ interface PageProps {}
 const DocsMainPage: React.FC<PageProps> = ({}) => {
   //if token exists show regular html else show not signed in screen
   const isMobile = useMediaQuery("(max-width: 1270px)");
+  const BACKEND_BASE_URL = process.env.BACKEND_BASE_URL; // from .env.local file
+  console.log("BACKEND_BASE_URL", BACKEND_BASE_URL);
   const [arrayList3, setArrayList3] = useState([]);
+  const [envData, setEnvData] = useState();
   const [contractState, setcontractState] = useState({
     web3: null,
     contract: null,
   });
   const [contractData, setcontractData] = useState(false);
+  let envData2;
+  const getEnv = async () => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/getEnv";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            console.log("ENV:", result);
+            envData2 = result;
+            setEnvData(result);
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
 
   useEffect(() => {
+    getEnv();
     const provider = new Web3.providers.HttpProvider("https://rpc.sepolia.org");
     async function template() {
+      await getEnv();
+
       console.log("SimpleStorage", SimpleStorage);
       console.log("provider", provider);
       const web3 = new Web3(provider);
-
+      console.log("envData", envData);
       const acc = web3.eth.accounts.privateKeyToAccount(
-        String(
-          "0x9ecf854af884998ab917946adc8a226995b02f10e161e516a383b8c1083d5a87"
-        )
+        String(envData2?.PRIVATE_KEY)
       );
       web3.eth.accounts.wallet.add(acc);
       console.log("acc", acc);
@@ -63,17 +92,18 @@ const DocsMainPage: React.FC<PageProps> = ({}) => {
     console.log("contract", contract);
     console.log("contractState", contractState);
     console.log("contractDATA", contractData);
+    console.log("envData2 BEFORE SET", envData2);
     try {
-      await contract?.methods?.setter(70)?.send({
+      await contract?.methods?.setter(10)?.send({
         from:
           //"
-          "0x41e2004dC8f0D79042C220A571499ecE2fb7D019",
+          envData.WALLET_ID,
       });
     } catch (error) {
-      console.error("Error blickchain", error);
+      console.error("Error blockchain", error);
       return;
     }
-    //router.reload();
+    router.reload();
   }
 
   //   const gasPrice = await web3.eth.getGasPrice();
