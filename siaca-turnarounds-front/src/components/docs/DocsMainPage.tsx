@@ -45,7 +45,7 @@ const DocsMainPage: React.FC<PageProps> = ({}) => {
       setcontractState({ web3: web3, contract: contract });
     }
     provider && template();
-  }, []);
+  }, [contractState]);
 
   useEffect(() => {
     const { contract } = contractState;
@@ -56,7 +56,7 @@ const DocsMainPage: React.FC<PageProps> = ({}) => {
       setcontractData(data);
     }
     contract && readData();
-  }, []);
+  }, [contractData, contractState]);
 
   async function writeData() {
     const { contract } = contractState;
@@ -64,7 +64,7 @@ const DocsMainPage: React.FC<PageProps> = ({}) => {
     console.log("contractState", contractState);
     console.log("contractDATA", contractData);
     try {
-      await contract?.methods?.setter(30)?.send({
+      await contract?.methods?.setter(40)?.send({
         from:
           //"
           "0x41e2004dC8f0D79042C220A571499ecE2fb7D019",
@@ -76,9 +76,6 @@ const DocsMainPage: React.FC<PageProps> = ({}) => {
     //router.reload();
   }
 
-  // async function writeData2() {
-  //   const account = web3.eth.accounts.privateKeyToAccount(privateKey);
-  //   const nonce = await web3.eth.getTransactionCount(account.address);
   //   const gasPrice = await web3.eth.getGasPrice();
   //   const gasLimit = 300000; // Adjust gas limit as needed
 
