@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useMediaQuery } from "@mui/material";
 import SimpleStorage from "../../../build/contracts/SimpleStorage.json";
 import router from "next/router";
+import { Provider } from "web3/providers";
 interface PageProps {}
 
 const DocsMainPage: React.FC<PageProps> = ({}) => {
@@ -43,20 +44,19 @@ const DocsMainPage: React.FC<PageProps> = ({}) => {
       console.log("setcontractState web3", web3);
       console.log("setcontractState contract", contract);
       setcontractState({ web3: web3, contract: contract });
+
+      try {
+        const data = await contract?.methods?.getter().call();
+        console.log(data);
+        console.log("DATAA", data);
+        setcontractData(data);
+      } catch (error) {
+        console.error("Error blickchain", error);
+        return;
+      }
     }
     provider && template();
-  }, [contractState]);
-
-  useEffect(() => {
-    const { contract } = contractState;
-    async function readData() {
-      const data = await contract?.methods?.getter().call();
-      console.log(data);
-      console.log("DATAA", data);
-      setcontractData(data);
-    }
-    contract && readData();
-  }, [contractData, contractState]);
+  }, []);
 
   async function writeData() {
     const { contract } = contractState;
@@ -64,7 +64,7 @@ const DocsMainPage: React.FC<PageProps> = ({}) => {
     console.log("contractState", contractState);
     console.log("contractDATA", contractData);
     try {
-      await contract?.methods?.setter(40)?.send({
+      await contract?.methods?.setter(70)?.send({
         from:
           //"
           "0x41e2004dC8f0D79042C220A571499ecE2fb7D019",
@@ -100,7 +100,12 @@ const DocsMainPage: React.FC<PageProps> = ({}) => {
 
   return (
     <main className={styles.containerAirlinesMainPage}>
-      <p>Data de contrato: {contractData.toString()}</p>
+      <p>
+        Data de contrato:{" "}
+        {contractData.toString() === "false"
+          ? "Buscando..."
+          : contractData.toString()}
+      </p>
       <button onClick={() => writeData()}>Cambiar</button>
     </main>
   );
