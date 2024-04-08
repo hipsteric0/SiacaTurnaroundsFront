@@ -1254,6 +1254,7 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
             open={showMachineDialog}
             onClose={() => setShowMachineDialog(false)}
           >
+
             <div className={styles.dialogAddMachine}>
               Lista de maquinarias añadidas:
               {arrayPrinterShowSelectedMachines(index?.fk_categoria?.id)}

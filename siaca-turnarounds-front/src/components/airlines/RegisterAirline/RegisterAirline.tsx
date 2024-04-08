@@ -26,6 +26,10 @@ import BackArrow from "@/components/Reusables/BackArrow";
 import LoadingScreen from '../../Reusables/LoadingScreen';
 import { useMediaQuery } from "@mui/material";
 
+import BarcodeScanner from '@/components/Reusables/BarcodeScanner';
+import Camera from '@/components/Reusables/Camera';
+
+
 
 
 interface PageProps {
@@ -127,6 +131,8 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep }) => {
   };
 
 
+
+
   return (
     <main className={styles.RegisterAirlineContainer}>
       <div className={styles.backArrowIcon}>
@@ -141,6 +147,8 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep }) => {
         <span className={styles.titleText}>Logo</span>
         <div className={styles.inputsListImage}>
           <input type="file" name="Archivos" onChange={(e : any)=>subirArchivo(e)}/>
+
+
           <div className={styles.uploadContainer}>
           
           {preview && (
