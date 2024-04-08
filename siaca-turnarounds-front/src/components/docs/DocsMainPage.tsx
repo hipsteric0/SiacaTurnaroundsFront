@@ -1,39 +1,29 @@
-import GreenButton from "@/components/Reusables/GreenButton";
 import styles from "./DocsMainPage.style.module.css";
-import KeyboardArrowLeftRoundedIcon from "@mui/icons-material/KeyboardArrowLeftRounded";
-import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRightRounded";
-import { log } from "console";
+import Web3 from "web3";
 import React, { useEffect, useState } from "react";
-import router from "next/router";
-import { Table , Spacer} from "@nextui-org/react";
-import { TableBody } from "@mui/material";
-import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
-import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-import { Dropdown } from "@nextui-org/react";
 import { useMediaQuery } from "@mui/material";
-import { Collapse, Text } from "@nextui-org/react";
-import {Card, Image} from "@nextui-org/react";
+import SimpleStorage from "../../../build/contracts/SimpleStorage.json";
+import router from "next/router";
+import { Provider } from "web3/providers";
+interface PageProps {}
 
-interface PageProps {
-  setStep: (value: number) => void;
-}
-
-const DocsPage: React.FC<PageProps> = ({ setStep }) => {
+const DocsMainPage: React.FC<PageProps> = ({}) => {
   //if token exists show regular html else show not signed in screen
   const isMobile = useMediaQuery("(max-width: 1270px)");
-  const [allowContinue, setAllowContinue] = useState(false);
+  const BACKEND_BASE_URL = process.env.BACKEND_BASE_URL; // from .env.local file
+  console.log("BACKEND_BASE_URL", BACKEND_BASE_URL);
   const [arrayList3, setArrayList3] = useState([]);
-  const [deleteDialog, setDeleteDialog] = useState(false);
-
-  useEffect(() => {
-    getList();
-  }, []);
-
-  const getList = async () => {
+  const [envData, setEnvData] = useState();
+  const [contractState, setcontractState] = useState({
+    web3: null,
+    contract: null,
+  });
+  const [contractData, setcontractData] = useState(false);
+  let envData2;
+  const getEnv = async () => {
     const fetchData = async () => {
       try {
-        const url = "/api/docsList";
+        const url = "/api/getEnv";
         const requestOptions = {
           method: "POST",
           body: JSON.stringify({
@@ -42,10 +32,9 @@ const DocsPage: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log(result);
-            console.log("values", Object.values(result));
-
-            setArrayList3(Object.values(result));
+            console.log("ENV:", result);
+            envData2 = result;
+            setEnvData(result);
           })
         );
       } catch (error) {
@@ -56,88 +45,100 @@ const DocsPage: React.FC<PageProps> = ({ setStep }) => {
     await fetchData().catch(console.error);
   };
 
-  const arrayPrinter = () => {
-    let y: any = [];
-    console.log("arrayList3", arrayList3.length);
-    const [hoverEyeId, sethoverEyeId] = useState(-1);
-    const [hoverPencilId, sethoverPencilId] = useState(-1);
-    const [hoverTrashId, sethoverTrashId] = useState(-1);
+  useEffect(() => {
+    getEnv();
+    const provider = new Web3.providers.HttpProvider("https://rpc.sepolia.org");
+    async function template() {
+      await getEnv();
 
-    arrayList3.map((index: any) => {
-      y[index.id] = (
-        <div key={index.id} className={styles.tableInfoRow}>
-          <td>{index.fk_vuelo.numero_vuelo}</td>
-          <td>{index.fecha}</td>
-          <td className={styles.iconsContainer}>
-            <div
-              className={styles.functionIcon}
-              onMouseEnter={() => {
-                sethoverEyeId(index.id);
-              }}
-              onMouseLeave={() => {              
-                sethoverEyeId(-1);
-              }}
-            >
-              <RemoveRedEyeIcon
-              htmlColor={hoverEyeId === index.id ? "#00A75D" : "#4D4E56"}
-              onClick={() => {
-                
-              }}/>{" "}
-            </div>
-
-            <div className={styles.functionIcon}
-            onMouseEnter={() => {
-              sethoverPencilId(index.id);
-            }}
-            onMouseLeave={() => {              
-              sethoverPencilId(-1);
-            }}>
-              <BorderColorOutlinedIcon 
-              htmlColor={hoverPencilId === index.id ? "#00A75D" : "#4D4E56"}
-              onClick={() => {
-                
-                
-              }}/>{" "}
-            </div>
-
-            <div className={styles.functionIcon}
-            onMouseEnter={() => {
-              sethoverTrashId(index.id);
-            }}
-            onMouseLeave={() => {              
-              sethoverTrashId(-1);
-            }}>
-              <DeleteOutlineOutlinedIcon
-               htmlColor={hoverTrashId === index.id ? "#f10303" : "#4D4E56"}
-               onClick={() => {
-                setDeleteDialog(true);
-               }}
-              />
-            </div>
-          </td>
-        </div>
+      console.log("SimpleStorage", SimpleStorage);
+      console.log("provider", provider);
+      const web3 = new Web3(provider);
+      console.log("envData", envData);
+      const acc = web3.eth.accounts.privateKeyToAccount(
+        String(envData2?.PRIVATE_KEY)
       );
-    });
-    
-    return y;
-  };
+      web3.eth.accounts.wallet.add(acc);
+      console.log("acc", acc);
+      console.log("web3", web3);
+      const networkId = await web3.eth.net.getId();
+      console.log("networkId", networkId.toString());
+      const deployedNetwork = SimpleStorage.networks[/*networkId*/ 11155111];
+      console.log("deployedNetwork", deployedNetwork);
+
+      const contract = new web3.eth.Contract(
+        SimpleStorage.abi,
+        deployedNetwork.address
+      );
+      console.log("setcontractState web3", web3);
+      console.log("setcontractState contract", contract);
+      setcontractState({ web3: web3, contract: contract });
+
+      try {
+        const data = await contract?.methods?.getter().call();
+        console.log(data);
+        console.log("DATAA", data);
+        setcontractData(data);
+      } catch (error) {
+        console.error("Error blickchain", error);
+        return;
+      }
+    }
+    provider && template();
+  }, []);
+
+  async function writeData() {
+    const { contract } = contractState;
+    console.log("contract", contract);
+    console.log("contractState", contractState);
+    console.log("contractDATA", contractData);
+    console.log("envData2 BEFORE SET", envData2);
+    try {
+      await contract?.methods?.setter(10)?.send({
+        from:
+          //"
+          envData.WALLET_ID,
+      });
+    } catch (error) {
+      console.error("Error blockchain", error);
+      return;
+    }
+    router.reload();
+  }
+
+  //   const gasPrice = await web3.eth.getGasPrice();
+  //   const gasLimit = 300000; // Adjust gas limit as needed
+
+  //   const encodedData = contractInstance.methods.setValue(newValue).encodeABI();
+
+  //   const tx = {
+  //     from: account.address,
+  //     to: contractAddress,
+  //     gas: gasLimit,
+  //     gasPrice: gasPrice,
+  //     data: encodedData,
+  //     nonce: nonce,
+  //   };
+
+  //   const signedTx = await web3.eth.accounts.signTransaction(tx, privateKey);
+  //   const receipt = await web3.eth.sendSignedTransaction(
+  //     signedTx.rawTransaction
+  //   );
+
+  //   console.log("Transaction hash:", receipt.transactionHash);
+  // }
 
   return (
     <main className={styles.containerAirlinesMainPage}>
-      <div className={styles.airlinesListContainer}>
-        <div>
-          <div className={styles.tableTitlesContainer}>
-            <span>No. vuelo</span>
-            <span>Fecha</span>
-            <span>Opciones</span>
-          </div>
-          {arrayPrinter()}
-        </div>
-        </div>
+      <p>
+        Data de contrato:{" "}
+        {contractData.toString() === "false"
+          ? "Buscando..."
+          : contractData.toString()}
+      </p>
+      <button onClick={() => writeData()}>Cambiar</button>
     </main>
   );
 };
 
-export default DocsPage;
-
-
+export default DocsMainPage;
