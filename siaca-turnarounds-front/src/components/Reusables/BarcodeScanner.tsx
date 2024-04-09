@@ -23,7 +23,7 @@ class BarcodeScanner extends Component {
       });
   }
 
-  setupDevices = (videoInputDevices) => {
+  setupDevices = (videoInputDevices : any) => {
     const sourceSelect = document.getElementById("sourceSelect");
 
     // selects first device
@@ -37,6 +37,15 @@ class BarcodeScanner extends Component {
         videoInputDevices: videoInputDevices,
       });
     }
+  };
+
+  handleScanSuccess = (result : any) => {
+    this.setState({
+      code: result.text,
+    });
+    console.log("Found QR code!", result);
+    console.log("Cedula", result?.text)
+    this.props.onScanSuccess(result.text);
   };
 
   resetClick = () => {
@@ -61,7 +70,7 @@ class BarcodeScanner extends Component {
     });
   };
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps : any, prevState : any) {
     if (
       prevState.selectedDeviceId === this.state.selectedDeviceId &&
       this.state.isCameraActive
@@ -72,11 +81,7 @@ class BarcodeScanner extends Component {
             this.state.selectedDeviceId,
             "video"
           );
-          this.setState({
-            code: result.text,
-          });
-          console.log("Found QR code!", result);
-          console.log("Cedula", result?.text)
+          this.handleScanSuccess(result);
         } catch (err) {
           if (
             err instanceof NotFoundException ||

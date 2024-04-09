@@ -29,6 +29,8 @@ import Checkbox from "@mui/material/Checkbox";
 import AddAPhotoRoundedIcon from "@mui/icons-material/AddAPhotoRounded";
 import { get } from "http";
 import StandardInput from "../Reusables/StandardInput";
+import Camera from "../Reusables/Camera";
+import BarcodeScanner from "../Reusables/BarcodeScanner";
 
 interface PageProps {
   setStep: (value: number) => void;
@@ -119,6 +121,14 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
   const [manualHourValue, setmanualHourValue] = useState("0");
   const [manualMinuteValue, setmanualMinuteValue] = useState("0");
   const [manualSecondsValue, setmanualSecondsValue] = useState("0");
+
+
+  const [result, setResult] = useState("");
+
+  const handleScanSuccess = (result : any) => {
+    setResult(result);
+    console.log("CODIGO QR", result)
+  };
 
   let filterValues: any[] = [];
   const getList = async () => {
@@ -657,6 +667,34 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
     await fetchData().catch(console.error);
   };
 
+
+  const patchFinishHourDate = async (turnaroundID: any, hour : any, date : any) => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/updateFinishHourDateTurnaround";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+            turnaroundID: turnaroundID,
+            hora_fin: hour,
+            fecha_fin: date
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            console.log("patchFinishHourDate Array", result);
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
+
   const PostTaskImage = async (
     turnaroundID: any,
     subtaskID: any,
@@ -664,8 +702,8 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
   ) => {
     const uploadData = new FormData();
     uploadData.append("imagen", imageFile, imageFile?.name);
-    uploadData.append("fk_turnaround_id", turnaroundID);
-    uploadData.append("fk_subtarea_id", subtaskID);
+    uploadData.append("fk_turnaround", turnaroundID);
+    uploadData.append("fk_subtarea", subtaskID);
 
     fetch(
       "http://127.0.0.1:8000/documentos/imagen/?token=" +
@@ -715,6 +753,24 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
       await PostTaskImage(openDetailDialogID, index?.key, index?.taskImage); //para cada instancia del arreglo de comentarios
     });
 
+
+    let currentTimestamp = new Date();
+      let currentTimestampString =
+        currentTimestamp.getHours().toString() +
+        ":" +
+        currentTimestamp.getMinutes().toString() +
+        ":" +
+        currentTimestamp.getSeconds().toString();
+
+    let x =
+      currentTimestamp .getFullYear().toString() +
+      "-" +
+      (currentTimestamp .getMonth() + 1).toString() +
+      "-" +
+      currentTimestamp .getDate().toString(); 
+
+    await patchFinishHourDate(openDetailDialogID, currentTimestampString, x);
+
     router.reload();
   };
 
@@ -760,6 +816,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
   const ArrayPrinterTaskDataForSummary = () => {
     let y: any = [];
     let cont = 0;
+    console.log("tasksCompletionValues", tasksCompletionValues)
     tasksCompletionValues.map((index: any) => {
       cont++;
       y[index?.key] = (
@@ -1923,7 +1980,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
               </div>
             ) : (
               <div>
-                {/*<AddAPhotoRoundedIcon />*/}
+                {<Camera />}
                 <input
                   type="file"
                   name="Archivos"
@@ -2001,6 +2058,9 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                       AVISO: comenzar el turnaround cambiara su estado a "En
                       proceso"
                     </p>
+
+                  {/* AQUI VA EL QR */}
+
                     <div className={styles.redButtonContainer}>
                       <div className={styles.redButton}>
                         <GreenButton
@@ -2025,6 +2085,10 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                       <p className={styles.detailDialogInfoContainerTitleText}>
                         Datos de vuelo
                       </p>
+                      <div>
+                  {/*<BarcodeScanner onScanSuccess={handleScanSuccess} />
+                  {result && <p>Result: {result}</p>}*/}
+                </div>
                       <div className={styles.detailDialogInfoRow1}>
                         <div className={styles.detailDialogInfoItem}>
                           <span className={styles.detailDialogInfoItemTitle}>
