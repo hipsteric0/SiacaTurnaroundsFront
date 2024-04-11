@@ -28,7 +28,10 @@ import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 import SiacaLogo from "../../images/logos/siacaLogo.png";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
-
+import Web3 from "web3";
+import SimpleStorage from "../../../build/contracts/SimpleStorage.json";
+import FlightData1 from "../../../build/contracts/FlightData1.json";
+import { Provider } from "web3/providers";
 import LoadingScreen from "../Reusables/LoadingScreen";
 import { Image, PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
 import { Page, Text, View, Document, StyleSheet } from "@react-pdf/renderer";
@@ -129,6 +132,174 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
   const [lateCodeValue, setlateCodeValue] = useState("");
   const [lateCodeValueIDForPatchUpdate, setlateCodeValueIDforPatchUpdate] =
     useState("");
+  //blockchain
+  const [envData, setEnvData] = useState();
+  const [contractState, setcontractState] = useState({
+    web3: null,
+    contract: null,
+  });
+
+  const [contractData, setcontractData] = useState(false);
+  let envData2;
+  const getEnv = async () => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/getEnv";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            envData2 = result;
+            setEnvData(result);
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
+  useEffect(() => {
+    getEnv();
+    const provider = new Web3.providers.HttpProvider("https://rpc.sepolia.org");
+    async function template() {
+      await getEnv();
+      const web3 = new Web3(provider);
+      const acc = web3.eth.accounts.privateKeyToAccount(
+        String(envData2?.PRIVATE_KEY)
+      );
+      web3.eth.accounts.wallet.add(acc);
+      const networkId = await web3.eth.net.getId();
+      const deployedNetwork = FlightData1.networks[/*networkId*/ 11155111];
+      const contract = new web3.eth.Contract(
+        FlightData1.abi,
+        deployedNetwork.address
+      );
+      setcontractState({ web3: web3, contract: contract });
+
+      try {
+        const data = await contract?.methods?.getter().call();
+        setcontractData(data);
+        console.log("contractDATA", Object.values(contractData));
+      } catch (error) {
+        console.error("Error blickchain", error);
+        return;
+      }
+    }
+    console.log("contractDATA", Object.values(contractData));
+    provider && template();
+    console.log("contractDATA", Object.values(contractData));
+  }, []);
+  //blockchain
+  async function writeDataForBlockchain(flightData: any, turnaroundData: any) {
+    const { contract } = contractState;
+    try {
+      // console.log(
+      //   "JSON.parse(contractData[3])",
+      //   JSON.parse(contractData[4])[1] //acceder a los valores de arerglos
+      // );
+      let valuesArray = [];
+      let titlesArray = [];
+      turnaroundData.map((index: any) => {
+        titlesArray.push(index?.name);
+        valuesArray.push(index?.value);
+      });
+      console.log("valuesArray", valuesArray);
+      console.log(
+        "valuesArray stringified",
+        JSON.stringify(valuesArray).toString()
+      );
+      console.log("titlesArray", titlesArray);
+      console.log(
+        "titlesArray stringified",
+        JSON.stringify(titlesArray).toString()
+      );
+
+      console.log("turnaroundData", turnaroundData);
+      console.log("flightData", flightData);
+      await contract?.methods
+        ?.setter(
+          "Turnaround ID: " +
+            openDetailDialogID.toString() +
+            "     - Fecha/hora de inicio: " +
+            flightData?.fecha_inicio +
+            " " +
+            flightData?.hora_inicio +
+            "     - Fecha/hora fin: " +
+            flightData?.fecha_fin +
+            " " +
+            flightData?.hora_fin +
+            "     - ETA: " +
+            flightData?.fk_vuelo?.ETA_fecha +
+            " " +
+            flightData?.fk_vuelo?.ETA +
+            "      - ATA: " +
+            flightData?.fk_vuelo?.ATA_fecha +
+            " " +
+            flightData?.fk_vuelo?.ATA,
+          "Acreg: " +
+            flightData?.fk_vuelo?.ac_reg +
+            "    - Flight No.: " +
+            flightData?.fk_vuelo?.numero_vuelo +
+            "    - Actype: " +
+            flightData?.fk_vuelo?.ac_type +
+            "    - Gate: " +
+            flightData?.fk_vuelo?.gate +
+            "    - Tipo de vuelo: " +
+            flightData?.fk_vuelo?.tipo_vuelo?.nombre +
+            "    - Tipo de servicio: " +
+            flightData?.fk_vuelo?.tipo_servicio?.nombre,
+          "Aerolinea: " +
+            flightData?.fk_vuelo?.fk_aerolinea?.nombre +
+            "    - Email de aerolinea: " +
+            flightData?.fk_vuelo?.fk_aerolinea?.correo +
+            "    - Telefono de aerolinea: " +
+            flightData?.fk_vuelo?.fk_aerolinea?.telefono +
+            "    - Entidad de pago: " +
+            flightData?.fk_vuelo?.ente_pagador,
+          "Alpha: " +
+            flightData?.fk_codigos_demora?.alpha +
+            "    - Description: " +
+            flightData?.fk_codigos_demora?.identificador +
+            "    - Description: " +
+            flightData?.fk_codigos_demora?.descripcion +
+            "    - Accountable: " +
+            flightData?.fk_codigos_demora?.accountable,
+          "     Lugar de salida: " +
+            flightData?.fk_vuelo?.lugar_salida?.nombre +
+            " (" +
+            flightData?.fk_vuelo?.lugar_salida?.codigo +
+            "/" +
+            flightData?.fk_vuelo?.lugar_salida?.codigo_oaci +
+            ") ",
+
+          "Lugar de destino:  " +
+            flightData?.fk_vuelo?.lugar_destino?.nombre +
+            " (" +
+            flightData?.fk_vuelo?.lugar_destino?.codigo +
+            "/" +
+            flightData?.fk_vuelo?.lugar_destino?.codigo_oaci +
+            ") ",
+          JSON.stringify(titlesArray).toString(),
+          JSON.stringify(valuesArray).toString()
+        )
+        ?.send({
+          from: envData.WALLET_ID,
+        });
+    } catch (error) {
+      setLoading(false);
+      console.error("Error blockchain", error);
+      return;
+    }
+    router.reload();
+  }
+
   const PDFstyles = StyleSheet.create({
     page: {
       flexDirection: "column",
@@ -1254,7 +1425,6 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
             open={showMachineDialog}
             onClose={() => setShowMachineDialog(false)}
           >
-
             <div className={styles.dialogAddMachine}>
               Lista de maquinarias añadidas:
               {arrayPrinterShowSelectedMachines(index?.fk_categoria?.id)}
@@ -2513,6 +2683,34 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
                         </p>
                         <div className={styles.rowOfTurnaroundDataContainer}>
                           {tasksCompletionValuesArrayPrinter()}
+                          <div className={styles.blockchainSendingContainer}>
+                            <div
+                              className={
+                                styles.blockchainSendingButtonContainer
+                              }
+                            >
+                              <GreenButton2
+                                executableFunction={() => {
+                                  console.log(
+                                    "blockchain",
+                                    tasksCompletionValues
+                                  );
+                                  console.log("blockchain2", index);
+                                  setLoading(true);
+                                  writeDataForBlockchain(
+                                    index,
+                                    tasksCompletionValues
+                                  );
+                                }}
+                                buttonText="Enviar este turnaround a la blockchain"
+                              />
+                            </div>
+                          </div>
+                          <p className={styles.blockchainWarningText}>
+                            AVISO: esta transacción puede tomar entre 2 y 15
+                            minutos. Se sugiere esperar pacientemente y no
+                            cancelar la transacción mientras se realiza.
+                          </p>
                         </div>
                       </>
                     )}
@@ -2608,8 +2806,10 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
                             type="time"
                             id="time"
                             value={horaInicioPersonnel}
-                            onChange={(e) => setHoraInicioPersonnel(e.target.value)}
-                      />
+                            onChange={(e) =>
+                              setHoraInicioPersonnel(e.target.value)
+                            }
+                          />
                         </div>
                         <div className={styles.dateContainerRowItem}>
                           <p>Hora final:</p>
@@ -2618,8 +2818,10 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
                             type="time"
                             id="time"
                             value={horaFinPersonnel}
-                            onChange={(e) => setHoraFinPersonnel(e.target.value)}
-                      />
+                            onChange={(e) =>
+                              setHoraFinPersonnel(e.target.value)
+                            }
+                          />
                         </div>
                         {
                           <p className={styles.detailDialogInfoItemText}>
@@ -2641,9 +2843,7 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
                             buttonText="Confirmar"
                             disabled={
                               horaInicioPersonnel === "" ||
-                              
-                              horaFinPersonnel === "" 
-                              
+                              horaFinPersonnel === ""
                             }
                           />
                         </div>
@@ -2681,7 +2881,7 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
                             id="time"
                             value={horaInicio}
                             onChange={(e) => setHoraInicio(e.target.value)}
-                      />
+                          />
                         </div>
                         <div className={styles.dateContainerRowItem}>
                           <p>Hora final:</p>
@@ -2691,7 +2891,7 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
                             id="time"
                             value={horaFin}
                             onChange={(e) => setHoraFin(e.target.value)}
-                      />
+                          />
                         </div>
                         <p className={styles.detailDialogInfoItemText}>
                           *El sistema tomará la reserva en las horas que
@@ -2708,10 +2908,7 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
                               await setMachinesDateTimeSelected(true);
                             }}
                             buttonText="Confirmar"
-                            disabled={
-                              horaInicio === "" ||
-                              horaFin === ""
-                            }
+                            disabled={horaInicio === "" || horaFin === ""}
                           />
                         </div>
                       </div>

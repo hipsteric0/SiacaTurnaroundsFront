@@ -19,6 +19,10 @@ const DocsMainPage: React.FC<PageProps> = ({}) => {
     contract: null,
   });
   const [contractData, setcontractData] = useState(false);
+  const [contractData2, setcontractData2] = useState(false);
+  const [contractData3, setcontractData3] = useState(false);
+  const [contractData4, setcontractData4] = useState(false);
+
   let envData2;
   const getEnv = async () => {
     const fetchData = async () => {
@@ -61,10 +65,11 @@ const DocsMainPage: React.FC<PageProps> = ({}) => {
         deployedNetwork.address
       );
       setcontractState({ web3: web3, contract: contract });
-
+      //
       try {
         const data = await contract?.methods?.getter().call();
         setcontractData(data);
+        console.log("contractDATA", Object.values(contractData));
       } catch (error) {
         console.error("Error blickchain", error);
         return;
@@ -72,32 +77,80 @@ const DocsMainPage: React.FC<PageProps> = ({}) => {
     }
     console.log("contractDATA", Object.values(contractData));
     provider && template();
+    console.log("contractDATA", Object.values(contractData));
   }, []);
 
   async function writeData() {
     const { contract } = contractState;
     try {
-      await contract?.methods?.setter(10, "20", 30)?.send({
-        from:
-          //"
-          envData.WALLET_ID,
-      });
+      // console.log(
+      //   "JSON.parse(contractData[3])",
+      //   JSON.parse(contractData[4])[1] //acceder a los valores de arerglos//
+      // );
+      await contract?.methods
+        ?.setter(
+          "1000",
+          "2000",
+          "3000",
+          "4000",
+          "5000",
+          "6000",
+          '["string1", "string2"]',
+          "[1, 2]"
+        )
+        ?.send({
+          from:
+            //"
+            envData.WALLET_ID,
+        });
     } catch (error) {
       console.error("Error blockchain", error);
       return;
-    }
+    } //
     router.reload();
   }
 
   return (
     <main className={styles.containerAirlinesMainPage}>
       <p>
-        Data de contrato:{" "}
         {contractData.toString() === "false"
           ? "Buscando..."
-          : contractData[0].toString() +
-            contractData[1].toString() +
-            contractData[2].toString()}
+          : contractData[0].toString()}
+      </p>
+      <p>
+        {contractData.toString() === "false"
+          ? "Buscando..."
+          : contractData[1].toString()}
+      </p>
+      <p>
+        {contractData.toString() === "false"
+          ? "Buscando..."
+          : contractData[2].toString()}
+      </p>
+      <p>
+        {contractData.toString() === "false"
+          ? "Buscando..."
+          : contractData[3].toString()}
+      </p>
+      <p>
+        {contractData.toString() === "false"
+          ? "Buscando..."
+          : contractData[4].toString()}
+      </p>
+      <p>
+        {contractData.toString() === "false"
+          ? "Buscando..."
+          : contractData[5].toString()}
+      </p>
+      <p>
+        {contractData.toString() === "false"
+          ? "Buscando..."
+          : contractData[6].toString()}
+      </p>
+      <p>
+        {contractData.toString() === "false"
+          ? "Buscando..."
+          : contractData[7].toString()}
       </p>
       <button onClick={() => writeData()}>Cambiar</button>
     </main>

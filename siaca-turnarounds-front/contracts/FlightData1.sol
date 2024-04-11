@@ -4,19 +4,35 @@ pragma experimental ABIEncoderV2;
 
 contract FlightData1 {
     
-        uint256 a;
-        string b;
-        uint256 c;
-
-
-    function setter(uint256 _a,string memory _b,uint256 _c) public {
+        string timestamps;
+        string planeData;
+        string airlineData;
+        string lateCodeData;
+        string destinationData;
+        string departureData;
         
-        a=_a;
-        b=_b;
-        c=_c;
+        string taskNamesArray;
+        string tasksValuesArray;
+
+
+
+
+    function setter(string memory _timestamps,string memory _planeData,string memory _airlineData,string memory _lateCodeData,string memory _destinationData,string memory _departureData,string memory _taskNamesArray,string memory _tasksValuesArray) public {
+        
+        timestamps=_timestamps;
+        planeData=_planeData;
+        airlineData=_airlineData;
+        lateCodeData=_lateCodeData;
+        destinationData=_destinationData;
+        departureData=_departureData;
+        taskNamesArray=_taskNamesArray;
+        tasksValuesArray=_tasksValuesArray;
+        
     }
 
-    function getter() public view returns (uint,string memory,uint) {
-        return  (a,b,c);
+
+    function getter() public view returns (string memory,string memory,string memory,string memory,string memory,string memory,string memory,string memory) {
+        return (timestamps,planeData,airlineData,lateCodeData,destinationData,departureData,taskNamesArray,tasksValuesArray);
     }
+
 }
