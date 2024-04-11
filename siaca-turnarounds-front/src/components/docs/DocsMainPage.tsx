@@ -22,6 +22,7 @@ const DocsMainPage: React.FC<PageProps> = ({}) => {
   const [contractData2, setcontractData2] = useState(false);
   const [contractData3, setcontractData3] = useState(false);
   const [contractData4, setcontractData4] = useState(false);
+  const [card1opened, setcard1opened] = useState(false);
 
   let envData2;
   const getEnv = async () => {
@@ -110,49 +111,109 @@ const DocsMainPage: React.FC<PageProps> = ({}) => {
     router.reload();
   }
 
+  const arrayPrinterTasks = (namesArray: any, valuesArray: any) => {
+    let y: any = [];
+    let cont = 0;
+    namesArray.map((index: any) => {
+      y[cont] = (
+        <>
+          <p>
+            {namesArray[cont]}: {valuesArray[cont]}
+          </p>
+        </>
+      );
+      cont++;
+    });
+
+    return y;
+  };
+
   return (
-    <main className={styles.containerAirlinesMainPage}>
+    <main className={styles.docsMainPage}>
       <p>
-        {contractData.toString() === "false"
-          ? "Buscando..."
-          : contractData[0].toString()}
+        <strong>AVISO: </strong>
+        Los siguientes datos son consultados a una red Blockchain de Ethereum, y
+        solo pueden ser alterados por usuarios nivel ADMINISTRADOR. La fecha de
+        validez del contrato garantiza que los datos no han sido modificados de
+        la blockchain desde esa fecha, incluso si la base de datos de SIACA
+        fuera editada o eliminada, garantizando la seguridad de los datos
+        almacenados de esta forma.
       </p>
-      <p>
-        {contractData.toString() === "false"
-          ? "Buscando..."
-          : contractData[1].toString()}
-      </p>
-      <p>
-        {contractData.toString() === "false"
-          ? "Buscando..."
-          : contractData[2].toString()}
-      </p>
-      <p>
-        {contractData.toString() === "false"
-          ? "Buscando..."
-          : contractData[3].toString()}
-      </p>
-      <p>
-        {contractData.toString() === "false"
-          ? "Buscando..."
-          : contractData[4].toString()}
-      </p>
-      <p>
-        {contractData.toString() === "false"
-          ? "Buscando..."
-          : contractData[5].toString()}
-      </p>
-      <p>
-        {contractData.toString() === "false"
-          ? "Buscando..."
-          : contractData[6].toString()}
-      </p>
-      <p>
-        {contractData.toString() === "false"
-          ? "Buscando..."
-          : contractData[7].toString()}
-      </p>
-      <button onClick={() => writeData()}>Cambiar</button>
+      <div className={styles.blockchainCard}>
+        <div className={styles.openCardContainer}>
+          <p onClick={() => setcard1opened(!card1opened)}>
+            {card1opened ? "Ver menos" : "Ver Mas"}
+          </p>
+        </div>
+        {card1opened ? (
+          <>
+            <p className={styles.blockchainCardMainTitle}>SLOT 1</p>
+            <p className={styles.blockchainCardTitle}>Datos del turnaround</p>
+            <p>
+              {contractData.toString() === "false"
+                ? "Buscando..."
+                : contractData[0].toString()}
+            </p>
+            <p className={styles.blockchainCardTitle}>Datos del vuelo</p>
+            <p>
+              {contractData.toString() === "false"
+                ? "Buscando..."
+                : contractData[1].toString()}
+            </p>
+            <p className={styles.blockchainCardTitle}>Datos de la Aerolínea</p>
+            <p>
+              {contractData.toString() === "false"
+                ? "Buscando..."
+                : contractData[2].toString()}
+            </p>
+            <p className={styles.blockchainCardTitle}>Código de demora</p>
+            <p>
+              {contractData.toString() === "false"
+                ? "Buscando..."
+                : contractData[3].toString()}
+            </p>
+            <p className={styles.blockchainCardTitle}>
+              Datos del lugar de salida y llegada
+            </p>
+            <p>
+              {contractData.toString() === "false"
+                ? "Buscando..."
+                : contractData[4].toString()}
+            </p>
+            <p className={styles.blockchainCardTitle}>
+              Fecha de validez del contrato
+            </p>
+            <p>
+              {contractData.toString() === "false"
+                ? "Buscando..."
+                : contractData[5].toString()}
+            </p>
+            <p className={styles.blockchainCardTitle}>
+              Datos de Tareas realizadas
+            </p>
+            {(contractData[6] || contractData[7]) === undefined
+              ? undefined
+              : arrayPrinterTasks(
+                  JSON.parse(contractData[6]),
+                  JSON.parse(contractData[7])
+                )}
+          </>
+        ) : (
+          <>
+            <p className={styles.blockchainCardMainTitle}>SLOT 1</p>
+            <p>
+              {contractData.toString() === "false"
+                ? "Buscando..."
+                : contractData[5].toString()}
+            </p>
+            <p>
+              {contractData.toString() === "false"
+                ? "Buscando..."
+                : contractData[0].toString()}
+            </p>
+          </>
+        )}
+      </div>
     </main>
   );
 };

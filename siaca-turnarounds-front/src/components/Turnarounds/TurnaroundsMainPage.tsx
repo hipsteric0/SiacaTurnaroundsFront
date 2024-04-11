@@ -140,6 +140,21 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
   });
 
   const [contractData, setcontractData] = useState(false);
+
+  let currentTimestamp = new Date();
+  let currentTimestampForBlockchain =
+    currentTimestamp.getHours().toString() +
+    ":" +
+    currentTimestamp.getMinutes().toString() +
+    ":" +
+    currentTimestamp.getSeconds().toString();
+  let currentDateForBlockchain =
+    currentTimestamp.getDate().toString() +
+    "-" +
+    (currentTimestamp.getMonth() + 1).toString() +
+    "-" +
+    currentTimestamp.getFullYear().toString();
+
   let envData2;
   const getEnv = async () => {
     const fetchData = async () => {
@@ -265,7 +280,7 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
             flightData?.fk_vuelo?.ente_pagador,
           "Alpha: " +
             flightData?.fk_codigos_demora?.alpha +
-            "    - Description: " +
+            "    - Identificador: " +
             flightData?.fk_codigos_demora?.identificador +
             "    - Description: " +
             flightData?.fk_codigos_demora?.descripcion +
@@ -277,15 +292,18 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
             flightData?.fk_vuelo?.lugar_salida?.codigo +
             "/" +
             flightData?.fk_vuelo?.lugar_salida?.codigo_oaci +
-            ") ",
-
-          "Lugar de destino:  " +
+            ") " +
+            " - Lugar de destino:  " +
             flightData?.fk_vuelo?.lugar_destino?.nombre +
             " (" +
             flightData?.fk_vuelo?.lugar_destino?.codigo +
             "/" +
             flightData?.fk_vuelo?.lugar_destino?.codigo_oaci +
             ") ",
+          "Fecha y hora de inserción al contrato: " +
+            currentDateForBlockchain +
+            " - " +
+            currentTimestampForBlockchain,
           JSON.stringify(titlesArray).toString(),
           JSON.stringify(valuesArray).toString()
         )
