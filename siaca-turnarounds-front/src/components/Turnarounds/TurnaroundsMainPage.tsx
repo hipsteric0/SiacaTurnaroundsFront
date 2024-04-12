@@ -132,14 +132,6 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
   const [lateCodeValue, setlateCodeValue] = useState("");
   const [lateCodeValueIDForPatchUpdate, setlateCodeValueIDforPatchUpdate] =
     useState("");
-  //blockchain
-  const [envData, setEnvData] = useState();
-  const [contractState, setcontractState] = useState({
-    web3: null,
-    contract: null,
-  });
-
-  const [contractData, setcontractData] = useState(false);
 
   let currentTimestamp = new Date();
   let currentTimestampForBlockchain =
@@ -155,6 +147,14 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
     "-" +
     currentTimestamp.getFullYear().toString();
 
+  //blockchain
+  const [envData, setEnvData] = useState();
+  const [contractState, setcontractState] = useState({
+    web3: null,
+    contract: null,
+  });
+
+  const [contractData, setcontractData] = useState(false);
   let envData2;
   const getEnv = async () => {
     const fetchData = async () => {
@@ -211,14 +211,11 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
     provider && template();
     console.log("contractDATA", Object.values(contractData));
   }, []);
+
   //blockchain
   async function writeDataForBlockchain(flightData: any, turnaroundData: any) {
     const { contract } = contractState;
     try {
-      // console.log(
-      //   "JSON.parse(contractData[3])",
-      //   JSON.parse(contractData[4])[1] //acceder a los valores de arerglos
-      // );
       let valuesArray = [];
       let titlesArray = [];
       turnaroundData.map((index: any) => {

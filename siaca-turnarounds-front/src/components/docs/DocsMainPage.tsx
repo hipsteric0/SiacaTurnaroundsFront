@@ -4,6 +4,9 @@ import React, { useEffect, useState } from "react";
 import { useMediaQuery } from "@mui/material";
 import SimpleStorage from "../../../build/contracts/SimpleStorage.json";
 import FlightData1 from "../../../build/contracts/FlightData1.json";
+import FlightData2 from "../../../build/contracts/FlightData2.json";
+import FlightData3 from "../../../build/contracts/FlightData3.json";
+import FlightData4 from "../../../build/contracts/FlightData4.json";
 import router from "next/router";
 import { Provider } from "web3/providers";
 interface PageProps {}
@@ -18,11 +21,26 @@ const DocsMainPage: React.FC<PageProps> = ({}) => {
     web3: null,
     contract: null,
   });
+  const [contractState2, setcontractState2] = useState({
+    web3: null,
+    contract: null,
+  });
+  const [contractState3, setcontractState3] = useState({
+    web3: null,
+    contract: null,
+  });
+  const [contractState4, setcontractState4] = useState({
+    web3: null,
+    contract: null,
+  });
   const [contractData, setcontractData] = useState(false);
   const [contractData2, setcontractData2] = useState(false);
   const [contractData3, setcontractData3] = useState(false);
   const [contractData4, setcontractData4] = useState(false);
   const [card1opened, setcard1opened] = useState(false);
+  const [card2opened, setcard2opened] = useState(false);
+  const [card3opened, setcard3opened] = useState(false);
+  const [card4opened, setcard4opened] = useState(false);
 
   let envData2;
   const getEnv = async () => {
@@ -79,6 +97,102 @@ const DocsMainPage: React.FC<PageProps> = ({}) => {
     console.log("contractDATA", Object.values(contractData));
     provider && template();
     console.log("contractDATA", Object.values(contractData));
+  }, []);
+
+  useEffect(() => {
+    getEnv();
+    const provider = new Web3.providers.HttpProvider("https://rpc.sepolia.org");
+    async function template() {
+      await getEnv();
+      const web3 = new Web3(provider);
+      const acc = web3.eth.accounts.privateKeyToAccount(
+        String(envData2?.PRIVATE_KEY)
+      );
+      web3.eth.accounts.wallet.add(acc);
+      const networkId = await web3.eth.net.getId();
+      const deployedNetwork = FlightData2.networks[/*networkId*/ 11155111];
+      const contract = new web3.eth.Contract(
+        FlightData2.abi,
+        deployedNetwork.address
+      );
+      setcontractState2({ web3: web3, contract: contract });
+      //
+      try {
+        const data = await contract?.methods?.getter().call();
+        setcontractData2(data);
+        console.log("contractDATA2", Object.values(contractData2));
+      } catch (error) {
+        console.error("Error blickchain", error);
+        return;
+      }
+    }
+    console.log("contractDATA2", Object.values(contractData2));
+    provider && template();
+    console.log("contractDATA2", Object.values(contractData2));
+  }, []);
+
+  useEffect(() => {
+    getEnv();
+    const provider = new Web3.providers.HttpProvider("https://rpc.sepolia.org");
+    async function template() {
+      await getEnv();
+      const web3 = new Web3(provider);
+      const acc = web3.eth.accounts.privateKeyToAccount(
+        String(envData2?.PRIVATE_KEY)
+      );
+      web3.eth.accounts.wallet.add(acc);
+      const networkId = await web3.eth.net.getId();
+      const deployedNetwork = FlightData3.networks[/*networkId*/ 11155111];
+      const contract = new web3.eth.Contract(
+        FlightData3.abi,
+        deployedNetwork.address
+      );
+      setcontractState3({ web3: web3, contract: contract });
+      //
+      try {
+        const data = await contract?.methods?.getter().call();
+        setcontractData3(data);
+        console.log("contractDATA3", Object.values(contractData3));
+      } catch (error) {
+        console.error("Error blickchain", error);
+        return;
+      }
+    }
+    console.log("contractDATA3", Object.values(contractData3));
+    provider && template();
+    console.log("contractDATA3", Object.values(contractData3));
+  }, []);
+
+  useEffect(() => {
+    getEnv();
+    const provider = new Web3.providers.HttpProvider("https://rpc.sepolia.org");
+    async function template() {
+      await getEnv();
+      const web3 = new Web3(provider);
+      const acc = web3.eth.accounts.privateKeyToAccount(
+        String(envData2?.PRIVATE_KEY)
+      );
+      web3.eth.accounts.wallet.add(acc);
+      const networkId = await web3.eth.net.getId();
+      const deployedNetwork = FlightData4.networks[/*networkId*/ 11155111];
+      const contract = new web3.eth.Contract(
+        FlightData4.abi,
+        deployedNetwork.address
+      );
+      setcontractState4({ web3: web3, contract: contract });
+      //
+      try {
+        const data = await contract?.methods?.getter().call();
+        setcontractData4(data);
+        console.log("contractDATA", Object.values(contractData4));
+      } catch (error) {
+        console.error("Error blickchain", error);
+        return;
+      }
+    }
+    console.log("contractDATA4", Object.values(contractData4));
+    provider && template();
+    console.log("contractDATA4", Object.values(contractData4));
   }, []);
 
   async function writeData() {
@@ -193,8 +307,10 @@ const DocsMainPage: React.FC<PageProps> = ({}) => {
             </p>
             {(contractData[6] || contractData[7]) === undefined
               ? undefined
+              : (contractData[6] || contractData[7]) === ""
+              ? undefined
               : arrayPrinterTasks(
-                  JSON.parse(contractData[6]),
+                  JSON.parse(contractData[6]), //a
                   JSON.parse(contractData[7])
                 )}
           </>
@@ -210,6 +326,240 @@ const DocsMainPage: React.FC<PageProps> = ({}) => {
               {contractData.toString() === "false"
                 ? "Buscando..."
                 : contractData[0].toString()}
+            </p>
+          </>
+        )}
+      </div>
+
+      <div className={styles.blockchainCard}>
+        <div className={styles.openCardContainer}>
+          <p onClick={() => setcard2opened(!card2opened)}>
+            {card2opened ? "Ver menos" : "Ver Mas"}
+          </p>
+        </div>
+        {card2opened ? (
+          <>
+            <p className={styles.blockchainCardMainTitle}>SLOT 2</p>
+            <p className={styles.blockchainCardTitle}>Datos del turnaround</p>
+            <p>
+              {contractData2.toString() === "false"
+                ? "Buscando..."
+                : contractData2[0].toString()}
+            </p>
+            <p className={styles.blockchainCardTitle}>Datos del vuelo</p>
+            <p>
+              {contractData2.toString() === "false"
+                ? "Buscando..."
+                : contractData2[1].toString()}
+            </p>
+            <p className={styles.blockchainCardTitle}>Datos de la Aerolínea</p>
+            <p>
+              {contractData2.toString() === "false"
+                ? "Buscando..."
+                : contractData2[2].toString()}
+            </p>
+            <p className={styles.blockchainCardTitle}>Código de demora</p>
+            <p>
+              {contractData2.toString() === "false"
+                ? "Buscando..."
+                : contractData2[3].toString()}
+            </p>
+            <p className={styles.blockchainCardTitle}>
+              Datos del lugar de salida y llegada
+            </p>
+            <p>
+              {contractData2.toString() === "false"
+                ? "Buscando..."
+                : contractData2[4].toString()}
+            </p>
+            <p className={styles.blockchainCardTitle}>
+              Fecha de validez del contrato
+            </p>
+            <p>
+              {contractData2.toString() === "false"
+                ? "Buscando..."
+                : contractData2[5].toString()}
+            </p>
+            <p className={styles.blockchainCardTitle}>
+              Datos de Tareas realizadas
+            </p>
+            {(contractData2[6] || contractData2[7]) === undefined
+              ? undefined
+              : (contractData2[6] || contractData2[7]) === ""
+              ? undefined
+              : arrayPrinterTasks(
+                  JSON.parse(contractData2[6]), //a
+                  JSON.parse(contractData2[7])
+                )}
+          </>
+        ) : (
+          <>
+            <p className={styles.blockchainCardMainTitle}>SLOT 2</p>
+            <p>
+              {contractData2.toString() === "false"
+                ? "Buscando..."
+                : contractData2[5].toString()}
+            </p>
+            <p>
+              {contractData2.toString() === "false"
+                ? "Buscando..."
+                : contractData2[0].toString()}
+            </p>
+          </>
+        )}
+      </div>
+
+      <div className={styles.blockchainCard}>
+        <div className={styles.openCardContainer}>
+          <p onClick={() => setcard3opened(!card3opened)}>
+            {card3opened ? "Ver menos" : "Ver Mas"}
+          </p>
+        </div>
+        {card3opened ? (
+          <>
+            <p className={styles.blockchainCardMainTitle}>SLOT 3</p>
+            <p className={styles.blockchainCardTitle}>Datos del turnaround</p>
+            <p>
+              {contractData3.toString() === "false"
+                ? "Buscando..."
+                : contractData3[0].toString()}
+            </p>
+            <p className={styles.blockchainCardTitle}>Datos del vuelo</p>
+            <p>
+              {contractData3.toString() === "false"
+                ? "Buscando..."
+                : contractData3[1].toString()}
+            </p>
+            <p className={styles.blockchainCardTitle}>Datos de la Aerolínea</p>
+            <p>
+              {contractData3.toString() === "false"
+                ? "Buscando..."
+                : contractData3[2].toString()}
+            </p>
+            <p className={styles.blockchainCardTitle}>Código de demora</p>
+            <p>
+              {contractData3.toString() === "false"
+                ? "Buscando..."
+                : contractData3[3].toString()}
+            </p>
+            <p className={styles.blockchainCardTitle}>
+              Datos del lugar de salida y llegada
+            </p>
+            <p>
+              {contractData3.toString() === "false"
+                ? "Buscando..."
+                : contractData3[4].toString()}
+            </p>
+            <p className={styles.blockchainCardTitle}>
+              Fecha de validez del contrato
+            </p>
+            <p>
+              {contractData3.toString() === "false"
+                ? "Buscando..."
+                : contractData3[5].toString()}
+            </p>
+            <p className={styles.blockchainCardTitle}>
+              Datos de Tareas realizadas
+            </p>
+            {(contractData3[6] || contractData3[7]) === undefined
+              ? undefined
+              : (contractData3[6] || contractData3[7]) === ""
+              ? undefined
+              : arrayPrinterTasks(
+                  JSON.parse(contractData3[6]), //a
+                  JSON.parse(contractData3[7])
+                )}
+          </>
+        ) : (
+          <>
+            <p className={styles.blockchainCardMainTitle}>SLOT 3</p>
+            <p>
+              {contractData3.toString() === "false"
+                ? "Buscando..."
+                : contractData3[5].toString()}
+            </p>
+            <p>
+              {contractData3.toString() === "false"
+                ? "Buscando..."
+                : contractData3[0].toString()}
+            </p>
+          </>
+        )}
+      </div>
+
+      <div className={styles.blockchainCard}>
+        <div className={styles.openCardContainer}>
+          <p onClick={() => setcard4opened(!card4opened)}>
+            {card4opened ? "Ver menos" : "Ver Mas"}
+          </p>
+        </div>
+        {card4opened ? (
+          <>
+            <p className={styles.blockchainCardMainTitle}>SLOT 4</p>
+            <p className={styles.blockchainCardTitle}>Datos del turnaround</p>
+            <p>
+              {contractData4.toString() === "false"
+                ? "Buscando..."
+                : contractData4[0].toString()}
+            </p>
+            <p className={styles.blockchainCardTitle}>Datos del vuelo</p>
+            <p>
+              {contractData4.toString() === "false"
+                ? "Buscando..."
+                : contractData4[1].toString()}
+            </p>
+            <p className={styles.blockchainCardTitle}>Datos de la Aerolínea</p>
+            <p>
+              {contractData4.toString() === "false"
+                ? "Buscando..."
+                : contractData4[2].toString()}
+            </p>
+            <p className={styles.blockchainCardTitle}>Código de demora</p>
+            <p>
+              {contractData4.toString() === "false"
+                ? "Buscando..."
+                : contractData4[3].toString()}
+            </p>
+            <p className={styles.blockchainCardTitle}>
+              Datos del lugar de salida y llegada
+            </p>
+            <p>
+              {contractData4.toString() === "false"
+                ? "Buscando..."
+                : contractData4[4].toString()}
+            </p>
+            <p className={styles.blockchainCardTitle}>
+              Fecha de validez del contrato
+            </p>
+            <p>
+              {contractData4.toString() === "false"
+                ? "Buscando..."
+                : contractData4[5].toString()}
+            </p>
+            <p className={styles.blockchainCardTitle}>
+              Datos de Tareas realizadas
+            </p>
+            {(contractData4[6] || contractData4[7]) === undefined
+              ? undefined
+              : (contractData4[6] || contractData4[7]) === ""
+              ? undefined
+              : arrayPrinterTasks(
+                  JSON.parse(contractData4[6]), //a
+                  JSON.parse(contractData4[7])
+                )}
+          </>
+        ) : (
+          <>
+            <p className={styles.blockchainCardMainTitle}>SLOT 4</p>
+            <p>
+              {contractData4.toString() === "false"
+                ? "Buscando..."
+                : contractData4[5].toString()}
+            </p>
+            <p>
+              {contractData4.toString() === "false"
+                ? "Buscando..."
+                : contractData4[0].toString()}
             </p>
           </>
         )}
