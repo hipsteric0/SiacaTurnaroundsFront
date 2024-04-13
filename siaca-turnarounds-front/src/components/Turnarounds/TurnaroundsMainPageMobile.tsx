@@ -30,7 +30,15 @@ import AddAPhotoRoundedIcon from "@mui/icons-material/AddAPhotoRounded";
 import { get } from "http";
 import StandardInput from "../Reusables/StandardInput";
 import Camera from "../Reusables/Camera";
-import BarcodeScanner from "../Reusables/BarcodeScanner";
+import Button from '@mui/material/Button';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+
+
+import dynamic from 'next/dynamic'
+
+const BarcodeScanner = dynamic(() => import('../Reusables/BarcodeScanner'), {
+  ssr: false,
+})
 
 interface PageProps {
   setStep: (value: number) => void;
@@ -124,10 +132,17 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
 
 
   const [result, setResult] = useState("");
+  const [photo, setPhoto] = useState("");
 
-  const handleScanSuccess = (result : any) => {
-    setResult(result);
+
+  const handleScanSuccess = (e : any) => {
+    setResult(e);
     console.log("CODIGO QR", result)
+  };
+
+  const handlePhoto = (dataUrl : any) => {
+    setPhoto(dataUrl);
+    console.log('Photo data:', photo);
   };
 
   let filterValues: any[] = [];
@@ -189,6 +204,38 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
     };
     await fetchData().catch(console.error);
   };
+
+
+
+
+  const updatePresence = async (idTurnaround : any) => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/updatePresenceTurnaround";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+            turaroundID : idTurnaround,
+            CI : result
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+
+            //console.log("Personnel List Array", result);
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
+
+
 
   const getMachinesList = async () => {
     const fetchData = async () => {
@@ -1980,14 +2027,18 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
               </div>
             ) : (
               <div>
-                {<Camera />}
+                {<Camera 
+                onPhoto={(e: any) => { console.log("URL", e)
+                  SetTaskArrayImages(index?.id, e)
+                }}
+               />}
                 <input
                   type="file"
                   name="Archivos"
                   className={styles.imageInputContainer}
-                  onChange={(e: any) =>
+                  onChange={(e: any) => { console.log("IMAGEN", e.target.files[0])
                     SetTaskArrayImages(index?.id, e.target.files[0])
-                  }
+                  }}
                 />
               </div>
             )}
@@ -2059,8 +2110,21 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                       proceso"
                     </p>
 
-                  {/* AQUI VA EL QR */}
-
+                  {<BarcodeScanner onQR={handleScanSuccess}/>}
+                  <br/>
+                  <center>
+                  {result  !== "" && (
+                      <Button 
+                      color="primary"
+                      variant="outlined"
+                      className={styles.accept}
+                      endIcon={<CheckCircleOutlineIcon />} 
+                      onClick={() => {updatePresence(index?.id)}}>
+                        Aceptar
+                      </Button>
+                    )}
+                    </center>
+                    <br/>
                     <div className={styles.redButtonContainer}>
                       <div className={styles.redButton}>
                         <GreenButton

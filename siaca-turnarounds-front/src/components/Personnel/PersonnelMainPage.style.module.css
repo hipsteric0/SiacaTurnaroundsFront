@@ -145,3 +145,14 @@
     height: '100vh';
 
 }
+
+
+.comboboxMainContainer{
+  border-radius: 5px;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+  border: solid 0.5px #bbb;
+  min-width: 185px;
+  height: 30px;
+  outline: none;
+  padding-left: 10px;
+}

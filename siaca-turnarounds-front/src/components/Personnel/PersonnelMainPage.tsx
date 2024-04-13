@@ -230,6 +230,9 @@ const PersonnelMainPage: React.FC = () => {
     await fetchData().catch(console.error);
   };
 
+
+  const [searchTerm, setSearchTerm] = useState('');
+
   const arrayPrinter = () => {
     let y: any = [];
     let arrayList3aux: any = [];
@@ -241,7 +244,15 @@ const PersonnelMainPage: React.FC = () => {
     isFilteredResults
       ? (arrayList3aux = arrayFilteredList3)
       : (arrayList3aux = arrayList3);
-    arrayList3aux.map((index: any) => {
+
+      const filteredArray = arrayList3aux.filter(
+        (index: any) =>
+          `${index?.fk_user?.first_name} ${index?.fk_user?.last_name}`
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase())
+      );
+
+    filteredArray.map((index: any) => {
       y[index.id] = (
         <div key={index.id} className={styles.tableInfoRow}>
           {
@@ -839,15 +850,15 @@ const PersonnelMainPage: React.FC = () => {
       }
 
       <div className={styles.upperSectionContainer}>
-        <div>
-          <div className={styles.comboboxMainContainer}>
-            <Combobox
-              onClickFilteringFunction={filterArray}
-              setIsFiltered={setIsFilteredResults}
-              filterValues={filterValues}
-            />
+      <div>
+          <input
+            className={styles.comboboxMainContainer}
+            type="text"
+            placeholder="Filtrar por nombre..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
           </div>
-        </div>
         <div className={styles.greenbuttonSuperContainer}>
         <Badge badgeContent={solicitudeCounter} color="error">
           <GreenButton

@@ -1,87 +1,71 @@
-import React, { Component } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { BrowserQRCodeReader, NotFoundException, ChecksumException, FormatException } from "@zxing/library";
 import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import NoPhotographyIcon from '@mui/icons-material/NoPhotography';
+import styles from "./BarcodeScanner.style.module.css";
 
-class BarcodeScanner extends Component {
-  state = {
-    selectedDeviceId: "",
-    code: "",
-    videoInputDevices: [],
-    isCameraActive: false,
-  };
 
-  codeReader = new BrowserQRCodeReader();
+const BarcodeScanner = ({onQR}) => {
+  const [selectedDeviceId, setSelectedDeviceId] = useState("");
+  const [code, setCode] = useState("");
+  const [videoInputDevices, setVideoInputDevices] = useState([]);
+  const [isCameraActive, setIsCameraActive] = useState(false);
 
-  componentDidMount() {
-    this.codeReader
+  const codeReader = useRef(new BrowserQRCodeReader());
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    codeReader.current
       .getVideoInputDevices()
       .then((videoInputDevices) => {
-        this.setupDevices(videoInputDevices);
+        setupDevices(videoInputDevices);
       })
       .catch((err) => {
         console.error(err);
       });
-  }
+  }, []);
 
-  setupDevices = (videoInputDevices : any) => {
+  const setupDevices = (videoInputDevices) => {
     const sourceSelect = document.getElementById("sourceSelect");
 
     // selects first device
-    this.setState({
-      selectedDeviceId: videoInputDevices[0].deviceId,
-    });
+    setSelectedDeviceId(videoInputDevices[0].deviceId);
 
     // setup devices dropdown
     if (videoInputDevices.length >= 1) {
-      this.setState({
-        videoInputDevices: videoInputDevices,
-      });
+      setVideoInputDevices(videoInputDevices);
     }
   };
 
-  handleScanSuccess = (result : any) => {
-    this.setState({
-      code: result.text,
-    });
-    console.log("Found QR code!", result);
-    console.log("Cedula", result?.text)
-    this.props.onScanSuccess(result.text);
-  };
-
-  resetClick = () => {
-    this.codeReader.reset();
-    this.setState({
-      code: "",
-      isCameraActive: false,
-    });
+  const resetClick = () => {
+    codeReader.current.reset();
+    setCode("");
+    onQR("");
+    setIsCameraActive(false);
     console.log("Reset.");
   };
 
-  startCamera = () => {
-    this.setState({
-      isCameraActive: true,
-    });
+  const startCamera = () => {
+    setIsCameraActive(true);
   };
 
-  stopCamera = () => {
-    this.codeReader.reset();
-    this.setState({
-      isCameraActive: false,
-    });
+  const stopCamera = () => {
+    codeReader.current.reset();
+    setIsCameraActive(false);
   };
 
-  componentDidUpdate(prevProps : any, prevState : any) {
-    if (
-      prevState.selectedDeviceId === this.state.selectedDeviceId &&
-      this.state.isCameraActive
-    ) {
+  useEffect(() => {
+    if (selectedDeviceId && isCameraActive) {
       const decodeFromInputDevice = async () => {
         try {
-          const result = await this.codeReader.decodeFromInputVideoDevice(
-            this.state.selectedDeviceId,
-            "video"
+          const result = await codeReader.current.decodeFromInputVideoDevice(
+            selectedDeviceId,
+            videoRef.current
           );
-          this.handleScanSuccess(result);
+          setCode(result.text);
+          onQR(result.text);
+
         } catch (err) {
           if (
             err instanceof NotFoundException ||
@@ -97,44 +81,52 @@ class BarcodeScanner extends Component {
 
       decodeFromInputDevice();
 
-      console.log(
-        `Started decode from camera with id ${this.state.selectedDeviceId}`
-      );
+      console.log(`Started decode from camera with id ${selectedDeviceId}`);
     }
-  }
+  }, [selectedDeviceId, isCameraActive]);
 
-  render() {
-    return (
-      <main className="wrapper">
-        <section className="container" id="demo-content">
-          <div id="sourceSelectPanel">
-          </div>
+  return (
 
-          <div>
-            <video id="video" width="300" height="200" />
-          </div>
 
-          <label>Result:</label>
-          <pre>
-            <code id="result">{this.state.code}</code>
-          </pre>
+        <div id="sourceSelectPanel">
+          <center>
+        <div>
+          <video ref={videoRef} id="video" width="300" height="200" />
+        </div>
+        </center>
 
-          <button id="resetButton" onClick={this.resetClick}>Reset
-          </button>
-          {!this.state.isCameraActive && (
-            <button id="startCameraButton" onClick={this.startCamera}>
-              Start Camera
-            </button>
-          )}
-          {this.state.isCameraActive && (
-            <button id="stopCameraButton" onClick={this.stopCamera}>
-              Stop Camera
-            </button>
-          )}
-        </section>
-      </main>
-    );
-  }
-}
+        <label>Cédula:</label>
+        <pre>
+          <code id="result">{code}</code>
+        </pre>
+
+      <div>
+        <center>
+        <div className={styles.icono}>
+        { code != "" && (
+        <RestartAltIcon fontSize ="large" id="resetButton" onClick={resetClick} />
+        )}
+        </div>
+        <div className={styles.icono}>
+        {!isCameraActive && (
+          <QrCodeScannerIcon fontSize ="large" id="startCameraButton" onClick={startCamera} />
+
+        )}
+        </div>
+
+        {/*
+        <div className={styles.icono}>
+        {isCameraActive && (
+          <NoPhotographyIcon fontSize ="large" id="stopCameraButton" onClick={stopCamera} />
+        )}
+        </div>
+        */}
+
+      </center>
+      </div>
+    </div>
+
+  );
+};
 
 export default BarcodeScanner;
