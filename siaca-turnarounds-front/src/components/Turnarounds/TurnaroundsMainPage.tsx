@@ -3162,6 +3162,12 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
                               }}
                               buttonText="Enviar este turnaround a la slot 4"
                             />
+                            <p className={styles.blockchainWarningText}>
+                              <strong>AVISO:</strong> esta transacción puede
+                              tomar entre 2 y 15 minutos. Se sugiere esperar
+                              pacientemente y no cancelar la transacción
+                              mientras se realiza.
+                            </p>
                             <div
                               className={styles.blockchainRedButtonContainer}
                             >
