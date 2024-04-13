@@ -317,7 +317,7 @@ const SLAMetricsTemplate: React.FC<PageProps> = ({ setStep }) => {
             </div>
             </div>
         </div>
-        <center>
+       {/*<center>
               <p>Número de usos</p>
             <br/>
             <PieChart 
@@ -333,7 +333,7 @@ const SLAMetricsTemplate: React.FC<PageProps> = ({ setStep }) => {
                 
               />
 
-            </center>
+            </center> */}
     </main>
   );
 };

@@ -5,7 +5,7 @@ import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import styles from "./Camera.style.module.css";
 
-const Camera = () => {
+const Camera = ({ onPhoto }) => {
   const videoRef = useRef();
   const canvasRef = useRef();
   const [photoData, setPhotoData] = useState(null);
@@ -34,8 +34,24 @@ const Camera = () => {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
     context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
-    const dataUrl = canvas.toDataURL("image/jpeg");
-    setPhotoData(dataUrl);
+  
+    // Convert the canvas to a Blob
+    canvas.toBlob((blob) => {
+      if (blob) {
+        // Create an Object URL for the Blob
+        const url = URL.createObjectURL(blob);
+  
+        // Create a new Image object and set its src attribute to the Object URL
+        const image = new Image();
+        image.src = url;
+        const file = new File([blob], "photo.jpg", { type: blob.type });
+        // Call the onPhoto function with the Image object
+        onPhoto(file);
+  
+        // Update the photoData state with the Object URL
+        setPhotoData(url);
+      }
+    }, "image/jpeg");
   };
 
   const savePhoto = () => {
