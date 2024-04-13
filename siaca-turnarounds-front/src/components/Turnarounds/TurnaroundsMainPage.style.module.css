@@ -481,3 +481,19 @@
   text-align: center;
   margin-top: 10px;
 }
+.blockchainDetailDialog {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-family: Montserrat, Poppins, sans-serif;
+}
+.blockchainRedButtonContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-top: 20px;
+}
+.blockchainRedButton {
+  width: fit-content;
+}

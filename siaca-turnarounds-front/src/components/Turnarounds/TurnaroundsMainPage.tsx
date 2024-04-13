@@ -31,6 +31,9 @@ import Tooltip from "@mui/material/Tooltip";
 import Web3 from "web3";
 import SimpleStorage from "../../../build/contracts/SimpleStorage.json";
 import FlightData1 from "../../../build/contracts/FlightData1.json";
+import FlightData2 from "../../../build/contracts/FlightData2.json";
+import FlightData3 from "../../../build/contracts/FlightData3.json";
+import FlightData4 from "../../../build/contracts/FlightData4.json";
 import { Provider } from "web3/providers";
 import LoadingScreen from "../Reusables/LoadingScreen";
 import { Image, PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
@@ -89,6 +92,7 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
   const [openAssignDialogID, setOpenAssignDialogID] = useState(false);
   const [openDetailDialog, setOpenDetailDialog] = useState(false);
   const [openAssignDialog, setOpenAssignDialog] = useState(false);
+  const [openBlockchainDialog, setopenBlockchainDialog] = useState(false);
   const [machinesDateTimeSelected, setMachinesDateTimeSelected] =
     useState(false);
   const [personnelDateTimeSelected, setPersonnelDateTimeSelected] =
@@ -153,8 +157,23 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
     web3: null,
     contract: null,
   });
-
+  const [contractState2, setcontractState2] = useState({
+    web3: null,
+    contract: null,
+  });
+  const [contractState3, setcontractState3] = useState({
+    web3: null,
+    contract: null,
+  });
+  const [contractState4, setcontractState4] = useState({
+    web3: null,
+    contract: null,
+  });
   const [contractData, setcontractData] = useState(false);
+  const [contractData2, setcontractData2] = useState(false);
+  const [contractData3, setcontractData3] = useState(false);
+  const [contractData4, setcontractData4] = useState(false);
+
   let envData2;
   const getEnv = async () => {
     const fetchData = async () => {
@@ -197,7 +216,7 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
         deployedNetwork.address
       );
       setcontractState({ web3: web3, contract: contract });
-
+      //
       try {
         const data = await contract?.methods?.getter().call();
         setcontractData(data);
@@ -212,9 +231,411 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
     console.log("contractDATA", Object.values(contractData));
   }, []);
 
+  useEffect(() => {
+    getEnv();
+    const provider = new Web3.providers.HttpProvider("https://rpc.sepolia.org");
+    async function template() {
+      await getEnv();
+      const web3 = new Web3(provider);
+      const acc = web3.eth.accounts.privateKeyToAccount(
+        String(envData2?.PRIVATE_KEY)
+      );
+      web3.eth.accounts.wallet.add(acc);
+      const networkId = await web3.eth.net.getId();
+      const deployedNetwork = FlightData2.networks[/*networkId*/ 11155111];
+      const contract = new web3.eth.Contract(
+        FlightData2.abi,
+        deployedNetwork.address
+      );
+      setcontractState2({ web3: web3, contract: contract });
+      //
+      try {
+        const data = await contract?.methods?.getter().call();
+        setcontractData2(data);
+        console.log("contractDATA2", Object.values(contractData2));
+      } catch (error) {
+        console.error("Error blickchain", error);
+        return;
+      }
+    }
+    console.log("contractDATA2", Object.values(contractData2));
+    provider && template();
+    console.log("contractDATA2", Object.values(contractData2));
+  }, []);
+
+  useEffect(() => {
+    getEnv();
+    const provider = new Web3.providers.HttpProvider("https://rpc.sepolia.org");
+    async function template() {
+      await getEnv();
+      const web3 = new Web3(provider);
+      const acc = web3.eth.accounts.privateKeyToAccount(
+        String(envData2?.PRIVATE_KEY)
+      );
+      web3.eth.accounts.wallet.add(acc);
+      const networkId = await web3.eth.net.getId();
+      const deployedNetwork = FlightData3.networks[/*networkId*/ 11155111];
+      const contract = new web3.eth.Contract(
+        FlightData3.abi,
+        deployedNetwork.address
+      );
+      setcontractState3({ web3: web3, contract: contract });
+      //
+      try {
+        const data = await contract?.methods?.getter().call();
+        setcontractData3(data);
+        console.log("contractDATA3", Object.values(contractData3));
+      } catch (error) {
+        console.error("Error blickchain", error);
+        return;
+      }
+    }
+    console.log("contractDATA3", Object.values(contractData3));
+    provider && template();
+    console.log("contractDATA3", Object.values(contractData3));
+  }, []);
+
+  useEffect(() => {
+    getEnv();
+    const provider = new Web3.providers.HttpProvider("https://rpc.sepolia.org");
+    async function template() {
+      await getEnv();
+      const web3 = new Web3(provider);
+      const acc = web3.eth.accounts.privateKeyToAccount(
+        String(envData2?.PRIVATE_KEY)
+      );
+      web3.eth.accounts.wallet.add(acc);
+      const networkId = await web3.eth.net.getId();
+      const deployedNetwork = FlightData4.networks[/*networkId*/ 11155111];
+      const contract = new web3.eth.Contract(
+        FlightData4.abi,
+        deployedNetwork.address
+      );
+      setcontractState4({ web3: web3, contract: contract });
+      //
+      try {
+        const data = await contract?.methods?.getter().call();
+        setcontractData4(data);
+        console.log("contractDATA", Object.values(contractData4));
+      } catch (error) {
+        console.error("Error blickchain", error);
+        return;
+      }
+    }
+    console.log("contractDATA4", Object.values(contractData4));
+    provider && template();
+    console.log("contractDATA4", Object.values(contractData4));
+  }, []);
+
   //blockchain
-  async function writeDataForBlockchain(flightData: any, turnaroundData: any) {
+  async function writeDataForBlockchain1(flightData: any, turnaroundData: any) {
     const { contract } = contractState;
+    try {
+      let valuesArray = [];
+      let titlesArray = [];
+      turnaroundData.map((index: any) => {
+        titlesArray.push(index?.name);
+        valuesArray.push(index?.value);
+      });
+      console.log("valuesArray", valuesArray);
+      console.log(
+        "valuesArray stringified",
+        JSON.stringify(valuesArray).toString()
+      );
+      console.log("titlesArray", titlesArray);
+      console.log(
+        "titlesArray stringified",
+        JSON.stringify(titlesArray).toString()
+      );
+
+      console.log("turnaroundData", turnaroundData);
+      console.log("flightData", flightData);
+      await contract?.methods
+        ?.setter(
+          "Turnaround ID: " +
+            openDetailDialogID.toString() +
+            "     - Fecha/hora de inicio: " +
+            flightData?.fecha_inicio +
+            " " +
+            flightData?.hora_inicio +
+            "     - Fecha/hora fin: " +
+            flightData?.fecha_fin +
+            " " +
+            flightData?.hora_fin +
+            "     - ETA: " +
+            flightData?.fk_vuelo?.ETA_fecha +
+            " " +
+            flightData?.fk_vuelo?.ETA +
+            "      - ATA: " +
+            flightData?.fk_vuelo?.ATA_fecha +
+            " " +
+            flightData?.fk_vuelo?.ATA,
+          "Acreg: " +
+            flightData?.fk_vuelo?.ac_reg +
+            "    - Flight No.: " +
+            flightData?.fk_vuelo?.numero_vuelo +
+            "    - Actype: " +
+            flightData?.fk_vuelo?.ac_type +
+            "    - Gate: " +
+            flightData?.fk_vuelo?.gate +
+            "    - Tipo de vuelo: " +
+            flightData?.fk_vuelo?.tipo_vuelo?.nombre +
+            "    - Tipo de servicio: " +
+            flightData?.fk_vuelo?.tipo_servicio?.nombre,
+          "Aerolinea: " +
+            flightData?.fk_vuelo?.fk_aerolinea?.nombre +
+            "    - Email de aerolinea: " +
+            flightData?.fk_vuelo?.fk_aerolinea?.correo +
+            "    - Telefono de aerolinea: " +
+            flightData?.fk_vuelo?.fk_aerolinea?.telefono +
+            "    - Entidad de pago: " +
+            flightData?.fk_vuelo?.ente_pagador,
+          "Alpha: " +
+            flightData?.fk_codigos_demora?.alpha +
+            "    - Identificador: " +
+            flightData?.fk_codigos_demora?.identificador +
+            "    - Description: " +
+            flightData?.fk_codigos_demora?.descripcion +
+            "    - Accountable: " +
+            flightData?.fk_codigos_demora?.accountable,
+          "     Lugar de salida: " +
+            flightData?.fk_vuelo?.lugar_salida?.nombre +
+            " (" +
+            flightData?.fk_vuelo?.lugar_salida?.codigo +
+            "/" +
+            flightData?.fk_vuelo?.lugar_salida?.codigo_oaci +
+            ") " +
+            " - Lugar de destino:  " +
+            flightData?.fk_vuelo?.lugar_destino?.nombre +
+            " (" +
+            flightData?.fk_vuelo?.lugar_destino?.codigo +
+            "/" +
+            flightData?.fk_vuelo?.lugar_destino?.codigo_oaci +
+            ") ",
+          "Fecha y hora de inserción al contrato: " +
+            currentDateForBlockchain +
+            " - " +
+            currentTimestampForBlockchain,
+          JSON.stringify(titlesArray).toString(),
+          JSON.stringify(valuesArray).toString()
+        )
+        ?.send({
+          from: envData.WALLET_ID,
+        });
+    } catch (error) {
+      setLoading(false);
+      console.error("Error blockchain", error);
+      return;
+    }
+    router.reload();
+  }
+
+  async function writeDataForBlockchain2(flightData: any, turnaroundData: any) {
+    const { contract } = contractState2;
+    try {
+      let valuesArray = [];
+      let titlesArray = [];
+      turnaroundData.map((index: any) => {
+        titlesArray.push(index?.name);
+        valuesArray.push(index?.value);
+      });
+      console.log("valuesArray", valuesArray);
+      console.log(
+        "valuesArray stringified",
+        JSON.stringify(valuesArray).toString()
+      );
+      console.log("titlesArray", titlesArray);
+      console.log(
+        "titlesArray stringified",
+        JSON.stringify(titlesArray).toString()
+      );
+
+      console.log("turnaroundData", turnaroundData);
+      console.log("flightData", flightData);
+      await contract?.methods
+        ?.setter(
+          "Turnaround ID: " +
+            openDetailDialogID.toString() +
+            "     - Fecha/hora de inicio: " +
+            flightData?.fecha_inicio +
+            " " +
+            flightData?.hora_inicio +
+            "     - Fecha/hora fin: " +
+            flightData?.fecha_fin +
+            " " +
+            flightData?.hora_fin +
+            "     - ETA: " +
+            flightData?.fk_vuelo?.ETA_fecha +
+            " " +
+            flightData?.fk_vuelo?.ETA +
+            "      - ATA: " +
+            flightData?.fk_vuelo?.ATA_fecha +
+            " " +
+            flightData?.fk_vuelo?.ATA,
+          "Acreg: " +
+            flightData?.fk_vuelo?.ac_reg +
+            "    - Flight No.: " +
+            flightData?.fk_vuelo?.numero_vuelo +
+            "    - Actype: " +
+            flightData?.fk_vuelo?.ac_type +
+            "    - Gate: " +
+            flightData?.fk_vuelo?.gate +
+            "    - Tipo de vuelo: " +
+            flightData?.fk_vuelo?.tipo_vuelo?.nombre +
+            "    - Tipo de servicio: " +
+            flightData?.fk_vuelo?.tipo_servicio?.nombre,
+          "Aerolinea: " +
+            flightData?.fk_vuelo?.fk_aerolinea?.nombre +
+            "    - Email de aerolinea: " +
+            flightData?.fk_vuelo?.fk_aerolinea?.correo +
+            "    - Telefono de aerolinea: " +
+            flightData?.fk_vuelo?.fk_aerolinea?.telefono +
+            "    - Entidad de pago: " +
+            flightData?.fk_vuelo?.ente_pagador,
+          "Alpha: " +
+            flightData?.fk_codigos_demora?.alpha +
+            "    - Identificador: " +
+            flightData?.fk_codigos_demora?.identificador +
+            "    - Description: " +
+            flightData?.fk_codigos_demora?.descripcion +
+            "    - Accountable: " +
+            flightData?.fk_codigos_demora?.accountable,
+          "     Lugar de salida: " +
+            flightData?.fk_vuelo?.lugar_salida?.nombre +
+            " (" +
+            flightData?.fk_vuelo?.lugar_salida?.codigo +
+            "/" +
+            flightData?.fk_vuelo?.lugar_salida?.codigo_oaci +
+            ") " +
+            " - Lugar de destino:  " +
+            flightData?.fk_vuelo?.lugar_destino?.nombre +
+            " (" +
+            flightData?.fk_vuelo?.lugar_destino?.codigo +
+            "/" +
+            flightData?.fk_vuelo?.lugar_destino?.codigo_oaci +
+            ") ",
+          "Fecha y hora de inserción al contrato: " +
+            currentDateForBlockchain +
+            " - " +
+            currentTimestampForBlockchain,
+          JSON.stringify(titlesArray).toString(),
+          JSON.stringify(valuesArray).toString()
+        )
+        ?.send({
+          from: envData.WALLET_ID,
+        });
+    } catch (error) {
+      setLoading(false);
+      console.error("Error blockchain", error);
+      return;
+    }
+    router.reload();
+  }
+
+  async function writeDataForBlockchain3(flightData: any, turnaroundData: any) {
+    const { contract } = contractState3;
+    try {
+      let valuesArray = [];
+      let titlesArray = [];
+      turnaroundData.map((index: any) => {
+        titlesArray.push(index?.name);
+        valuesArray.push(index?.value);
+      });
+      console.log("valuesArray", valuesArray);
+      console.log(
+        "valuesArray stringified",
+        JSON.stringify(valuesArray).toString()
+      );
+      console.log("titlesArray", titlesArray);
+      console.log(
+        "titlesArray stringified",
+        JSON.stringify(titlesArray).toString()
+      );
+
+      console.log("turnaroundData", turnaroundData);
+      console.log("flightData", flightData);
+      await contract?.methods
+        ?.setter(
+          "Turnaround ID: " +
+            openDetailDialogID.toString() +
+            "     - Fecha/hora de inicio: " +
+            flightData?.fecha_inicio +
+            " " +
+            flightData?.hora_inicio +
+            "     - Fecha/hora fin: " +
+            flightData?.fecha_fin +
+            " " +
+            flightData?.hora_fin +
+            "     - ETA: " +
+            flightData?.fk_vuelo?.ETA_fecha +
+            " " +
+            flightData?.fk_vuelo?.ETA +
+            "      - ATA: " +
+            flightData?.fk_vuelo?.ATA_fecha +
+            " " +
+            flightData?.fk_vuelo?.ATA,
+          "Acreg: " +
+            flightData?.fk_vuelo?.ac_reg +
+            "    - Flight No.: " +
+            flightData?.fk_vuelo?.numero_vuelo +
+            "    - Actype: " +
+            flightData?.fk_vuelo?.ac_type +
+            "    - Gate: " +
+            flightData?.fk_vuelo?.gate +
+            "    - Tipo de vuelo: " +
+            flightData?.fk_vuelo?.tipo_vuelo?.nombre +
+            "    - Tipo de servicio: " +
+            flightData?.fk_vuelo?.tipo_servicio?.nombre,
+          "Aerolinea: " +
+            flightData?.fk_vuelo?.fk_aerolinea?.nombre +
+            "    - Email de aerolinea: " +
+            flightData?.fk_vuelo?.fk_aerolinea?.correo +
+            "    - Telefono de aerolinea: " +
+            flightData?.fk_vuelo?.fk_aerolinea?.telefono +
+            "    - Entidad de pago: " +
+            flightData?.fk_vuelo?.ente_pagador,
+          "Alpha: " +
+            flightData?.fk_codigos_demora?.alpha +
+            "    - Identificador: " +
+            flightData?.fk_codigos_demora?.identificador +
+            "    - Description: " +
+            flightData?.fk_codigos_demora?.descripcion +
+            "    - Accountable: " +
+            flightData?.fk_codigos_demora?.accountable,
+          "     Lugar de salida: " +
+            flightData?.fk_vuelo?.lugar_salida?.nombre +
+            " (" +
+            flightData?.fk_vuelo?.lugar_salida?.codigo +
+            "/" +
+            flightData?.fk_vuelo?.lugar_salida?.codigo_oaci +
+            ") " +
+            " - Lugar de destino:  " +
+            flightData?.fk_vuelo?.lugar_destino?.nombre +
+            " (" +
+            flightData?.fk_vuelo?.lugar_destino?.codigo +
+            "/" +
+            flightData?.fk_vuelo?.lugar_destino?.codigo_oaci +
+            ") ",
+          "Fecha y hora de inserción al contrato: " +
+            currentDateForBlockchain +
+            " - " +
+            currentTimestampForBlockchain,
+          JSON.stringify(titlesArray).toString(),
+          JSON.stringify(valuesArray).toString()
+        )
+        ?.send({
+          from: envData.WALLET_ID,
+        });
+    } catch (error) {
+      setLoading(false);
+      console.error("Error blockchain", error);
+      return;
+    }
+    router.reload();
+  }
+
+  async function writeDataForBlockchain4(flightData: any, turnaroundData: any) {
+    const { contract } = contractState4;
     try {
       let valuesArray = [];
       let titlesArray = [];
@@ -2691,6 +3112,70 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
                     </div>
                     {index?.fk_vuelo?.estado === "Atendido" && (
                       <>
+                        <Dialog
+                          open={openBlockchainDialog}
+                          onClose={() => setopenBlockchainDialog(false)}
+                          className={styles.detailDialog}
+                        >
+                          <div className={styles.blockchainDetailDialog}>
+                            <p>
+                              Selecciona el slot de contrato que quieres ocupar
+                              con los datos de este turnaround:
+                            </p>
+                            <GreenButton2
+                              executableFunction={() => {
+                                setLoading(true);
+                                writeDataForBlockchain1(
+                                  index,
+                                  tasksCompletionValues
+                                );
+                              }}
+                              buttonText="Enviar este turnaround a la slot 1"
+                            />
+                            <GreenButton2
+                              executableFunction={() => {
+                                setLoading(true);
+                                writeDataForBlockchain2(
+                                  index,
+                                  tasksCompletionValues
+                                );
+                              }}
+                              buttonText="Enviar este turnaround a la slot 2"
+                            />
+                            <GreenButton2
+                              executableFunction={() => {
+                                setLoading(true);
+                                writeDataForBlockchain3(
+                                  index,
+                                  tasksCompletionValues
+                                );
+                              }}
+                              buttonText="Enviar este turnaround a la slot 3"
+                            />
+                            <GreenButton2
+                              executableFunction={() => {
+                                setLoading(true);
+                                writeDataForBlockchain4(
+                                  index,
+                                  tasksCompletionValues
+                                );
+                              }}
+                              buttonText="Enviar este turnaround a la slot 4"
+                            />
+                            <div
+                              className={styles.blockchainRedButtonContainer}
+                            >
+                              <div className={styles.blockchainRedButton}>
+                                <RedButton2
+                                  executableFunction={() => {
+                                    setopenBlockchainDialog(false);
+                                  }}
+                                  buttonText="Cerrar"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </Dialog>
                         <p
                           className={styles.detailDialogInfoContainerTitleText}
                         >
@@ -2706,16 +3191,7 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
                             >
                               <GreenButton2
                                 executableFunction={() => {
-                                  console.log(
-                                    "blockchain",
-                                    tasksCompletionValues
-                                  );
-                                  console.log("blockchain2", index);
-                                  setLoading(true);
-                                  writeDataForBlockchain(
-                                    index,
-                                    tasksCompletionValues
-                                  );
+                                  setopenBlockchainDialog(true);
                                 }}
                                 buttonText="Enviar este turnaround a la blockchain"
                               />
