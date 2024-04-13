@@ -1,0 +1,2684 @@
+{
+  "contractName": "FlightData3",
+  "abi": [
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_timestamps",
+          "type": "string"
+        },
+        {
+          "name": "_planeData",
+          "type": "string"
+        },
+        {
+          "name": "_airlineData",
+          "type": "string"
+        },
+        {
+          "name": "_lateCodeData",
+          "type": "string"
+        },
+        {
+          "name": "_destinationData",
+          "type": "string"
+        },
+        {
+          "name": "_departureData",
+          "type": "string"
+        },
+        {
+          "name": "_taskNamesArray",
+          "type": "string"
+        },
+        {
+          "name": "_tasksValuesArray",
+          "type": "string"
+        }
+      ],
+      "name": "setter",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getter",
+      "outputs": [
+        {
+          "name": "",
+          "type": "string"
+        },
+        {
+          "name": "",
+          "type": "string"
+        },
+        {
+          "name": "",
+          "type": "string"
+        },
+        {
+          "name": "",
+          "type": "string"
+        },
+        {
+          "name": "",
+          "type": "string"
+        },
+        {
+          "name": "",
+          "type": "string"
+        },
+        {
+          "name": "",
+          "type": "string"
+        },
+        {
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.5.1+commit.c8a2cb62\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":false,\"inputs\":[{\"name\":\"_timestamps\",\"type\":\"string\"},{\"name\":\"_planeData\",\"type\":\"string\"},{\"name\":\"_airlineData\",\"type\":\"string\"},{\"name\":\"_lateCodeData\",\"type\":\"string\"},{\"name\":\"_destinationData\",\"type\":\"string\"},{\"name\":\"_departureData\",\"type\":\"string\"},{\"name\":\"_taskNamesArray\",\"type\":\"string\"},{\"name\":\"_tasksValuesArray\",\"type\":\"string\"}],\"name\":\"setter\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"getter\",\"outputs\":[{\"name\":\"\",\"type\":\"string\"},{\"name\":\"\",\"type\":\"string\"},{\"name\":\"\",\"type\":\"string\"},{\"name\":\"\",\"type\":\"string\"},{\"name\":\"\",\"type\":\"string\"},{\"name\":\"\",\"type\":\"string\"},{\"name\":\"\",\"type\":\"string\"},{\"name\":\"\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"project:/contracts/FlightData3.sol\":\"FlightData3\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/FlightData3.sol\":{\"keccak256\":\"0xdf33b7d62618e33cd96434a3335922cafc035ef98e2ccbf2621a9ec582b0a134\",\"urls\":[\"bzzr://c36a2618c18aa9cb3559dec0756a5c273fdb5e9c03083242cde5f3e1d95a428c\"]}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b50610ac8806100206000396000f3fe608060405260043610610046576000357c0100000000000000000000000000000000000000000000000000000000900480630f71cd711461004b578063993a04b714610074575b600080fd5b34801561005757600080fd5b50610072600480360361006d9190810190610779565b6100a6565b005b34801561008057600080fd5b50610089610168565b60405161009d989796959493929190610921565b60405180910390f35b87600090805190602001906100bc92919061067e565b5086600190805190602001906100d392919061067e565b5085600290805190602001906100ea92919061067e565b50846003908051906020019061010192919061067e565b50836004908051906020019061011892919061067e565b50826005908051906020019061012f92919061067e565b50816006908051906020019061014692919061067e565b50806007908051906020019061015d92919061067e565b505050505050505050565b60608060608060608060608060006001600260036004600560066007878054600181600116156101000203166002900480601f0160208091040260200160405190810160405280929190818152602001828054600181600116156101000203166002900480156102195780601f106101ee57610100808354040283529160200191610219565b820191906000526020600020905b8154815290600101906020018083116101fc57829003601f168201915b50505050509750868054600181600116156101000203166002900480601f0160208091040260200160405190810160405280929190818152602001828054600181600116156101000203166002900480156102b55780601f1061028a576101008083540402835291602001916102b5565b820191906000526020600020905b81548152906001019060200180831161029857829003601f168201915b50505050509650858054600181600116156101000203166002900480601f0160208091040260200160405190810160405280929190818152602001828054600181600116156101000203166002900480156103515780601f1061032657610100808354040283529160200191610351565b820191906000526020600020905b81548152906001019060200180831161033457829003601f168201915b50505050509550848054600181600116156101000203166002900480601f0160208091040260200160405190810160405280929190818152602001828054600181600116156101000203166002900480156103ed5780601f106103c2576101008083540402835291602001916103ed565b820191906000526020600020905b8154815290600101906020018083116103d057829003601f168201915b50505050509450838054600181600116156101000203166002900480601f0160208091040260200160405190810160405280929190818152602001828054600181600116156101000203166002900480156104895780601f1061045e57610100808354040283529160200191610489565b820191906000526020600020905b81548152906001019060200180831161046c57829003601f168201915b50505050509350828054600181600116156101000203166002900480601f0160208091040260200160405190810160405280929190818152602001828054600181600116156101000203166002900480156105255780601f106104fa57610100808354040283529160200191610525565b820191906000526020600020905b81548152906001019060200180831161050857829003601f168201915b50505050509250818054600181600116156101000203166002900480601f0160208091040260200160405190810160405280929190818152602001828054600181600116156101000203166002900480156105c15780601f10610596576101008083540402835291602001916105c1565b820191906000526020600020905b8154815290600101906020018083116105a457829003601f168201915b50505050509150808054600181600116156101000203166002900480601f01602080910402602001604051908101604052809291908181526020018280546001816001161561010002031660029004801561065d5780601f106106325761010080835404028352916020019161065d565b820191906000526020600020905b81548152906001019060200180831161064057829003601f168201915b50505050509050975097509750975097509750975097509091929394959697565b828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f106106bf57805160ff19168380011785556106ed565b828001600101855582156106ed579182015b828111156106ec5782518255916020019190600101906106d1565b5b5090506106fa91906106fe565b5090565b61072091905b8082111561071c576000816000905550600101610704565b5090565b90565b600082601f830112151561073657600080fd5b813561074961074482610a04565b6109d7565b9150808252602083016020830185838301111561076557600080fd5b610770838284610a3b565b50505092915050565b600080600080600080600080610100898b03121561079657600080fd5b600089013567ffffffffffffffff8111156107b057600080fd5b6107bc8b828c01610723565b985050602089013567ffffffffffffffff8111156107d957600080fd5b6107e58b828c01610723565b975050604089013567ffffffffffffffff81111561080257600080fd5b61080e8b828c01610723565b965050606089013567ffffffffffffffff81111561082b57600080fd5b6108378b828c01610723565b955050608089013567ffffffffffffffff81111561085457600080fd5b6108608b828c01610723565b94505060a089013567ffffffffffffffff81111561087d57600080fd5b6108898b828c01610723565b93505060c089013567ffffffffffffffff8111156108a657600080fd5b6108b28b828c01610723565b92505060e089013567ffffffffffffffff8111156108cf57600080fd5b6108db8b828c01610723565b9150509295985092959890939650565b60006108f682610a30565b80845261090a816020860160208601610a4a565b61091381610a7d565b602085010191505092915050565b600061010082019050818103600083015261093c818b6108eb565b90508181036020830152610950818a6108eb565b9050818103604083015261096481896108eb565b9050818103606083015261097881886108eb565b9050818103608083015261098c81876108eb565b905081810360a08301526109a081866108eb565b905081810360c08301526109b481856108eb565b905081810360e08301526109c881846108eb565b90509998505050505050505050565b6000604051905081810181811067ffffffffffffffff821117156109fa57600080fd5b8060405250919050565b600067ffffffffffffffff821115610a1b57600080fd5b601f19601f8301169050602081019050919050565b600081519050919050565b82818337600083830152505050565b60005b83811015610a68578082015181840152602081019050610a4d565b83811115610a77576000848401525b50505050565b6000601f19601f830116905091905056fea265627a7a723058209d37e8711d20c15ebad0412ec5e7f8b8c59b96858663350b9c28374d32dcd0456c6578706572696d656e74616cf50037",
+  "deployedBytecode": "0x608060405260043610610046576000357c0100000000000000000000000000000000000000000000000000000000900480630f71cd711461004b578063993a04b714610074575b600080fd5b34801561005757600080fd5b50610072600480360361006d9190810190610779565b6100a6565b005b34801561008057600080fd5b50610089610168565b60405161009d989796959493929190610921565b60405180910390f35b87600090805190602001906100bc92919061067e565b5086600190805190602001906100d392919061067e565b5085600290805190602001906100ea92919061067e565b50846003908051906020019061010192919061067e565b50836004908051906020019061011892919061067e565b50826005908051906020019061012f92919061067e565b50816006908051906020019061014692919061067e565b50806007908051906020019061015d92919061067e565b505050505050505050565b60608060608060608060608060006001600260036004600560066007878054600181600116156101000203166002900480601f0160208091040260200160405190810160405280929190818152602001828054600181600116156101000203166002900480156102195780601f106101ee57610100808354040283529160200191610219565b820191906000526020600020905b8154815290600101906020018083116101fc57829003601f168201915b50505050509750868054600181600116156101000203166002900480601f0160208091040260200160405190810160405280929190818152602001828054600181600116156101000203166002900480156102b55780601f1061028a576101008083540402835291602001916102b5565b820191906000526020600020905b81548152906001019060200180831161029857829003601f168201915b50505050509650858054600181600116156101000203166002900480601f0160208091040260200160405190810160405280929190818152602001828054600181600116156101000203166002900480156103515780601f1061032657610100808354040283529160200191610351565b820191906000526020600020905b81548152906001019060200180831161033457829003601f168201915b50505050509550848054600181600116156101000203166002900480601f0160208091040260200160405190810160405280929190818152602001828054600181600116156101000203166002900480156103ed5780601f106103c2576101008083540402835291602001916103ed565b820191906000526020600020905b8154815290600101906020018083116103d057829003601f168201915b50505050509450838054600181600116156101000203166002900480601f0160208091040260200160405190810160405280929190818152602001828054600181600116156101000203166002900480156104895780601f1061045e57610100808354040283529160200191610489565b820191906000526020600020905b81548152906001019060200180831161046c57829003601f168201915b50505050509350828054600181600116156101000203166002900480601f0160208091040260200160405190810160405280929190818152602001828054600181600116156101000203166002900480156105255780601f106104fa57610100808354040283529160200191610525565b820191906000526020600020905b81548152906001019060200180831161050857829003601f168201915b50505050509250818054600181600116156101000203166002900480601f0160208091040260200160405190810160405280929190818152602001828054600181600116156101000203166002900480156105c15780601f10610596576101008083540402835291602001916105c1565b820191906000526020600020905b8154815290600101906020018083116105a457829003601f168201915b50505050509150808054600181600116156101000203166002900480601f01602080910402602001604051908101604052809291908181526020018280546001816001161561010002031660029004801561065d5780601f106106325761010080835404028352916020019161065d565b820191906000526020600020905b81548152906001019060200180831161064057829003601f168201915b50505050509050975097509750975097509750975097509091929394959697565b828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f106106bf57805160ff19168380011785556106ed565b828001600101855582156106ed579182015b828111156106ec5782518255916020019190600101906106d1565b5b5090506106fa91906106fe565b5090565b61072091905b8082111561071c576000816000905550600101610704565b5090565b90565b600082601f830112151561073657600080fd5b813561074961074482610a04565b6109d7565b9150808252602083016020830185838301111561076557600080fd5b610770838284610a3b565b50505092915050565b600080600080600080600080610100898b03121561079657600080fd5b600089013567ffffffffffffffff8111156107b057600080fd5b6107bc8b828c01610723565b985050602089013567ffffffffffffffff8111156107d957600080fd5b6107e58b828c01610723565b975050604089013567ffffffffffffffff81111561080257600080fd5b61080e8b828c01610723565b965050606089013567ffffffffffffffff81111561082b57600080fd5b6108378b828c01610723565b955050608089013567ffffffffffffffff81111561085457600080fd5b6108608b828c01610723565b94505060a089013567ffffffffffffffff81111561087d57600080fd5b6108898b828c01610723565b93505060c089013567ffffffffffffffff8111156108a657600080fd5b6108b28b828c01610723565b92505060e089013567ffffffffffffffff8111156108cf57600080fd5b6108db8b828c01610723565b9150509295985092959890939650565b60006108f682610a30565b80845261090a816020860160208601610a4a565b61091381610a7d565b602085010191505092915050565b600061010082019050818103600083015261093c818b6108eb565b90508181036020830152610950818a6108eb565b9050818103604083015261096481896108eb565b9050818103606083015261097881886108eb565b9050818103608083015261098c81876108eb565b905081810360a08301526109a081866108eb565b905081810360c08301526109b481856108eb565b905081810360e08301526109c881846108eb565b90509998505050505050505050565b6000604051905081810181811067ffffffffffffffff821117156109fa57600080fd5b8060405250919050565b600067ffffffffffffffff821115610a1b57600080fd5b601f19601f8301169050602081019050919050565b600081519050919050565b82818337600083830152505050565b60005b83811015610a68578082015181840152602081019050610a4d565b83811115610a77576000848401525b50505050565b6000601f19601f830116905091905056fea265627a7a723058209d37e8711d20c15ebad0412ec5e7f8b8c59b96858663350b9c28374d32dcd0456c6578706572696d656e74616cf50037",
+  "sourceMap": "104:1182:2:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;104:1182:2;;;;;;;",
+  "deployedSourceMap": "104:1182:2:-;;;;;;;;;;;;;;;;;;;;;;;;;;;400:584;;8:9:-1;5:2;;;30:1;27;20:12;5:2;400:584:2;;;;;;;;;;;;;;;;:::i;:::-;;994:287;;8:9:-1;5:2;;;30:1;27;20:12;5:2;994:287:2;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;400:584;684:11;673:10;:22;;;;;;;;;;;;:::i;:::-;;716:10;706:9;:20;;;;;;;;;;;;:::i;:::-;;749:12;737:11;:24;;;;;;;;;;;;:::i;:::-;;785:13;772:12;:26;;;;;;;;;;;;:::i;:::-;;825:16;809:15;:32;;;;;;;;;;;;:::i;:::-;;866:14;852:13;:28;;;;;;;;;;;;:::i;:::-;;906:15;891:14;:30;;;;;;;;;;;;:::i;:::-;;949:17;932:16;:34;;;;;;;;;;;;:::i;:::-;;400:584;;;;;;;;:::o;994:287::-;1033:13;1047;1061;1075;1089;1103;1117;1131;1165:10;1176:9;1186:11;1198:12;1211:15;1227:13;1241:14;1256:16;1157:116;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;994:287;;;;;;;;:::o;104:1182::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;:::o;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;:::o;6:442:-1:-;;108:3;101:4;93:6;89:17;85:27;78:35;75:2;;;126:1;123;116:12;75:2;163:6;150:20;185:65;200:49;242:6;200:49;;;185:65;;;176:74;;270:6;263:5;256:21;306:4;298:6;294:17;339:4;332:5;328:16;374:3;365:6;360:3;356:16;353:25;350:2;;;391:1;388;381:12;350:2;401:41;435:6;430:3;425;401:41;;;68:380;;;;;;;;456:1969;;;;;;;;;759:3;747:9;738:7;734:23;730:33;727:2;;;776:1;773;766:12;727:2;839:1;828:9;824:17;811:31;862:18;854:6;851:30;848:2;;;894:1;891;884:12;848:2;914:63;969:7;960:6;949:9;945:22;914:63;;;904:73;;790:193;1042:2;1031:9;1027:18;1014:32;1066:18;1058:6;1055:30;1052:2;;;1098:1;1095;1088:12;1052:2;1118:63;1173:7;1164:6;1153:9;1149:22;1118:63;;;1108:73;;993:194;1246:2;1235:9;1231:18;1218:32;1270:18;1262:6;1259:30;1256:2;;;1302:1;1299;1292:12;1256:2;1322:63;1377:7;1368:6;1357:9;1353:22;1322:63;;;1312:73;;1197:194;1450:2;1439:9;1435:18;1422:32;1474:18;1466:6;1463:30;1460:2;;;1506:1;1503;1496:12;1460:2;1526:63;1581:7;1572:6;1561:9;1557:22;1526:63;;;1516:73;;1401:194;1654:3;1643:9;1639:19;1626:33;1679:18;1671:6;1668:30;1665:2;;;1711:1;1708;1701:12;1665:2;1731:63;1786:7;1777:6;1766:9;1762:22;1731:63;;;1721:73;;1605:195;1859:3;1848:9;1844:19;1831:33;1884:18;1876:6;1873:30;1870:2;;;1916:1;1913;1906:12;1870:2;1936:63;1991:7;1982:6;1971:9;1967:22;1936:63;;;1926:73;;1810:195;2064:3;2053:9;2049:19;2036:33;2089:18;2081:6;2078:30;2075:2;;;2121:1;2118;2111:12;2075:2;2141:63;2196:7;2187:6;2176:9;2172:22;2141:63;;;2131:73;;2015:195;2269:3;2258:9;2254:19;2241:33;2294:18;2286:6;2283:30;2280:2;;;2326:1;2323;2316:12;2280:2;2346:63;2401:7;2392:6;2381:9;2377:22;2346:63;;;2336:73;;2220:195;721:1704;;;;;;;;;;;;2432:300;;2534:39;2567:5;2534:39;;;2590:6;2585:3;2578:19;2602:63;2658:6;2651:4;2646:3;2642:14;2635:4;2628:5;2624:16;2602:63;;;2697:29;2719:6;2697:29;;;2690:4;2685:3;2681:14;2677:50;2670:57;;2514:218;;;;;;2739:1609;;3203:3;3192:9;3188:19;3180:27;;3254:9;3248:4;3244:20;3240:1;3229:9;3225:17;3218:47;3279:68;3342:4;3333:6;3279:68;;;3271:76;;3395:9;3389:4;3385:20;3380:2;3369:9;3365:18;3358:48;3420:68;3483:4;3474:6;3420:68;;;3412:76;;3536:9;3530:4;3526:20;3521:2;3510:9;3506:18;3499:48;3561:68;3624:4;3615:6;3561:68;;;3553:76;;3677:9;3671:4;3667:20;3662:2;3651:9;3647:18;3640:48;3702:68;3765:4;3756:6;3702:68;;;3694:76;;3819:9;3813:4;3809:20;3803:3;3792:9;3788:19;3781:49;3844:68;3907:4;3898:6;3844:68;;;3836:76;;3961:9;3955:4;3951:20;3945:3;3934:9;3930:19;3923:49;3986:68;4049:4;4040:6;3986:68;;;3978:76;;4103:9;4097:4;4093:20;4087:3;4076:9;4072:19;4065:49;4128:68;4191:4;4182:6;4128:68;;;4120:76;;4245:9;4239:4;4235:20;4229:3;4218:9;4214:19;4207:49;4270:68;4333:4;4324:6;4270:68;;;4262:76;;3174:1174;;;;;;;;;;;;4355:256;;4417:2;4411:9;4401:19;;4455:4;4447:6;4443:17;4554:6;4542:10;4539:22;4518:18;4506:10;4503:34;4500:62;4497:2;;;4575:1;4572;4565:12;4497:2;4595:10;4591:2;4584:22;4395:216;;;;;4618:259;;4762:18;4754:6;4751:30;4748:2;;;4794:1;4791;4784:12;4748:2;4838:4;4834:9;4827:4;4819:6;4815:17;4811:33;4803:41;;4867:4;4861;4857:15;4849:23;;4685:192;;;;4884:92;;4965:5;4959:12;4949:22;;4943:33;;;;4984:145;5065:6;5060:3;5055;5042:30;5121:1;5112:6;5107:3;5103:16;5096:27;5035:94;;;;5138:268;5203:1;5210:101;5224:6;5221:1;5218:13;5210:101;;;5300:1;5295:3;5291:11;5285:18;5281:1;5276:3;5272:11;5265:39;5246:2;5243:1;5239:10;5234:15;;5210:101;;;5326:6;5323:1;5320:13;5317:2;;;5391:1;5382:6;5377:3;5373:16;5366:27;5317:2;5187:219;;;;;5414:97;;5502:2;5498:7;5493:2;5486:5;5482:14;5478:28;5468:38;;5462:49;;;",
+  "source": "// SPDX-License-Identifier: MIT \r\npragma solidity >=0.5.0 <0.9.0;\r\npragma experimental ABIEncoderV2;\r\n\r\ncontract FlightData3 {\r\n    \r\n        string timestamps;\r\n        string planeData;\r\n        string airlineData;\r\n        string lateCodeData;\r\n        string destinationData;\r\n        string departureData;\r\n        \r\n        string taskNamesArray;\r\n        string tasksValuesArray;\r\n\r\n\r\n\r\n\r\n    function setter(string memory _timestamps,string memory _planeData,string memory _airlineData,string memory _lateCodeData,string memory _destinationData,string memory _departureData,string memory _taskNamesArray,string memory _tasksValuesArray) public {\r\n        \r\n        timestamps=_timestamps;\r\n        planeData=_planeData;\r\n        airlineData=_airlineData;\r\n        lateCodeData=_lateCodeData;\r\n        destinationData=_destinationData;\r\n        departureData=_departureData;\r\n        taskNamesArray=_taskNamesArray;\r\n        tasksValuesArray=_tasksValuesArray;\r\n        \r\n    }\r\n\r\n\r\n    function getter() public view returns (string memory,string memory,string memory,string memory,string memory,string memory,string memory,string memory) {\r\n        return (timestamps,planeData,airlineData,lateCodeData,destinationData,departureData,taskNamesArray,tasksValuesArray);\r\n    }\r\n\r\n}",
+  "sourcePath": "C:\\Users\\alero\\Desktop\\SiacaTurnarounds\\SiacaTurnaroundsFront\\SiacaTurnaroundsFront\\siaca-turnarounds-front\\contracts\\FlightData3.sol",
+  "ast": {
+    "absolutePath": "project:/contracts/FlightData3.sol",
+    "exportedSymbols": {
+      "FlightData3": [
+        305
+      ]
+    },
+    "id": 306,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 205,
+        "literals": [
+          "solidity",
+          ">=",
+          "0.5",
+          ".0",
+          "<",
+          "0.9",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "34:31:2"
+      },
+      {
+        "id": 206,
+        "literals": [
+          "experimental",
+          "ABIEncoderV2"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "67:33:2"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 305,
+        "linearizedBaseContracts": [
+          305
+        ],
+        "name": "FlightData3",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "constant": false,
+            "id": 208,
+            "name": "timestamps",
+            "nodeType": "VariableDeclaration",
+            "scope": 305,
+            "src": "142:17:2",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_string_storage",
+              "typeString": "string"
+            },
+            "typeName": {
+              "id": 207,
+              "name": "string",
+              "nodeType": "ElementaryTypeName",
+              "src": "142:6:2",
+              "typeDescriptions": {
+                "typeIdentifier": "t_string_storage_ptr",
+                "typeString": "string"
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "constant": false,
+            "id": 210,
+            "name": "planeData",
+            "nodeType": "VariableDeclaration",
+            "scope": 305,
+            "src": "170:16:2",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_string_storage",
+              "typeString": "string"
+            },
+            "typeName": {
+              "id": 209,
+              "name": "string",
+              "nodeType": "ElementaryTypeName",
+              "src": "170:6:2",
+              "typeDescriptions": {
+                "typeIdentifier": "t_string_storage_ptr",
+                "typeString": "string"
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "constant": false,
+            "id": 212,
+            "name": "airlineData",
+            "nodeType": "VariableDeclaration",
+            "scope": 305,
+            "src": "197:18:2",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_string_storage",
+              "typeString": "string"
+            },
+            "typeName": {
+              "id": 211,
+              "name": "string",
+              "nodeType": "ElementaryTypeName",
+              "src": "197:6:2",
+              "typeDescriptions": {
+                "typeIdentifier": "t_string_storage_ptr",
+                "typeString": "string"
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "constant": false,
+            "id": 214,
+            "name": "lateCodeData",
+            "nodeType": "VariableDeclaration",
+            "scope": 305,
+            "src": "226:19:2",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_string_storage",
+              "typeString": "string"
+            },
+            "typeName": {
+              "id": 213,
+              "name": "string",
+              "nodeType": "ElementaryTypeName",
+              "src": "226:6:2",
+              "typeDescriptions": {
+                "typeIdentifier": "t_string_storage_ptr",
+                "typeString": "string"
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "constant": false,
+            "id": 216,
+            "name": "destinationData",
+            "nodeType": "VariableDeclaration",
+            "scope": 305,
+            "src": "256:22:2",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_string_storage",
+              "typeString": "string"
+            },
+            "typeName": {
+              "id": 215,
+              "name": "string",
+              "nodeType": "ElementaryTypeName",
+              "src": "256:6:2",
+              "typeDescriptions": {
+                "typeIdentifier": "t_string_storage_ptr",
+                "typeString": "string"
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "constant": false,
+            "id": 218,
+            "name": "departureData",
+            "nodeType": "VariableDeclaration",
+            "scope": 305,
+            "src": "289:20:2",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_string_storage",
+              "typeString": "string"
+            },
+            "typeName": {
+              "id": 217,
+              "name": "string",
+              "nodeType": "ElementaryTypeName",
+              "src": "289:6:2",
+              "typeDescriptions": {
+                "typeIdentifier": "t_string_storage_ptr",
+                "typeString": "string"
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "constant": false,
+            "id": 220,
+            "name": "taskNamesArray",
+            "nodeType": "VariableDeclaration",
+            "scope": 305,
+            "src": "330:21:2",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_string_storage",
+              "typeString": "string"
+            },
+            "typeName": {
+              "id": 219,
+              "name": "string",
+              "nodeType": "ElementaryTypeName",
+              "src": "330:6:2",
+              "typeDescriptions": {
+                "typeIdentifier": "t_string_storage_ptr",
+                "typeString": "string"
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "constant": false,
+            "id": 222,
+            "name": "tasksValuesArray",
+            "nodeType": "VariableDeclaration",
+            "scope": 305,
+            "src": "362:23:2",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_string_storage",
+              "typeString": "string"
+            },
+            "typeName": {
+              "id": 221,
+              "name": "string",
+              "nodeType": "ElementaryTypeName",
+              "src": "362:6:2",
+              "typeDescriptions": {
+                "typeIdentifier": "t_string_storage_ptr",
+                "typeString": "string"
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 273,
+              "nodeType": "Block",
+              "src": "652:332:2",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 243,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 241,
+                      "name": "timestamps",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 208,
+                      "src": "673:10:2",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_string_storage",
+                        "typeString": "string storage ref"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "id": 242,
+                      "name": "_timestamps",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 224,
+                      "src": "684:11:2",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_string_memory_ptr",
+                        "typeString": "string memory"
+                      }
+                    },
+                    "src": "673:22:2",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage",
+                      "typeString": "string storage ref"
+                    }
+                  },
+                  "id": 244,
+                  "nodeType": "ExpressionStatement",
+                  "src": "673:22:2"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 247,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 245,
+                      "name": "planeData",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 210,
+                      "src": "706:9:2",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_string_storage",
+                        "typeString": "string storage ref"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "id": 246,
+                      "name": "_planeData",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 226,
+                      "src": "716:10:2",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_string_memory_ptr",
+                        "typeString": "string memory"
+                      }
+                    },
+                    "src": "706:20:2",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage",
+                      "typeString": "string storage ref"
+                    }
+                  },
+                  "id": 248,
+                  "nodeType": "ExpressionStatement",
+                  "src": "706:20:2"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 251,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 249,
+                      "name": "airlineData",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 212,
+                      "src": "737:11:2",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_string_storage",
+                        "typeString": "string storage ref"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "id": 250,
+                      "name": "_airlineData",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 228,
+                      "src": "749:12:2",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_string_memory_ptr",
+                        "typeString": "string memory"
+                      }
+                    },
+                    "src": "737:24:2",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage",
+                      "typeString": "string storage ref"
+                    }
+                  },
+                  "id": 252,
+                  "nodeType": "ExpressionStatement",
+                  "src": "737:24:2"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 255,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 253,
+                      "name": "lateCodeData",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 214,
+                      "src": "772:12:2",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_string_storage",
+                        "typeString": "string storage ref"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "id": 254,
+                      "name": "_lateCodeData",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 230,
+                      "src": "785:13:2",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_string_memory_ptr",
+                        "typeString": "string memory"
+                      }
+                    },
+                    "src": "772:26:2",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage",
+                      "typeString": "string storage ref"
+                    }
+                  },
+                  "id": 256,
+                  "nodeType": "ExpressionStatement",
+                  "src": "772:26:2"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 259,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 257,
+                      "name": "destinationData",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 216,
+                      "src": "809:15:2",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_string_storage",
+                        "typeString": "string storage ref"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "id": 258,
+                      "name": "_destinationData",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 232,
+                      "src": "825:16:2",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_string_memory_ptr",
+                        "typeString": "string memory"
+                      }
+                    },
+                    "src": "809:32:2",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage",
+                      "typeString": "string storage ref"
+                    }
+                  },
+                  "id": 260,
+                  "nodeType": "ExpressionStatement",
+                  "src": "809:32:2"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 263,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 261,
+                      "name": "departureData",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 218,
+                      "src": "852:13:2",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_string_storage",
+                        "typeString": "string storage ref"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "id": 262,
+                      "name": "_departureData",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 234,
+                      "src": "866:14:2",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_string_memory_ptr",
+                        "typeString": "string memory"
+                      }
+                    },
+                    "src": "852:28:2",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage",
+                      "typeString": "string storage ref"
+                    }
+                  },
+                  "id": 264,
+                  "nodeType": "ExpressionStatement",
+                  "src": "852:28:2"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 267,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 265,
+                      "name": "taskNamesArray",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 220,
+                      "src": "891:14:2",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_string_storage",
+                        "typeString": "string storage ref"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "id": 266,
+                      "name": "_taskNamesArray",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 236,
+                      "src": "906:15:2",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_string_memory_ptr",
+                        "typeString": "string memory"
+                      }
+                    },
+                    "src": "891:30:2",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage",
+                      "typeString": "string storage ref"
+                    }
+                  },
+                  "id": 268,
+                  "nodeType": "ExpressionStatement",
+                  "src": "891:30:2"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 271,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 269,
+                      "name": "tasksValuesArray",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 222,
+                      "src": "932:16:2",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_string_storage",
+                        "typeString": "string storage ref"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "id": 270,
+                      "name": "_tasksValuesArray",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 238,
+                      "src": "949:17:2",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_string_memory_ptr",
+                        "typeString": "string memory"
+                      }
+                    },
+                    "src": "932:34:2",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage",
+                      "typeString": "string storage ref"
+                    }
+                  },
+                  "id": 272,
+                  "nodeType": "ExpressionStatement",
+                  "src": "932:34:2"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 274,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "setter",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 239,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 224,
+                  "name": "_timestamps",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 274,
+                  "src": "416:25:2",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 223,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "416:6:2",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 226,
+                  "name": "_planeData",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 274,
+                  "src": "442:24:2",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 225,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "442:6:2",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 228,
+                  "name": "_airlineData",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 274,
+                  "src": "467:26:2",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 227,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "467:6:2",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 230,
+                  "name": "_lateCodeData",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 274,
+                  "src": "494:27:2",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 229,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "494:6:2",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 232,
+                  "name": "_destinationData",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 274,
+                  "src": "522:30:2",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 231,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "522:6:2",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 234,
+                  "name": "_departureData",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 274,
+                  "src": "553:28:2",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 233,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "553:6:2",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 236,
+                  "name": "_taskNamesArray",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 274,
+                  "src": "582:29:2",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 235,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "582:6:2",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 238,
+                  "name": "_tasksValuesArray",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 274,
+                  "src": "612:31:2",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 237,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "612:6:2",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "415:229:2"
+            },
+            "returnParameters": {
+              "id": 240,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "652:0:2"
+            },
+            "scope": 305,
+            "src": "400:584:2",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 303,
+              "nodeType": "Block",
+              "src": "1146:135:2",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "components": [
+                      {
+                        "argumentTypes": null,
+                        "id": 293,
+                        "name": "timestamps",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 208,
+                        "src": "1165:10:2",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_string_storage",
+                          "typeString": "string storage ref"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 294,
+                        "name": "planeData",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 210,
+                        "src": "1176:9:2",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_string_storage",
+                          "typeString": "string storage ref"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 295,
+                        "name": "airlineData",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 212,
+                        "src": "1186:11:2",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_string_storage",
+                          "typeString": "string storage ref"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 296,
+                        "name": "lateCodeData",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 214,
+                        "src": "1198:12:2",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_string_storage",
+                          "typeString": "string storage ref"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 297,
+                        "name": "destinationData",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 216,
+                        "src": "1211:15:2",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_string_storage",
+                          "typeString": "string storage ref"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 298,
+                        "name": "departureData",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 218,
+                        "src": "1227:13:2",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_string_storage",
+                          "typeString": "string storage ref"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 299,
+                        "name": "taskNamesArray",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 220,
+                        "src": "1241:14:2",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_string_storage",
+                          "typeString": "string storage ref"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 300,
+                        "name": "tasksValuesArray",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 222,
+                        "src": "1256:16:2",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_string_storage",
+                          "typeString": "string storage ref"
+                        }
+                      }
+                    ],
+                    "id": 301,
+                    "isConstant": false,
+                    "isInlineArray": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "nodeType": "TupleExpression",
+                    "src": "1164:109:2",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$_t_string_storage_$_t_string_storage_$_t_string_storage_$_t_string_storage_$_t_string_storage_$_t_string_storage_$_t_string_storage_$_t_string_storage_$",
+                      "typeString": "tuple(string storage ref,string storage ref,string storage ref,string storage ref,string storage ref,string storage ref,string storage ref,string storage ref)"
+                    }
+                  },
+                  "functionReturnParameters": 292,
+                  "id": 302,
+                  "nodeType": "Return",
+                  "src": "1157:116:2"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 304,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getter",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 275,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1009:2:2"
+            },
+            "returnParameters": {
+              "id": 292,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 277,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 304,
+                  "src": "1033:13:2",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 276,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1033:6:2",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 279,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 304,
+                  "src": "1047:13:2",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 278,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1047:6:2",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 281,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 304,
+                  "src": "1061:13:2",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 280,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1061:6:2",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 283,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 304,
+                  "src": "1075:13:2",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 282,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1075:6:2",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 285,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 304,
+                  "src": "1089:13:2",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 284,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1089:6:2",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 287,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 304,
+                  "src": "1103:13:2",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 286,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1103:6:2",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 289,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 304,
+                  "src": "1117:13:2",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 288,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1117:6:2",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 291,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 304,
+                  "src": "1131:13:2",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 290,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1131:6:2",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1032:113:2"
+            },
+            "scope": 305,
+            "src": "994:287:2",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "public"
+          }
+        ],
+        "scope": 306,
+        "src": "104:1182:2"
+      }
+    ],
+    "src": "34:1252:2"
+  },
+  "legacyAST": {
+    "attributes": {
+      "absolutePath": "project:/contracts/FlightData3.sol",
+      "exportedSymbols": {
+        "FlightData3": [
+          305
+        ]
+      }
+    },
+    "children": [
+      {
+        "attributes": {
+          "literals": [
+            "solidity",
+            ">=",
+            "0.5",
+            ".0",
+            "<",
+            "0.9",
+            ".0"
+          ]
+        },
+        "id": 205,
+        "name": "PragmaDirective",
+        "src": "34:31:2"
+      },
+      {
+        "attributes": {
+          "literals": [
+            "experimental",
+            "ABIEncoderV2"
+          ]
+        },
+        "id": 206,
+        "name": "PragmaDirective",
+        "src": "67:33:2"
+      },
+      {
+        "attributes": {
+          "baseContracts": [
+            null
+          ],
+          "contractDependencies": [
+            null
+          ],
+          "contractKind": "contract",
+          "documentation": null,
+          "fullyImplemented": true,
+          "linearizedBaseContracts": [
+            305
+          ],
+          "name": "FlightData3",
+          "scope": 306
+        },
+        "children": [
+          {
+            "attributes": {
+              "constant": false,
+              "name": "timestamps",
+              "scope": 305,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "string",
+              "value": null,
+              "visibility": "internal"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "name": "string",
+                  "type": "string"
+                },
+                "id": 207,
+                "name": "ElementaryTypeName",
+                "src": "142:6:2"
+              }
+            ],
+            "id": 208,
+            "name": "VariableDeclaration",
+            "src": "142:17:2"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "name": "planeData",
+              "scope": 305,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "string",
+              "value": null,
+              "visibility": "internal"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "name": "string",
+                  "type": "string"
+                },
+                "id": 209,
+                "name": "ElementaryTypeName",
+                "src": "170:6:2"
+              }
+            ],
+            "id": 210,
+            "name": "VariableDeclaration",
+            "src": "170:16:2"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "name": "airlineData",
+              "scope": 305,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "string",
+              "value": null,
+              "visibility": "internal"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "name": "string",
+                  "type": "string"
+                },
+                "id": 211,
+                "name": "ElementaryTypeName",
+                "src": "197:6:2"
+              }
+            ],
+            "id": 212,
+            "name": "VariableDeclaration",
+            "src": "197:18:2"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "name": "lateCodeData",
+              "scope": 305,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "string",
+              "value": null,
+              "visibility": "internal"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "name": "string",
+                  "type": "string"
+                },
+                "id": 213,
+                "name": "ElementaryTypeName",
+                "src": "226:6:2"
+              }
+            ],
+            "id": 214,
+            "name": "VariableDeclaration",
+            "src": "226:19:2"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "name": "destinationData",
+              "scope": 305,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "string",
+              "value": null,
+              "visibility": "internal"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "name": "string",
+                  "type": "string"
+                },
+                "id": 215,
+                "name": "ElementaryTypeName",
+                "src": "256:6:2"
+              }
+            ],
+            "id": 216,
+            "name": "VariableDeclaration",
+            "src": "256:22:2"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "name": "departureData",
+              "scope": 305,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "string",
+              "value": null,
+              "visibility": "internal"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "name": "string",
+                  "type": "string"
+                },
+                "id": 217,
+                "name": "ElementaryTypeName",
+                "src": "289:6:2"
+              }
+            ],
+            "id": 218,
+            "name": "VariableDeclaration",
+            "src": "289:20:2"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "name": "taskNamesArray",
+              "scope": 305,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "string",
+              "value": null,
+              "visibility": "internal"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "name": "string",
+                  "type": "string"
+                },
+                "id": 219,
+                "name": "ElementaryTypeName",
+                "src": "330:6:2"
+              }
+            ],
+            "id": 220,
+            "name": "VariableDeclaration",
+            "src": "330:21:2"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "name": "tasksValuesArray",
+              "scope": 305,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "string",
+              "value": null,
+              "visibility": "internal"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "name": "string",
+                  "type": "string"
+                },
+                "id": 221,
+                "name": "ElementaryTypeName",
+                "src": "362:6:2"
+              }
+            ],
+            "id": 222,
+            "name": "VariableDeclaration",
+            "src": "362:23:2"
+          },
+          {
+            "attributes": {
+              "documentation": null,
+              "implemented": true,
+              "isConstructor": false,
+              "kind": "function",
+              "modifiers": [
+                null
+              ],
+              "name": "setter",
+              "scope": 305,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_timestamps",
+                      "scope": 274,
+                      "stateVariable": false,
+                      "storageLocation": "memory",
+                      "type": "string",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "string",
+                          "type": "string"
+                        },
+                        "id": 223,
+                        "name": "ElementaryTypeName",
+                        "src": "416:6:2"
+                      }
+                    ],
+                    "id": 224,
+                    "name": "VariableDeclaration",
+                    "src": "416:25:2"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_planeData",
+                      "scope": 274,
+                      "stateVariable": false,
+                      "storageLocation": "memory",
+                      "type": "string",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "string",
+                          "type": "string"
+                        },
+                        "id": 225,
+                        "name": "ElementaryTypeName",
+                        "src": "442:6:2"
+                      }
+                    ],
+                    "id": 226,
+                    "name": "VariableDeclaration",
+                    "src": "442:24:2"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_airlineData",
+                      "scope": 274,
+                      "stateVariable": false,
+                      "storageLocation": "memory",
+                      "type": "string",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "string",
+                          "type": "string"
+                        },
+                        "id": 227,
+                        "name": "ElementaryTypeName",
+                        "src": "467:6:2"
+                      }
+                    ],
+                    "id": 228,
+                    "name": "VariableDeclaration",
+                    "src": "467:26:2"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_lateCodeData",
+                      "scope": 274,
+                      "stateVariable": false,
+                      "storageLocation": "memory",
+                      "type": "string",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "string",
+                          "type": "string"
+                        },
+                        "id": 229,
+                        "name": "ElementaryTypeName",
+                        "src": "494:6:2"
+                      }
+                    ],
+                    "id": 230,
+                    "name": "VariableDeclaration",
+                    "src": "494:27:2"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_destinationData",
+                      "scope": 274,
+                      "stateVariable": false,
+                      "storageLocation": "memory",
+                      "type": "string",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "string",
+                          "type": "string"
+                        },
+                        "id": 231,
+                        "name": "ElementaryTypeName",
+                        "src": "522:6:2"
+                      }
+                    ],
+                    "id": 232,
+                    "name": "VariableDeclaration",
+                    "src": "522:30:2"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_departureData",
+                      "scope": 274,
+                      "stateVariable": false,
+                      "storageLocation": "memory",
+                      "type": "string",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "string",
+                          "type": "string"
+                        },
+                        "id": 233,
+                        "name": "ElementaryTypeName",
+                        "src": "553:6:2"
+                      }
+                    ],
+                    "id": 234,
+                    "name": "VariableDeclaration",
+                    "src": "553:28:2"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_taskNamesArray",
+                      "scope": 274,
+                      "stateVariable": false,
+                      "storageLocation": "memory",
+                      "type": "string",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "string",
+                          "type": "string"
+                        },
+                        "id": 235,
+                        "name": "ElementaryTypeName",
+                        "src": "582:6:2"
+                      }
+                    ],
+                    "id": 236,
+                    "name": "VariableDeclaration",
+                    "src": "582:29:2"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_tasksValuesArray",
+                      "scope": 274,
+                      "stateVariable": false,
+                      "storageLocation": "memory",
+                      "type": "string",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "string",
+                          "type": "string"
+                        },
+                        "id": 237,
+                        "name": "ElementaryTypeName",
+                        "src": "612:6:2"
+                      }
+                    ],
+                    "id": 238,
+                    "name": "VariableDeclaration",
+                    "src": "612:31:2"
+                  }
+                ],
+                "id": 239,
+                "name": "ParameterList",
+                "src": "415:229:2"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 240,
+                "name": "ParameterList",
+                "src": "652:0:2"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "operator": "=",
+                          "type": "string storage ref"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 208,
+                              "type": "string storage ref",
+                              "value": "timestamps"
+                            },
+                            "id": 241,
+                            "name": "Identifier",
+                            "src": "673:10:2"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 224,
+                              "type": "string memory",
+                              "value": "_timestamps"
+                            },
+                            "id": 242,
+                            "name": "Identifier",
+                            "src": "684:11:2"
+                          }
+                        ],
+                        "id": 243,
+                        "name": "Assignment",
+                        "src": "673:22:2"
+                      }
+                    ],
+                    "id": 244,
+                    "name": "ExpressionStatement",
+                    "src": "673:22:2"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "operator": "=",
+                          "type": "string storage ref"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 210,
+                              "type": "string storage ref",
+                              "value": "planeData"
+                            },
+                            "id": 245,
+                            "name": "Identifier",
+                            "src": "706:9:2"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 226,
+                              "type": "string memory",
+                              "value": "_planeData"
+                            },
+                            "id": 246,
+                            "name": "Identifier",
+                            "src": "716:10:2"
+                          }
+                        ],
+                        "id": 247,
+                        "name": "Assignment",
+                        "src": "706:20:2"
+                      }
+                    ],
+                    "id": 248,
+                    "name": "ExpressionStatement",
+                    "src": "706:20:2"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "operator": "=",
+                          "type": "string storage ref"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 212,
+                              "type": "string storage ref",
+                              "value": "airlineData"
+                            },
+                            "id": 249,
+                            "name": "Identifier",
+                            "src": "737:11:2"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 228,
+                              "type": "string memory",
+                              "value": "_airlineData"
+                            },
+                            "id": 250,
+                            "name": "Identifier",
+                            "src": "749:12:2"
+                          }
+                        ],
+                        "id": 251,
+                        "name": "Assignment",
+                        "src": "737:24:2"
+                      }
+                    ],
+                    "id": 252,
+                    "name": "ExpressionStatement",
+                    "src": "737:24:2"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "operator": "=",
+                          "type": "string storage ref"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 214,
+                              "type": "string storage ref",
+                              "value": "lateCodeData"
+                            },
+                            "id": 253,
+                            "name": "Identifier",
+                            "src": "772:12:2"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 230,
+                              "type": "string memory",
+                              "value": "_lateCodeData"
+                            },
+                            "id": 254,
+                            "name": "Identifier",
+                            "src": "785:13:2"
+                          }
+                        ],
+                        "id": 255,
+                        "name": "Assignment",
+                        "src": "772:26:2"
+                      }
+                    ],
+                    "id": 256,
+                    "name": "ExpressionStatement",
+                    "src": "772:26:2"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "operator": "=",
+                          "type": "string storage ref"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 216,
+                              "type": "string storage ref",
+                              "value": "destinationData"
+                            },
+                            "id": 257,
+                            "name": "Identifier",
+                            "src": "809:15:2"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 232,
+                              "type": "string memory",
+                              "value": "_destinationData"
+                            },
+                            "id": 258,
+                            "name": "Identifier",
+                            "src": "825:16:2"
+                          }
+                        ],
+                        "id": 259,
+                        "name": "Assignment",
+                        "src": "809:32:2"
+                      }
+                    ],
+                    "id": 260,
+                    "name": "ExpressionStatement",
+                    "src": "809:32:2"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "operator": "=",
+                          "type": "string storage ref"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 218,
+                              "type": "string storage ref",
+                              "value": "departureData"
+                            },
+                            "id": 261,
+                            "name": "Identifier",
+                            "src": "852:13:2"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 234,
+                              "type": "string memory",
+                              "value": "_departureData"
+                            },
+                            "id": 262,
+                            "name": "Identifier",
+                            "src": "866:14:2"
+                          }
+                        ],
+                        "id": 263,
+                        "name": "Assignment",
+                        "src": "852:28:2"
+                      }
+                    ],
+                    "id": 264,
+                    "name": "ExpressionStatement",
+                    "src": "852:28:2"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "operator": "=",
+                          "type": "string storage ref"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 220,
+                              "type": "string storage ref",
+                              "value": "taskNamesArray"
+                            },
+                            "id": 265,
+                            "name": "Identifier",
+                            "src": "891:14:2"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 236,
+                              "type": "string memory",
+                              "value": "_taskNamesArray"
+                            },
+                            "id": 266,
+                            "name": "Identifier",
+                            "src": "906:15:2"
+                          }
+                        ],
+                        "id": 267,
+                        "name": "Assignment",
+                        "src": "891:30:2"
+                      }
+                    ],
+                    "id": 268,
+                    "name": "ExpressionStatement",
+                    "src": "891:30:2"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "operator": "=",
+                          "type": "string storage ref"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 222,
+                              "type": "string storage ref",
+                              "value": "tasksValuesArray"
+                            },
+                            "id": 269,
+                            "name": "Identifier",
+                            "src": "932:16:2"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 238,
+                              "type": "string memory",
+                              "value": "_tasksValuesArray"
+                            },
+                            "id": 270,
+                            "name": "Identifier",
+                            "src": "949:17:2"
+                          }
+                        ],
+                        "id": 271,
+                        "name": "Assignment",
+                        "src": "932:34:2"
+                      }
+                    ],
+                    "id": 272,
+                    "name": "ExpressionStatement",
+                    "src": "932:34:2"
+                  }
+                ],
+                "id": 273,
+                "name": "Block",
+                "src": "652:332:2"
+              }
+            ],
+            "id": 274,
+            "name": "FunctionDefinition",
+            "src": "400:584:2"
+          },
+          {
+            "attributes": {
+              "documentation": null,
+              "implemented": true,
+              "isConstructor": false,
+              "kind": "function",
+              "modifiers": [
+                null
+              ],
+              "name": "getter",
+              "scope": 305,
+              "stateMutability": "view",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 275,
+                "name": "ParameterList",
+                "src": "1009:2:2"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "",
+                      "scope": 304,
+                      "stateVariable": false,
+                      "storageLocation": "memory",
+                      "type": "string",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "string",
+                          "type": "string"
+                        },
+                        "id": 276,
+                        "name": "ElementaryTypeName",
+                        "src": "1033:6:2"
+                      }
+                    ],
+                    "id": 277,
+                    "name": "VariableDeclaration",
+                    "src": "1033:13:2"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "",
+                      "scope": 304,
+                      "stateVariable": false,
+                      "storageLocation": "memory",
+                      "type": "string",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "string",
+                          "type": "string"
+                        },
+                        "id": 278,
+                        "name": "ElementaryTypeName",
+                        "src": "1047:6:2"
+                      }
+                    ],
+                    "id": 279,
+                    "name": "VariableDeclaration",
+                    "src": "1047:13:2"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "",
+                      "scope": 304,
+                      "stateVariable": false,
+                      "storageLocation": "memory",
+                      "type": "string",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "string",
+                          "type": "string"
+                        },
+                        "id": 280,
+                        "name": "ElementaryTypeName",
+                        "src": "1061:6:2"
+                      }
+                    ],
+                    "id": 281,
+                    "name": "VariableDeclaration",
+                    "src": "1061:13:2"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "",
+                      "scope": 304,
+                      "stateVariable": false,
+                      "storageLocation": "memory",
+                      "type": "string",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "string",
+                          "type": "string"
+                        },
+                        "id": 282,
+                        "name": "ElementaryTypeName",
+                        "src": "1075:6:2"
+                      }
+                    ],
+                    "id": 283,
+                    "name": "VariableDeclaration",
+                    "src": "1075:13:2"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "",
+                      "scope": 304,
+                      "stateVariable": false,
+                      "storageLocation": "memory",
+                      "type": "string",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "string",
+                          "type": "string"
+                        },
+                        "id": 284,
+                        "name": "ElementaryTypeName",
+                        "src": "1089:6:2"
+                      }
+                    ],
+                    "id": 285,
+                    "name": "VariableDeclaration",
+                    "src": "1089:13:2"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "",
+                      "scope": 304,
+                      "stateVariable": false,
+                      "storageLocation": "memory",
+                      "type": "string",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "string",
+                          "type": "string"
+                        },
+                        "id": 286,
+                        "name": "ElementaryTypeName",
+                        "src": "1103:6:2"
+                      }
+                    ],
+                    "id": 287,
+                    "name": "VariableDeclaration",
+                    "src": "1103:13:2"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "",
+                      "scope": 304,
+                      "stateVariable": false,
+                      "storageLocation": "memory",
+                      "type": "string",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "string",
+                          "type": "string"
+                        },
+                        "id": 288,
+                        "name": "ElementaryTypeName",
+                        "src": "1117:6:2"
+                      }
+                    ],
+                    "id": 289,
+                    "name": "VariableDeclaration",
+                    "src": "1117:13:2"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "",
+                      "scope": 304,
+                      "stateVariable": false,
+                      "storageLocation": "memory",
+                      "type": "string",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "string",
+                          "type": "string"
+                        },
+                        "id": 290,
+                        "name": "ElementaryTypeName",
+                        "src": "1131:6:2"
+                      }
+                    ],
+                    "id": 291,
+                    "name": "VariableDeclaration",
+                    "src": "1131:13:2"
+                  }
+                ],
+                "id": 292,
+                "name": "ParameterList",
+                "src": "1032:113:2"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "functionReturnParameters": 292
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isInlineArray": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "type": "tuple(string storage ref,string storage ref,string storage ref,string storage ref,string storage ref,string storage ref,string storage ref,string storage ref)"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 208,
+                              "type": "string storage ref",
+                              "value": "timestamps"
+                            },
+                            "id": 293,
+                            "name": "Identifier",
+                            "src": "1165:10:2"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 210,
+                              "type": "string storage ref",
+                              "value": "planeData"
+                            },
+                            "id": 294,
+                            "name": "Identifier",
+                            "src": "1176:9:2"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 212,
+                              "type": "string storage ref",
+                              "value": "airlineData"
+                            },
+                            "id": 295,
+                            "name": "Identifier",
+                            "src": "1186:11:2"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 214,
+                              "type": "string storage ref",
+                              "value": "lateCodeData"
+                            },
+                            "id": 296,
+                            "name": "Identifier",
+                            "src": "1198:12:2"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 216,
+                              "type": "string storage ref",
+                              "value": "destinationData"
+                            },
+                            "id": 297,
+                            "name": "Identifier",
+                            "src": "1211:15:2"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 218,
+                              "type": "string storage ref",
+                              "value": "departureData"
+                            },
+                            "id": 298,
+                            "name": "Identifier",
+                            "src": "1227:13:2"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 220,
+                              "type": "string storage ref",
+                              "value": "taskNamesArray"
+                            },
+                            "id": 299,
+                            "name": "Identifier",
+                            "src": "1241:14:2"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 222,
+                              "type": "string storage ref",
+                              "value": "tasksValuesArray"
+                            },
+                            "id": 300,
+                            "name": "Identifier",
+                            "src": "1256:16:2"
+                          }
+                        ],
+                        "id": 301,
+                        "name": "TupleExpression",
+                        "src": "1164:109:2"
+                      }
+                    ],
+                    "id": 302,
+                    "name": "Return",
+                    "src": "1157:116:2"
+                  }
+                ],
+                "id": 303,
+                "name": "Block",
+                "src": "1146:135:2"
+              }
+            ],
+            "id": 304,
+            "name": "FunctionDefinition",
+            "src": "994:287:2"
+          }
+        ],
+        "id": 305,
+        "name": "ContractDefinition",
+        "src": "104:1182:2"
+      }
+    ],
+    "id": 306,
+    "name": "SourceUnit",
+    "src": "34:1252:2"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.5.1+commit.c8a2cb62.Emscripten.clang"
+  },
+  "networks": {
+    "11155111": {
+      "events": {},
+      "links": {},
+      "address": "0xE04Af6C7Ce9fc12A6c34650FE3D2eE7cA573b734",
+      "transactionHash": "0xcf52479e7892c0115bb4315fd8b76b23461788e1a80794ec0720560ea93808fc"
+    }
+  },
+  "schemaVersion": "3.4.16",
+  "updatedAt": "2024-04-12T03:36:14.395Z",
+  "networkType": "ethereum",
+  "devdoc": {
+    "methods": {}
+  },
+  "userdoc": {
+    "methods": {}
+  }
+}
