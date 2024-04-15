@@ -463,7 +463,11 @@
   gap: 8px;
 }
 
-.accept{
+.accept {
   width: 100px;
   height: 30px;
+}
+.smallGrayText {
+  font-size: 12px;
+  color: #bbb;
 }

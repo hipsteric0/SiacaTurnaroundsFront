@@ -30,15 +30,14 @@ import AddAPhotoRoundedIcon from "@mui/icons-material/AddAPhotoRounded";
 import { get } from "http";
 import StandardInput from "../Reusables/StandardInput";
 import Camera from "../Reusables/Camera";
-import Button from '@mui/material/Button';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import Button from "@mui/material/Button";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 
+import dynamic from "next/dynamic";
 
-import dynamic from 'next/dynamic'
-
-const BarcodeScanner = dynamic(() => import('../Reusables/BarcodeScanner'), {
+const BarcodeScanner = dynamic(() => import("../Reusables/BarcodeScanner"), {
   ssr: false,
-})
+});
 
 interface PageProps {
   setStep: (value: number) => void;
@@ -130,19 +129,17 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
   const [manualMinuteValue, setmanualMinuteValue] = useState("0");
   const [manualSecondsValue, setmanualSecondsValue] = useState("0");
 
-
   const [result, setResult] = useState("");
   const [photo, setPhoto] = useState("");
 
-
-  const handleScanSuccess = (e : any) => {
+  const handleScanSuccess = (e: any) => {
     setResult(e);
-    console.log("CODIGO QR", result)
+    console.log("CODIGO QR", result);
   };
 
-  const handlePhoto = (dataUrl : any) => {
+  const handlePhoto = (dataUrl: any) => {
     setPhoto(dataUrl);
-    console.log('Photo data:', photo);
+    console.log("Photo data:", photo);
   };
 
   let filterValues: any[] = [];
@@ -205,10 +202,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
     await fetchData().catch(console.error);
   };
 
-
-
-
-  const updatePresence = async (idTurnaround : any) => {
+  const updatePresence = async (idTurnaround: any) => {
     const fetchData = async () => {
       try {
         const url = "/api/updatePresenceTurnaround";
@@ -216,13 +210,12 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
           method: "POST",
           body: JSON.stringify({
             userToken: localStorage.getItem("userToken"),
-            turaroundID : idTurnaround,
-            CI : result
+            turaroundID: idTurnaround,
+            CI: result,
           }),
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-
             //console.log("Personnel List Array", result);
           })
         );
@@ -233,9 +226,6 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
     };
     await fetchData().catch(console.error);
   };
-
-
-
 
   const getMachinesList = async () => {
     const fetchData = async () => {
@@ -714,18 +704,21 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
     await fetchData().catch(console.error);
   };
 
-
-  const patchFinishHourDate = async (turnaroundID: any, hour : any, date : any) => {
+  const patchStartHourDate = async (
+    turnaroundID: any,
+    hour: any,
+    date: any
+  ) => {
     const fetchData = async () => {
       try {
-        const url = "/api/updateFinishHourDateTurnaround";
+        const url = "/api/updateStartHourDateTurnaround";
         const requestOptions = {
           method: "POST",
           body: JSON.stringify({
             userToken: localStorage.getItem("userToken"),
             turnaroundID: turnaroundID,
-            hora_fin: hour,
-            fecha_fin: date
+            hora_inicio: hour,
+            fecha_inicio: date,
           }),
         };
         const response = await fetch(url, requestOptions).then((res) =>
@@ -741,6 +734,35 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
     await fetchData().catch(console.error);
   };
 
+  const patchFinishHourDate = async (
+    turnaroundID: any,
+    hour: any,
+    date: any
+  ) => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/updateFinishHourDateTurnaround";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+            turnaroundID: turnaroundID,
+            hora_fin: hour,
+            fecha_fin: date,
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            console.log("patchFinishHourDate Array", result);
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
 
   const PostTaskImage = async (
     turnaroundID: any,
@@ -800,21 +822,20 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
       await PostTaskImage(openDetailDialogID, index?.key, index?.taskImage); //para cada instancia del arreglo de comentarios
     });
 
-
     let currentTimestamp = new Date();
-      let currentTimestampString =
-        currentTimestamp.getHours().toString() +
-        ":" +
-        currentTimestamp.getMinutes().toString() +
-        ":" +
-        currentTimestamp.getSeconds().toString();
+    let currentTimestampString =
+      currentTimestamp.getHours().toString() +
+      ":" +
+      currentTimestamp.getMinutes().toString() +
+      ":" +
+      currentTimestamp.getSeconds().toString();
 
     let x =
-      currentTimestamp .getFullYear().toString() +
+      currentTimestamp.getFullYear().toString() +
       "-" +
-      (currentTimestamp .getMonth() + 1).toString() +
+      (currentTimestamp.getMonth() + 1).toString() +
       "-" +
-      currentTimestamp .getDate().toString(); 
+      currentTimestamp.getDate().toString();
 
     await patchFinishHourDate(openDetailDialogID, currentTimestampString, x);
 
@@ -863,7 +884,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
   const ArrayPrinterTaskDataForSummary = () => {
     let y: any = [];
     let cont = 0;
-    console.log("tasksCompletionValues", tasksCompletionValues)
+    console.log("tasksCompletionValues", tasksCompletionValues);
     tasksCompletionValues.map((index: any) => {
       cont++;
       y[index?.key] = (
@@ -1955,6 +1976,22 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
   const handleSetTurnaroundStateTo2 = async (
     flightIdentificationValue: any
   ) => {
+    let currentTimestamp = new Date();
+    let currentTimestampString =
+      currentTimestamp.getHours().toString() +
+      ":" +
+      currentTimestamp.getMinutes().toString() +
+      ":" +
+      currentTimestamp.getSeconds().toString();
+
+    let x =
+      currentTimestamp.getFullYear().toString() +
+      "-" +
+      (currentTimestamp.getMonth() + 1).toString() +
+      "-" +
+      currentTimestamp.getDate().toString();
+
+    await patchStartHourDate(openDetailDialogID, currentTimestampString, x);
     //request para updatear el estado dew turnaround a "enb proceso"
     await setState1Overider(true);
     await updateFlightStateInProgress(flightID);
@@ -2027,17 +2064,21 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
               </div>
             ) : (
               <div>
-                {<Camera 
-                onPhoto={(e: any) => { console.log("URL", e)
-                  SetTaskArrayImages(index?.id, e)
-                }}
-               />}
+                {
+                  <Camera
+                    onPhoto={(e: any) => {
+                      console.log("URL", e);
+                      SetTaskArrayImages(index?.id, e);
+                    }}
+                  />
+                }
                 <input
                   type="file"
                   name="Archivos"
                   className={styles.imageInputContainer}
-                  onChange={(e: any) => { console.log("IMAGEN", e.target.files[0])
-                    SetTaskArrayImages(index?.id, e.target.files[0])
+                  onChange={(e: any) => {
+                    console.log("IMAGEN", e.target.files[0]);
+                    SetTaskArrayImages(index?.id, e.target.files[0]);
                   }}
                 />
               </div>
@@ -2110,21 +2151,24 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                       proceso"
                     </p>
 
-                  {<BarcodeScanner onQR={handleScanSuccess}/>}
-                  <br/>
-                  <center>
-                  {result  !== "" && (
-                      <Button 
-                      color="primary"
-                      variant="outlined"
-                      className={styles.accept}
-                      endIcon={<CheckCircleOutlineIcon />} 
-                      onClick={() => {updatePresence(index?.id)}}>
-                        Aceptar
-                      </Button>
-                    )}
+                    {<BarcodeScanner onQR={handleScanSuccess} />}
+                    <br />
+                    <center>
+                      {result !== "" && (
+                        <Button
+                          color="primary"
+                          variant="outlined"
+                          className={styles.accept}
+                          endIcon={<CheckCircleOutlineIcon />}
+                          onClick={() => {
+                            updatePresence(index?.id);
+                          }}
+                        >
+                          Aceptar
+                        </Button>
+                      )}
                     </center>
-                    <br/>
+                    <br />
                     <div className={styles.redButtonContainer}>
                       <div className={styles.redButton}>
                         <GreenButton
@@ -2149,8 +2193,20 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                       <p className={styles.detailDialogInfoContainerTitleText}>
                         Datos de vuelo
                       </p>
-                      <div>
-                </div>
+                      <div></div>
+                      <div className={styles.detailDialogInfoRow1}>
+                        <div className={styles.detailDialogInfoItem}>
+                          <span className={styles.detailDialogInfoItemTitle}>
+                            Fecha y hora de inicio del turnaround:
+                          </span>
+                          <span
+                            className={styles.detailDialogInfoItemValueText}
+                          >
+                            {index?.fecha_inicio + " - " + index?.hora_inicio}
+                          </span>
+                        </div>
+                      </div>
+
                       <div className={styles.detailDialogInfoRow1}>
                         <div className={styles.detailDialogInfoItem}>
                           <span className={styles.detailDialogInfoItemTitle}>

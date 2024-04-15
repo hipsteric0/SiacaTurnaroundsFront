@@ -2834,6 +2834,21 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
                     <div className={styles.detailDialogInfoRow1}>
                       <div className={styles.detailDialogInfoItem}>
                         <span className={styles.detailDialogInfoItemTitle}>
+                          Fecha y hora de inicio del turnaround:
+                        </span>
+                        <span className={styles.detailDialogInfoItemValueText}>
+                          {index?.fecha_inicio + " - " + index?.hora_inicio}
+                        </span>
+                        <span className={styles.smallGrayText}>
+                          Esta hora es estimada hasta que el turnaround este en
+                          proceso, cuando será reemplazada por la hora exacta
+                          que comenzó.
+                        </span>
+                      </div>
+                    </div>
+                    <div className={styles.detailDialogInfoRow1}>
+                      <div className={styles.detailDialogInfoItem}>
+                        <span className={styles.detailDialogInfoItemTitle}>
                           Tipo de servicio:
                         </span>
                         <span className={styles.detailDialogInfoItemValueText}>
