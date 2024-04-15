@@ -2150,8 +2150,6 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                         Datos de vuelo
                       </p>
                       <div>
-                  {/*<BarcodeScanner onScanSuccess={handleScanSuccess} />
-                  {result && <p>Result: {result}</p>}*/}
                 </div>
                       <div className={styles.detailDialogInfoRow1}>
                         <div className={styles.detailDialogInfoItem}>
