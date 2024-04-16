@@ -2245,6 +2245,9 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                         />
                       </div>
                     </div>
+                    <p className={styles.detailDialogInfoItemTitleWarning}>
+                      Solo podrás llenar turnarounds de la fecha de hoy.
+                    </p>
                   </div>
                 ) : turnaroundState === 2 ? (
                   <>
