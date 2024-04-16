@@ -7,12 +7,12 @@ import { useRouter } from "next/navigation";
 import router from "next/router";
 import { useState } from "react";
 
-import { motion } from 'framer-motion';
-import LoadingScreen from '../Reusables/LoadingScreen';
+import { motion } from "framer-motion";
+import LoadingScreen from "../Reusables/LoadingScreen";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import { Dialog, TableBody } from "@mui/material";
 import GreenButton from "@/components/Reusables/GreenButton";
-import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 
 interface PageProps {
   setStep: (value: number) => void;
@@ -27,26 +27,26 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
 
   let token = "";
   let userFullName = "";
+  let role = "";
 
   let validLogin = false;
   const validateLogin = () => {
     registerStep2requestSecond();
-    
 
     setTimeout(() => {
       if (validLogin) {
         setLoading(true);
         localStorage.setItem("userToken", token);
         localStorage.setItem("userFullName", userFullName);
+        localStorage.setItem("userRole", role?.toString());
         router.push("/Flights");
       } else {
         setLoginError(true);
-
       }
     }, 5000);
   };
 
-   const registerStep2requestSecond = () => {
+  const registerStep2requestSecond = () => {
     const fetchData = async () => {
       try {
         const url = "/api/login";
@@ -60,21 +60,20 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
             console.log("result", result);
-            validLogin = result.value;
-            token = result.token;
-            userFullName = result.first_name + " " + result.last_name;
+            validLogin = result?.value;
+            token = result?.token;
+            userFullName = result?.first_name + " " + result?.last_name;
+            role = result?.rol;
           })
         );
       } catch (error) {
         console.error("Error getting user", error);
-        
+
         return;
       }
     };
     fetchData().catch(console.error);
-    
   };
-
 
   return (
     <div
@@ -84,8 +83,7 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
           : styles.mainContainerLoginMainPage
       }
     >
-      {loginError === true && 
-      (          
+      {loginError === true && (
         <Dialog
           className={styles.dialogDelete}
           open={loginError}
@@ -98,19 +96,20 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
               </div>
               <p>
                 <strong>
-                  Su usuario no se encuentra activo o sus datos son erroneos, intentelo de nuevo
+                  Su usuario no se encuentra activo o sus datos son erroneos,
+                  intentelo de nuevo
                 </strong>
               </p>
               <br />
               <center>
-              <div className={styles.dialogButtons}>
-                <GreenButton
-                  executableFunction={() => {
-                    setLoginError(false);
-                  }}
-                  buttonText="Aceptar"
-                />
-              </div>
+                <div className={styles.dialogButtons}>
+                  <GreenButton
+                    executableFunction={() => {
+                      setLoginError(false);
+                    }}
+                    buttonText="Aceptar"
+                  />
+                </div>
               </center>
             </div>
           </div>

@@ -18,17 +18,14 @@ import GreenButton2 from "@/components/Reusables/GreenButton2";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
 
-import Divider from '@mui/material/Divider';
-import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
+import Divider from "@mui/material/Divider";
+import AirplaneTicketIcon from "@mui/icons-material/AirplaneTicket";
 
-
-import { motion } from 'framer-motion';
-import LoadingScreen from '../Reusables/LoadingScreen';
-
-
+import { motion } from "framer-motion";
+import LoadingScreen from "../Reusables/LoadingScreen";
 
 interface PageProps {
   setStep: (value: number) => void;
@@ -42,6 +39,15 @@ const AirlinesMainPage: React.FC<PageProps> = ({
   setCityID,
 }) => {
   //if token exists show regular html else show not signed in screen
+  useEffect(() => {
+    let role = localStorage.getItem("userRole");
+    if (role != null) {
+      setRoleID(parseInt(role));
+      console.log("se coloco el rol", role);
+    }
+  }, []);
+
+  const [roleID, setRoleID] = useState(-1);
   const isMobile = useMediaQuery("(max-width: 1270px)");
   const [allowContinue, setAllowContinue] = useState(false);
   const [arrayList3, setArrayList3] = useState([]);
@@ -171,9 +177,8 @@ const AirlinesMainPage: React.FC<PageProps> = ({
     await fetchData().catch(console.error);
   };
 
-
   /* DATOS DE LA AEROLINEA */
-  const getAirline = async ( airlineID : number) => {
+  const getAirline = async (airlineID: number) => {
     const fetchData = async () => {
       try {
         const url = "/api/specificAirlineByID";
@@ -197,7 +202,6 @@ const AirlinesMainPage: React.FC<PageProps> = ({
             setTelefonoSecundario(result?.telefono_secundario);
             setPais(result?.pais);
             setCiudad(result?.ciudad);
-
 
             if (result?.[0]?.["status"] === 400) {
               console.log("entro");
@@ -224,9 +228,8 @@ const AirlinesMainPage: React.FC<PageProps> = ({
 
   const handleAirline = async (airlineID: number) => {
     getAirline(airlineID);
-    console.log("DATOS DE AEROLINEA",airlineID)
+    console.log("DATOS DE AEROLINEA", airlineID);
   };
-
 
   const arrayPrinter = () => {
     let y: any = [];
@@ -240,7 +243,7 @@ const AirlinesMainPage: React.FC<PageProps> = ({
 
     arrayList3.map((index: any) => {
       y[index.id] = (
-        <div key={index.id } className={styles.tableInfoRow}>
+        <div key={index.id} className={styles.tableInfoRow}>
           {
             <Dialog
               className={styles.dialogDelete}
@@ -283,85 +286,105 @@ const AirlinesMainPage: React.FC<PageProps> = ({
             </Dialog>
           }
 
-
-{
+          {
             <Dialog
               className={styles.dialogTextAirline}
               open={airlineDialog}
               fullWidth={true}
-              maxWidth= "sm"
+              maxWidth="sm"
               scroll="paper"
               onClose={() => setAirlineDialog(false)}
             >
               <div className={styles.dialogBack}>
-              <div
-              className={styles.closeIconDialog}
-              onClick={() => setAirlineDialog(false)}
-            >
-              <Tooltip title="Cerrar">
-              <IconButton>
-              <CloseRoundedIcon htmlColor="#4d4e56" />
-              </IconButton>
-              </Tooltip>
-            </div>
+                <div
+                  className={styles.closeIconDialog}
+                  onClick={() => setAirlineDialog(false)}
+                >
+                  <Tooltip title="Cerrar">
+                    <IconButton>
+                      <CloseRoundedIcon htmlColor="#4d4e56" />
+                    </IconButton>
+                  </Tooltip>
+                </div>
                 <div className={styles.dialogTextAirline}>
                   <div className={styles.warningIcon}>
-                  <div className={styles.dividerText}>
-                   <center> <AirplaneTicketIcon fontSize="inherit" /></center>
-                   </div>
-                   <Spacer/>
+                    <div className={styles.dividerText}>
+                      <center>
+                        {" "}
+                        <AirplaneTicketIcon fontSize="inherit" />
+                      </center>
+                    </div>
+                    <Spacer />
                   </div>
-
-                      <div className={styles.dividerText}>
-                      <Divider> Aerolinea </Divider> 
-                      </div>
-                      <br/>
-                      {arrayList3.find((o) => o.id === clickID)?.nombre}
-                      <Spacer/>
-
-                      <div className={styles.dividerText}>
-                      <Divider> Código </Divider> 
-                      </div>
-                      <br/>
-                      <strong>IATA:</strong>{arrayList3.find((o) => o.id === clickID)?.codigo}
-                      <Spacer/>
-                      <strong>OACI:</strong>{arrayList3.find((o) => o.id === clickID)?.codigo_OACI}
-
-                      <div className={styles.dividerText}>
-                      <Divider> Correos </Divider> 
-                      </div>
-                    <br/>
-                     <strong>Principal:</strong> {arrayList3.find((o) => o.id === clickID)?.correo} 
-                      <Spacer/> 
-                      <strong>Secundario:</strong>  {arrayList3.find((o) => o.id === clickID)?.correo_secundario}
-                      <Spacer/>
-
-                      <div className={styles.dividerText}>
-                      <Divider> Teléfonos </Divider> 
-                      </div>
-                    <br/>
-                    <strong>Principal:</strong>  {arrayList3.find((o) => o.id === clickID)?.telefono}
-                      <Spacer/>
-                      <strong>Secundario:</strong>  {arrayList3.find((o) => o.id === clickID)?.telefono_secundario}
-                      <Spacer/>
-                      <div className={styles.dividerText}>
-                      <Divider> Localización </Divider> 
-                      </div>
-                    <br/>
-                    <strong>País:</strong>  {arrayList3.find((o) => o.id === clickID)?.pais}
-                      <Spacer/>
-                      <strong>Ciudad:</strong>  {arrayList3.find((o) => o.id === clickID)?.ciudad}
-                      <Spacer/>
+                  <div className={styles.dividerText}>
+                    <Divider> Aerolinea </Divider>
+                  </div>
+                  <br />
+                  {arrayList3.find((o) => o.id === clickID)?.nombre}
+                  <Spacer />
+                  <div className={styles.dividerText}>
+                    <Divider> Código </Divider>
+                  </div>
+                  <br />
+                  <strong>IATA:</strong>
+                  {arrayList3.find((o) => o.id === clickID)?.codigo}
+                  <Spacer />
+                  <strong>OACI:</strong>
+                  {arrayList3.find((o) => o.id === clickID)?.codigo_OACI}
+                  <div className={styles.dividerText}>
+                    <Divider> Correos </Divider>
+                  </div>
+                  <br />
+                  <strong>Principal:</strong>{" "}
+                  {arrayList3.find((o) => o.id === clickID)?.correo}
+                  <Spacer />
+                  <strong>Secundario:</strong>{" "}
+                  {arrayList3.find((o) => o.id === clickID)?.correo_secundario}
+                  <Spacer />
+                  <div className={styles.dividerText}>
+                    <Divider> Teléfonos </Divider>
+                  </div>
+                  <br />
+                  <strong>Principal:</strong>{" "}
+                  {arrayList3.find((o) => o.id === clickID)?.telefono}
+                  <Spacer />
+                  <strong>Secundario:</strong>{" "}
+                  {
+                    arrayList3.find((o) => o.id === clickID)
+                      ?.telefono_secundario
+                  }
+                  <Spacer />
+                  <div className={styles.dividerText}>
+                    <Divider> Localización </Divider>
+                  </div>
+                  <br />
+                  <strong>País:</strong>{" "}
+                  {arrayList3.find((o) => o.id === clickID)?.pais}
+                  <Spacer />
+                  <strong>Ciudad:</strong>{" "}
+                  {arrayList3.find((o) => o.id === clickID)?.ciudad}
+                  <Spacer />
                 </div>
               </div>
             </Dialog>
           }
-          
-          <td><img src={"http://127.0.0.1:8000"+index.imagen} alt="Logo" width={50} height={50}/></td>
+
+          <td>
+            <img
+              src={"http://127.0.0.1:8000" + index.imagen}
+              alt="Logo"
+              width={50}
+              height={50}
+            />
+          </td>
           <td>{index.nombre}</td>
           <td>{index.correo}</td>
           <td>{index.telefono}</td>
-          <td><strong>IATA:</strong>{index.codigo} - <strong>OACI:</strong>{index.codigo_OACI} </td>
+          <td>
+            <strong>IATA:</strong>
+            {index.codigo} - <strong>OACI:</strong>
+            {index.codigo_OACI}{" "}
+          </td>
           <td className={styles.iconsContainer}>
             <div
               className={styles.functionIcon}
@@ -373,62 +396,70 @@ const AirlinesMainPage: React.FC<PageProps> = ({
               }}
             >
               <Tooltip title="Detalles">
-              <IconButton>
-              <RemoveRedEyeIcon
-                htmlColor={hoverEyeId === index.id ? "#00A75D" : "#4D4E56"}
-                onClick={() => {
-                  handleAirline(index.id)
-                  setclickID(index.id);
-                  setAirlineDialog(true);
-                }}
-              />{" "}
-              </IconButton>
-            </Tooltip>
-            </div>
-
-            <div
-              className={styles.functionIcon}
-              onMouseEnter={() => {
-                sethoverPencilId(index.id);
-              }}
-              onMouseLeave={() => {
-                sethoverPencilId(-1);
-              }}
-            >
-              <Tooltip title="Editar">
-              <IconButton>
-              <BorderColorOutlinedIcon
-                htmlColor={hoverPencilId === index.id ? "#00A75D" : "#4D4E56"}
-                onClick={() => {
-                  setflightID(index.id);
-                  setStep(2);
-                }}
-              />{" "}
-              </IconButton>
+                <IconButton>
+                  <RemoveRedEyeIcon
+                    htmlColor={hoverEyeId === index.id ? "#00A75D" : "#4D4E56"}
+                    onClick={() => {
+                      handleAirline(index.id);
+                      setclickID(index.id);
+                      setAirlineDialog(true);
+                    }}
+                  />{" "}
+                </IconButton>
               </Tooltip>
             </div>
 
-            <div
-              className={styles.functionIcon}
-              onMouseEnter={() => {
-                sethoverTrashId(index.id);
-              }}
-              onMouseLeave={() => {
-                sethoverTrashId(-1);
-              }}
-            >
-              <Tooltip title="Eliminar">
-              <IconButton>
-              <DeleteOutlineOutlinedIcon
-                htmlColor={hoverTrashId === index.id ? "#f10303" : "#4D4E56"}
-                onClick={() => {
-                  setclickID(index.id);
-                  setDeleteDialog(true);
+            {(roleID == 1 || roleID == 2) && (
+              <div
+                className={styles.functionIcon}
+                onMouseEnter={() => {
+                  sethoverPencilId(index.id);
                 }}
-              />
-              </IconButton>
-              </Tooltip>
-            </div>
+                onMouseLeave={() => {
+                  sethoverPencilId(-1);
+                }}
+              >
+                <Tooltip title="Editar">
+                  <IconButton>
+                    <BorderColorOutlinedIcon
+                      htmlColor={
+                        hoverPencilId === index.id ? "#00A75D" : "#4D4E56"
+                      }
+                      onClick={() => {
+                        setflightID(index.id);
+                        setStep(2);
+                      }}
+                    />{" "}
+                  </IconButton>
+                </Tooltip>
+              </div>
+            )}
+
+            {roleID == 1 && (
+              <div
+                className={styles.functionIcon}
+                onMouseEnter={() => {
+                  sethoverTrashId(index.id);
+                }}
+                onMouseLeave={() => {
+                  sethoverTrashId(-1);
+                }}
+              >
+                <Tooltip title="Eliminar">
+                  <IconButton>
+                    <DeleteOutlineOutlinedIcon
+                      htmlColor={
+                        hoverTrashId === index.id ? "#f10303" : "#4D4E56"
+                      }
+                      onClick={() => {
+                        setclickID(index.id);
+                        setDeleteDialog(true);
+                      }}
+                    />
+                  </IconButton>
+                </Tooltip>
+              </div>
+            )}
           </td>
         </div>
       );
@@ -492,49 +523,57 @@ const AirlinesMainPage: React.FC<PageProps> = ({
           <td>{index.pais}</td>
           <td>{index.aeropuerto}</td>
           <td className={styles.iconsContainer2}>
-            <div
-              className={styles.functionIcon}
-              onMouseEnter={() => {
-                sethoverPencilId(index.id);
-              }}
-              onMouseLeave={() => {
-                sethoverPencilId(-1);
-              }}
-            >
-              <Tooltip title="Editar">
-              <IconButton>
-              <BorderColorOutlinedIcon
-                htmlColor={hoverPencilId === index.id ? "#00A75D" : "#4D4E56"}
-                onClick={() => {
-                  setCityID(index.id);
-                  setStep(4);
+            {(roleID == 1 || roleID == 2) && (
+              <div
+                className={styles.functionIcon}
+                onMouseEnter={() => {
+                  sethoverPencilId(index.id);
                 }}
-              />{" "}
-              </IconButton>
-              </Tooltip>
-            </div>
+                onMouseLeave={() => {
+                  sethoverPencilId(-1);
+                }}
+              >
+                <Tooltip title="Editar">
+                  <IconButton>
+                    <BorderColorOutlinedIcon
+                      htmlColor={
+                        hoverPencilId === index.id ? "#00A75D" : "#4D4E56"
+                      }
+                      onClick={() => {
+                        setCityID(index.id);
+                        setStep(4);
+                      }}
+                    />{" "}
+                  </IconButton>
+                </Tooltip>
+              </div>
+            )}
 
-            <div
-              className={styles.functionIcon}
-              onMouseEnter={() => {
-                sethoverTrashId(index.id);
-              }}
-              onMouseLeave={() => {
-                sethoverTrashId(-1);
-              }}
-            >
-              <Tooltip title="Eliminar">
-              <IconButton>
-              <DeleteOutlineOutlinedIcon
-                htmlColor={hoverTrashId === index.id ? "#f10303" : "#4D4E56"}
-                onClick={() => {
-                  setclickID(index.id);
-                  setDeleteCitiesDialog(true);
+            {roleID == 1 && (
+              <div
+                className={styles.functionIcon}
+                onMouseEnter={() => {
+                  sethoverTrashId(index.id);
                 }}
-              />
-              </IconButton>
-              </Tooltip>
-            </div>
+                onMouseLeave={() => {
+                  sethoverTrashId(-1);
+                }}
+              >
+                <Tooltip title="Eliminar">
+                  <IconButton>
+                    <DeleteOutlineOutlinedIcon
+                      htmlColor={
+                        hoverTrashId === index.id ? "#f10303" : "#4D4E56"
+                      }
+                      onClick={() => {
+                        setclickID(index.id);
+                        setDeleteCitiesDialog(true);
+                      }}
+                    />
+                  </IconButton>
+                </Tooltip>
+              </div>
+            )}
           </td>
         </div>
       );
@@ -543,14 +582,10 @@ const AirlinesMainPage: React.FC<PageProps> = ({
     return y;
   };
 
-
   const Load = () => {
-  
-
     setLoading(true);
     setStep(1);
-
-  }
+  };
 
   return (
     <main className={styles.containerAirlinesMainPage}>
@@ -565,21 +600,23 @@ const AirlinesMainPage: React.FC<PageProps> = ({
             onClose={() => setCitiesDialog(false)}
           >
             <div className={styles.dialogBack}>
-            <div
-              className={styles.closeIconDialog}
-              onClick={() => setCitiesDialog(false)}
-            >
-              <Tooltip title="Cerrar">
-              <IconButton>
-              <CloseRoundedIcon htmlColor="#4d4e56" />
-              </IconButton>
-              </Tooltip>
-            </div>
+              <div
+                className={styles.closeIconDialog}
+                onClick={() => setCitiesDialog(false)}
+              >
+                <Tooltip title="Cerrar">
+                  <IconButton>
+                    <CloseRoundedIcon htmlColor="#4d4e56" />
+                  </IconButton>
+                </Tooltip>
+              </div>
               <div className={styles.dialogText}>
-                <GreenButton
-                  executableFunction={() => setStep(3)}
-                  buttonText="Agregar Ciudades"
-                />
+                {(roleID == 1 || roleID == 2) && (
+                  <GreenButton
+                    executableFunction={() => setStep(3)}
+                    buttonText="Agregar Ciudades"
+                  />
+                )}
                 <Spacer />
                 <div className={styles.airlinesListContainer}>
                   <div>
@@ -598,16 +635,18 @@ const AirlinesMainPage: React.FC<PageProps> = ({
             </div>
           </Dialog>
         }
-        
+
         <GreenButton
           executableFunction={() => setCitiesDialog(true)}
           buttonText="Ciudades"
         />
         <Spacer />
-        <GreenButton
-          executableFunction={() => Load()}
-          buttonText="Registrar aerolinea"
-        />
+        {roleID == 1 && (
+          <GreenButton
+            executableFunction={() => Load()}
+            buttonText="Registrar aerolinea"
+          />
+        )}
         {loading && <LoadingScreen />}
       </div>
       <div className={styles.airlinesListContainer}>

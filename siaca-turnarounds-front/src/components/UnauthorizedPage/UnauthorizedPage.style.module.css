@@ -1,0 +1,18 @@
+.containerUnauthorizedMainPage {
+  padding: 30px 115px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 60px;
+}
+.stopAirplaneImageContainer {
+  width: fit-content;
+}
+.stopAirplaneImage {
+  border-radius: 12px;
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.25);
+}
+.unauthorizedText {
+  font-size: 20px;
+  font-weight: bold;
+}

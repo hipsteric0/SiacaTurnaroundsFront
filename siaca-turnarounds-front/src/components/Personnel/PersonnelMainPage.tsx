@@ -21,16 +21,15 @@ import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import BlockIcon from "@mui/icons-material/Block";
 
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
 
-import Badge from '@mui/material/Badge';
-import Divider from '@mui/material/Divider';
+import Badge from "@mui/material/Badge";
+import Divider from "@mui/material/Divider";
 
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import EditNoteIcon from '@mui/icons-material/EditNote';
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import EditNoteIcon from "@mui/icons-material/EditNote";
 import { AccessAlarmOutlined } from "@mui/icons-material";
-
 
 interface PageProps {
   setStep: (value: number) => void;
@@ -38,7 +37,15 @@ interface PageProps {
 
 const PersonnelMainPage: React.FC = () => {
   //if token exists show regular html else show not signed in screen
+  useEffect(() => {
+    let role = localStorage.getItem("userRole");
+    if (role != null) {
+      setRoleID(parseInt(role));
+      console.log("se coloco el rol", role);
+    }
+  }, []);
 
+  const [roleID, setRoleID] = useState(-1);
   const isMobile = useMediaQuery("(max-width: 1270px)");
   const [allowContinue, setAllowContinue] = useState(false);
   const [arrayList3, setArrayList3] = useState([]);
@@ -53,9 +60,8 @@ const PersonnelMainPage: React.FC = () => {
 
   const [infoDialog, setInfoDialog] = useState(false);
   const [RoleDialog, setRoleDialog] = useState(false);
-  
-  const [solicitudeCounter, setSolicitudeCounter] = useState(-1);
 
+  const [solicitudeCounter, setSolicitudeCounter] = useState(-1);
 
   const [lateCodesArray, setlateCodesArray] = useState([""]);
   const [lateCodesData, setlateCodesData] = useState();
@@ -196,7 +202,7 @@ const PersonnelMainPage: React.FC = () => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-          router.reload();
+            router.reload();
           })
         );
       } catch (error) {
@@ -230,8 +236,7 @@ const PersonnelMainPage: React.FC = () => {
     await fetchData().catch(console.error);
   };
 
-
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
 
   const arrayPrinter = () => {
     let y: any = [];
@@ -245,12 +250,11 @@ const PersonnelMainPage: React.FC = () => {
       ? (arrayList3aux = arrayFilteredList3)
       : (arrayList3aux = arrayList3);
 
-      const filteredArray = arrayList3aux.filter(
-        (index: any) =>
-          `${index?.fk_user?.first_name} ${index?.fk_user?.last_name}`
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase())
-      );
+    const filteredArray = arrayList3aux.filter((index: any) =>
+      `${index?.fk_user?.first_name} ${index?.fk_user?.last_name}`
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase())
+    );
 
     filteredArray.map((index: any) => {
       y[index.id] = (
@@ -261,18 +265,18 @@ const PersonnelMainPage: React.FC = () => {
               open={deleteDialog}
               onClose={() => setDeleteDialog(false)}
             >
-          <div>
-            <div
-              className={styles.closeIconDialog}
-              onClick={() => setDeleteDialog(false)}
-            >
-              <Tooltip title="Cerrar">
-              <IconButton>
-              <CloseRoundedIcon htmlColor="#4d4e56" />
-              </IconButton>
-              </Tooltip>
-            </div>
-          </div>
+              <div>
+                <div
+                  className={styles.closeIconDialog}
+                  onClick={() => setDeleteDialog(false)}
+                >
+                  <Tooltip title="Cerrar">
+                    <IconButton>
+                      <CloseRoundedIcon htmlColor="#4d4e56" />
+                    </IconButton>
+                  </Tooltip>
+                </div>
+              </div>
               <div className={styles.dialogBack}>
                 <div className={styles.dialogText}>
                   <div className={styles.warningIcon}>
@@ -303,129 +307,152 @@ const PersonnelMainPage: React.FC = () => {
             </Dialog>
           }
 
-{
+          {
             <Dialog
               className={styles.dialogTextPersonnel}
               open={infoDialog}
               fullWidth={true}
-              maxWidth= "sm"
+              maxWidth="sm"
               scroll="paper"
               onClose={() => setInfoDialog(false)}
             >
               <div className={styles.dialogBack}>
-              <div>
-            <div
-              className={styles.closeIconDialog}
-              onClick={() => setInfoDialog(false)}
-            >
-              <Tooltip title="Cerrar">
-              <IconButton>
-              <CloseRoundedIcon htmlColor="#4d4e56" />
-              </IconButton>
-              </Tooltip>
-            </div>
-          </div>
+                <div>
+                  <div
+                    className={styles.closeIconDialog}
+                    onClick={() => setInfoDialog(false)}
+                  >
+                    <Tooltip title="Cerrar">
+                      <IconButton>
+                        <CloseRoundedIcon htmlColor="#4d4e56" />
+                      </IconButton>
+                    </Tooltip>
+                  </div>
+                </div>
                 <div className={styles.dialogTextPersonnel}>
                   <div className={styles.warningIcon}>
-                  <center>  <AccountCircleIcon fontSize="inherit" /> </center>
+                    <center>
+                      {" "}
+                      <AccountCircleIcon fontSize="inherit" />{" "}
+                    </center>
                   </div>
                   <div className={styles.dividerText}>
-                      <Divider> Nombre </Divider> 
-                      </div>
-                      <br/>
-                      {arrayList3.find((o) => o.fk_user?.id === clickID)?.fk_user?.first_name} {" "} {arrayList3.find((o) => o.fk_user?.id  === clickID)?.fk_user?.last_name}
-                      <Spacer/>
-
-                      <div className={styles.dividerText}>
-                      <Divider> Cédula </Divider> 
-                      </div>
-                      <br/>
-                      {arrayList3.find((o) => o.fk_user?.id  === clickID)?.cedula}
-                      <Spacer/>
-
-                      <div className={styles.dividerText}>
-                      <Divider> Contacto </Divider> 
-                      </div>
-                    <br/>
-                     <strong>Teléfono:</strong> {arrayList3.find((o) => o.fk_user?.id  === clickID)?.telefono} 
-                      <Spacer/>
-                      <strong>Correo:</strong>  {arrayList3.find((o) => o.fk_user?.id === clickID)?.fk_user?.username}
-                      <Spacer/>
-
-                      <div className={styles.dividerText}>
-                      <Divider> Información </Divider> 
-                      </div>
-                    <br/>
-                    <strong>Departamento:</strong>  {arrayList3.find((o) => o.fk_user?.id  === clickID)?.fk_departamento?.nombre}
-                      <Spacer/>
-                      <strong>Cargo:</strong>  {arrayList3.find((o) => o.fk_user?.id  === clickID)?.fk_cargo?.nombre}
-                      <Spacer/>
-                      <strong>Turno:</strong>  {arrayList3.find((o) => o.fk_user?.id  === clickID)?.turno}
-                      <Spacer/>
+                    <Divider> Nombre </Divider>
+                  </div>
+                  <br />
+                  {
+                    arrayList3.find((o) => o.fk_user?.id === clickID)?.fk_user
+                      ?.first_name
+                  }{" "}
+                  {
+                    arrayList3.find((o) => o.fk_user?.id === clickID)?.fk_user
+                      ?.last_name
+                  }
+                  <Spacer />
+                  <div className={styles.dividerText}>
+                    <Divider> Cédula </Divider>
+                  </div>
+                  <br />
+                  {arrayList3.find((o) => o.fk_user?.id === clickID)?.cedula}
+                  <Spacer />
+                  <div className={styles.dividerText}>
+                    <Divider> Contacto </Divider>
+                  </div>
+                  <br />
+                  <strong>Teléfono:</strong>{" "}
+                  {arrayList3.find((o) => o.fk_user?.id === clickID)?.telefono}
+                  <Spacer />
+                  <strong>Correo:</strong>{" "}
+                  {
+                    arrayList3.find((o) => o.fk_user?.id === clickID)?.fk_user
+                      ?.username
+                  }
+                  <Spacer />
+                  <div className={styles.dividerText}>
+                    <Divider> Información </Divider>
+                  </div>
+                  <br />
+                  <strong>Departamento:</strong>{" "}
+                  {
+                    arrayList3.find((o) => o.fk_user?.id === clickID)
+                      ?.fk_departamento?.nombre
+                  }
+                  <Spacer />
+                  <strong>Cargo:</strong>{" "}
+                  {
+                    arrayList3.find((o) => o.fk_user?.id === clickID)?.fk_cargo
+                      ?.nombre
+                  }
+                  <Spacer />
+                  <strong>Turno:</strong>{" "}
+                  {arrayList3.find((o) => o.fk_user?.id === clickID)?.turno}
+                  <Spacer />
                 </div>
               </div>
             </Dialog>
           }
 
-
-            {
+          {
             <Dialog
               className={styles.dialogDelete}
               open={RoleDialog}
               onClose={() => setRoleDialog(false)}
               fullWidth={true}
             >
-          <div>
-            <div
-              className={styles.closeIconDialog}
-              onClick={() => setRoleDialog(false)}
-            >
-              <Tooltip title="Cerrar">
-              <IconButton>
-              <CloseRoundedIcon htmlColor="#4d4e56" />
-              </IconButton>
-              </Tooltip>
-            </div>
-          </div>
+              <div>
+                <div
+                  className={styles.closeIconDialog}
+                  onClick={() => setRoleDialog(false)}
+                >
+                  <Tooltip title="Cerrar">
+                    <IconButton>
+                      <CloseRoundedIcon htmlColor="#4d4e56" />
+                    </IconButton>
+                  </Tooltip>
+                </div>
+              </div>
               <div className={styles.dialogBack}>
                 <div className={styles.dialogText}>
                   <div className={styles.warningIcon}>
                     <EditNoteIcon color="success" fontSize="inherit" />
                   </div>
-                  
-                    <strong>
-                      Editar rol del usuario:
-                    </strong>
-                    <Spacer/>
-                    <p>{arrayList3.find((o) => o.fk_user?.id === clickID)?.fk_user?.first_name} {" "} {arrayList3.find((o) => o.fk_user?.id  === clickID)?.fk_user?.last_name}</p>
-                    <Spacer/>
-                    <div className={styles.roleList}>
 
-                          <Autocomplete
-                          className={styles.autoComplete}
-                            size="small"
-                            sx={{ width: "400px"}}
-                            value={lateCodeValue} //el valor que toma por defecto, esta comentado por que debe ser nulo
-                            onInputChange={(event, newInputValue) => {
-                              setlateCodeValue(newInputValue);
-                              setlateCodeValueIDForPatch(newInputValue);
-                            }}
-                            id="controllable-states-demo"
-                            options={lateCodesArray}
-                            renderInput={(params) => (
-                              <TextField {...params} label={""} 
-                              />
-                            )}
-                          />
-
-                        </div>
-                        <Spacer/>
+                  <strong>Editar rol del usuario:</strong>
+                  <Spacer />
+                  <p>
+                    {
+                      arrayList3.find((o) => o.fk_user?.id === clickID)?.fk_user
+                        ?.first_name
+                    }{" "}
+                    {
+                      arrayList3.find((o) => o.fk_user?.id === clickID)?.fk_user
+                        ?.last_name
+                    }
+                  </p>
+                  <Spacer />
+                  <div className={styles.roleList}>
+                    <Autocomplete
+                      className={styles.autoComplete}
+                      size="small"
+                      sx={{ width: "400px" }}
+                      value={lateCodeValue} //el valor que toma por defecto, esta comentado por que debe ser nulo
+                      onInputChange={(event, newInputValue) => {
+                        setlateCodeValue(newInputValue);
+                        setlateCodeValueIDForPatch(newInputValue);
+                      }}
+                      id="controllable-states-demo"
+                      options={lateCodesArray}
+                      renderInput={(params) => (
+                        <TextField {...params} label={""} />
+                      )}
+                    />
+                  </div>
+                  <Spacer />
                   <div className={styles.dialogButtons}>
                     <GreenButton2
                       executableFunction={() => {
                         patchLateCode(clickID);
                         setRoleDialog(false);
-
                       }}
                       buttonText="Aceptar"
                     />
@@ -462,62 +489,70 @@ const PersonnelMainPage: React.FC = () => {
               }}
             >
               <Tooltip title="Detalles">
-              <IconButton>
-              <RemoveRedEyeIcon
-                htmlColor={hoverEyeId === index.id ? "#00A75D" : "#4D4E56"}
-                onClick={() => {
-                  setclickID(index?.fk_user?.id);
-                  setInfoDialog(true);
-                }}
-              />{" "}
-              </IconButton>
+                <IconButton>
+                  <RemoveRedEyeIcon
+                    htmlColor={hoverEyeId === index.id ? "#00A75D" : "#4D4E56"}
+                    onClick={() => {
+                      setclickID(index?.fk_user?.id);
+                      setInfoDialog(true);
+                    }}
+                  />{" "}
+                </IconButton>
               </Tooltip>
             </div>
 
-            <div
-              className={styles.functionIcon}
-              onMouseEnter={() => {
-                sethoverPencilId(index.id);
-              }}
-              onMouseLeave={() => {
-                sethoverPencilId(-1);
-              }}
-            >
-               <Tooltip title="Editar rol">
-              <IconButton>
-              <BorderColorOutlinedIcon
-                htmlColor={hoverPencilId === index.id ? "#00A75D" : "#4D4E56"}
-                onClick={() => {
-                  getLateCodes();
-                  setclickID(index?.fk_user?.id);
-                  setRoleDialog(true);
-                }}
-              />{" "}
-              </IconButton>
-              </Tooltip>
-            </div>
+            {roleID == 1 && (
+              <>
+                <div
+                  className={styles.functionIcon}
+                  onMouseEnter={() => {
+                    sethoverPencilId(index.id);
+                  }}
+                  onMouseLeave={() => {
+                    sethoverPencilId(-1);
+                  }}
+                >
+                  <Tooltip title="Editar rol">
+                    <IconButton>
+                      <BorderColorOutlinedIcon
+                        htmlColor={
+                          hoverPencilId === index.id ? "#00A75D" : "#4D4E56"
+                        }
+                        onClick={() => {
+                          getLateCodes();
+                          setclickID(index?.fk_user?.id);
+                          setRoleDialog(true);
+                        }}
+                      />{" "}
+                    </IconButton>
+                  </Tooltip>
+                </div>
 
-            <div
-              className={styles.functionIcon}
-              onMouseEnter={() => {
-                sethoverTrashId(index.id);
-              }}
-              onMouseLeave={() => {
-                sethoverTrashId(-1);
-              }}
-            >
-               <Tooltip title="Eliminar">
-              <IconButton>
-              <DeleteOutlineOutlinedIcon
-                htmlColor={hoverTrashId === index.id ? "#f10303" : "#4D4E56"}
-                onClick={() => {
-                  setclickID(index.fk_user.id);
-                  setDeleteDialog(true);
-                }}
-              />
-              </IconButton>
-              </Tooltip>
-            </div>
+                <div
+                  className={styles.functionIcon}
+                  onMouseEnter={() => {
+                    sethoverTrashId(index.id);
+                  }}
+                  onMouseLeave={() => {
+                    sethoverTrashId(-1);
+                  }}
+                >
+                  <Tooltip title="Eliminar">
+                    <IconButton>
+                      <DeleteOutlineOutlinedIcon
+                        htmlColor={
+                          hoverTrashId === index.id ? "#f10303" : "#4D4E56"
+                        }
+                        onClick={() => {
+                          setclickID(index.fk_user.id);
+                          setDeleteDialog(true);
+                        }}
+                      />
+                    </IconButton>
+                  </Tooltip>
+                </div>
+              </>
+            )}
           </td>
         </div>
       );
@@ -546,18 +581,18 @@ const PersonnelMainPage: React.FC = () => {
               open={aceptDialog}
               onClose={() => setAceptDialog(false)}
             >
-          <div>
-            <div
-              className={styles.closeIconDialog}
-              onClick={() => setAceptDialog(false)}
-            >
-              <Tooltip title="Cerrar">
-              <IconButton>
-              <CloseRoundedIcon htmlColor="#4d4e56" />
-              </IconButton>
-              </Tooltip>
-            </div>
-          </div>
+              <div>
+                <div
+                  className={styles.closeIconDialog}
+                  onClick={() => setAceptDialog(false)}
+                >
+                  <Tooltip title="Cerrar">
+                    <IconButton>
+                      <CloseRoundedIcon htmlColor="#4d4e56" />
+                    </IconButton>
+                  </Tooltip>
+                </div>
+              </div>
               <div className={styles.dialogBack}>
                 <div className={styles.dialogText}>
                   <div className={styles.warningIcon}>
@@ -570,28 +605,27 @@ const PersonnelMainPage: React.FC = () => {
                     <strong>
                       ¿Está seguro que desea aceptar este usuario?
                     </strong>
-                    <Spacer/>
+                    <Spacer />
                     <p>Asignar rol del usuario:</p>
-                    <Spacer/>
+                    <Spacer />
                     <div className={styles.roleList}>
                       <center>
-                          <Autocomplete
-                            size="small"
-                            sx={{ width: "350px" }}
-                            value={lateCodeValue} //el valor que toma por defecto, esta comentado por que debe ser nulo
-                            onInputChange={(event, newInputValue) => {
-                              setlateCodeValue(newInputValue);
-                              setlateCodeValueIDForPatch(newInputValue);
-                            }}
-                            id="controllable-states-demo"
-                            options={lateCodesArray}
-                            renderInput={(params) => (
-                              <TextField {...params} label={""} />
-                            )}
-                          />
-                          </center>
-                        </div>
-
+                        <Autocomplete
+                          size="small"
+                          sx={{ width: "350px" }}
+                          value={lateCodeValue} //el valor que toma por defecto, esta comentado por que debe ser nulo
+                          onInputChange={(event, newInputValue) => {
+                            setlateCodeValue(newInputValue);
+                            setlateCodeValueIDForPatch(newInputValue);
+                          }}
+                          id="controllable-states-demo"
+                          options={lateCodesArray}
+                          renderInput={(params) => (
+                            <TextField {...params} label={""} />
+                          )}
+                        />
+                      </center>
+                    </div>
                   </p>
                   <br />
                   <div className={styles.dialogButtons}>
@@ -620,18 +654,18 @@ const PersonnelMainPage: React.FC = () => {
               open={denyDialog}
               onClose={() => setDenyDialog(false)}
             >
-          <div>
-            <div
-              className={styles.closeIconDialog}
-              onClick={() => setDenyDialog(false)}
-            >
-              <Tooltip title="Cerrar">
-              <IconButton>
-              <CloseRoundedIcon htmlColor="#4d4e56" />
-              </IconButton>
-              </Tooltip>
-            </div>
-          </div>
+              <div>
+                <div
+                  className={styles.closeIconDialog}
+                  onClick={() => setDenyDialog(false)}
+                >
+                  <Tooltip title="Cerrar">
+                    <IconButton>
+                      <CloseRoundedIcon htmlColor="#4d4e56" />
+                    </IconButton>
+                  </Tooltip>
+                </div>
+              </div>
               <div className={styles.dialogBack}>
                 <div className={styles.dialogText}>
                   <div className={styles.warningIcon}>
@@ -683,15 +717,15 @@ const PersonnelMainPage: React.FC = () => {
               }}
             >
               <Tooltip title="Aceptar">
-              <IconButton>
-              <CheckCircleOutlineIcon
-                htmlColor={hoverEyeId === index.id ? "#00A75D" : "#4D4E56"}
-                onClick={() => {
-                  setclickID2(index.fk_user.id);
-                  setAceptDialog(true);
-                }}
-              />{" "}
-              </IconButton>
+                <IconButton>
+                  <CheckCircleOutlineIcon
+                    htmlColor={hoverEyeId === index.id ? "#00A75D" : "#4D4E56"}
+                    onClick={() => {
+                      setclickID2(index.fk_user.id);
+                      setAceptDialog(true);
+                    }}
+                  />{" "}
+                </IconButton>
               </Tooltip>
             </div>
 
@@ -705,15 +739,17 @@ const PersonnelMainPage: React.FC = () => {
               }}
             >
               <Tooltip title="Denegar">
-              <IconButton>
-              <BlockIcon
-                htmlColor={hoverTrashId === index.id ? "#f10303" : "#4D4E56"}
-                onClick={() => {
-                  setclickID2(index.fk_user.id);
-                  setDenyDialog(true);
-                }}
-              />
-              </IconButton>
+                <IconButton>
+                  <BlockIcon
+                    htmlColor={
+                      hoverTrashId === index.id ? "#f10303" : "#4D4E56"
+                    }
+                    onClick={() => {
+                      setclickID2(index.fk_user.id);
+                      setDenyDialog(true);
+                    }}
+                  />
+                </IconButton>
               </Tooltip>
             </div>
           </td>
@@ -722,8 +758,6 @@ const PersonnelMainPage: React.FC = () => {
     });
     return y;
   };
-
-
 
   const setlateCodeValueIDForPatch = (value: string) => {
     let identificadorAuxiliar = value;
@@ -735,7 +769,6 @@ const PersonnelMainPage: React.FC = () => {
     });
   };
 
-  
   const getLateCodes = async () => {
     const fetchData = async () => {
       try {
@@ -761,21 +794,15 @@ const PersonnelMainPage: React.FC = () => {
     await fetchData().catch(console.error);
   };
 
-
   const setlateCodesOptions = (data: any) => {
     let auxiliaryArray: string[] = [];
     data.map((element: any) => {
-      auxiliaryArray.push(
-        (
-          element?.rol
-        ).toString()
-      );
+      auxiliaryArray.push((element?.rol).toString());
     });
     setlateCodesArray(auxiliaryArray);
     console.log("auxiliaryArray", auxiliaryArray);
   };
 
-  
   const patchLateCode = async (userID: any) => {
     const fetchData = async () => {
       try {
@@ -801,10 +828,6 @@ const PersonnelMainPage: React.FC = () => {
     await fetchData().catch(console.error);
   };
 
-
-
-
-
   return (
     <main className={styles.containerPersonnelMainPage}>
       <Spacer />
@@ -822,9 +845,9 @@ const PersonnelMainPage: React.FC = () => {
               onClick={() => setListDialog(false)}
             >
               <Tooltip title="Cerrar">
-              <IconButton>
-              <CloseRoundedIcon htmlColor="#4d4e56" />
-              </IconButton>
+                <IconButton>
+                  <CloseRoundedIcon htmlColor="#4d4e56" />
+                </IconButton>
               </Tooltip>
             </div>
           </div>
@@ -850,7 +873,7 @@ const PersonnelMainPage: React.FC = () => {
       }
 
       <div className={styles.upperSectionContainer}>
-      <div>
+        <div>
           <input
             className={styles.comboboxMainContainer}
             type="text"
@@ -858,16 +881,21 @@ const PersonnelMainPage: React.FC = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          </div>
-        <div className={styles.greenbuttonSuperContainer}>
-        <Badge badgeContent={solicitudeCounter} color="error">
-          <GreenButton
-            executableFunction={() => {setListDialog(true); getLateCodes();}}
-            buttonText={"Solicitudes"}
-            disabled={solicitudeCounter < 1}
-          />
-          </Badge>
         </div>
+        {roleID == 1 && (
+          <div className={styles.greenbuttonSuperContainer}>
+            <Badge badgeContent={solicitudeCounter} color="error">
+              <GreenButton
+                executableFunction={() => {
+                  setListDialog(true);
+                  getLateCodes();
+                }}
+                buttonText={"Solicitudes"}
+                disabled={solicitudeCounter < 1}
+              />
+            </Badge>
+          </div>
+        )}
       </div>
 
       <div className={styles.personnelListContainer}>

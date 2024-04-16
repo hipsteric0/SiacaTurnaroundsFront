@@ -19,8 +19,8 @@ import GreenButton2 from "@/components/Reusables/GreenButton2";
 import RedButton2 from "@/components/Reusables/RedButton2";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
 
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 
@@ -30,6 +30,16 @@ interface PageProps {
 
 const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
   //if token exists show regular html else show not signed in screen
+
+  useEffect(() => {
+    let role = localStorage.getItem("userRole");
+    if (role != null) {
+      setRoleID(parseInt(role));
+      console.log("se coloco el rol", role);
+    }
+  }, []);
+
+  const [roleID, setRoleID] = useState(-1);
   const isMobile = useMediaQuery("(max-width: 1270px)");
   const [allowContinue, setAllowContinue] = useState(false);
   const [arrayList3, setArrayList3] = useState([]);
@@ -194,15 +204,15 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
             >
               <div className={styles.dialogBack}>
                 <div
-                className={styles.closeIconDialog}
-                onClick={() => setDetailsDialog(false)}
-              >
-                <CloseRoundedIcon htmlColor="#4d4e56" />
-              </div>
+                  className={styles.closeIconDialog}
+                  onClick={() => setDetailsDialog(false)}
+                >
+                  <CloseRoundedIcon htmlColor="#4d4e56" />
+                </div>
 
                 <div className={styles.dialogText}>
-                    <div className={styles.detailsListContainer}>
-                      <div>
+                  <div className={styles.detailsListContainer}>
+                    <div>
                       <div className={styles.tableContainer}>
                         <span>Tarea</span>
                         <span>Subtarea</span>
@@ -213,7 +223,6 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
                   </div>
                 </div>
               </div>
-
             </Dialog>
           }
 
@@ -229,41 +238,49 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
                   sethoverPencilId(-1);
                 }}
               >
-              <Tooltip title="Detalles">
-                <IconButton>
-                <RemoveRedEyeIcon
-                  htmlColor={hoverPencilId === index.id ? "#00A75D" : "#4D4E56"}
-                  onClick={() => {
-                    //setCityID(index.id);
-                    //setStep(4);
-                    setDetailsDialog(true);
-                    handleDetailsTemplate(index.id)
-                  }}
-                />{" "}
-                </IconButton>
-              </Tooltip>
+                <Tooltip title="Detalles">
+                  <IconButton>
+                    <RemoveRedEyeIcon
+                      htmlColor={
+                        hoverPencilId === index.id ? "#00A75D" : "#4D4E56"
+                      }
+                      onClick={() => {
+                        //setCityID(index.id);
+                        //setStep(4);
+                        setDetailsDialog(true);
+                        handleDetailsTemplate(index.id);
+                      }}
+                    />{" "}
+                  </IconButton>
+                </Tooltip>
               </div>
-              <div
-                className={styles.functionIcon}
-                onMouseEnter={() => {
-                  sethoverTrashId(index.id);
-                }}
-                onMouseLeave={() => {
-                  sethoverTrashId(-1);
-                }}
-              >
-              <Tooltip title="Eliminar">
-                <IconButton>
-                <DeleteOutlineOutlinedIcon
-                  htmlColor={hoverTrashId === index.id ? "#f10303" : "#4D4E56"}
-                  onClick={() => {
-                    setclickID(index.id);
-                    setDeleteDialog(true);
+              {roleID == 1 ? (
+                <div
+                  className={styles.functionIcon}
+                  onMouseEnter={() => {
+                    sethoverTrashId(index.id);
                   }}
-                />{" "}
-              </IconButton>
-            </Tooltip>
-              </div>
+                  onMouseLeave={() => {
+                    sethoverTrashId(-1);
+                  }}
+                >
+                  <Tooltip title="Eliminar">
+                    <IconButton>
+                      <DeleteOutlineOutlinedIcon
+                        htmlColor={
+                          hoverTrashId === index.id ? "#f10303" : "#4D4E56"
+                        }
+                        onClick={() => {
+                          setclickID(index.id);
+                          setDeleteDialog(true);
+                        }}
+                      />{" "}
+                    </IconButton>
+                  </Tooltip>
+                </div>
+              ) : (
+                <></>
+              )}
             </div>
           </td>
         </div>
@@ -273,18 +290,17 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
     return y;
   };
 
-
   const arrayPrinter2 = () => {
     let y: any = [];
     console.log("arrayTemplate", arrayTemplate.length);
     arrayTemplate.map((index: any) => {
       y[index.id] = (
         <div key={index.id} className={styles.tableDetailsRow}>
-
-          <td><strong>{index?.fk_tarea?.titulo}</strong></td>
+          <td>
+            <strong>{index?.fk_tarea?.titulo}</strong>
+          </td>
           <td>{index?.titulo}</td>
           <td>{index?.fk_tipo?.nombre}</td>
-
         </div>
       );
     });
@@ -300,18 +316,20 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
     detailsTemplate(templateID);
   };
 
-
-
   return (
     <main className={styles.containerAirlinesMainPage}>
       <div className={styles.backArrowIcon}>
         <BackArrow executableFunction={() => router.push("/Turnarounds")} />
       </div>
       <div className={styles.registerbuttoncontainer}>
-        <GreenButton
-          executableFunction={() => setStep(1)}
-          buttonText="Registrar plantilla"
-        />
+        {roleID == 1 ? (
+          <GreenButton
+            executableFunction={() => setStep(1)}
+            buttonText="Registrar plantilla"
+          />
+        ) : (
+          <></>
+        )}
       </div>
       <div className={styles.airlinesListContainer}>
         <div>
@@ -327,5 +345,3 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
 };
 
 export default TurnaroundsMainPage;
-
-

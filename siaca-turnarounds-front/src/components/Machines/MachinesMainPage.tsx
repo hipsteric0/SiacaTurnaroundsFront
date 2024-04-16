@@ -18,10 +18,10 @@ import GreenButton2 from "@/components/Reusables/GreenButton2";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
 
-import LoadingScreen from '../Reusables/LoadingScreen';
+import LoadingScreen from "../Reusables/LoadingScreen";
 
 interface PageProps {
   setStep: (value: number) => void;
@@ -30,7 +30,15 @@ interface PageProps {
 
 const MachinesMainPage: React.FC<PageProps> = ({ setStep, setmachineID }) => {
   //if token exists show regular html else show not signed in screen
+  useEffect(() => {
+    let role = localStorage.getItem("userRole");
+    if (role != null) {
+      setRoleID(parseInt(role));
+      console.log("se coloco el rol", role);
+    }
+  }, []);
 
+  const [roleID, setRoleID] = useState(-1);
   const isMobile = useMediaQuery("(max-width: 1270px)");
   const [openCardMenu, setOpenCardMenu] = useState(-1);
   const [arrayList3, setArrayList3] = useState([]);
@@ -194,44 +202,48 @@ const MachinesMainPage: React.FC<PageProps> = ({ setStep, setmachineID }) => {
                       Editar
                     </p>
                   </div>
-                  <div className={styles.menuAppearingContainerRow}>
-                    <p
-                      className={
-                        hover && 2 === hoverOptionValue
-                          ? styles.optionsTextHover
-                          : styles.optionsText
-                      }
-                      onMouseEnter={() => {
-                        setHoverOptionValue(2);
-                        setHover(true);
-                      }}
-                      onMouseLeave={() => {
-                        setHoverOptionValue(-1);
-                        setHover(false);
-                      }}
-                      onClick={() => setDeleteDialog(true)}
-                    >
-                      Eliminar
-                    </p>
-                  </div>
+                  {roleID == 1 && (
+                    <div className={styles.menuAppearingContainerRow}>
+                      <p
+                        className={
+                          hover && 2 === hoverOptionValue
+                            ? styles.optionsTextHover
+                            : styles.optionsText
+                        }
+                        onMouseEnter={() => {
+                          setHoverOptionValue(2);
+                          setHover(true);
+                        }}
+                        onMouseLeave={() => {
+                          setHoverOptionValue(-1);
+                          setHover(false);
+                        }}
+                        onClick={() => setDeleteDialog(true)}
+                      >
+                        Eliminar
+                      </p>
+                    </div>
+                  )}
                 </div>
               )}
-              <div
-                className={styles.pointer}
-                onClick={
-                  openCardMenu === -1
-                    ? () => setOpenCardMenu(index.id)
-                    : openCardMenu === index.id
-                    ? () => setOpenCardMenu(-1)
-                    : () => setOpenCardMenu(index.id)
-                }
-              >
-              <Tooltip title="Opciones">
-              <IconButton>
-                <MoreVertIcon />
-                </IconButton>
-                </Tooltip>
-              </div>
+              {(roleID == 1 || roleID == 2) && (
+                <div
+                  className={styles.pointer}
+                  onClick={
+                    openCardMenu === -1
+                      ? () => setOpenCardMenu(index.id)
+                      : openCardMenu === index.id
+                      ? () => setOpenCardMenu(-1)
+                      : () => setOpenCardMenu(index.id)
+                  }
+                >
+                  <Tooltip title="Opciones">
+                    <IconButton>
+                      <MoreVertIcon />
+                    </IconButton>
+                  </Tooltip>
+                </div>
+              )}
             </div>
           </div>
 
@@ -246,14 +258,16 @@ const MachinesMainPage: React.FC<PageProps> = ({ setStep, setmachineID }) => {
                 <span className={styles.redText}>NO OPERATIVO </span>
               )}{" "}
             </div>
-            <Switch
-              color="success"
-              initialChecked={index.estado}
-              onChange={() => {
-                changeMachineryState(index.id);
-                getList();
-              }}
-            ></Switch>
+            {(roleID == 1 || roleID == 2) && (
+              <Switch
+                color="success"
+                initialChecked={index.estado}
+                onChange={() => {
+                  changeMachineryState(index.id);
+                  getList();
+                }}
+              ></Switch>
+            )}
           </div>
         </div>
       );
@@ -262,20 +276,22 @@ const MachinesMainPage: React.FC<PageProps> = ({ setStep, setmachineID }) => {
     return y;
   };
 
-  const NewMachine = () =>{
+  const NewMachine = () => {
     setLoading(true);
-    setStep(1)
-  }
+    setStep(1);
+  };
 
   return (
     <main className={styles.containerMachineMainPage}>
-      <div className={styles.createMachineButton}>
-        <GreenButton
-          executableFunction={() => NewMachine()}
-          buttonText="Crear maquinaria"
-        />
-        {loading && <LoadingScreen />}
-      </div>
+      {roleID == 1 && (
+        <div className={styles.createMachineButton}>
+          <GreenButton
+            executableFunction={() => NewMachine()}
+            buttonText="Crear maquinaria"
+          />
+          {loading && <LoadingScreen />}
+        </div>
+      )}
       <Spacer />
       <div className={styles.machineListContainer}>
         <Collapse.Group id="group">

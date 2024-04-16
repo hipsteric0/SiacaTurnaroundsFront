@@ -55,6 +55,15 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
     getPersonnelList();
   }, []);
 
+  useEffect(() => {
+    let role = localStorage.getItem("userRole");
+    if (role != null) {
+      setRoleID(parseInt(role));
+      console.log("se coloco el rol", role);
+    }
+  }, []);
+
+  const [roleID, setRoleID] = useState(-1);
   const [arrayList3, setArrayList3] = useState([]);
   const [personnelListArray, setPersonnelListArray] = useState([]);
   const [tasksarrayList, setTasksarrayList] = useState([]);
@@ -2807,28 +2816,38 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
                         <span className={styles.detailDialogInfoItemTitle}>
                           Código de demora:
                         </span>
-                        <div>
-                          <Autocomplete
-                            size="small"
-                            sx={{ width: "1000px" }}
-                            value={lateCodeValue} //el valor que toma por defecto, esta comentado por que debe ser nulo
-                            onInputChange={(event, newInputValue) => {
-                              setlateCodeValue(newInputValue);
-                              setlateCodeValueIDForPatch(newInputValue);
-                            }}
-                            id="controllable-states-demo"
-                            options={lateCodesArray}
-                            renderInput={(params) => (
-                              <TextField {...params} label={""} />
-                            )}
-                          />
-                        </div>
-                        <GreenButton2
-                          executableFunction={() => {
-                            patchLateCode();
-                          }}
-                          buttonText="Guardar"
-                        />
+                        {roleID == 1 || roleID == 2 ? (
+                          <>
+                            <div>
+                              <Autocomplete
+                                size="small"
+                                sx={{ width: "1000px" }}
+                                value={lateCodeValue} //el valor que toma por defecto, esta comentado por que debe ser nulo
+                                onInputChange={(event, newInputValue) => {
+                                  setlateCodeValue(newInputValue);
+                                  setlateCodeValueIDForPatch(newInputValue);
+                                }}
+                                id="controllable-states-demo"
+                                options={lateCodesArray}
+                                renderInput={(params) => (
+                                  <TextField {...params} label={""} />
+                                )}
+                              />
+                            </div>
+                            <GreenButton2
+                              executableFunction={() => {
+                                patchLateCode();
+                              }}
+                              buttonText="Guardar"
+                            />
+                          </>
+                        ) : (
+                          <span
+                            className={styles.detailDialogInfoItemValueText}
+                          >
+                            {lateCodeValue}
+                          </span>
+                        )}
                       </div>
                     </div>
                     <div className={styles.detailDialogInfoRow1}>
@@ -2840,7 +2859,7 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
                           {index?.fecha_inicio + " - " + index?.hora_inicio}
                         </span>
                         <span className={styles.smallGrayText}>
-                          Esta hora es estimada hasta que el turnaround este en
+                          Esta hora es estimada hasta que el turnaround esté en
                           proceso, cuando será reemplazada por la hora exacta
                           que comenzó.
                         </span>
@@ -3042,89 +3061,95 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
                     <div className={styles.detailDialogInfoRow1}>
                       <div>{PersonnelArrayPrinter()}</div>
                     </div>
-                    <div className={styles.messageContainer}>
-                      {clickedFlightState != "Atendido" ? (
-                        <>
-                          <p className={styles.messageText}>
-                            Tu Documento será generado automaticamente cuando el
-                            servicio sea completado y enviado!.
-                          </p>
-                        </>
-                      ) : (
-                        <div className={styles.detailDialogInfoRow1}>
-                          <div className={styles.turnaroundPDFSLinksContainers}>
-                            <PDFDownloadLink
-                              document={
-                                <Document
-                                  title={
-                                    "Registro del servicio al turnaround Nro: " +
-                                    index?.id
-                                  }
-                                  author={"SIACA"}
-                                >
-                                  <Page size="A4" style={PDFstyles.page}>
-                                    {arrayPrinterPDFGenerator(index)}
-                                  </Page>
-                                </Document>
-                              }
-                              fileName={
-                                "Turnaround_Data_" +
-                                index?.fk_vuelo?.ETA_fecha +
-                                "_" +
-                                index?.fk_vuelo?.ETA +
-                                "_" +
-                                index?.fk_vuelo?.fk_aerolinea?.nombre +
-                                "_puerta:" +
-                                index?.fk_vuelo?.gate +
-                                "_id:" +
-                                index?.id +
-                                ".pdf"
-                              }
+                    {roleID == 1 || roleID == 2 ? (
+                      <div className={styles.messageContainer}>
+                        {clickedFlightState != "Atendido" ? (
+                          <>
+                            <p className={styles.messageText}>
+                              Tu Documento será generado automaticamente cuando
+                              el servicio sea completado y enviado!.
+                            </p>
+                          </>
+                        ) : (
+                          <div className={styles.detailDialogInfoRow1}>
+                            <div
+                              className={styles.turnaroundPDFSLinksContainers}
                             >
-                              {({ blob, url, loading, error }) =>
-                                loading
-                                  ? "Loading document..."
-                                  : "Descargar documento del turnaround en inglés"
-                              }
-                            </PDFDownloadLink>
-                            <PDFDownloadLink
-                              document={
-                                <Document
-                                  title={
-                                    "Registro del servicio al turnaround Nro: " +
-                                    index?.id
-                                  }
-                                  author={"SIACA"}
-                                >
-                                  <Page size="A4" style={PDFstyles.page}>
-                                    {arrayPrinterPDFGeneratorSpanish(index)}
-                                  </Page>
-                                </Document>
-                              }
-                              fileName={
-                                "Turnaround_Data_" +
-                                index?.fk_vuelo?.ETA_fecha +
-                                "_" +
-                                index?.fk_vuelo?.ETA +
-                                "_" +
-                                index?.fk_vuelo?.fk_aerolinea?.nombre +
-                                "_puerta:" +
-                                index?.fk_vuelo?.gate +
-                                "_id:" +
-                                index?.id +
-                                ".pdf"
-                              }
-                            >
-                              {({ blob, url, loading, error }) =>
-                                loading
-                                  ? "Loading document..."
-                                  : "Descargar documento del turnaround en español"
-                              }
-                            </PDFDownloadLink>
+                              <PDFDownloadLink
+                                document={
+                                  <Document
+                                    title={
+                                      "Registro del servicio al turnaround Nro: " +
+                                      index?.id
+                                    }
+                                    author={"SIACA"}
+                                  >
+                                    <Page size="A4" style={PDFstyles.page}>
+                                      {arrayPrinterPDFGenerator(index)}
+                                    </Page>
+                                  </Document>
+                                }
+                                fileName={
+                                  "Turnaround_Data_" +
+                                  index?.fk_vuelo?.ETA_fecha +
+                                  "_" +
+                                  index?.fk_vuelo?.ETA +
+                                  "_" +
+                                  index?.fk_vuelo?.fk_aerolinea?.nombre +
+                                  "_puerta:" +
+                                  index?.fk_vuelo?.gate +
+                                  "_id:" +
+                                  index?.id +
+                                  ".pdf"
+                                }
+                              >
+                                {({ blob, url, loading, error }) =>
+                                  loading
+                                    ? "Loading document..."
+                                    : "Descargar documento del turnaround en inglés"
+                                }
+                              </PDFDownloadLink>
+                              <PDFDownloadLink
+                                document={
+                                  <Document
+                                    title={
+                                      "Registro del servicio al turnaround Nro: " +
+                                      index?.id
+                                    }
+                                    author={"SIACA"}
+                                  >
+                                    <Page size="A4" style={PDFstyles.page}>
+                                      {arrayPrinterPDFGeneratorSpanish(index)}
+                                    </Page>
+                                  </Document>
+                                }
+                                fileName={
+                                  "Turnaround_Data_" +
+                                  index?.fk_vuelo?.ETA_fecha +
+                                  "_" +
+                                  index?.fk_vuelo?.ETA +
+                                  "_" +
+                                  index?.fk_vuelo?.fk_aerolinea?.nombre +
+                                  "_puerta:" +
+                                  index?.fk_vuelo?.gate +
+                                  "_id:" +
+                                  index?.id +
+                                  ".pdf"
+                                }
+                              >
+                                {({ blob, url, loading, error }) =>
+                                  loading
+                                    ? "Loading document..."
+                                    : "Descargar documento del turnaround en español"
+                                }
+                              </PDFDownloadLink>
+                            </div>
                           </div>
-                        </div>
-                      )}
-                    </div>
+                        )}
+                      </div>
+                    ) : (
+                      <></>
+                    )}
                     {index?.fk_vuelo?.estado === "Atendido" && (
                       <>
                         <Dialog
@@ -3204,25 +3229,33 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
                         </p>
                         <div className={styles.rowOfTurnaroundDataContainer}>
                           {tasksCompletionValuesArrayPrinter()}
-                          <div className={styles.blockchainSendingContainer}>
-                            <div
-                              className={
-                                styles.blockchainSendingButtonContainer
-                              }
-                            >
-                              <GreenButton2
-                                executableFunction={() => {
-                                  setopenBlockchainDialog(true);
-                                }}
-                                buttonText="Enviar este turnaround a la blockchain"
-                              />
-                            </div>
-                          </div>
-                          <p className={styles.blockchainWarningText}>
-                            AVISO: esta transacción puede tomar entre 2 y 15
-                            minutos. Se sugiere esperar pacientemente y no
-                            cancelar la transacción mientras se realiza.
-                          </p>
+                          {roleID == 1 ? (
+                            <>
+                              <div
+                                className={styles.blockchainSendingContainer}
+                              >
+                                <div
+                                  className={
+                                    styles.blockchainSendingButtonContainer
+                                  }
+                                >
+                                  <GreenButton2
+                                    executableFunction={() => {
+                                      setopenBlockchainDialog(true);
+                                    }}
+                                    buttonText="Enviar este turnaround a la blockchain"
+                                  />
+                                </div>
+                              </div>
+                              <p className={styles.blockchainWarningText}>
+                                AVISO: esta transacción puede tomar entre 2 y 15
+                                minutos. Se sugiere esperar pacientemente y no
+                                cancelar la transacción mientras se realiza.
+                              </p>
+                            </>
+                          ) : (
+                            <></>
+                          )}
                         </div>
                       </>
                     )}
@@ -3528,22 +3561,26 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
                 </div>
               </div>
             )}
-            <div
-              className={styles.pointer}
-              onClick={
-                openCardMenu === -1
-                  ? () => setOpenCardMenu(index.id)
-                  : openCardMenu === index.id
-                  ? () => setOpenCardMenu(-1)
-                  : () => setOpenCardMenu(index.id)
-              }
-            >
-              <Tooltip title="Opciones">
-                <IconButton>
-                  <MoreVertIcon />
-                </IconButton>
-              </Tooltip>
-            </div>
+            {roleID == 1 ? (
+              <div
+                className={styles.pointer}
+                onClick={
+                  openCardMenu === -1
+                    ? () => setOpenCardMenu(index.id)
+                    : openCardMenu === index.id
+                    ? () => setOpenCardMenu(-1)
+                    : () => setOpenCardMenu(index.id)
+                }
+              >
+                <Tooltip title="Opciones">
+                  <IconButton>
+                    <MoreVertIcon />
+                  </IconButton>
+                </Tooltip>
+              </div>
+            ) : (
+              <></>
+            )}
           </div>
           <div
             className={styles.openDetailContainer}
@@ -3571,26 +3608,30 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
             {loading && <LoadingScreen />}
             <p className={styles.openDetailContainerText}>Ver mas</p>
           </div>
-          <div
-            className={styles.openDetailContainer2}
-            onClick={async () => {
-              await setLoading(true);
-              await getMachinesList();
-              await getTemplateTasks(index?.fk_vuelo?.fk_plantilla?.id);
-              await getMachinesByTurnaround(index?.id);
-              await getMachineryQuantityByTemplate(
-                index?.fk_vuelo?.fk_plantilla?.id
-              );
-              await getPersonnelDepartments();
-              await setOpenAssignDialogID(index.id);
-              await setTurnaroundDate(index?.fecha_inicio);
-              await setOpenAssignDialog(true);
-              await setLoading(false);
-            }}
-          >
-            {loading && <LoadingScreen />}
-            <p className={styles.openDetailContainerText}>Asignar</p>
-          </div>
+          {roleID == 1 || roleID == 2 ? (
+            <div
+              className={styles.openDetailContainer2}
+              onClick={async () => {
+                await setLoading(true);
+                await getMachinesList();
+                await getTemplateTasks(index?.fk_vuelo?.fk_plantilla?.id);
+                await getMachinesByTurnaround(index?.id);
+                await getMachineryQuantityByTemplate(
+                  index?.fk_vuelo?.fk_plantilla?.id
+                );
+                await getPersonnelDepartments();
+                await setOpenAssignDialogID(index.id);
+                await setTurnaroundDate(index?.fecha_inicio);
+                await setOpenAssignDialog(true);
+                await setLoading(false);
+              }}
+            >
+              {loading && <LoadingScreen />}
+              <p className={styles.openDetailContainerText}>Asignar</p>
+            </div>
+          ) : (
+            <></>
+          )}
           <div className={styles.imageContainer}>
             {index?.fk_aerolinea?.nombre} image not found
           </div>

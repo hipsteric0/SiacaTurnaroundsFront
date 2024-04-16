@@ -4,7 +4,7 @@ import SiacaLogo from "../../../images/logos/siacaLogo.png";
 import Image from "next/image";
 import router from "next/router";
 
-import LoadingScreen from '../../Reusables/LoadingScreen';
+import LoadingScreen from "../../Reusables/LoadingScreen";
 
 interface PageProps {
   activeFlightsValue?: boolean;
@@ -15,7 +15,6 @@ interface PageProps {
   activeDocsValue?: boolean;
   activeAirlinesValue?: boolean;
 }
-
 
 const SiacaNavbar: React.FC<PageProps> = ({
   activeFlightsValue,
@@ -35,6 +34,16 @@ const SiacaNavbar: React.FC<PageProps> = ({
     if (activeDocsValue) setActiveDocs(activeDocsValue);
     if (activeAirlinesValue) setActiveAirlines(activeAirlinesValue);
   }, []); // If nothing on dependencies, this will run only first render
+
+  useEffect(() => {
+    let role = localStorage.getItem("userRole");
+    if (role != null) {
+      setRoleID(parseInt(role));
+      console.log("se coloco el rol", role);
+    }
+  }, []);
+
+  const [roleID, setRoleID] = useState(-1);
   const [activeFlights, setActiveFligths] = useState(false);
   const [activeTurnarounds, setActiveTurnarounds] = useState(false);
   const [activeMachines, setActiveMachines] = useState(false);
@@ -74,47 +83,44 @@ const SiacaNavbar: React.FC<PageProps> = ({
       }
     };
     await fetchData().catch(console.error);
-    
   };
 
-  const Vuelos = () =>{
+  const Vuelos = () => {
     setLoading(true);
-    router.push("/Flights")
-  }
+    router.push("/Flights");
+  };
 
-  const Turnarounds = () =>{
+  const Turnarounds = () => {
     setLoading2(true);
-    router.push("/Turnarounds")
-  }
+    router.push("/Turnarounds");
+  };
 
-  const Machines = () =>{
+  const Machines = () => {
     setLoading3(true);
-    router.push("/Machines")
-  }
+    router.push("/Machines");
+  };
 
-  const Personnel = () =>{
+  const Personnel = () => {
     setLoading4(true);
-    router.push("/Personnel")
-  }
+    router.push("/Personnel");
+  };
 
-  const Metrics = () =>{
+  const Metrics = () => {
     setLoading5(true);
-    router.push("/Metrics")
-  }
+    router.push("/Metrics");
+  };
 
-  const Docs = () =>{
+  const Docs = () => {
     setLoading6(true);
-    router.push("/Docs")
-  }
+    router.push("/Docs");
+  };
 
-  const Airlines = () =>{
+  const Airlines = () => {
     setLoading7(true);
-    router.push("/Airlines")
-  }
-
+    router.push("/Airlines");
+  };
 
   return (
-
     <div className={styles.siacaNavbarContainer}>
       <div className={styles.siacaLogo}>
         <Image src={SiacaLogo} alt="Logo" height={50} />
@@ -147,31 +153,39 @@ const SiacaNavbar: React.FC<PageProps> = ({
         {loading3 && <LoadingScreen />}
         Maquinarias
       </h1>
-      <h1
-        className={
-          activePersonnel ? styles.activeItemText : styles.inactiveItemText
-        }
-        onClick={() => Personnel()}
-      >
-        {loading4 && <LoadingScreen />}
-        Personal
-      </h1>
-      <h1
-        className={
-          activeMetrics ? styles.activeItemText : styles.inactiveItemText
-        }
-        onClick={() => Metrics()}
-      >
-        {loading5 && <LoadingScreen />}
-        Métricas
-      </h1>
-      <h1
-        className={activeDocs ? styles.activeItemText : styles.inactiveItemText}
-        onClick={() => Docs()}
-      >
-        {loading6 && <LoadingScreen />}
-        DOCs
-      </h1>
+      {(roleID == 1 || roleID == 2) && (
+        <h1
+          className={
+            activePersonnel ? styles.activeItemText : styles.inactiveItemText
+          }
+          onClick={() => Personnel()}
+        >
+          {loading4 && <LoadingScreen />}
+          Personal
+        </h1>
+      )}
+      {(roleID == 1 || roleID == 2) && (
+        <h1
+          className={
+            activeMetrics ? styles.activeItemText : styles.inactiveItemText
+          }
+          onClick={() => Metrics()}
+        >
+          {loading5 && <LoadingScreen />}
+          Métricas
+        </h1>
+      )}
+      {roleID == 1 && (
+        <h1
+          className={
+            activeDocs ? styles.activeItemText : styles.inactiveItemText
+          }
+          onClick={() => Docs()}
+        >
+          {roleID == 1 && loading6 && <LoadingScreen />}
+          DOCs
+        </h1>
+      )}
       <h1
         className={
           activeAirlines ? styles.activeItemText : styles.inactiveItemText
@@ -181,15 +195,11 @@ const SiacaNavbar: React.FC<PageProps> = ({
         {loading7 && <LoadingScreen />}
         Aerolíneas
       </h1>
-      <h4 
-        className={styles.closeSesionText}
-          onClick={() => Logout()}
-      >
+      <h4 className={styles.closeSesionText} onClick={() => Logout()}>
         {loading8 && <LoadingScreen />}
         cerrar sesión
       </h4>
     </div>
-
   );
 };
 export default SiacaNavbar;

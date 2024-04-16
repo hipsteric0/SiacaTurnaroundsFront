@@ -23,10 +23,10 @@ import RedButton2 from "../Reusables/RedButton2";
 import GreenButton2 from "@/components/Reusables/GreenButton2";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
 
-import LoadingScreen from '../Reusables/LoadingScreen';
+import LoadingScreen from "../Reusables/LoadingScreen";
 
 interface PageProps {
   setStep: (value: number) => void;
@@ -42,6 +42,15 @@ const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
     getList();
   }, []);
 
+  useEffect(() => {
+    let role = localStorage.getItem("userRole");
+    if (role != null) {
+      setRoleID(parseInt(role));
+      console.log("se coloco el rol", role);
+    }
+  }, []);
+
+  const [roleID, setRoleID] = useState(-1);
   const [arrayList3, setArrayList3] = useState([]);
   let date = new Date();
   const [arrayFilteredList3, setArrayFilteredList3] = useState([]);
@@ -99,6 +108,8 @@ const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
       " - " +
       date.getFullYear().toString();
     console.log("userToken", localStorage.getItem("userToken"));
+    console.log("userRole", localStorage.getItem("userRole"));
+
     setdateState(x);
     return <></>;
   };
@@ -429,44 +440,48 @@ const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
                     Editar
                   </p>
                 </div>
-                <div className={styles.menuAppearingContainerRow}>
-                  <p
-                    className={
-                      hover && 2 === hoverOptionValue
-                        ? styles.optionsTextHover
-                        : styles.optionsText
-                    }
-                    onMouseEnter={() => {
-                      setHoverOptionValue(2);
-                      setHover(true);
-                    }}
-                    onMouseLeave={() => {
-                      setHoverOptionValue(-1);
-                      setHover(false);
-                    }}
-                    onClick={() => setDeleteDialog(true)}
-                  >
-                    Eliminar
-                  </p>
-                </div>
+                {roleID == 1 && (
+                  <div className={styles.menuAppearingContainerRow}>
+                    <p
+                      className={
+                        hover && 2 === hoverOptionValue
+                          ? styles.optionsTextHover
+                          : styles.optionsText
+                      }
+                      onMouseEnter={() => {
+                        setHoverOptionValue(2);
+                        setHover(true);
+                      }}
+                      onMouseLeave={() => {
+                        setHoverOptionValue(-1);
+                        setHover(false);
+                      }}
+                      onClick={() => setDeleteDialog(true)}
+                    >
+                      Eliminar
+                    </p>
+                  </div>
+                )}
               </div>
             )}
-            <div
-              className={styles.pointer}
-              onClick={
-                openCardMenu === -1
-                  ? () => setOpenCardMenu(index.id)
-                  : openCardMenu === index.id
-                  ? () => setOpenCardMenu(-1)
-                  : () => setOpenCardMenu(index.id)
-              }
-            >
-              <Tooltip title="Opciones">
-              <IconButton>
-              <MoreVertIcon />
-              </IconButton>
-              </Tooltip>
-            </div>
+            {(roleID == 1 || roleID == 2) && (
+              <div
+                className={styles.pointer}
+                onClick={
+                  openCardMenu === -1
+                    ? () => setOpenCardMenu(index.id)
+                    : openCardMenu === index.id
+                    ? () => setOpenCardMenu(-1)
+                    : () => setOpenCardMenu(index.id)
+                }
+              >
+                <Tooltip title="Opciones">
+                  <IconButton>
+                    <MoreVertIcon />
+                  </IconButton>
+                </Tooltip>
+              </div>
+            )}
           </div>
           <div
             className={styles.openDetailContainer}
@@ -575,10 +590,14 @@ const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
           />
         </div>
 
-        <GreenButton
-          executableFunction={() => NewFlight()}
-          buttonText="Crear vuelo "
-        />
+        {roleID == 1 ? (
+          <GreenButton
+            executableFunction={() => NewFlight()}
+            buttonText="Crear vuelo "
+          />
+        ) : (
+          <div></div>
+        )}
         {loading && <LoadingScreen />}
       </div>
       <div className={styles.flightsListContainer}>

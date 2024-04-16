@@ -37,6 +37,15 @@ const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
     getList();
   }, []);
 
+  useEffect(() => {
+    let role = localStorage.getItem("userRole");
+    if (role != null) {
+      setRoleID(parseInt(role));
+      console.log("se coloco el rol", role);
+    }
+  }, []);
+
+  const [roleID, setRoleID] = useState(-1);
   const [arrayList3, setArrayList3] = useState([]);
   let date = new Date();
   const [arrayFilteredList3, setArrayFilteredList3] = useState([]);
@@ -93,6 +102,7 @@ const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
       date.getFullYear().toString();
     console.log("userToken", localStorage.getItem("userToken"));
     console.log("userFullName", localStorage.getItem("userFullName"));
+    console.log("userRole", localStorage.getItem("userRole"));
     setdateState(x);
     return <></>;
   };
