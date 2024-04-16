@@ -140,7 +140,22 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
   const [assistanceInTurnaround, setassistanceInTurnaround] = useState(false);
   const [result, setResult] = useState("");
   const [photo, setPhoto] = useState("");
+  const [currentTurnaroundDate, setCurrentTurnaroundDate] = useState("");
+  const [currentDate, setCurrentDate] = useState("");
 
+  let currentTimestamp = new Date();
+  let currentTodaysHourString =
+    currentTimestamp.getHours().toString() +
+    ":" +
+    currentTimestamp.getMinutes().toString() +
+    ":" +
+    currentTimestamp.getSeconds().toString();
+  let currentTodaysDateString =
+    currentTimestamp.getFullYear() +
+    "-" +
+    (currentTimestamp.getMonth() + 1) +
+    "-" +
+    currentTimestamp.getDate();
   const handleScanSuccess = (e: any) => {
     setResult(e);
     console.log("CODIGO QR", result);
@@ -2157,6 +2172,15 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
             } else if (state1Overider === false) {
               setTurnaroundState(4);
             }
+
+            let auxdate = new Date(index?.fecha_inicio + "\n");
+            setCurrentTurnaroundDate(
+              auxdate.getFullYear() +
+                "-" +
+                (auxdate.getMonth() + 1) +
+                "-" +
+                auxdate.getDate()
+            );
             getTasksCompletionsList(index?.id);
             getTemplateTasks(index?.fk_vuelo?.fk_plantilla?.id);
             getMachinesByTurnaround(index?.id);
@@ -2215,6 +2239,9 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                             handleSetTurnaroundStateTo2(flightID);
                           }}
                           buttonText="Comenzar turnaround"
+                          disabled={
+                            currentTurnaroundDate != currentTodaysDateString
+                          }
                         />
                       </div>
                     </div>
