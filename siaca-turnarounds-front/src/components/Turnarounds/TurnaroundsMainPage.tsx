@@ -2703,23 +2703,30 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
       if (auxtitle === index?.fk_usuario?.fk_departamento?.nombre) {
         auxtitleBoolean = false;
       }
-      y[counter] = (
-        <div key={index?.id} className={styles.taskText}>
-          {auxtitleBoolean && (
-            <p className={styles.taskTextTitle}>
-              {index?.fk_usuario?.fk_departamento?.nombre}
+      console.log("index personal ", index);
+      if (
+        index?.fk_usuario?.fk_user?.first_name != undefined ||
+        index?.fk_usuario?.fk_user?.last_name != undefined ||
+        index?.fk_usuario?.fk_cargo?.nombre != undefined
+      ) {
+        y[counter] = (
+          <div key={index?.id} className={styles.taskText}>
+            {auxtitleBoolean && (
+              <p className={styles.taskTextTitle}>
+                {index?.fk_usuario?.fk_departamento?.nombre}
+              </p>
+            )}
+            <p className={styles.taskTextText}>
+              -{" "}
+              {index?.fk_usuario?.fk_user?.first_name +
+                " " +
+                index?.fk_usuario?.fk_user?.last_name +
+                ", " +
+                index?.fk_usuario?.fk_cargo?.nombre}
             </p>
-          )}
-          <p className={styles.taskTextText}>
-            -{" "}
-            {index?.fk_usuario?.fk_user?.first_name +
-              " " +
-              index?.fk_usuario?.fk_user?.last_name +
-              ", " +
-              index?.fk_usuario?.fk_cargo?.nombre}
-          </p>
-        </div>
-      );
+          </div>
+        );
+      }
       auxtitleBoolean = true;
       counter++;
       auxtitle = index?.fk_usuario?.fk_departamento?.nombre;
@@ -2737,21 +2744,26 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
       if (auxtitle === index?.fk_maquinaria?.fk_categoria?.nombre) {
         auxtitleBoolean = false;
       }
-      y[counter] = (
-        <div key={index?.id} className={styles.taskText}>
-          {auxtitleBoolean && (
-            <p className={styles.taskTextTitle}>
-              {index?.fk_maquinaria?.fk_categoria?.nombre}
+      if (
+        index?.fk_maquinaria?.identificador != undefined ||
+        index?.fk_maquinaria?.fk_categoria?.nombre != undefined
+      ) {
+        y[counter] = (
+          <div key={index?.id} className={styles.taskText}>
+            {auxtitleBoolean && (
+              <p className={styles.taskTextTitle}>
+                {index?.fk_maquinaria?.fk_categoria?.nombre}
+              </p>
+            )}
+            <p className={styles.taskTextText}>
+              - {index?.fk_maquinaria?.identificador}
             </p>
-          )}
-          <p className={styles.taskTextText}>
-            - {index?.fk_maquinaria?.identificador}
-          </p>
-        </div>
-      );
-      auxtitleBoolean = true;
-      counter++;
-      auxtitle = index?.fk_maquinaria?.fk_categoria?.nombre;
+          </div>
+        );
+        auxtitleBoolean = true;
+        counter++;
+        auxtitle = index?.fk_maquinaria?.fk_categoria?.nombre;
+      }
     });
 
     return y;
