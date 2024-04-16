@@ -6,7 +6,13 @@ import { log } from "console";
 import React, { useEffect, useState } from "react";
 import router from "next/router";
 import { Table, Spacer } from "@nextui-org/react";
-import { TableBody, Dialog, Autocomplete, TextField } from "@mui/material";
+import {
+  TableBody,
+  Dialog,
+  Autocomplete,
+  TextField,
+  Select,
+} from "@mui/material";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
@@ -436,7 +442,7 @@ const PersonnelMainPage: React.FC = () => {
                       size="small"
                       sx={{ width: "400px" }}
                       value={lateCodeValue} //el valor que toma por defecto, esta comentado por que debe ser nulo
-                      onInputChange={(event, newInputValue) => {
+                      onChange={(event, newInputValue) => {
                         setlateCodeValue(newInputValue);
                         setlateCodeValueIDForPatch(newInputValue);
                       }}
@@ -469,7 +475,14 @@ const PersonnelMainPage: React.FC = () => {
           }
 
           <td>
-            {index?.fk_user?.first_name} {index?.fk_user?.last_name}
+            <strong>
+              {index?.fk_user?.first_name} {index?.fk_user?.last_name}
+            </strong>{" "}
+            [
+            {index?.fk_rol?.rol === undefined
+              ? "No Asignado"
+              : index?.fk_rol?.rol}
+            ]
           </td>
           <td>{index?.fk_cargo?.nombre}</td>
           <td>{index?.fk_departamento?.nombre}</td>
@@ -614,7 +627,7 @@ const PersonnelMainPage: React.FC = () => {
                           size="small"
                           sx={{ width: "350px" }}
                           value={lateCodeValue} //el valor que toma por defecto, esta comentado por que debe ser nulo
-                          onInputChange={(event, newInputValue) => {
+                          onChange={(event, newInputValue) => {
                             setlateCodeValue(newInputValue);
                             setlateCodeValueIDForPatch(newInputValue);
                           }}
@@ -635,6 +648,7 @@ const PersonnelMainPage: React.FC = () => {
                         patchLateCode(clickID2);
                       }}
                       buttonText="Aceptar"
+                      disabled={lateCodeValue === "" ? true : false}
                     />
                     <RedButton2
                       executableFunction={() => {
