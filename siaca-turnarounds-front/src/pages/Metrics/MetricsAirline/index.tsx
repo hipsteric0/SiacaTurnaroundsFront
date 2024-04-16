@@ -12,9 +12,9 @@ export default function Metrics() {
   const [step, setStep] = useState(0);
 
   return (
-      <main className={styles.mainContainerMachinesPage}>
-        <SiacaNavbar />
-        <AirlineMetrics setStep={setStep} />
-      </main>
-    );
-  }
+    <main className={styles.mainContainerMachinesPage}>
+      <SiacaNavbar activeMetricsValue={true} />
+      <AirlineMetrics setStep={setStep} />
+    </main>
+  );
+}

@@ -21,7 +21,7 @@ export default function Metrics() {
 
   return (
     <main className={styles.mainContainerMachinesPage}>
-      <SiacaNavbar />
+      <SiacaNavbar activeMetricsValue={true} />
 
       {roleID == 1 || roleID == 2 ? (
         <>
