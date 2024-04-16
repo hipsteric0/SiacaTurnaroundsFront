@@ -28,6 +28,7 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
   let token = "";
   let userFullName = "";
   let role = "";
+  let cedula = "";
 
   let validLogin = false;
   const validateLogin = () => {
@@ -39,6 +40,7 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
         localStorage.setItem("userToken", token);
         localStorage.setItem("userFullName", userFullName);
         localStorage.setItem("userRole", role?.toString());
+        localStorage.setItem("cedula", cedula?.toString());
         router.push("/Flights");
       } else {
         setLoginError(true);
@@ -64,6 +66,7 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
             token = result?.token;
             userFullName = result?.first_name + " " + result?.last_name;
             role = result?.rol;
+            cedula = result?.cedula.toString();
           })
         );
       } catch (error) {

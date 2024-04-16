@@ -309,6 +309,12 @@
   text-align: center;
   padding-bottom: 30px;
 }
+.detailDialogInfoItemTitleWarningNotBold {
+  font-size: 12px;
+  color: #4d4e56;
+  text-align: center;
+  padding-bottom: 30px;
+}
 .detailDialogInfoItemText {
   margin-top: 16px;
   font-size: 14px;
@@ -470,4 +476,17 @@
 .smallGrayText {
   font-size: 12px;
   color: #bbb;
+}
+.containerConfirmAssistanceMobile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+.greenText {
+  color: #00a75d;
+}
+.redText {
+  color: red;
 }

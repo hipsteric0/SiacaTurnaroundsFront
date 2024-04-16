@@ -53,6 +53,15 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
     getPersonnelList();
   }, []);
 
+  useEffect(() => {
+    let role = localStorage.getItem("userRole");
+    if (role != null) {
+      setRoleID(parseInt(role));
+      console.log("se coloco el rol", role);
+    }
+  }, []);
+
+  const [roleID, setRoleID] = useState(-1);
   const [arrayList3, setArrayList3] = useState([]);
   const [personnelListArray, setPersonnelListArray] = useState([]);
   const [tasksarrayList, setTasksarrayList] = useState([]);
@@ -128,7 +137,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
   const [manualHourValue, setmanualHourValue] = useState("0");
   const [manualMinuteValue, setmanualMinuteValue] = useState("0");
   const [manualSecondsValue, setmanualSecondsValue] = useState("0");
-
+  const [assistanceInTurnaround, setassistanceInTurnaround] = useState(false);
   const [result, setResult] = useState("");
   const [photo, setPhoto] = useState("");
 
@@ -172,6 +181,34 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
       } catch (error) {
         console.error("Error geting user", error);
 
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
+  const getAssistanceByTurnaround = async (turnaroundID: any) => {
+    const fetchData = async () => {
+      try {
+        console.log("openDetailDialogID", openDetailDialogID);
+        const url = "/api/getAssistanceByID";
+        const requestOptions = {
+          method: "POST",
+
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+            turnaroundID: turnaroundID,
+            cedula: localStorage.getItem("cedula"),
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            console.log("assistnace request", result);
+            setassistanceInTurnaround(result?.value);
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
         return;
       }
     };
@@ -2125,6 +2162,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
             getMachinesByTurnaround(index?.id);
             setOpenDetailDialogID(index.id);
             setFlightID(index?.fk_vuelo?.id);
+            getAssistanceByTurnaround(index.id);
             if (openDetailDialog == false) {
               setOpenDetailDialog(true);
             }
@@ -2182,90 +2220,136 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                     </div>
                   </div>
                 ) : turnaroundState === 2 ? (
-                  <div className={styles.dialogDetail}>
-                    <div
-                      className={styles.closeIconDialog}
-                      onClick={() => router.reload()}
-                    >
-                      <CloseRoundedIcon htmlColor="#4d4e56" />
-                    </div>
-                    <div className={styles.detailDialogInfoContainer}>
-                      <p className={styles.detailDialogInfoContainerTitleText}>
-                        Datos de vuelo
-                      </p>
-                      <div></div>
-                      <div className={styles.detailDialogInfoRow1}>
-                        <div className={styles.detailDialogInfoItem}>
-                          <span className={styles.detailDialogInfoItemTitle}>
-                            Fecha y hora de inicio del turnaround:
-                          </span>
-                          <span
-                            className={styles.detailDialogInfoItemValueText}
+                  <>
+                    {roleID == 1 || roleID == 2 ? (
+                      <div className={styles.dialogDetail}>
+                        <div
+                          className={styles.closeIconDialog}
+                          onClick={() => router.reload()}
+                        >
+                          <CloseRoundedIcon htmlColor="#4d4e56" />
+                        </div>
+                        <div className={styles.detailDialogInfoContainer}>
+                          <p
+                            className={
+                              styles.detailDialogInfoContainerTitleText
+                            }
                           >
-                            {index?.fecha_inicio + " - " + index?.hora_inicio}
-                          </span>
+                            Datos de vuelo
+                          </p>
+                          <div></div>
+                          <div className={styles.detailDialogInfoRow1}>
+                            <div className={styles.detailDialogInfoItem}>
+                              <span
+                                className={styles.detailDialogInfoItemTitle}
+                              >
+                                Fecha y hora de inicio del turnaround:
+                              </span>
+                              <span
+                                className={styles.detailDialogInfoItemValueText}
+                              >
+                                {index?.fecha_inicio +
+                                  " - " +
+                                  index?.hora_inicio}
+                              </span>
+                            </div>
+                          </div>
+
+                          <div className={styles.detailDialogInfoRow1}>
+                            <div className={styles.detailDialogInfoItem}>
+                              <span
+                                className={styles.detailDialogInfoItemTitle}
+                              >
+                                Tipo de servicio:
+                              </span>
+                              <span
+                                className={styles.detailDialogInfoItemValueText}
+                              >
+                                {index?.fk_vuelo?.tipo_servicio?.nombre}
+                              </span>
+                            </div>
+                          </div>
+
+                          <p className={styles.detailDialogInfoItemTitle2}>
+                            Tareas
+                          </p>
+                          <div className={styles.detailDialogInfoRow1}>
+                            <div className={styles.TasksArrayPrinterContainer}>
+                              {TasksArrayPrinter()}
+                            </div>
+                          </div>
+                          <p className={styles.detailDialogInfoItemTitle2}>
+                            Maquinarias
+                          </p>
+                          <div className={styles.detailDialogInfoRow1}>
+                            <div>{MachinesArrayPrinter()}</div>
+                          </div>
+                          <p className={styles.detailDialogInfoItemTitle2}>
+                            Personal
+                          </p>
+                          <div className={styles.detailDialogInfoRow1}>
+                            lista de personal y seleccion: -1 -2 -3
+                          </div>
+                        </div>
+                        <p className={styles.detailDialogInfoItemTitleWarning}>
+                          AVISO: Asegúrate de llenar todos los campos antes de
+                          enviar el turnaround, pues este será clasificado como
+                          "Atendido"
+                        </p>
+                        <div className={styles.redButtonContainer}>
+                          <div className={styles.redButton}>
+                            <GreenButton
+                              executableFunction={() => handleSendData()}
+                              buttonText="ENVIAR"
+                            />
+                          </div>
+                        </div>
+
+                        <div className={styles.redButtonContainer}>
+                          <div className={styles.redButton}>
+                            <RedButton2
+                              executableFunction={() => {
+                                router.reload();
+                              }}
+                              buttonText={"Cerrar"}
+                            />
+                          </div>
                         </div>
                       </div>
-
-                      <div className={styles.detailDialogInfoRow1}>
-                        <div className={styles.detailDialogInfoItem}>
-                          <span className={styles.detailDialogInfoItemTitle}>
-                            Tipo de servicio:
-                          </span>
-                          <span
-                            className={styles.detailDialogInfoItemValueText}
+                    ) : (
+                      <>
+                        <div
+                          className={styles.containerConfirmAssistanceMobile}
+                        >
+                          <div
+                            className={styles.closeIconDialog}
+                            onClick={() => router.reload()}
                           >
-                            {index?.fk_vuelo?.tipo_servicio?.nombre}
-                          </span>
+                            <CloseRoundedIcon htmlColor="#4d4e56" />
+                          </div>
+                          <p
+                            className={styles.detailDialogInfoItemTitleWarning}
+                          >
+                            El turnaround esta siendo llenado por un rol
+                            superior al tuyo, ¡contáctalo si tienes alguna duda!
+                          </p>
+                          <p
+                            className={
+                              styles.detailDialogInfoItemTitleWarningNotBold
+                            }
+                          >
+                            Tu asistencia en este turnaround
+                            {assistanceInTurnaround ? (
+                              <strong className={styles.greenText}> SI</strong>
+                            ) : (
+                              <strong className={styles.redText}> NO</strong>
+                            )}{" "}
+                            está confirmada!
+                          </p>
                         </div>
-                      </div>
-
-                      <p className={styles.detailDialogInfoItemTitle2}>
-                        Tareas
-                      </p>
-                      <div className={styles.detailDialogInfoRow1}>
-                        <div className={styles.TasksArrayPrinterContainer}>
-                          {TasksArrayPrinter()}
-                        </div>
-                      </div>
-                      <p className={styles.detailDialogInfoItemTitle2}>
-                        Maquinarias
-                      </p>
-                      <div className={styles.detailDialogInfoRow1}>
-                        <div>{MachinesArrayPrinter()}</div>
-                      </div>
-                      <p className={styles.detailDialogInfoItemTitle2}>
-                        Personal
-                      </p>
-                      <div className={styles.detailDialogInfoRow1}>
-                        lista de personal y seleccion: -1 -2 -3
-                      </div>
-                    </div>
-                    <p className={styles.detailDialogInfoItemTitleWarning}>
-                      AVISO: Asegúrate de llenar todos los campos antes de
-                      enviar el turnaround, pues este será clasificado como
-                      "Atendido"
-                    </p>
-                    <div className={styles.redButtonContainer}>
-                      <div className={styles.redButton}>
-                        <GreenButton
-                          executableFunction={() => handleSendData()}
-                          buttonText="ENVIAR"
-                        />
-                      </div>
-                    </div>
-
-                    <div className={styles.redButtonContainer}>
-                      <div className={styles.redButton}>
-                        <RedButton2
-                          executableFunction={() => {
-                            router.reload();
-                          }}
-                          buttonText={"Cerrar"}
-                        />
-                      </div>
-                    </div>
-                  </div>
+                      </>
+                    )}
+                  </>
                 ) : turnaroundState === 3 ? (
                   <div className={styles.attendedTurnaroundContainer}>
                     <div
