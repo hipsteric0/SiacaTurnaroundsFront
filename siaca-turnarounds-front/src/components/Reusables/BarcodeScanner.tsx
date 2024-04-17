@@ -1,12 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
-import { BrowserQRCodeReader, NotFoundException, ChecksumException, FormatException } from "@zxing/library";
-import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
-import RestartAltIcon from '@mui/icons-material/RestartAlt';
-import NoPhotographyIcon from '@mui/icons-material/NoPhotography';
+import {
+  BrowserQRCodeReader,
+  NotFoundException,
+  ChecksumException,
+  FormatException,
+} from "@zxing/library";
+import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import NoPhotographyIcon from "@mui/icons-material/NoPhotography";
 import styles from "./BarcodeScanner.style.module.css";
 
-
-const BarcodeScanner = ({onQR}) => {
+const BarcodeScanner = ({ onQR }) => {
   const [selectedDeviceId, setSelectedDeviceId] = useState("");
   const [code, setCode] = useState("");
   const [videoInputDevices, setVideoInputDevices] = useState([]);
@@ -65,7 +69,6 @@ const BarcodeScanner = ({onQR}) => {
           );
           setCode(result.text);
           onQR(result.text);
-
         } catch (err) {
           if (
             err instanceof NotFoundException ||
@@ -86,46 +89,52 @@ const BarcodeScanner = ({onQR}) => {
   }, [selectedDeviceId, isCameraActive]);
 
   return (
-
-
-        <div id="sourceSelectPanel">
-          <center>
+    <div id="sourceSelectPanel">
+      <p className={styles.scanQRtitleText}>Registrar por código QR</p>
+      <center>
         <div>
           <video ref={videoRef} id="video" width="300" height="200" />
         </div>
-        </center>
+      </center>
 
-        <label>Cédula escaneada:</label>
-        <pre>
-          <code id="result">{code}</code>
-        </pre>
+      <label className={styles.scannedIDText}>Cédula escaneada:</label>
+      <pre>
+        <code id="result" className={styles.scannedIDTextValue}>
+          {code}
+        </code>
+      </pre>
 
       <div>
         <center>
-        <div className={styles.icono}>
-        { code != "" && (
-        <RestartAltIcon fontSize ="large" id="resetButton" onClick={resetClick} />
-        )}
-        </div>
-        <div className={styles.icono}>
-        {!isCameraActive && (
-          <QrCodeScannerIcon fontSize ="large" id="startCameraButton" onClick={startCamera} />
+          <div className={styles.icono}>
+            {code != "" && (
+              <RestartAltIcon
+                fontSize="large"
+                id="resetButton"
+                onClick={resetClick}
+              />
+            )}
+          </div>
+          <div className={styles.icono}>
+            {!isCameraActive && (
+              <QrCodeScannerIcon
+                fontSize="large"
+                id="startCameraButton"
+                onClick={startCamera}
+              />
+            )}
+          </div>
 
-        )}
-        </div>
-
-        {/*
+          {/*
         <div className={styles.icono}>
         {isCameraActive && (
           <NoPhotographyIcon fontSize ="large" id="stopCameraButton" onClick={stopCamera} />
         )}
         </div>
         */}
-
-      </center>
+        </center>
       </div>
     </div>
-
   );
 };
 

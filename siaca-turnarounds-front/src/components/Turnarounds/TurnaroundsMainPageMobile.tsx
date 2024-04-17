@@ -2254,10 +2254,8 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
 
     arrayAsistencia.map((index: any) => {
       console.log("ARRAY", index);
-      y[count] = (
-          <p>Cédula: {index}</p>
-      );
-      count ++
+      y[count] = <p className={styles.idListValueText}>• Cédula: {index}</p>;
+      count++;
     });
 
     return y;
@@ -2310,7 +2308,6 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
             }
           }}
         >
-
           <div className={styles.menuContainer}>
             {openDetailDialogID === index?.id && (
               <Dialog
@@ -2331,52 +2328,61 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                       AVISO: comenzar el turnaround cambiara su estado a "En
                       proceso"
                     </p>
-                    <p>Confirme la asistencia del personal:</p>
-                    {<BarcodeScanner onQR={handleScanSuccess} />}
-                    <br />
-                    <center>
-                      {result !== "" && (
-                        <Button
-                          color="primary"
-                          variant="outlined"
-                          className={styles.accept}
-                          endIcon={<CheckCircleOutlineIcon />}
-                          onClick={() => {
-                            //updatePresence(index?.id);
-                            addIDToAssistanceArray(result);
-                          }}
-                        >
-                          Aceptar
-                        </Button>
-                      )}
-                    </center>
+                    <p className={styles.scanTitleText}>
+                      Confirme la asistencia del personal:
+                    </p>
+                    <div className={styles.scanByQRContainer}>
+                      {<BarcodeScanner onQR={handleScanSuccess} />}
+                      <br />
+                      <center>
+                        {result !== "" && (
+                          <Button
+                            color="primary"
+                            variant="outlined"
+                            className={styles.accept}
+                            endIcon={<CheckCircleOutlineIcon />}
+                            onClick={() => {
+                              //updatePresence(index?.id);
+                              addIDToAssistanceArray(result);
+                            }}
+                          >
+                            Aceptar
+                          </Button>
+                        )}
+                      </center>
+                    </div>
 
-                    <StandardInputV2 
-                      setValue={setResult2} 
-                      labelText="Registrar de forma manual"
-                      placeholderText={"Cédula"} 
+                    <div className={styles.scanByQRContainer}>
+                      <StandardInputV2
+                        setValue={setResult2}
+                        labelText="Registrar de forma manual"
+                        placeholderText={"Cédula"}
                       />
-                    <br />
-                    <center>
-                      {result2 !== "" && (
-                        <Button
-                          color="primary"
-                          variant="outlined"
-                          className={styles.accept}
-                          endIcon={<CheckCircleOutlineIcon />}
-                          onClick={() => {
-                            //updatePresence(index?.id);
-                            addIDToAssistanceArray(result2);
-                          }}
-                        >
-                          Aceptar
-                        </Button>
-                      )}
-                    </center>
-                    <br />
+                      <br />
+                      <center>
+                        {result2 !== "" && (
+                          <Button
+                            color="primary"
+                            variant="outlined"
+                            className={styles.accept}
+                            endIcon={<CheckCircleOutlineIcon />}
+                            onClick={() => {
+                              //updatePresence(index?.id);
+                              addIDToAssistanceArray(result2);
+                            }}
+                          >
+                            Aceptar
+                          </Button>
+                        )}
+                      </center>
+                    </div>
 
-                    <p>Lista de asistencia:</p>
-                    {arrayPrinterAssistance()}
+                    <div className={styles.scanByQRContainer}>
+                      <p className={styles.assistanceListTitle}>
+                        Lista de asistencia
+                      </p>
+                      {arrayPrinterAssistance()}
+                    </div>
 
                     <div className={styles.redButtonContainer}>
                       <div className={styles.redButton}>
@@ -2394,7 +2400,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                       </div>
                     </div>
                     <p className={styles.detailDialogInfoItemTitleWarning}>
-                      Solo podrás llenar turnarounds de la fecha de hoy.
+                      Solo podrás comenzar turnarounds de la fecha de hoy.
                     </p>
                   </div>
                 ) : turnaroundState === 2 ? (
