@@ -462,6 +462,9 @@
 .taskDetailTitleText {
   font-weight: 700;
 }
+.taskDetailText {
+  font-size: 14px;
+}
 .manualHoursInputsContainer {
   display: flex;
   flex-direction: column;

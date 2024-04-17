@@ -2317,92 +2317,119 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                 fullScreen={true}
               >
                 {turnaroundState === 1 ? (
-                  <div className={styles.dialogDetailStartTurnaround}>
-                    <div
-                      className={styles.closeIconDialog}
-                      onClick={() => router.reload()}
-                    >
-                      <CloseRoundedIcon htmlColor="#4d4e56" />
-                    </div>
-                    <p className={styles.detailDialogInfoItemTitleWarning}>
-                      AVISO: comenzar el turnaround cambiara su estado a "En
-                      proceso"
-                    </p>
-                    <p className={styles.scanTitleText}>
-                      Confirme la asistencia del personal:
-                    </p>
-                    <div className={styles.scanByQRContainer}>
-                      {<BarcodeScanner onQR={handleScanSuccess} />}
-                      <br />
-                      <center>
-                        {result !== "" && (
-                          <Button
-                            color="primary"
-                            variant="outlined"
-                            className={styles.accept}
-                            endIcon={<CheckCircleOutlineIcon />}
-                            onClick={() => {
-                              //updatePresence(index?.id);
-                              addIDToAssistanceArray(result);
-                            }}
-                          >
-                            Aceptar
-                          </Button>
-                        )}
-                      </center>
-                    </div>
-
-                    <div className={styles.scanByQRContainer}>
-                      <StandardInputV2
-                        setValue={setResult2}
-                        labelText="Registrar de forma manual"
-                        placeholderText={"Cédula"}
-                      />
-                      <br />
-                      <center>
-                        {result2 !== "" && (
-                          <Button
-                            color="primary"
-                            variant="outlined"
-                            className={styles.accept}
-                            endIcon={<CheckCircleOutlineIcon />}
-                            onClick={() => {
-                              //updatePresence(index?.id);
-                              addIDToAssistanceArray(result2);
-                            }}
-                          >
-                            Aceptar
-                          </Button>
-                        )}
-                      </center>
-                    </div>
-
-                    <div className={styles.scanByQRContainer}>
-                      <p className={styles.assistanceListTitle}>
-                        Lista de asistencia
-                      </p>
-                      {arrayPrinterAssistance()}
-                    </div>
-
-                    <div className={styles.redButtonContainer}>
-                      <div className={styles.redButton}>
-                        <GreenButton
-                          executableFunction={() => {
-                            postAssistance(index?.id); //
-                            setTurnaroundState(2);
-                            handleSetTurnaroundStateTo2(flightID);
-                          }}
-                          buttonText="Comenzar turnaround"
-                          disabled={
-                            currentTurnaroundDate != currentTodaysDateString
-                          }
-                        />
+                  roleID == 1 || roleID == 2 ? (
+                    <div className={styles.dialogDetailStartTurnaround}>
+                      <div
+                        className={styles.closeIconDialog}
+                        onClick={() => router.reload()}
+                      >
+                        <CloseRoundedIcon htmlColor="#4d4e56" />
                       </div>
+                      <p className={styles.detailDialogInfoItemTitleWarning}>
+                        AVISO: comenzar el turnaround cambiara su estado a "En
+                        proceso"
+                      </p>
+                      <p className={styles.scanTitleText}>
+                        Confirme la asistencia del personal:
+                      </p>
+                      <div className={styles.scanByQRContainer}>
+                        {<BarcodeScanner onQR={handleScanSuccess} />}
+                        <br />
+                        <center>
+                          {result !== "" && (
+                            <Button
+                              color="primary"
+                              variant="outlined"
+                              className={styles.accept}
+                              endIcon={<CheckCircleOutlineIcon />}
+                              onClick={() => {
+                                //updatePresence(index?.id);
+                                addIDToAssistanceArray(result);
+                              }}
+                            >
+                              Aceptar
+                            </Button>
+                          )}
+                        </center>
+                      </div>
+
+                      <div className={styles.scanByQRContainer}>
+                        <StandardInputV2
+                          setValue={setResult2}
+                          labelText="Registrar de forma manual"
+                          placeholderText={"Cédula"}
+                        />
+                        <br />
+                        <center>
+                          {result2 !== "" && (
+                            <Button
+                              color="primary"
+                              variant="outlined"
+                              className={styles.accept}
+                              endIcon={<CheckCircleOutlineIcon />}
+                              onClick={() => {
+                                //updatePresence(index?.id);
+                                addIDToAssistanceArray(result2);
+                              }}
+                            >
+                              Aceptar
+                            </Button>
+                          )}
+                        </center>
+                      </div>
+
+                      <div className={styles.scanByQRContainer}>
+                        <p className={styles.assistanceListTitle}>
+                          Lista de asistencia
+                        </p>
+                        {arrayPrinterAssistance()}
+                      </div>
+
+                      <div className={styles.redButtonContainer}>
+                        <div className={styles.redButton}>
+                          <GreenButton
+                            executableFunction={() => {
+                              postAssistance(index?.id); //
+                              setTurnaroundState(2);
+                              handleSetTurnaroundStateTo2(flightID);
+                            }}
+                            buttonText="Comenzar turnaround"
+                            disabled={
+                              currentTurnaroundDate != currentTodaysDateString
+                            }
+                          />
+                        </div>
+                      </div>
+                      <p className={styles.detailDialogInfoItemTitleWarning}>
+                        Solo podrás comenzar turnarounds de la fecha de hoy.
+                      </p>
                     </div>
-                    <p className={styles.detailDialogInfoItemTitleWarning}>
-                      Solo podrás comenzar turnarounds de la fecha de hoy.
-                    </p>
-                  </div>
+                  ) : (
+                    <>
+                      <div className={styles.containerConfirmAssistanceMobile}>
+                        <div
+                          className={styles.closeIconDialog}
+                          onClick={() => router.reload()}
+                        >
+                          <CloseRoundedIcon htmlColor="#4d4e56" />
+                        </div>
+                        <p className={styles.detailDialogInfoItemTitleWarning}>
+                          El turnaround no ha comenzado, Esta es responsabilidad
+                          de un rol superior al tuyo, ¡contáctalo si tienes
+                          alguna duda!
+                        </p>
+                        <p
+                          className={
+                            styles.detailDialogInfoItemTitleWarningNotBold
+                          }
+                        >
+                          Tu asistencia en este turnaround seá confirmada por un
+                          rol superior al tuyo por codigo QR o tu numero de
+                          cédula al comenzar el turnaround.
+                        </p>
+                      </div>
+                    </>
+                  )
                 ) : turnaroundState === 2 ? (
                   <>
                     {roleID == 1 || roleID == 2 ? (
@@ -2546,6 +2573,13 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                       Turnaround atendido exitosamente!
                     </p>
                     {ArrayPrinterTaskDataForSummary()}
+                    <p
+                      className={styles.detailDialogInfoItemTitleWarningNotBold}
+                    >
+                      Si atendiste este turnaround y alguno de estos valores no
+                      coinciden, contacta un rol superior al tuyo para
+                      solucionarlo.
+                    </p>
                     <div className={styles.redButtonContainer}>
                       <div className={styles.redButton}>
                         <RedButton2
