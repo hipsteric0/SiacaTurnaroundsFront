@@ -20,7 +20,7 @@ import RedButton from "@/components/Reusables/RedButton";
 import { Suspense } from "react";
 import StandardInputAutocomplete from "@/components/Reusables/StandardInputAutocomplete";
 
-import LoadingScreen from '../../Reusables/LoadingScreen';
+import LoadingScreen from "../../Reusables/LoadingScreen";
 
 interface PageProps {
   setStep: (value: number) => void;
@@ -86,7 +86,15 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
   const [stringTemplate, setStringTemplate] = useState("");
 
   const [loading, setLoading] = useState(false);
-
+  let currentTimestamp = new Date();
+  let currentTodaysDateString =
+    currentTimestamp.getFullYear() +
+    "-" +
+    (currentTimestamp.getMonth() + 1) +
+    "-" +
+    currentTimestamp.getDate();
+  console.log("currentTodaysDateString", currentTodaysDateString);
+  console.log("date rara", new Date().toISOString().slice(0, 10) + "\n");
   useEffect(() => {
     const fetchData = async () => {
       await getcitiesListDestination();
@@ -424,13 +432,9 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
   const handleRegisterButton = async () => {
     if (recurrentFlight === true) {
       //vuelo recurrente
-      let initialDate = new Date(
-         dateETAday
-      );
+      let initialDate = new Date(dateETAday);
       initialDate.setDate(initialDate.getDate() + 1);
-      let finalDate = new Date(
-          recurrentEndDateDay
-      );
+      let finalDate = new Date(recurrentEndDateDay);
       finalDate.setDate(finalDate.getDate() + 1);
 
       //desde la fecha ETA a la fecha
@@ -523,9 +527,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
     )
       return true;
     if (clickedRecurrentFlight === true && recurrentFlight === true) {
-      if (
-        recurrentEndDateDay === ""
-      ) {
+      if (recurrentEndDateDay === "") {
         return true;
       }
       if (
@@ -710,18 +712,17 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
                   id="time"
                   value={ETA1}
                   onChange={(e) => setETA1(e.target.value)}
-            />
+                />
               </div>
               <div className={styles.dataContainerRowItem}>
                 <p>FECHA:</p>
-              <input
-              className={styles.date}
-              type="date"
-              id="date"
-              value={dateETAday}
-              onChange={(e) => setdateETAday(e.target.value)}
-              min={new Date().toISOString().slice(0, 10)}
-            />
+                <input
+                  className={styles.date}
+                  type="date"
+                  id="date"
+                  value={dateETAday}
+                  onChange={(e) => setdateETAday(e.target.value)}
+                />
               </div>
             </div>
             <div className={styles.dataContainerRowMediumGap}>
@@ -733,7 +734,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
                   id="time"
                   value={ETD1}
                   onChange={(e) => setETD1(e.target.value)}
-            />
+                />
               </div>
               <div className={styles.dataContainerRowItem}>
                 <p>FECHA:</p>
@@ -743,8 +744,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
                   id="date"
                   value={dateETDday}
                   onChange={(e) => setdateETDday(e.target.value)}
-                  min={new Date().toISOString().slice(0, 10)}
-            />
+                />
               </div>
             </div>
             <div className={styles.dataContainerRowMediumGap}>
@@ -821,9 +821,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
             <div className={styles.recurrencyFormContainer}>
               <div className={styles.recurrencyFormRow}>
                 <p>Fecha de inicio de la serie:</p>
-                <div className={styles.unmodifiableInput}>
-                  {dateETAday}{" "}
-                </div>
+                <div className={styles.unmodifiableInput}>{dateETAday} </div>
               </div>
               <div className={styles.recurrencyFormRow}>
                 <p>Fecha de fin de la serie:</p>
@@ -835,7 +833,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
                   value={recurrentEndDateDay}
                   onChange={(e) => setrecurrentEndDateDay(e.target.value)}
                   min={new Date().toISOString().slice(0, 10)}
-            />
+                />
               </div>
               <div className={styles.recurrencyFormRow}>
                 <p>Días de la semana:</p>
