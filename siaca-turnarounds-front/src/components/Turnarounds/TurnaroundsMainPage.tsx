@@ -40,6 +40,7 @@ import { Image, PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
 import { Page, Text, View, Document, StyleSheet } from "@react-pdf/renderer";
 import RedButton from "../Reusables/RedButton2";
 import StandardInput from "../Reusables/StandardInput";
+import { truncate } from "fs/promises";
 
 interface PageProps {
   setStep: (value: number) => void;
@@ -145,6 +146,8 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
   const [lateCodeValue, setlateCodeValue] = useState("");
   const [lateCodeValueIDForPatchUpdate, setlateCodeValueIDforPatchUpdate] =
     useState("");
+  const [sentEmail, setSentEmail] = useState(false);
+  const [sentEmailError, setSentEmailError] = useState(false);
 
   let currentTimestamp = new Date();
   let currentTimestampForBlockchain =
@@ -873,6 +876,35 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
     };
     await fetchData().catch(console.error);
   };
+
+  const sendTurnaroundReportToAirline = async () => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/sendTurnaroundReportToAirline";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+            turnaroundID: openDetailDialogID,
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            setSentEmail(true);
+            console.log("sendTurnaroundReportToAirline", result);
+            setLoading(false);
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+        setSentEmailError(true);
+        setLoading(false);
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
   const getTasksCompletionsList = async (turnaroundID: any) => {
     const fetchData = async () => {
       try {
@@ -3155,6 +3187,26 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
                                     : "Descargar documento del turnaround en español"
                                 }
                               </PDFDownloadLink>
+                              <GreenButton2
+                                executableFunction={() => {
+                                  setLoading(true);
+                                  sendTurnaroundReportToAirline();
+                                }}
+                                buttonText="Enviar Reporte a la Aerolínea"
+                              />
+                              {sentEmail ? (
+                                <p>¡Reporte enviado exitosamente!</p>
+                              ) : (
+                                <></>
+                              )}
+                              {sentEmailError ? (
+                                <p>
+                                  ¡Ha ocurrido un error enviando el correo,
+                                  contacta al administrador o intenta mas tarde!
+                                </p>
+                              ) : (
+                                <></>
+                              )}
                             </div>
                           </div>
                         )}
