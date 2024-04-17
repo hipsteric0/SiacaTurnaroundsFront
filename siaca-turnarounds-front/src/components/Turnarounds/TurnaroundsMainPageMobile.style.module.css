@@ -491,3 +491,9 @@
 .redText {
   color: red;
 }
+.dialogDelete {
+  font-family: Montserrat, Poppins, sans-serif;
+}
+.closeDialogSummaryContainer {
+  padding: 20px 80px 0px 80px;
+}

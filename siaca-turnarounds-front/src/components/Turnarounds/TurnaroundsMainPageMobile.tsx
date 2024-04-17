@@ -34,6 +34,7 @@ import Button from "@mui/material/Button";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 
 import dynamic from "next/dynamic";
+import RedButton from "../Reusables/RedButton";
 
 const BarcodeScanner = dynamic(() => import("../Reusables/BarcodeScanner"), {
   ssr: false,
@@ -60,8 +61,6 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
       console.log("se coloco el rol", role);
     }
   }, []);
-
-
 
   const [roleID, setRoleID] = useState(-1);
   const [arrayList3, setArrayList3] = useState([]);
@@ -146,13 +145,13 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
   const [photo, setPhoto] = useState("");
   const [currentTurnaroundDate, setCurrentTurnaroundDate] = useState("");
   const [currentDate, setCurrentDate] = useState("");
-
+  const [saveSummaryDialog, setsaveSummaryDialog] = useState(false);
   const [arrayAsistencia, setArrayAsistencia] = useState([]);
 
   useEffect(() => {
-    let arrayAux = arrayAsistencia
+    let arrayAux = arrayAsistencia;
 
-    setArrayAsistencia(arrayAux)
+    setArrayAsistencia(arrayAux);
   }, [arrayAsistencia]);
 
   let currentTimestamp = new Date();
@@ -321,22 +320,18 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
     await fetchData().catch(console.error);
   };
 
-
   const addIDToAssistanceArray = (CI: any) => {
-    let arrayAux = arrayAsistencia
+    let arrayAux = arrayAsistencia;
 
-    arrayAux.push(CI)
-    setArrayAsistencia(arrayAux)
-  }
+    arrayAux.push(CI);
+    setArrayAsistencia(arrayAux);
+  };
 
-
-  const postAssistance = (turnaroundID : any) => {
-
-    arrayAsistencia.map((index : any) => {
-      updatePresence(turnaroundID, index)
-    })
-  }
-
+  const postAssistance = (turnaroundID: any) => {
+    arrayAsistencia.map((index: any) => {
+      updatePresence(turnaroundID, index);
+    });
+  };
 
   const getMachinesList = async () => {
     const fetchData = async () => {
@@ -2254,7 +2249,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
 
   const arrayPrinterAssistance = () => {
     let y: any = [];
-    
+
     arrayAsistencia.map((index: any) => {
       console.log("ARRAY", index);
       y[index?.id] = (
@@ -2314,6 +2309,35 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
             }
           }}
         >
+          <Dialog
+            className={styles.dialogDelete}
+            open={saveSummaryDialog}
+            onClose={() => setsaveSummaryDialog(false)}
+          >
+            <div className={styles.dialogAddMachine}>
+              <p className={styles.taskTextTitle}>
+                Resumen de las asistencias:
+              </p>
+              <div>{arrayPrinterAssistance()}</div>
+              <div>
+                <GreenButton
+                  executableFunction={async () => {
+                    postAssistance(index?.id); //
+                    setTurnaroundState(2);
+                    handleSetTurnaroundStateTo2(flightID);
+                    //router.reload();
+                  }}
+                  buttonText="Confirmar"
+                />
+              </div>
+              <div className={styles.closeDialogSummaryContainer}>
+                <RedButton
+                  executableFunction={() => setsaveSummaryDialog(false)}
+                  buttonText="Volver"
+                />
+              </div>
+            </div>
+          </Dialog>
           <div className={styles.menuContainer}>
             {openDetailDialogID === index?.id && (
               <Dialog
@@ -2334,9 +2358,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                       AVISO: comenzar el turnaround cambiara su estado a "En
                       proceso"
                     </p>
-                  <p>
-                    Confirme la asistencia del personal:
-                  </p>
+                    <p>Confirme la asistencia del personal:</p>
                     {<BarcodeScanner onQR={handleScanSuccess} />}
                     <br />
                     <center>
@@ -2364,9 +2386,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                       <div className={styles.redButton}>
                         <GreenButton
                           executableFunction={() => {
-                            postAssistance(index?.id);
-                            setTurnaroundState(2);
-                            handleSetTurnaroundStateTo2(flightID);
+                            setsaveSummaryDialog(true);
                           }}
                           buttonText="Comenzar turnaround"
                           disabled={
