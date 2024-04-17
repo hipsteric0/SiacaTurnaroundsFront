@@ -95,7 +95,7 @@ const BarcodeScanner = ({onQR}) => {
         </div>
         </center>
 
-        <label>Cédula:</label>
+        <label>Cédula escaneada:</label>
         <pre>
           <code id="result">{code}</code>
         </pre>

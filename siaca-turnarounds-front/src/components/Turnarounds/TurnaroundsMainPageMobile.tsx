@@ -9,7 +9,7 @@ import React, { useEffect, useState } from "react";
 import router, { Router } from "next/router";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Table, Spacer } from "@nextui-org/react";
-import { TableBody, Dialog, Input, TextField } from "@mui/material";
+import { TableBody, Dialog, Input, TextField, setRef } from "@mui/material";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
@@ -142,6 +142,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
   const [manualSecondsValue, setmanualSecondsValue] = useState("0");
   const [assistanceInTurnaround, setassistanceInTurnaround] = useState(false);
   const [result, setResult] = useState("");
+  const [result2, setResult2] = useState("");
   const [photo, setPhoto] = useState("");
   const [currentTurnaroundDate, setCurrentTurnaroundDate] = useState("");
   const [currentDate, setCurrentDate] = useState("");
@@ -2249,14 +2250,14 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
 
   const arrayPrinterAssistance = () => {
     let y: any = [];
+    let count = 0;
 
     arrayAsistencia.map((index: any) => {
       console.log("ARRAY", index);
-      y[index?.id] = (
-        <div key={index?.id} className={styles.tableInfoRow}>
-          <p>Cedula: {index}</p>
-        </div>
+      y[count] = (
+          <p>Cédula: {index}</p>
       );
+      count ++
     });
 
     return y;
@@ -2309,35 +2310,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
             }
           }}
         >
-          <Dialog
-            className={styles.dialogDelete}
-            open={saveSummaryDialog}
-            onClose={() => setsaveSummaryDialog(false)}
-          >
-            <div className={styles.dialogAddMachine}>
-              <p className={styles.taskTextTitle}>
-                Resumen de las asistencias:
-              </p>
-              <div>{arrayPrinterAssistance()}</div>
-              <div>
-                <GreenButton
-                  executableFunction={async () => {
-                    postAssistance(index?.id); //
-                    setTurnaroundState(2);
-                    handleSetTurnaroundStateTo2(flightID);
-                    //router.reload();
-                  }}
-                  buttonText="Confirmar"
-                />
-              </div>
-              <div className={styles.closeDialogSummaryContainer}>
-                <RedButton
-                  executableFunction={() => setsaveSummaryDialog(false)}
-                  buttonText="Volver"
-                />
-              </div>
-            </div>
-          </Dialog>
+
           <div className={styles.menuContainer}>
             {openDetailDialogID === index?.id && (
               <Dialog
@@ -2377,16 +2350,41 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                         </Button>
                       )}
                     </center>
+
+                    <StandardInputV2 
+                      setValue={setResult2} 
+                      labelText="Registrar de forma manual"
+                      placeholderText={"Cédula"} 
+                      />
+                    <br />
+                    <center>
+                      {result2 !== "" && (
+                        <Button
+                          color="primary"
+                          variant="outlined"
+                          className={styles.accept}
+                          endIcon={<CheckCircleOutlineIcon />}
+                          onClick={() => {
+                            //updatePresence(index?.id);
+                            addIDToAssistanceArray(result2);
+                          }}
+                        >
+                          Aceptar
+                        </Button>
+                      )}
+                    </center>
                     <br />
 
-                    <p>Lista:</p>
+                    <p>Lista de asistencia:</p>
                     {arrayPrinterAssistance()}
 
                     <div className={styles.redButtonContainer}>
                       <div className={styles.redButton}>
                         <GreenButton
                           executableFunction={() => {
-                            setsaveSummaryDialog(true);
+                            postAssistance(index?.id); //
+                            setTurnaroundState(2);
+                            handleSetTurnaroundStateTo2(flightID);
                           }}
                           buttonText="Comenzar turnaround"
                           disabled={
