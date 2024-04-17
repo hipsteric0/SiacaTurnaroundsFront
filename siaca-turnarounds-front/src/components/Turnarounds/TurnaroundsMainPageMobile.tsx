@@ -61,6 +61,8 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
     }
   }, []);
 
+
+
   const [roleID, setRoleID] = useState(-1);
   const [arrayList3, setArrayList3] = useState([]);
   const [personnelListArray, setPersonnelListArray] = useState([]);
@@ -144,6 +146,14 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
   const [photo, setPhoto] = useState("");
   const [currentTurnaroundDate, setCurrentTurnaroundDate] = useState("");
   const [currentDate, setCurrentDate] = useState("");
+
+  const [arrayAsistencia, setArrayAsistencia] = useState([]);
+
+  useEffect(() => {
+    let arrayAux = arrayAsistencia
+
+    setArrayAsistencia(arrayAux)
+  }, [arrayAsistencia]);
 
   let currentTimestamp = new Date();
   let currentTodaysHourString =
@@ -286,7 +296,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
     await fetchData().catch(console.error);
   };
 
-  const updatePresence = async (idTurnaround: any) => {
+  const updatePresence = async (idTurnaround: any, CI: any) => {
     const fetchData = async () => {
       try {
         const url = "/api/updatePresenceTurnaround";
@@ -295,7 +305,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
           body: JSON.stringify({
             userToken: localStorage.getItem("userToken"),
             turaroundID: idTurnaround,
-            CI: result,
+            CI: CI,
           }),
         };
         const response = await fetch(url, requestOptions).then((res) =>
@@ -310,6 +320,23 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
     };
     await fetchData().catch(console.error);
   };
+
+
+  const addIDToAssistanceArray = (CI: any) => {
+    let arrayAux = arrayAsistencia
+
+    arrayAux.push(CI)
+    setArrayAsistencia(arrayAux)
+  }
+
+
+  const postAssistance = (turnaroundID : any) => {
+
+    arrayAsistencia.map((index : any) => {
+      updatePresence(turnaroundID, index)
+    })
+  }
+
 
   const getMachinesList = async () => {
     const fetchData = async () => {
@@ -2225,6 +2252,21 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
     return y;
   };
 
+  const arrayPrinterAssistance = () => {
+    let y: any = [];
+    
+    arrayAsistencia.map((index: any) => {
+      console.log("ARRAY", index);
+      y[index?.id] = (
+        <div key={index?.id} className={styles.tableInfoRow}>
+          <p>Cedula: {index}</p>
+        </div>
+      );
+    });
+
+    return y;
+  };
+
   const arrayPrinter = () => {
     let y: any = [];
     let arrayList3aux: any = [];
@@ -2292,7 +2334,9 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                       AVISO: comenzar el turnaround cambiara su estado a "En
                       proceso"
                     </p>
-
+                  <p>
+                    Confirme la asistencia del personal:
+                  </p>
                     {<BarcodeScanner onQR={handleScanSuccess} />}
                     <br />
                     <center>
@@ -2303,7 +2347,8 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                           className={styles.accept}
                           endIcon={<CheckCircleOutlineIcon />}
                           onClick={() => {
-                            updatePresence(index?.id);
+                            //updatePresence(index?.id);
+                            addIDToAssistanceArray(result);
                           }}
                         >
                           Aceptar
@@ -2311,10 +2356,15 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                       )}
                     </center>
                     <br />
+
+                    <p>Lista:</p>
+                    {arrayPrinterAssistance()}
+
                     <div className={styles.redButtonContainer}>
                       <div className={styles.redButton}>
                         <GreenButton
                           executableFunction={() => {
+                            postAssistance(index?.id);
                             setTurnaroundState(2);
                             handleSetTurnaroundStateTo2(flightID);
                           }}
