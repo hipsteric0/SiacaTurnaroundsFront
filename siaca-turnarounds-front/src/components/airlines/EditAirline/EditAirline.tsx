@@ -15,7 +15,7 @@ import SiacaNavbar from "@/components/Reusables/Navbar/SiacaNavbar";
 import StandardInputV2 from "@/components/Reusables/StandardInputV2";
 import BackArrow from "@/components/Reusables/BackArrow";
 
-import LoadingScreen from '../../Reusables/LoadingScreen';
+import LoadingScreen from "../../Reusables/LoadingScreen";
 
 interface PageProps {
   setStep: (value: number) => void;
@@ -43,7 +43,6 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep, flightID }) => {
 
   const [loading, setLoading] = useState(false);
 
-
   const getList = async () => {
     const fetchData = async () => {
       try {
@@ -58,7 +57,6 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep, flightID }) => {
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
             setArrayList(Object.values(result));
-            console.log("result", result);
 
             setAerolinea(result?.nombre);
             setCodigo(result?.codigo);
@@ -70,9 +68,7 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep, flightID }) => {
             setCiudad(result?.ciudad);
             setCodigoOACI(result?.codigo_OACI);
 
-
             if (result?.[0]?.["status"] === 400) {
-              console.log("entro");
             } else {
             }
           })
@@ -103,7 +99,7 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep, flightID }) => {
             ciudad: ciudad,
             codigo_OACI: codigoOACI,
             userToken: localStorage.getItem("userToken"),
-            flightID: flightID
+            flightID: flightID,
           }),
         };
         const response = await fetch(url, requestOptions).then((value) => {
@@ -111,7 +107,6 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep, flightID }) => {
             responseValue = false;
           } else {
             responseValue = true;
-            console.log("value", value);
           }
           return true;
         });
@@ -167,15 +162,15 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep, flightID }) => {
             labelText="Aerolínea"
             placeholderText={aerolinea}
           />
-          <StandardInputV2 
-          setValue={setCodigo} 
-          labelText="Código IATA"
-          placeholderText={codigo} 
+          <StandardInputV2
+            setValue={setCodigo}
+            labelText="Código IATA"
+            placeholderText={codigo}
           />
-          <StandardInputV2 
-          setValue={setCodigoOACI} 
-          labelText="Código OACI"
-          placeholderText={codigoOACI} 
+          <StandardInputV2
+            setValue={setCodigoOACI}
+            labelText="Código OACI"
+            placeholderText={codigoOACI}
           />
         </div>
         <span className={styles.titleText}>Contacto</span>
@@ -203,15 +198,15 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep, flightID }) => {
         </div>
         <span className={styles.titleText}>Localización</span>
         <div className={styles.inputsList}>
-          <StandardInputV2 
-          setValue={setPais} 
-          labelText="Pais" 
-          placeholderText={pais}
+          <StandardInputV2
+            setValue={setPais}
+            labelText="Pais"
+            placeholderText={pais}
           />
           <StandardInputV2
-          setValue={setCiudad} 
-          labelText="Ciudad" 
-          placeholderText={ciudad}
+            setValue={setCiudad}
+            labelText="Ciudad"
+            placeholderText={ciudad}
           />
         </div>
       </div>

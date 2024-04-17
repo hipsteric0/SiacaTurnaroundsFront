@@ -35,7 +35,6 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
     let role = localStorage.getItem("userRole");
     if (role != null) {
       setRoleID(parseInt(role));
-      console.log("se coloco el rol", role);
     }
   }, []);
 
@@ -68,9 +67,6 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log(result);
-            console.log("values", Object.values(result));
-
             setArrayList3(Object.values(result));
           })
         );
@@ -135,8 +131,6 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log(result);
-            console.log("values", Object.values(result));
             setArrayTemplate(Object.values(result));
           })
         );
@@ -150,7 +144,6 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
 
   const arrayPrinter = () => {
     let y: any = [];
-    console.log("arrayList3", arrayList3.length);
     arrayList3.map((index: any) => {
       y[index.id] = (
         <div key={index.id} className={styles.tableInfoRow}>
@@ -292,7 +285,6 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
 
   const arrayPrinter2 = () => {
     let y: any = [];
-    console.log("arrayTemplate", arrayTemplate.length);
     arrayTemplate.map((index: any) => {
       y[index.id] = (
         <div key={index.id} className={styles.tableDetailsRow}>

@@ -34,7 +34,6 @@ const MachinesMainPage: React.FC<PageProps> = ({ setStep, setmachineID }) => {
     let role = localStorage.getItem("userRole");
     if (role != null) {
       setRoleID(parseInt(role));
-      console.log("se coloco el rol", role);
     }
   }, []);
 

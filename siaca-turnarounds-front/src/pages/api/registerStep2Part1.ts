@@ -146,8 +146,7 @@ export default async function handler(
       `${BACKEND_BASE_URL}/usuarios/registro2user2/` +
       bodyJSON?.["searchValue"] +
       `/`;
-    console.log("url", url);
-    console.log("fetchOptions", fetchOptions);
+
     // Make the actual request to backend
     const response = await fetch(url, fetchOptions);
 

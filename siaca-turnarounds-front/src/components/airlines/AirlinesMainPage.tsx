@@ -43,7 +43,6 @@ const AirlinesMainPage: React.FC<PageProps> = ({
     let role = localStorage.getItem("userRole");
     if (role != null) {
       setRoleID(parseInt(role));
-      console.log("se coloco el rol", role);
     }
   }, []);
 
@@ -88,9 +87,6 @@ const AirlinesMainPage: React.FC<PageProps> = ({
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log(result);
-            console.log("values", Object.values(result));
-
             setArrayList3(Object.values(result));
           })
         );
@@ -163,9 +159,6 @@ const AirlinesMainPage: React.FC<PageProps> = ({
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log(result);
-            console.log("values", Object.values(result));
-
             setArrayList4(Object.values(result));
           })
         );
@@ -192,8 +185,6 @@ const AirlinesMainPage: React.FC<PageProps> = ({
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
             setArrayAirline(Object.values(result));
-            console.log("result", result);
-
             setAerolinea(result?.nombre);
             setCodigo(result?.codigo);
             setCorreoPrincipal(result?.correo);
@@ -204,7 +195,6 @@ const AirlinesMainPage: React.FC<PageProps> = ({
             setCiudad(result?.ciudad);
 
             if (result?.[0]?.["status"] === 400) {
-              console.log("entro");
             } else {
             }
           })
@@ -228,13 +218,11 @@ const AirlinesMainPage: React.FC<PageProps> = ({
 
   const handleAirline = async (airlineID: number) => {
     getAirline(airlineID);
-    console.log("DATOS DE AEROLINEA", airlineID);
   };
 
   const arrayPrinter = () => {
     let y: any = [];
 
-    console.log("arrayList3", arrayList3.length);
     const [hoverEye, sethoverEye] = useState(false);
     const [hoverEyeId, sethoverEyeId] = useState(-1);
     const [hoverPencilId, sethoverPencilId] = useState(-1);

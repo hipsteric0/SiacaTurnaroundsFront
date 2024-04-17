@@ -88,15 +88,12 @@ const DocsMainPage: React.FC<PageProps> = ({}) => {
       try {
         const data = await contract?.methods?.getter().call();
         setcontractData(data);
-        console.log("contractDATA", Object.values(contractData));
       } catch (error) {
         console.error("Error blickchain", error);
         return;
       }
     }
-    console.log("contractDATA", Object.values(contractData));
     provider && template();
-    console.log("contractDATA", Object.values(contractData));
   }, []);
 
   useEffect(() => {
@@ -120,15 +117,12 @@ const DocsMainPage: React.FC<PageProps> = ({}) => {
       try {
         const data = await contract?.methods?.getter().call();
         setcontractData2(data);
-        console.log("contractDATA2", Object.values(contractData2));
       } catch (error) {
         console.error("Error blickchain", error);
         return;
       }
     }
-    console.log("contractDATA2", Object.values(contractData2));
     provider && template();
-    console.log("contractDATA2", Object.values(contractData2));
   }, []);
 
   useEffect(() => {
@@ -152,15 +146,12 @@ const DocsMainPage: React.FC<PageProps> = ({}) => {
       try {
         const data = await contract?.methods?.getter().call();
         setcontractData3(data);
-        console.log("contractDATA3", Object.values(contractData3));
       } catch (error) {
         console.error("Error blickchain", error);
         return;
       }
     }
-    console.log("contractDATA3", Object.values(contractData3));
     provider && template();
-    console.log("contractDATA3", Object.values(contractData3));
   }, []);
 
   useEffect(() => {
@@ -184,24 +175,17 @@ const DocsMainPage: React.FC<PageProps> = ({}) => {
       try {
         const data = await contract?.methods?.getter().call();
         setcontractData4(data);
-        console.log("contractDATA", Object.values(contractData4));
       } catch (error) {
         console.error("Error blickchain", error);
         return;
       }
     }
-    console.log("contractDATA4", Object.values(contractData4));
     provider && template();
-    console.log("contractDATA4", Object.values(contractData4));
   }, []);
 
   async function writeData() {
     const { contract } = contractState;
     try {
-      // console.log(
-      //   "JSON.parse(contractData[3])",
-      //   JSON.parse(contractData[4])[1] //acceder a los valores de arerglos//
-      // );
       await contract?.methods
         ?.setter(
           "1000",

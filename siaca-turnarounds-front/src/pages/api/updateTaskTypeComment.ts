@@ -159,8 +159,7 @@ export default async function handler(
       body?.["userToken"];
 
     // Make the actual request to backend
-    console.log(" update-hora", fetchOptions);
-    console.log(" url", url);
+
     const response = await fetch(url, fetchOptions);
 
     status = response.status;

@@ -158,9 +158,6 @@ export default async function handler(
       `/?token=` +
       body?.["userToken"];
 
-      console.log("fetchOptions",fetchOptions)
-      console.log("URL",url)
-
     // Make the actual request to backend
     const response = await fetch(url, fetchOptions);
 

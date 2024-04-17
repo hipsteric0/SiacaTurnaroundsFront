@@ -11,7 +11,6 @@ export default function Personnel() {
     let role = localStorage.getItem("userRole");
     if (role != null) {
       setRoleID(parseInt(role));
-      console.log("se coloco el rol", role);
     }
   }, []);
 

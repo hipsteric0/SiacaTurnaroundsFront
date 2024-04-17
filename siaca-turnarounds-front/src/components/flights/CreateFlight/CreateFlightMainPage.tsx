@@ -93,8 +93,6 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
     (currentTimestamp.getMonth() + 1) +
     "-" +
     currentTimestamp.getDate();
-  console.log("currentTodaysDateString", currentTodaysDateString);
-  console.log("date rara", new Date().toISOString().slice(0, 10) + "\n");
   useEffect(() => {
     const fetchData = async () => {
       await getcitiesListDestination();
@@ -130,7 +128,6 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then(async (result) => {
-            console.log("ACREGSList", Object.values(result));
             await setFlightTypesList(Object.values(result));
 
             await setACRegListDropdown(Object.values(result));
@@ -164,9 +161,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
           }),
         };
         const response = await fetch(url, requestOptions).then((res) =>
-          res.json().then(async (result) => {
-            console.log("registerTrunaround", result);
-          })
+          res.json().then(async (result) => {})
         );
       } catch (error) {
         console.error("Error geting user", error);
@@ -205,7 +200,6 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then(async (result) => {
-            console.log("registerFlight", result);
             registerTurnaround(result?.ETA_fecha, result?.ETA, result?.id, 1);
           })
         );
@@ -237,7 +231,6 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then(async (result) => {
-            console.log("getTemplatesList", Object.values(result));
             await setFlightTypesList(Object.values(result));
 
             await setTemplatesForDropdown(Object.values(result));
@@ -271,7 +264,6 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then(async (result) => {
-            console.log("flightTypesList", Object.values(result));
             await setFlightTypesList(Object.values(result));
 
             await setFlightTypesForDropdown(Object.values(result));
@@ -305,7 +297,6 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then(async (result) => {
-            console.log("getAirlinesList", Object.values(result));
             await setAirlinesArrayList(Object.values(result));
             await setAirlinesForDropdown(Object.values(result));
           })
@@ -338,7 +329,6 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log("getcitiesListDeparture", Object.values(result));
             setFlightServicesArrayList(Object.values(result));
             setCitiesListDepartureForDropdown(Object.values(result));
           })
@@ -372,7 +362,6 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log("getFlightServicesTypes", Object.values(result));
             setDepartureCitiesArrayList(Object.values(result));
             setFlightServiceTypesForDropdown(Object.values(result));
           })
@@ -408,7 +397,6 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log("citiesListDestination", Object.values(result));
             setDestinationCitiesArrayList(Object.values(result));
             setCitiesListDestinationCodeForDropdown(Object.values(result));
           })
@@ -427,7 +415,6 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
     typeValue: number
   ) => {
     tasksArray[taskPosition].subtasks[subtaskPosition].type = typeValue;
-    //console.log("tasksArray", tasksArray);
   };
   const handleRegisterButton = async () => {
     if (recurrentFlight === true) {
@@ -646,7 +633,6 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
                       fullWidth
                       onInputChange={(event, newInputValue) => {
                         setACreg(newInputValue);
-                        console.log("autocomplete value:", newInputValue);
                       }}
                       options={acregOptionsArray?.map((option) => {
                         if (Carrier > 0) {

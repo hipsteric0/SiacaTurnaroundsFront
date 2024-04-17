@@ -143,7 +143,6 @@ export default async function handler(
     };
 
     // Backend URL
-    console.log("req.body", body?.["searchValue"]);
     const url =
       `${BACKEND_BASE_URL}/usuarios/listado/user?search=` +
       body?.["searchValue"];

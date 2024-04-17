@@ -140,7 +140,6 @@ export default async function handler(
     // Backend URL
     const url = `${BACKEND_BASE_URL}/usuarios/registro2usuario/`;
     // Make the actual request to backend
-    console.log(fetchOptions);
     const response = await fetch(url, fetchOptions);
 
     status = response.status;

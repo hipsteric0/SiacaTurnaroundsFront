@@ -156,8 +156,6 @@ export default async function handler(
     const url = `${BACKEND_BASE_URL}/usuarios/cargos/`;
 
     // Make the actual request to backend
-    console.log("url", url);
-    console.log("fetchOptions", fetchOptions);
     const response = await fetch(url, fetchOptions);
 
     status = response.status;

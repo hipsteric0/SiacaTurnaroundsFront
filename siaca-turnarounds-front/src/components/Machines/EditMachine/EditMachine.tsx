@@ -17,7 +17,7 @@ import DropdownMenu from "@/components/Reusables/DropdownMenu";
 import StandardInputV2 from "@/components/Reusables/StandardInputV2";
 import BackArrow from "@/components/Reusables/BackArrow";
 
-import LoadingScreen from '../../Reusables/LoadingScreen';
+import LoadingScreen from "../../Reusables/LoadingScreen";
 
 interface PageProps {
   setStep: (value: number) => void;
@@ -57,7 +57,6 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep, machineID }) => {
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
             setArrayList(Object.values(result));
-            console.log("result", result);
 
             setIdentificador(result?.identificador);
             setModelo(result?.modelo);
@@ -66,7 +65,6 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep, machineID }) => {
             setFkCategoria(result?.fkcategoria);
 
             if (result?.[0]?.["status"] === 400) {
-              console.log("entro");
             } else {
             }
           })
@@ -98,7 +96,6 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep, machineID }) => {
             responseValue = false;
           } else {
             responseValue = true;
-            console.log("value", value);
           }
           return true;
         });

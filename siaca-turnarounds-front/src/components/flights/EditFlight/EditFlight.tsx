@@ -20,8 +20,7 @@ import StandardInputV2 from "@/components/Reusables/StandardInputV2";
 import RedButton from "@/components/Reusables/RedButton";
 import { Suspense } from "react";
 
-import LoadingScreen from '../../Reusables/LoadingScreen';
-
+import LoadingScreen from "../../Reusables/LoadingScreen";
 
 interface PageProps {
   setStep: (value: number) => void;
@@ -119,7 +118,6 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
             setArrayList3(Object.values(result));
-            console.log("result", result);
             setFlightServiceType2(result?.tipo_servicio?.nombre);
             setSTN(result?.stn?.id);
             setSTN2(result?.stn?.codigo);
@@ -153,7 +151,6 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
             setflightType2(result?.tipo_vuelo?.nombre);
 
             if (result?.[0]?.["status"] === 400) {
-              console.log("entro");
             } else {
             }
           })
@@ -168,7 +165,6 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
   };
 
   const registerFlight = async () => {
-    console.log("ETD1 +  + ETD2", ETD1 + ":" + ETD2);
     const fetchData = async () => {
       try {
         const url = "/api/updateFlight";
@@ -198,9 +194,7 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
           }),
         };
         const response = await fetch(url, requestOptions).then((res) =>
-          res.json().then(async (result) => {
-            console.log("registerFlight", result);
-          })
+          res.json().then(async (result) => {})
         );
       } catch (error) {
         console.error("Error geting user", error);
@@ -212,13 +206,11 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
 
   const setTemplatesForDropdown = async (TemplatesListArray: []) => {
     TemplatesListArray.map((index: any) => {
-      console.log("indexx", index.id);
       templatesOptionsArray.push({
         key: index.id,
         name: index.titulo,
       });
     });
-    console.log("templatesOptionsArray", templatesOptionsArray);
   };
   const getTemplatesList = async () => {
     const fetchData = async () => {
@@ -232,7 +224,6 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then(async (result) => {
-            console.log("getTemplatesList", Object.values(result));
             await setFlightTypesList(Object.values(result));
 
             await setTemplatesForDropdown(Object.values(result));
@@ -248,7 +239,6 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
 
   const setFlightTypesForDropdown = async (flightTypesListArray: []) => {
     flightTypesListArray.map((index: any) => {
-      console.log("index", index.id);
       flightTypesOptionsArray.push({
         key: index.id,
         name: index.nombre,
@@ -267,7 +257,6 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then(async (result) => {
-            console.log("flightTypesList", Object.values(result));
             await setFlightTypesList(Object.values(result));
 
             await setFlightTypesForDropdown(Object.values(result));
@@ -283,7 +272,6 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
 
   const setAirlinesForDropdown = async (airlinesArray: []) => {
     await airlinesArray.map((index: any) => {
-      console.log("index", index.id);
       airlinesOptionsArray.push({
         key: index.id,
         name: index.nombre,
@@ -302,7 +290,6 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then(async (result) => {
-            console.log("getAirlinesList", Object.values(result));
             await setAirlinesArrayList(Object.values(result));
             await setAirlinesForDropdown(Object.values(result));
           })
@@ -317,7 +304,6 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
 
   const setCitiesListDepartureForDropdown = async (citiesListArray: []) => {
     citiesListArray.map((index: any) => {
-      console.log("index", index.id);
       CitiesOptionsArray.push({
         key: index.id,
         name: index.nombre,
@@ -336,7 +322,6 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log("getcitiesListDeparture", Object.values(result));
             setDepartureCitiesArrayList(Object.values(result));
             setCitiesListDepartureForDropdown(Object.values(result));
           })
@@ -353,8 +338,6 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
     citiesListArray: []
   ) => {
     citiesListArray.map((index: any) => {
-      console.log("index", index.id);
-
       STNOptionsArray.push({
         key: index.id,
         name: index.codigo,
@@ -374,7 +357,6 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log("citiesListDestination", Object.values(result));
             setDestinationCitiesArrayList(Object.values(result));
             setCitiesListDestinationCodeForDropdown(Object.values(result));
           })
@@ -389,7 +371,6 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
 
   const setFlightServiceTypesForDropdown = async (servicesListArray: []) => {
     servicesListArray.map((index: any) => {
-      console.log("index", index.id);
       FlightServicesOptionsArray.push({
         key: index.id,
         name: index.nombre,
@@ -409,7 +390,6 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log("getFlightServicesTypes", Object.values(result));
             setDepartureCitiesArrayList(Object.values(result));
             setFlightServiceTypesForDropdown(Object.values(result));
           })
@@ -428,12 +408,9 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
     typeValue: number
   ) => {
     tasksArray[taskPosition].subtasks[subtaskPosition].type = typeValue;
-    //console.log("tasksArray", tasksArray);
   };
 
-  const consolePrueba = async () => {
-    console.log("flightID", flightID);
-  };
+  const consolePrueba = async () => {};
 
   const handleRegisterButton = async () => {
     //vuelo unico

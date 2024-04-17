@@ -167,8 +167,6 @@ const LoginMainPage: React.FC<PageProps> = ({
 
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            //console.log("getJobPositionsList", Object.values(result));
-
             setArrayDepartmentsList(Object.values(result));
           })
         );
@@ -193,8 +191,6 @@ const LoginMainPage: React.FC<PageProps> = ({
 
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log("getJobPositionsList", Object.values(result));
-
             setArrayJobPositionsList(Object.values(result));
           })
         );
@@ -265,21 +261,27 @@ const LoginMainPage: React.FC<PageProps> = ({
 
   const [value, setValue] = useState("");
   const [valuePhone, setValuePhone] = useState("");
- 
+
   //Valida que solo se escriban números
-  const isNumber = (key : any) => {
+  const isNumber = (key: any) => {
     const tildeRegex = /[+-]/;
-    return key.length === 1 && (key.match(/[0-9]/) || key === " " || key.match(tildeRegex));
+    return (
+      key.length === 1 &&
+      (key.match(/[0-9]/) || key === " " || key.match(tildeRegex))
+    );
   };
 
   //Valida que se escriban solo letras en el input
-  const isLetter = (key : any) => {
+  const isLetter = (key: any) => {
     const tildeRegex = /[áéíóúüÁÉÍÓÚÜ]/;
-    return key.length === 1 && (key.match(/[a-z]/i) || key === " " || key.match(tildeRegex));
+    return (
+      key.length === 1 &&
+      (key.match(/[a-z]/i) || key === " " || key.match(tildeRegex))
+    );
   };
 
   //Validación para poder corregir inputs de letras
-  const handleKeyDown = (e : any) => {
+  const handleKeyDown = (e: any) => {
     if (e.key === "Backspace") {
       return;
     }
@@ -288,15 +290,15 @@ const LoginMainPage: React.FC<PageProps> = ({
     }
   };
 
-    //Validación para poder corregir inputs de números
-    const handleKeyDown2 = (e : any) => {
-      if (e.key === "Backspace") {
-        return;
-      }
-      if (!isNumber(e.key)) {
-        e.preventDefault();
-      }
-    };
+  //Validación para poder corregir inputs de números
+  const handleKeyDown2 = (e: any) => {
+    if (e.key === "Backspace") {
+      return;
+    }
+    if (!isNumber(e.key)) {
+      e.preventDefault();
+    }
+  };
 
   return (
     <div
@@ -331,7 +333,8 @@ const LoginMainPage: React.FC<PageProps> = ({
             width={isMobile ? "85%" : "335px"}
             onChange={(e) => {
               setFirstName(e.target.value);
-              setValue(e.target.value)}}
+              setValue(e.target.value);
+            }}
             aria-label="Input nombre"
           />
         </div>
@@ -347,7 +350,8 @@ const LoginMainPage: React.FC<PageProps> = ({
             width={isMobile ? "85%" : "335px"}
             onChange={(e) => {
               setLastName(e.target.value);
-              setValue(e.target.value)}}
+              setValue(e.target.value);
+            }}
             aria-label="Input apellido"
           />
         </div>
@@ -375,7 +379,8 @@ const LoginMainPage: React.FC<PageProps> = ({
             onKeyDown={handleKeyDown2}
             onChange={(e) => {
               setPhoneNumber(e.target.value);
-              setValuePhone(e.target.value)}}
+              setValuePhone(e.target.value);
+            }}
             type="phone"
             aria-label="Input telefono"
           />

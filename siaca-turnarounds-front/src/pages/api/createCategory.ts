@@ -153,8 +153,6 @@ export default async function handler(
     // Backend URL
     const url =
       `${BACKEND_BASE_URL}/plantillas/categoria/?token=` + body?.["userToken"];
-    console.log("url", url);
-    console.log("fetchOptions", fetchOptions);
     // Make the actual request to backend
     const response = await fetch(url, fetchOptions);
 

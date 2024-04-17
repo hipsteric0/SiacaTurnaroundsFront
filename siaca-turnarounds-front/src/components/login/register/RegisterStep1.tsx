@@ -7,7 +7,6 @@ import BackArrow from "@/components/Reusables/BackArrow";
 import { useEffect, useState } from "react";
 import LoadingScreen from "@/components/Reusables/LoadingScreen";
 
-
 interface PageProps {
   setStep: (value: number) => void;
   setEmailValue: (value: string) => void;
@@ -39,7 +38,7 @@ const LoginMainPage: React.FC<PageProps> = ({
           body: JSON.stringify({
             username: email,
             password: password,
-            is_active : 0
+            is_active: 0,
           }),
         };
         const response = await fetch(url, requestOptions).then((value) => {
@@ -97,7 +96,7 @@ const LoginMainPage: React.FC<PageProps> = ({
 
   const isMobile = useMediaQuery("(max-width: 1270px)");
 
-  const handleCheckEmail = (e :any) => {
+  const handleCheckEmail = (e: any) => {
     e.preventDefault();
     const inputEmail = e.target.value;
     setEmail(inputEmail);
@@ -105,12 +104,11 @@ const LoginMainPage: React.FC<PageProps> = ({
       .then((response) => response.json())
       .then((data) => {
         // Compureba si el correo se encuentra en el array de los correos registrados
-        setEmailExists(data.some((item : any) => item.username === inputEmail));
-        console.log("CORREO", email);
+        setEmailExists(data.some((item: any) => item.username === inputEmail));
       })
       .catch((error) => console.error("Error fetching ", error));
   };
-  
+
   const Back = () => {
     setLoading(true);
     setStep(0);
@@ -126,10 +124,10 @@ const LoginMainPage: React.FC<PageProps> = ({
     >
       {validateContinueButton()}
       <BackArrow
-          executableFunction={() => {
-            Back();
-          }}
-        />
+        executableFunction={() => {
+          Back();
+        }}
+      />
       <MailLockIcon sx={{ fontSize: 150 }}></MailLockIcon>
       <strong>
         <p className={styles.welcomeBackText}>Registro de usuario</p>
@@ -148,12 +146,17 @@ const LoginMainPage: React.FC<PageProps> = ({
             labelPlaceholder="Correo Electrónico"
             color="success"
             width={isMobile ? "85%" : "335px"}
-            onChange={(e) => {setEmail(e.target.value);
+            onChange={(e) => {
+              setEmail(e.target.value);
               handleCheckEmail(e);
-          }}
+            }}
             type="email"
           />
-        {emailExists === true && (<p style={{ color: 'red' }}>Este correo ya se encuentra registrado en el sistema</p>)}
+          {emailExists === true && (
+            <p style={{ color: "red" }}>
+              Este correo ya se encuentra registrado en el sistema
+            </p>
+          )}
         </div>
 
         <div
@@ -181,7 +184,9 @@ const LoginMainPage: React.FC<PageProps> = ({
             width={isMobile ? "85%" : "335px"}
             onChange={({ target: { value } }) => setConfirmPassword(value)}
           />
-          {password != confirmPassword && (<p style={{ color: 'red' }}>Las claves no coinciden</p>)}
+          {password != confirmPassword && (
+            <p style={{ color: "red" }}>Las claves no coinciden</p>
+          )}
         </div>
       </div>
 

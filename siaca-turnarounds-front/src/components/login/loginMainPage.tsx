@@ -61,7 +61,6 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log("result", result);
             validLogin = result?.value;
             token = result?.token;
             userFullName = result?.first_name + " " + result?.last_name;

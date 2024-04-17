@@ -46,7 +46,6 @@ const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
     let role = localStorage.getItem("userRole");
     if (role != null) {
       setRoleID(parseInt(role));
-      console.log("se coloco el rol", role);
     }
   }, []);
 
@@ -86,7 +85,6 @@ const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
           res.json().then((result) => {
             setArrayList3(Object.values(result));
             if (result?.[0]?.["status"] === 400) {
-              console.log("entro");
             } else {
             }
           })
@@ -107,8 +105,6 @@ const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
       (date.getMonth() + 1).toString() +
       " - " +
       date.getFullYear().toString();
-    console.log("userToken", localStorage.getItem("userToken"));
-    console.log("userRole", localStorage.getItem("userRole"));
 
     setdateState(x);
     return <></>;
@@ -163,7 +159,6 @@ const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
   const arrayPrinter = () => {
     let y: any = [];
     let arrayList3aux: any = [];
-    console.log("statusVar", arrayList3?.[0]?.["status"]);
 
     isFilteredResults
       ? (arrayList3aux = arrayFilteredList3)
@@ -171,7 +166,6 @@ const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
     arrayList3aux.map((index: any) => {
       let aux = arrayList3[index.id];
       if (openDetailDialogID === index.id) {
-        console.log("clickedIndex", index);
       }
       y[index.id] = (
         <div key={index.id} className={styles.tableInfoRow}>

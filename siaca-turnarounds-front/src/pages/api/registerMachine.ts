@@ -157,8 +157,6 @@ export default async function handler(
         }),*/
       };
     }
-    console.log("body", fetchOptions);
-    console.log("combustible", body?.["combustible"]);
     // Backend URL
     const url = `${BACKEND_BASE_URL}/maquinarias/?token=` + body?.["userToken"];
 

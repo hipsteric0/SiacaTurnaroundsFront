@@ -60,7 +60,6 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
     let role = localStorage.getItem("userRole");
     if (role != null) {
       setRoleID(parseInt(role));
-      console.log("se coloco el rol", role);
     }
   }, []);
 
@@ -232,15 +231,12 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
       try {
         const data = await contract?.methods?.getter().call();
         setcontractData(data);
-        console.log("contractDATA", Object.values(contractData));
       } catch (error) {
         console.error("Error blickchain", error);
         return;
       }
     }
-    console.log("contractDATA", Object.values(contractData));
     provider && template();
-    console.log("contractDATA", Object.values(contractData));
   }, []);
 
   useEffect(() => {
@@ -264,15 +260,12 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
       try {
         const data = await contract?.methods?.getter().call();
         setcontractData2(data);
-        console.log("contractDATA2", Object.values(contractData2));
       } catch (error) {
         console.error("Error blickchain", error);
         return;
       }
     }
-    console.log("contractDATA2", Object.values(contractData2));
     provider && template();
-    console.log("contractDATA2", Object.values(contractData2));
   }, []);
 
   useEffect(() => {
@@ -296,15 +289,12 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
       try {
         const data = await contract?.methods?.getter().call();
         setcontractData3(data);
-        console.log("contractDATA3", Object.values(contractData3));
       } catch (error) {
         console.error("Error blickchain", error);
         return;
       }
     }
-    console.log("contractDATA3", Object.values(contractData3));
     provider && template();
-    console.log("contractDATA3", Object.values(contractData3));
   }, []);
 
   useEffect(() => {
@@ -328,15 +318,12 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
       try {
         const data = await contract?.methods?.getter().call();
         setcontractData4(data);
-        console.log("contractDATA", Object.values(contractData4));
       } catch (error) {
         console.error("Error blickchain", error);
         return;
       }
     }
-    console.log("contractDATA4", Object.values(contractData4));
     provider && template();
-    console.log("contractDATA4", Object.values(contractData4));
   }, []);
 
   //blockchain
@@ -349,19 +336,7 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
         titlesArray.push(index?.name);
         valuesArray.push(index?.value);
       });
-      console.log("valuesArray", valuesArray);
-      console.log(
-        "valuesArray stringified",
-        JSON.stringify(valuesArray).toString()
-      );
-      console.log("titlesArray", titlesArray);
-      console.log(
-        "titlesArray stringified",
-        JSON.stringify(titlesArray).toString()
-      );
 
-      console.log("turnaroundData", turnaroundData);
-      console.log("flightData", flightData);
       await contract?.methods
         ?.setter(
           "Turnaround ID: " +
@@ -451,19 +426,7 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
         titlesArray.push(index?.name);
         valuesArray.push(index?.value);
       });
-      console.log("valuesArray", valuesArray);
-      console.log(
-        "valuesArray stringified",
-        JSON.stringify(valuesArray).toString()
-      );
-      console.log("titlesArray", titlesArray);
-      console.log(
-        "titlesArray stringified",
-        JSON.stringify(titlesArray).toString()
-      );
 
-      console.log("turnaroundData", turnaroundData);
-      console.log("flightData", flightData);
       await contract?.methods
         ?.setter(
           "Turnaround ID: " +
@@ -553,19 +516,7 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
         titlesArray.push(index?.name);
         valuesArray.push(index?.value);
       });
-      console.log("valuesArray", valuesArray);
-      console.log(
-        "valuesArray stringified",
-        JSON.stringify(valuesArray).toString()
-      );
-      console.log("titlesArray", titlesArray);
-      console.log(
-        "titlesArray stringified",
-        JSON.stringify(titlesArray).toString()
-      );
 
-      console.log("turnaroundData", turnaroundData);
-      console.log("flightData", flightData);
       await contract?.methods
         ?.setter(
           "Turnaround ID: " +
@@ -655,19 +606,7 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
         titlesArray.push(index?.name);
         valuesArray.push(index?.value);
       });
-      console.log("valuesArray", valuesArray);
-      console.log(
-        "valuesArray stringified",
-        JSON.stringify(valuesArray).toString()
-      );
-      console.log("titlesArray", titlesArray);
-      console.log(
-        "titlesArray stringified",
-        JSON.stringify(titlesArray).toString()
-      );
 
-      console.log("turnaroundData", turnaroundData);
-      console.log("flightData", flightData);
       await contract?.methods
         ?.setter(
           "Turnaround ID: " +
@@ -835,11 +774,9 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log("turnarounds list", Object.values(result));
             setArrayList3(Object.values(result));
 
             if (result?.[0]?.["status"] === 400) {
-              console.log("entro");
             } else {
             }
           })
@@ -866,7 +803,6 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
             setPersonnelListArray(Object.values(result));
-            console.log("Personnel List Array", result);
           })
         );
       } catch (error) {
@@ -891,7 +827,7 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
             setSentEmail(true);
-            console.log("sendTurnaroundReportToAirline", result);
+
             setLoading(false);
           })
         );
@@ -919,7 +855,6 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
             formatTasksForPDFArray(result);
-            console.log("getTasksCompletionsList  Array", result);
           })
         );
       } catch (error) {
@@ -942,10 +877,8 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log("machines list", result);
             setMachinesarrayList(Object.values(result));
             if (result?.[0]?.["status"] === 400) {
-              console.log("entro");
             } else {
             }
           })
@@ -974,11 +907,9 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log("machines reservation list", result);
             setMachinesReservationsarrayList(Object.values(result));
 
             if (result?.[0]?.["status"] === 400) {
-              console.log("entro");
             } else {
             }
           })
@@ -1007,11 +938,9 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log("personnel reservation list", result);
             setPersonnelReservationsarrayList(Object.values(result));
 
             if (result?.[0]?.["status"] === 400) {
-              console.log("entro");
             } else {
             }
           })
@@ -1037,10 +966,8 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log("getPersonnelDepartments", result);
             setPersonnelDepartmentsarrayList(Object.values(result));
             if (result?.[0]?.["status"] === 400) {
-              console.log("entro");
             } else {
             }
           })
@@ -1067,10 +994,8 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log("MachinesQuantityByTemplatearrayList", result);
             setMachinesQuantityByTemplatearrayList(Object.values(result));
             if (result?.[0]?.["status"] === 400) {
-              console.log("entro");
             } else {
             }
           })
@@ -1097,10 +1022,8 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log("templateTasks list", result);
             setTasksarrayList(Object.values(result));
             if (result?.[0]?.["status"] === 400) {
-              console.log("entro");
             } else {
             }
           })
@@ -1127,10 +1050,8 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            //console.log("Machines By Turnaround list", result);
             setPersonneByTurnaroundArrayList(Object.values(result));
             if (result?.[0]?.["status"] === 400) {
-              console.log("entro");
             } else {
             }
           })
@@ -1157,10 +1078,8 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log("Machines By Turnaround list", result);
             setMachinesByTurnaroundArrayList(Object.values(result));
             if (result?.[0]?.["status"] === 400) {
-              console.log("entro");
             } else {
             }
           })
@@ -1191,10 +1110,7 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log("Guardar", result);
-
             if (result?.[0]?.["status"] === 400) {
-              console.log("entro");
             } else {
             }
           })
@@ -1225,10 +1141,7 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log("Guardar", result);
-
             if (result?.[0]?.["status"] === 400) {
-              console.log("entro");
             } else {
             }
           })
@@ -1258,9 +1171,7 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
           }),
         };
         const response = await fetch(url, requestOptions).then((res) =>
-          res.json().then((result) => {
-            console.log("updateTaskTypeStartHour", result);
-          })
+          res.json().then((result) => {})
         );
       } catch (error) {
         console.error("Error geting user", error);
@@ -1286,9 +1197,7 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
           }),
         };
         const response = await fetch(url, requestOptions).then((res) =>
-          res.json().then((result) => {
-            console.log("updateTaskTypeStartHour", result);
-          })
+          res.json().then((result) => {})
         );
       } catch (error) {
         console.error("Error geting user", error);
@@ -1316,9 +1225,7 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
           }),
         };
         const response = await fetch(url, requestOptions).then((res) =>
-          res.json().then((result) => {
-            console.log("updateTaskTypeStartHour", result);
-          })
+          res.json().then((result) => {})
         );
       } catch (error) {
         console.error("Error geting user", error);
@@ -1342,7 +1249,6 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
       );
     });
     setlateCodesArray(auxiliaryArray);
-    console.log("auxiliaryArray", auxiliaryArray);
   };
   const getLateCodes = async () => {
     const fetchData = async () => {
@@ -1356,7 +1262,6 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log("getLateCodesList", result);
             setlateCodesOptions(Object.values(result));
             setlateCodesData(Object.values(result));
           })
@@ -1374,7 +1279,6 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
     lateCodesData?.map((element: any) => {
       if (element?.identificador === Number(identificadorAuxiliar)) {
         setlateCodeValueIDforPatchUpdate(element?.id);
-        console.log("el ID clickeado es ", element?.id);
       }
     });
   };
@@ -1393,7 +1297,6 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log("patchLateCode", result);
             router.reload();
           })
         );
@@ -1412,7 +1315,6 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
       (date.getMonth() + 1).toString() +
       " - " +
       date.getFullYear().toString();
-    console.log("userToken", localStorage.getItem("userToken"));
     setdateState(x);
     return <></>;
   };
@@ -1482,7 +1384,6 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
     //hora inicio y fin === id =3
     //hora imagen === id =4
     result?.comentarios.map((value: any) => {
-      //console.log("value", value);
       y.push({
         key: value?.fk_subtarea__id,
         type: 1,
@@ -1492,7 +1393,6 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
       });
     });
     result?.horas.map((value: any) => {
-      //console.log("value", value);
       y.push({
         key: value?.fk_subtarea__id,
         type: 2,
@@ -1502,7 +1402,6 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
       });
     });
     result?.horas_inicio_fin.map((value: any) => {
-      //console.log("value", value);
       y.push({
         key: value?.fk_subtarea__id,
         type: 3,
@@ -1517,19 +1416,15 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
       });
     });
 
-    console.log("array of tasks unorderred", y);
     let resultOfSorting: any[] = [];
     resultOfSorting = y.sort((a, b) => a.key - b.key);
-    console.log("resultOfSorting", resultOfSorting);
     setTasksCompletionValues(resultOfSorting);
   };
 
   const arrayPrinterSelectedMachinesForCategory = (category: any) => {
     let y: any = [];
     machinesToPostArray.map((index: any) => {
-      //console.log("the current category index is:", index);
       if (index?.categoryID === category) {
-        console.log("entro", index);
         y[index.id] = (
           <div key={index.id} className={styles.tableInfoRow}>
             <p>{index?.machineID}</p>
@@ -1986,8 +1881,6 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
   };
 
   const removeMachinefromPage = (selectedMachineModelID: any) => {
-    console.log("selectedMachineModelID", selectedMachineModelID);
-    console.log("machineryQuantityArrayAux", machineryQuantityArrayAux);
     let arrayOfMachinesToPush: any = [];
     let x = 0;
     let machineCategory = -1;
@@ -2004,12 +1897,9 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
       }
     }
     x = 0;
-
-    console.log("machinesToPostArray after delete", machinesToPostArray);
   };
 
   const removePersonfromPage = (selectedPersonID: any) => {
-    console.log("selectedMachineModelID", selectedPersonID);
     let arrayOfPersonsToPush: any = [];
     let x = 0;
     let machineCategory = -1;
@@ -2026,13 +1916,9 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
       }
     }
     x = 0;
-
-    console.log("personnelToPostArray after delete", personnelToPostArray);
   };
 
   const addMachineToPage = (selectedMachineModelID: any) => {
-    console.log("selectedMachineModelID", selectedMachineModelID);
-    console.log("machineryQuantityArrayAux", machineryQuantityArrayAux);
     let arrayOfMachinesToPush: any = [];
     let x = 0;
     let cantidad = -1;
@@ -2046,7 +1932,6 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
           machinesarrayList[x]?.identificador +
           " - " +
           machinesarrayList[x]?.fk_categoria?.nombre;
-        console.log("x1", machineCategory);
       }
       x++;
     }
@@ -2059,8 +1944,6 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
       ) {
         cantidad = machinesQuantityByTemplatearrayList[x]?.cantidad;
         //push into array the machine added
-
-        console.log("x2", cantidad);
       }
       x++;
     }
@@ -2075,18 +1958,14 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
     } else {
       //remove from array the added object
     }
-
-    console.log("machinesToPostArray", machinesToPostArray);
   };
 
   const personnelReservationSummaryArrayPrinter = () => {
     //.map
     let y: any = [];
     //setsaveSummaryDialogUpdate(!saveSummaryDialogUpdate);
-    //console.log("ENTERING POST ARRAY", personnelToPostArray);
 
     personnelToPostArray.map((index: any) => {
-      //console.log("ENTERING POST ARRAY .MAP", index?.machineName);
       y[index?.personID] = (
         <>
           <p className={styles.summaryListText}>• {index?.machineName}</p>
@@ -2097,13 +1976,9 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
     return y;
   };
   const machinesReservationSummaryArrayPrinter = () => {
-    //.map
     let y: any = [];
-    //setsaveSummaryDialogUpdate(!saveSummaryDialogUpdate);
-    console.log("ENTERING POST ARRAY", machinesToPostArray);
 
     machinesToPostArray.map((index: any) => {
-      console.log("ENTERING POST ARRAY .MAP", index?.machineName);
       y[index?.machineID] = (
         <>
           <p className={styles.summaryListText}>• {index?.machineName}</p>
@@ -2115,8 +1990,6 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
   };
 
   const addPersonToPage = (selectedPersonID: any) => {
-    console.log("selectedPersonID", selectedPersonID);
-    console.log("machineryQuantityArrayAux", machineryQuantityArrayAux);
     let arrayOfPersonnelToPush: any = [];
     let x = 0;
     let cantidad = -1;
@@ -2134,7 +2007,6 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
           personnelListArray[x]?.fk_departamento?.nombre +
           " - " +
           personnelListArray[x]?.fk_cargo?.nombre;
-        //console.log("x1", personDepartment);
       }
       x++;
     }
@@ -2151,13 +2023,10 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
     } else {
       //remove from array the added object
     }
-
-    console.log("personnelToPostArray", personnelToPostArray);
   };
   const GetTaskDataForPDF = (indexTurnaroundData: any) => {
     let y: any = [];
     let cont = 0;
-    console.log("tasksCompletionValues", tasksCompletionValues);
     tasksCompletionValues.map((index: any) => {
       cont++;
       y[index?.key] = (
@@ -2661,12 +2530,10 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
                   }, 5000);
                 } else {
                   if (findPersonInPostArray(index?.id)) {
-                    console.log("entro al remover");
                     await removePersonfromPage(index?.id);
                     await setcheckTask(false);
                     await setcheckTaskID(checkTaskID - 1);
                   } else {
-                    console.log("entro al anadir");
                     await addPersonToPage(index?.id);
                     await setcheckTask(true);
                     await setcheckTaskID(index?.id);
@@ -2710,10 +2577,7 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
     let enoughMachines = false;
 
     machinesToPostArray.map((index: any) => {
-      console.log("machinesToPostArray", machinesToPostArray);
-
       if (index?.categoryID === machineCategoryID) {
-        console.log("index?.machineName", index?.machineName);
         enoughMachines = true;
         y[index?.id] = (
           <div key={index?.id} className={styles.machineContainerNoHover}>
@@ -2735,7 +2599,6 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
       if (auxtitle === index?.fk_usuario?.fk_departamento?.nombre) {
         auxtitleBoolean = false;
       }
-      console.log("index personal ", index);
       if (
         index?.fk_usuario?.fk_user?.first_name != undefined ||
         index?.fk_usuario?.fk_user?.last_name != undefined ||
@@ -3649,7 +3512,6 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
           <div
             className={styles.openDetailContainer}
             onClick={() => {
-              console.log("se hizo click en vermas", index);
               setlateCodeValue(
                 index?.fk_codigos_demora?.identificador +
                   " - " +

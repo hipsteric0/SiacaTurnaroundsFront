@@ -15,15 +15,14 @@ import SiacaNavbar from "@/components/Reusables/Navbar/SiacaNavbar";
 import StandardInputV2 from "@/components/Reusables/StandardInputV2";
 import BackArrow from "@/components/Reusables/BackArrow";
 
-import LoadingScreen from '../../Reusables/LoadingScreen';
+import LoadingScreen from "../../Reusables/LoadingScreen";
 
 interface PageProps {
   setStep: (value: number) => void;
-  cityID : number;
+  cityID: number;
 }
 
-const RegisterCity: React.FC<PageProps> = ({ setStep , cityID}) => {
-
+const RegisterCity: React.FC<PageProps> = ({ setStep, cityID }) => {
   useEffect(() => {
     getList();
   }, []);
@@ -38,9 +37,7 @@ const RegisterCity: React.FC<PageProps> = ({ setStep , cityID}) => {
 
   const [loading, setLoading] = useState(false);
 
-
   let responseValue = false;
-
 
   const getList = async () => {
     const fetchData = async () => {
@@ -56,7 +53,6 @@ const RegisterCity: React.FC<PageProps> = ({ setStep , cityID}) => {
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
             setArrayList(Object.values(result));
-            console.log("result", result);
 
             setCodigoIATA(result?.codigo);
             setCodigoOACI(result?.codigo_oaci);
@@ -64,9 +60,7 @@ const RegisterCity: React.FC<PageProps> = ({ setStep , cityID}) => {
             setPais(result?.pais);
             setCiudad(result?.nombre);
 
-
             if (result?.[0]?.["status"] === 400) {
-              console.log("entro");
             } else {
             }
           })
@@ -101,7 +95,6 @@ const RegisterCity: React.FC<PageProps> = ({ setStep , cityID}) => {
             responseValue = false;
           } else {
             responseValue = true;
-            console.log("value", value)
           }
           return true;
         });
@@ -119,11 +112,9 @@ const RegisterCity: React.FC<PageProps> = ({ setStep , cityID}) => {
   };
 
   const continueButton = () => {
-
     registerCities();
     setLoading(true);
     router.reload();
- 
   };
 
   const Back = () => {
@@ -177,7 +168,6 @@ const RegisterCity: React.FC<PageProps> = ({ setStep , cityID}) => {
         <GreenButton
           executableFunction={() => continueButton()}
           buttonText="Registrar"
-          
         />
         {loading && <LoadingScreen />}
       </div>
@@ -186,5 +176,3 @@ const RegisterCity: React.FC<PageProps> = ({ setStep , cityID}) => {
 };
 
 export default RegisterCity;
-
-

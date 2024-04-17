@@ -16,7 +16,7 @@ import { imageConfigDefault } from "next/dist/shared/lib/image-config";
 import DropdownMenu from "@/components/Reusables/DropdownMenu";
 import BackArrow from "@/components/Reusables/BackArrow";
 
-import LoadingScreen from '../../Reusables/LoadingScreen';
+import LoadingScreen from "../../Reusables/LoadingScreen";
 
 interface PageProps {
   setStep: (value: number) => void;
@@ -67,11 +67,9 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log("result", result);
             setArrayList3(Object.values(result));
             formatMachinesList(Object.values(result));
             if (result?.[0]?.["status"] === 400) {
-              console.log("entro");
             } else {
             }
           })
@@ -85,28 +83,31 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep }) => {
     await fetchData().catch(console.error);
   };
 
-
   const newMachine = () => {
     const uploadData = new FormData();
-    
-    uploadData.append('identificador', identificador);
-    uploadData.append('modelo', modelo);
-    uploadData.append('combustible', combustible);
-    uploadData.append('fk_categoria', fkcategoria);
-    uploadData.append('estado', estado)
+
+    uploadData.append("identificador", identificador);
+    uploadData.append("modelo", modelo);
+    uploadData.append("combustible", combustible);
+    uploadData.append("fk_categoria", fkcategoria);
+    uploadData.append("estado", estado);
 
     // Agregar el campo "imagen" solo si hay una imagen seleccionada
     if (imagen !== null) {
-      uploadData.append('imagen', imagen);
+      uploadData.append("imagen", imagen);
     }
 
-    fetch('http://127.0.0.1:8000/maquinarias/?token='+localStorage.getItem("userToken"), {
-      method: 'POST',
-      body: uploadData
-    })
-    .then( res => console.log(res))
-    .catch(error => console.log(error))
-  }
+    fetch(
+      "http://127.0.0.1:8000/maquinarias/?token=" +
+        localStorage.getItem("userToken"),
+      {
+        method: "POST",
+        body: uploadData,
+      }
+    )
+      .then((res) => console.log(res))
+      .catch((error) => console.log(error));
+  };
 
   const continueButton = () => {
     setLoading(true);
@@ -129,8 +130,6 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep }) => {
   const subirArchivo = (e: any) => {
     setImagen(e.target.files[0]);
     setPreview(URL.createObjectURL(e.target.files[0]));
-    console.log('Imagen', URL.createObjectURL(e.target.files[0]));
-    console.log('Image', e.target.files[0]);
   };
 
   const Back = () => {
@@ -146,20 +145,26 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep }) => {
             Back();
           }}
         />
-         {loading && <LoadingScreen />}
+        {loading && <LoadingScreen />}
       </div>
       <div className={styles.machinesListContainer}>
         <span className={styles.titleTextImagen}>Imagen</span>
 
         <div className={styles.inputsListImage}>
-        <input type="file" name="Archivos" onChange={(e : any)=>subirArchivo(e)}/>
-        {preview && (
-        <div>
-         <center><img src={preview} alt="Preview" width={200} height={200}/></center> 
-        </div>
-      )}
+          <input
+            type="file"
+            name="Archivos"
+            onChange={(e: any) => subirArchivo(e)}
+          />
+          {preview && (
+            <div>
+              <center>
+                <img src={preview} alt="Preview" width={200} height={200} />
+              </center>
+            </div>
+          )}
 
-{/*          <div className={styles.uploadContainer}>
+          {/*          <div className={styles.uploadContainer}>
             <DriveFolderUploadRoundedIcon fontSize="inherit" />
             <div className={styles.uploadCancelButtons}>
               <FileUploadRoundedIcon htmlColor="#08a75a" />

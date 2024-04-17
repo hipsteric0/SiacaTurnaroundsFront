@@ -14,7 +14,7 @@ import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import SiacaNavbar from "@/components/Reusables/Navbar/SiacaNavbar";
 import BackArrow from "@/components/Reusables/BackArrow";
 
-import LoadingScreen from '../../Reusables/LoadingScreen';
+import LoadingScreen from "../../Reusables/LoadingScreen";
 
 interface PageProps {
   setStep: (value: number) => void;
@@ -29,7 +29,6 @@ const RegisterCity: React.FC<PageProps> = ({ setStep }) => {
   const [pais, setPais] = useState("");
 
   const [loading, setLoading] = useState(false);
-
 
   let responseValue = false;
 
@@ -53,7 +52,6 @@ const RegisterCity: React.FC<PageProps> = ({ setStep }) => {
             responseValue = false;
           } else {
             responseValue = true;
-            console.log("value", value)
           }
           return true;
         });
@@ -71,11 +69,9 @@ const RegisterCity: React.FC<PageProps> = ({ setStep }) => {
   };
 
   const continueButton = () => {
-
     registerCities();
     setLoading(true);
     router.reload();
- 
   };
 
   const Back = () => {
@@ -96,23 +92,22 @@ const RegisterCity: React.FC<PageProps> = ({ setStep }) => {
       <div className={styles.airlinesListContainer}>
         <span className={styles.titleText}>Codigos</span>
         <div className={styles.inputsList}>
-          <StandardInput setValue={setCodigoIATA} inputText="IATA" inputMaxLength="3"/>
-          <StandardInput setValue={setCodigoOACI} inputText="OACI" inputMaxLength="4"/>
+          <StandardInput
+            setValue={setCodigoIATA}
+            inputText="IATA"
+            inputMaxLength="3"
+          />
+          <StandardInput
+            setValue={setCodigoOACI}
+            inputText="OACI"
+            inputMaxLength="4"
+          />
         </div>
         <span className={styles.titleText}>Datos</span>
         <div className={styles.inputsList}>
-          <StandardInput
-            setValue={setCiudad}
-            inputText="Ciudad"
-          />
-          <StandardInput
-            setValue={setPais}
-            inputText="País"
-          />
-          <StandardInput
-            setValue={setAeropuerto}
-            inputText="Aeropuerto"
-          />
+          <StandardInput setValue={setCiudad} inputText="Ciudad" />
+          <StandardInput setValue={setPais} inputText="País" />
+          <StandardInput setValue={setAeropuerto} inputText="Aeropuerto" />
         </div>
       </div>
       <div className={styles.registerbuttoncontainer}>
@@ -124,9 +119,8 @@ const RegisterCity: React.FC<PageProps> = ({ setStep }) => {
             codigoOACI === "" ||
             ciudad === "" ||
             pais === "" ||
-            aeropuerto === "" 
+            aeropuerto === ""
           }
-          
         />
         {loading && <LoadingScreen />}
       </div>
@@ -135,5 +129,3 @@ const RegisterCity: React.FC<PageProps> = ({ setStep }) => {
 };
 
 export default RegisterCity;
-
-

@@ -158,8 +158,7 @@ export default async function handler(
       body?.["turnaroundID"] +
       `/?token=` +
       body?.["userToken"];
-    console.log("fetchOptions", fetchOptions);
-    console.log("url", url);
+
     // Make the actual request to backend
     const response = await fetch(url, fetchOptions);
 

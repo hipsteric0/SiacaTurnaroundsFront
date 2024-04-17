@@ -58,7 +58,6 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
     let role = localStorage.getItem("userRole");
     if (role != null) {
       setRoleID(parseInt(role));
-      console.log("se coloco el rol", role);
     }
   }, []);
 
@@ -170,12 +169,10 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
     currentTimestamp.getDate();
   const handleScanSuccess = (e: any) => {
     setResult(e);
-    console.log("CODIGO QR", result);
   };
 
   const handlePhoto = (dataUrl: any) => {
     setPhoto(dataUrl);
-    console.log("Photo data:", photo);
   };
 
   let filterValues: any[] = [];
@@ -196,11 +193,9 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            //console.log("turnarounds list", Object.values(result));
             setArrayList3(Object.values(result));
 
             if (result?.[0]?.["status"] === 400) {
-              console.log("entro");
             } else {
             }
           })
@@ -227,10 +222,8 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            //console.log("Machines By Turnaround list", result);
             setPersonneByTurnaroundArrayList(Object.values(result));
             if (result?.[0]?.["status"] === 400) {
-              console.log("entro");
             } else {
             }
           })
@@ -247,7 +240,6 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
   const getAssistanceByTurnaround = async (turnaroundID: any) => {
     const fetchData = async () => {
       try {
-        console.log("openDetailDialogID", openDetailDialogID);
         const url = "/api/getAssistanceByID";
         const requestOptions = {
           method: "POST",
@@ -260,7 +252,6 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log("assistnace request", result);
             setassistanceInTurnaround(result?.value);
           })
         );
@@ -285,7 +276,6 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
             setPersonnelListArray(Object.values(result));
-            //console.log("Personnel List Array", result);
           })
         );
       } catch (error) {
@@ -309,9 +299,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
           }),
         };
         const response = await fetch(url, requestOptions).then((res) =>
-          res.json().then((result) => {
-            //console.log("Personnel List Array", result);
-          })
+          res.json().then((result) => {})
         );
       } catch (error) {
         console.error("Error geting user", error);
@@ -346,10 +334,8 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log("machines list", result);
             setMachinesarrayList(Object.values(result));
             if (result?.[0]?.["status"] === 400) {
-              console.log("entro");
             } else {
             }
           })
@@ -378,11 +364,9 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            //console.log("machines reservation list", result);
             setMachinesReservationsarrayList(Object.values(result));
 
             if (result?.[0]?.["status"] === 400) {
-              console.log("entro");
             } else {
             }
           })
@@ -411,11 +395,9 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            //console.log("personnel reservation list", result);
             setPersonnelReservationsarrayList(Object.values(result));
 
             if (result?.[0]?.["status"] === 400) {
-              console.log("entro");
             } else {
             }
           })
@@ -441,10 +423,8 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            //console.log("getPersonnelDepartments", result);
             setPersonnelDepartmentsarrayList(Object.values(result));
             if (result?.[0]?.["status"] === 400) {
-              console.log("entro");
             } else {
             }
           })
@@ -471,10 +451,8 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            //console.log("MachinesQuantityByTemplatearrayList", result);
             setMachinesQuantityByTemplatearrayList(Object.values(result));
             if (result?.[0]?.["status"] === 400) {
-              console.log("entro");
             } else {
             }
           })
@@ -501,10 +479,8 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            //console.log("templateTasks list", result);
             setTasksarrayList(Object.values(result));
             if (result?.[0]?.["status"] === 400) {
-              console.log("entro");
             } else {
             }
           })
@@ -531,10 +507,8 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            //console.log("Machines By Turnaround list", result);
             setMachinesByTurnaroundArrayList(Object.values(result));
             if (result?.[0]?.["status"] === 400) {
-              console.log("entro");
             } else {
             }
           })
@@ -565,10 +539,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            //console.log("Guardar", result);
-
             if (result?.[0]?.["status"] === 400) {
-              console.log("entro");
             } else {
             }
           })
@@ -595,10 +566,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            //console.log("Guardar", result);
-
             if (result?.[0]?.["status"] === 400) {
-              console.log("entro");
             } else {
             }
           })
@@ -625,10 +593,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            // console.log("Guardar", result);
-
             if (result?.[0]?.["status"] === 400) {
-              console.log("entro");
             } else {
             }
           })
@@ -659,10 +624,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            //console.log("Guardar", result);
-
             if (result?.[0]?.["status"] === 400) {
-              console.log("entro");
             } else {
             }
           })
@@ -695,10 +657,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            //("postTaskResolutionComment", result);
-
             if (result?.[0]?.["status"] === 400) {
-              console.log("entro");
             } else {
             }
           })
@@ -731,10 +690,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            //console.log("postTaskResolutionSimpleCheck", result);
-
             if (result?.[0]?.["status"] === 400) {
-              console.log("entro");
             } else {
             }
           })
@@ -769,10 +725,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            //console.log("postTaskResolutionDoubleCheck", result);
-
             if (result?.[0]?.["status"] === 400) {
-              console.log("entro");
             } else {
             }
           })
@@ -800,7 +753,6 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
             formatTasksForPDFArray(result);
-            //console.log("getTasksCompletionsList  Array", result);
           })
         );
       } catch (error) {
@@ -829,9 +781,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
           }),
         };
         const response = await fetch(url, requestOptions).then((res) =>
-          res.json().then((result) => {
-            console.log("patchFinishHourDate Array", result);
-          })
+          res.json().then((result) => {})
         );
       } catch (error) {
         console.error("Error geting user", error);
@@ -859,9 +809,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
           }),
         };
         const response = await fetch(url, requestOptions).then((res) =>
-          res.json().then((result) => {
-            console.log("patchFinishHourDate Array", result);
-          })
+          res.json().then((result) => {})
         );
       } catch (error) {
         console.error("Error geting user", error);
@@ -954,7 +902,6 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
     let y: any[] = [];
 
     result?.comentarios.map((value: any) => {
-      //console.log("value", value);
       y.push({
         key: value?.fk_subtarea__id,
         name: value?.fk_subtarea__titulo,
@@ -962,7 +909,6 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
       });
     });
     result?.horas.map((value: any) => {
-      //console.log("value", value);
       y.push({
         key: value?.fk_subtarea__id,
         name: value?.fk_subtarea__titulo,
@@ -970,7 +916,6 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
       });
     });
     result?.horas_inicio_fin.map((value: any) => {
-      //console.log("value", value);
       y.push({
         key: value?.fk_subtarea__id,
         name: value?.fk_subtarea__titulo,
@@ -991,7 +936,6 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
   const ArrayPrinterTaskDataForSummary = () => {
     let y: any = [];
     let cont = 0;
-    console.log("tasksCompletionValues", tasksCompletionValues);
     tasksCompletionValues.map((index: any) => {
       cont++;
       y[index?.key] = (
@@ -1014,7 +958,6 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
       (date.getMonth() + 1).toString() +
       " - " +
       date.getFullYear().toString();
-    console.log("userToken", localStorage.getItem("userToken"));
     setdateState(x);
     return <></>;
   };
@@ -1351,7 +1294,6 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         machineCategory = machinesarrayList[x]?.fk_categoria?.id;
         //push into array the machine added
         nombre = machinesarrayList[x]?.identificador;
-        console.log("x1", machineCategory);
       }
       x++;
     }
@@ -1542,7 +1484,6 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
       if (auxtitle === index?.fk_usuario?.fk_departamento?.nombre) {
         auxtitleBoolean = false;
       }
-      console.log("index personal ", index);
       if (
         index?.fk_usuario?.fk_user?.first_name != undefined ||
         index?.fk_usuario?.fk_user?.last_name != undefined ||
@@ -1689,7 +1630,6 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
               setsubtaskIDForchange(idSubtarea);
               setsubtaskTitleForchange(title);
               setmanualHourDialog(true);
-              console.log("Se hizo tap en ", idSubtarea, title);
             }}
           >
             Inicio: {result[0]?.timestamp}
@@ -1790,7 +1730,6 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
               setsubtaskIDForchange(idSubtarea);
               setsubtaskTitleForchange(title);
               //
-              console.log("Se hizo tap en ", idSubtarea, title);
             }}
           >
             Inicio: {result[0]?.timestampStart}
@@ -1883,7 +1822,6 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
               setsubtaskIDForchange(idSubtarea);
               setsubtaskTitleForchange(title);
               //
-              console.log("Se hizo tap en ", idSubtarea, title);
             }}
           >
             Fin: {result[0]?.timestampEnd}
@@ -1944,7 +1882,6 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
       );
       setArrayOfCheckedHours(filteredArray);
     }
-    console.log("arrayOfCheckedHours", arrayOfCheckedHours);
   };
 
   const SetTaskArrayChecks2 = (
@@ -1952,14 +1889,6 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
     tituloSubtarea: any,
     manualTime: string
   ) => {
-    console.log(
-      "se va a proceder a cambiar la subtarea" +
-        tituloSubtarea +
-        " de id: " +
-        idSubtarea +
-        " con la hora : " +
-        manualTime
-    );
     let auxiliaryArray = [];
     auxiliaryArray = arrayOfCheckedHours; //array con las que ya estan checkeadas
 
@@ -1977,8 +1906,6 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
       timestamp: manualTime,
     });
     setArrayOfCheckedHours(filteredArray);
-
-    console.log("arrayOfCheckedHours", arrayOfCheckedHours);
   };
 
   const SetTaskArrayChecksOnlyStart = (
@@ -2014,7 +1941,6 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
       );
       setArrayOfCheckedHoursStartEnd(filteredArray);
     }
-    console.log("arrayOfCheckedHoursStartEnd", arrayOfCheckedHoursStartEnd);
   };
 
   const SetTaskArrayChecksOnlyStart2 = (
@@ -2040,7 +1966,6 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
       timestampEnd: "",
     });
     setArrayOfCheckedHoursStartEnd(filteredArray);
-    console.log("arrayOfCheckedHoursStartEnd", filteredArray);
   };
 
   const SetTaskArrayChecksOnlyEnd = (idSubtarea: any, tituloSubtarea: any) => {
@@ -2075,7 +2000,6 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         auxiliaryArray.find((o) => o.key === idSubtarea).timestampEnd = "";
       }
     }
-    console.log("arrayOfCheckedHoursStartEnd", arrayOfCheckedHoursStartEnd);
   };
 
   const SetTaskArrayChecksOnlyEnd2 = (
@@ -2095,8 +2019,6 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
       timestampToEdit;
 
     setArrayOfCheckedHoursStartEnd(auxiliaryArray);
-
-    console.log("arrayOfCheckedHoursStartEnd changed", auxiliaryArray);
   };
 
   const SetTaskArrayImages = (idSubtarea: any, metadataBlob: any) => {
@@ -2221,7 +2143,6 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                 {
                   <Camera
                     onPhoto={(e: any) => {
-                      console.log("URL", e);
                       SetTaskArrayImages(index?.id, e);
                     }}
                   />
@@ -2231,7 +2152,6 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                   name="Archivos"
                   className={styles.imageInputContainer}
                   onChange={(e: any) => {
-                    console.log("IMAGEN", e.target.files[0]);
                     SetTaskArrayImages(index?.id, e.target.files[0]);
                   }}
                 />
@@ -2253,7 +2173,6 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
     let count = 0;
 
     arrayAsistencia.map((index: any) => {
-      console.log("ARRAY", index);
       y[count] = <p className={styles.idListValueText}>• Cédula: {index}</p>;
       count++;
     });

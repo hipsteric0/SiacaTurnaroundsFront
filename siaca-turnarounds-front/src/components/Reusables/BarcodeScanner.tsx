@@ -47,7 +47,6 @@ const BarcodeScanner = ({ onQR }) => {
     setCode("");
     onQR("");
     setIsCameraActive(false);
-    console.log("Reset.");
   };
 
   const startCamera = () => {
@@ -75,7 +74,6 @@ const BarcodeScanner = ({ onQR }) => {
             err instanceof ChecksumException ||
             err instanceof FormatException
           ) {
-            console.log("No QR code found.");
           } else {
             console.error(err);
           }
@@ -83,8 +81,6 @@ const BarcodeScanner = ({ onQR }) => {
       };
 
       decodeFromInputDevice();
-
-      console.log(`Started decode from camera with id ${selectedDeviceId}`);
     }
   }, [selectedDeviceId, isCameraActive]);
 

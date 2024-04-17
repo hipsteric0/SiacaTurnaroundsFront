@@ -12,7 +12,6 @@ const UnauthorizedPage: React.FC<PageProps> = ({}) => {
     let role = localStorage.getItem("userRole");
     if (role != null) {
       setRoleID(parseInt(role));
-      console.log("se coloco el rol", role);
     }
   }, []);
 

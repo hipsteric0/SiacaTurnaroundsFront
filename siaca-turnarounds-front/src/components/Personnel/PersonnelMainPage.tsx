@@ -47,7 +47,6 @@ const PersonnelMainPage: React.FC = () => {
     let role = localStorage.getItem("userRole");
     if (role != null) {
       setRoleID(parseInt(role));
-      console.log("se coloco el rol", role);
     }
   }, []);
 
@@ -778,7 +777,6 @@ const PersonnelMainPage: React.FC = () => {
     lateCodesData?.map((element: any) => {
       if (element?.rol === identificadorAuxiliar) {
         setlateCodeValueIDforPatchUpdate(element?.id);
-        console.log("el ID clickeado es ", element?.id);
       }
     });
   };
@@ -795,7 +793,6 @@ const PersonnelMainPage: React.FC = () => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            console.log("getLateCodesList", result);
             setlateCodesOptions(Object.values(result));
             setlateCodesData(Object.values(result));
           })
@@ -814,7 +811,6 @@ const PersonnelMainPage: React.FC = () => {
       auxiliaryArray.push((element?.rol).toString());
     });
     setlateCodesArray(auxiliaryArray);
-    console.log("auxiliaryArray", auxiliaryArray);
   };
 
   const patchLateCode = async (userID: any) => {
@@ -830,9 +826,7 @@ const PersonnelMainPage: React.FC = () => {
           }),
         };
         const response = await fetch(url, requestOptions).then((res) =>
-          res.json().then((result) => {
-            console.log("patchLateCode", result);
-          })
+          res.json().then((result) => {})
         );
       } catch (error) {
         console.error("Error geting user", error);

@@ -22,7 +22,6 @@ const DropdownMenu: React.FC<PageProps> = ({
   const getOptions = () => {
     let y: any = [];
     optionsArray.map((value: any) => {
-      //console.log("value", value);
       return (y[value.key] = (
         <>
           <p

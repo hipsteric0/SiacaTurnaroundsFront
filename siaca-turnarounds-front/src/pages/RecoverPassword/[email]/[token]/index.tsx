@@ -14,8 +14,6 @@ export default function Flights() {
   const { query } = useRouter();
   const token = query.token;
   const email = query.email;
-  console.log("token", token);
-  console.log("email", email);
 
   const [step, setStep] = useState(1);
   const [emailValue, setEmailValue] = useState("");

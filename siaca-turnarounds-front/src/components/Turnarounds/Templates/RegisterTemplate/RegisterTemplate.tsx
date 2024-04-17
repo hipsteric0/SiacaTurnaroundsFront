@@ -58,9 +58,6 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            //console.log(result);
-            //console.log("result.id", result.id);
-            //plantillaId = result.id;
             setplantillaId(result.id);
           })
         );
@@ -86,8 +83,6 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            //console.log(result);
-            //console.log("result.id", result.id);
             tasksArray[indexTaskArray].tareaIDforDB = result.id;
           })
         );
@@ -117,10 +112,7 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
           }),
         };
         const response = await fetch(url, requestOptions).then((res) =>
-          res.json().then((result) => {
-            //console.log(result);
-            // console.log("result.id", result.id);
-          })
+          res.json().then((result) => {})
         );
       } catch (error) {
         console.error("Error geting user", error);
@@ -142,9 +134,7 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
           }),
         };
         const response = await fetch(url, requestOptions).then((res) =>
-          res.json().then((result) => {
-            //console.log("category", result);
-          })
+          res.json().then((result) => {})
         );
       } catch (error) {
         console.error("Error geting user", error);
@@ -172,9 +162,7 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
           }),
         };
         const response = await fetch(url, requestOptions).then((res) =>
-          res.json().then((result) => {
-            // console.log("category", result);
-          })
+          res.json().then((result) => {})
         );
       } catch (error) {
         console.error("Error geting user", error);
@@ -196,7 +184,6 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            // console.log("machineryCounter", result);
             setmachineryCounter(result.contador);
           })
         );
@@ -236,7 +223,6 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
       hasInput: true,
     });
     sethhandleMachineryAvailable(machinesArray.length);
-    //console.log("machinesArray", machinesArray);
   };
 
   const handleAddMachineryItem = async (index: number) => {
@@ -366,12 +352,10 @@ const RegisterTemplate: React.FC<PageProps> = ({ setStep }) => {
     typeValue: number
   ) => {
     tasksArray[taskPosition].subtasks[subtaskPosition].type = typeValue;
-    //console.log("tasksArray", tasksArray);
   };
 
   const getTareasArray = () => {
     let y: any = [];
-    //console.log("tasksArray", tasksArray);
     tasksArray.map((value: any) => {
       let currentArrayPosition = value.id;
 
