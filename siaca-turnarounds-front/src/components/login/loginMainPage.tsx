@@ -98,8 +98,8 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
               </div>
               <p>
                 <strong>
-                  Su usuario no se encuentra activo o sus datos son erroneos,
-                  intentelo de nuevo
+                  Su usuario no se encuentra activo o sus datos son erróneos,
+                  inténtelo de nuevo
                 </strong>
               </p>
               <br />
