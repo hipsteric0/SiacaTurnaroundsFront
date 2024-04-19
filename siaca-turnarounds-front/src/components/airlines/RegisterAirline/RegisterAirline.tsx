@@ -85,7 +85,7 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep }) => {
   const continueButton = () => {
     newAirline();
     setLoading(true);
-    //router.reload();
+    router.reload();
   };
 
   const subirArchivo = (e: any) => {
