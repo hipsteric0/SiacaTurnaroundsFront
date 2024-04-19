@@ -82,7 +82,10 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep }) => {
         console.log(res);
         router.reload();
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console.log(error);
+        router.reload();
+      });
   };
 
   const continueButton = () => {
