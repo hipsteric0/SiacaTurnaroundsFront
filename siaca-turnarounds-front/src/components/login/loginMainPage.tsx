@@ -33,7 +33,7 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
   let validLogin = false;
   const validateLogin = () => {
     registerStep2requestSecond();
-    setLoading(true);
+
     setTimeout(() => {
       if (validLogin) {
         localStorage.setItem("userToken", token);
@@ -155,6 +155,7 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
       <button
         className={styles.ingresarButton}
         onClick={() => {
+          setLoading(true);
           validateLogin();
         }}
       >

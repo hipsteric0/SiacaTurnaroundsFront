@@ -833,6 +833,7 @@ const PersonnelMainPage: React.FC = () => {
         );
       } catch (error) {
         console.error("Error geting user", error);
+        router.reload();
         return;
       }
     };
