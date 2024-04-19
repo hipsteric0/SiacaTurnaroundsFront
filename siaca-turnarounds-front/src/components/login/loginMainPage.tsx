@@ -32,6 +32,7 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
 
   let validLogin = false;
   const validateLogin = () => {
+    setLoading(true);
     registerStep2requestSecond();
 
     setTimeout(() => {
@@ -42,6 +43,7 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
         localStorage.setItem("cedula", cedula?.toString());
         router.push("/Flights");
       } else {
+        setLoading(false);
         setLoginError(true);
       }
     }, 5000);
@@ -64,7 +66,7 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
             token = result?.token;
             userFullName = result?.first_name + " " + result?.last_name;
             role = result?.rol;
-            cedula = result?.cedula.toString();
+            cedula = result?.cedula;
           })
         );
       } catch (error) {
@@ -97,8 +99,8 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
               </div>
               <p>
                 <strong>
-                  Su usuario no se encuentra activo o sus datos son erróneos,
-                  inténtelo de nuevo
+                  Su usuario no se encuentra activo o sus datos son erroneos,
+                  intentelo de nuevo
                 </strong>
               </p>
               <br />
@@ -155,7 +157,6 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
       <button
         className={styles.ingresarButton}
         onClick={() => {
-          setLoading(true);
           validateLogin();
         }}
       >

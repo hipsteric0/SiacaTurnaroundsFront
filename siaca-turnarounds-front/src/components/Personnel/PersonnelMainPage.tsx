@@ -36,7 +36,6 @@ import Divider from "@mui/material/Divider";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import { AccessAlarmOutlined } from "@mui/icons-material";
-import router from "next/router";
 
 interface PageProps {
   setStep: (value: number) => void;
