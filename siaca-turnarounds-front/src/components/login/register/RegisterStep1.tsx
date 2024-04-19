@@ -100,7 +100,7 @@ const LoginMainPage: React.FC<PageProps> = ({
     e.preventDefault();
     const inputEmail = e.target.value;
     setEmail(inputEmail);
-    fetch(`http://127.0.0.1:8000/usuarios/correos/`)
+    fetch(`https://testing.siaca.aero/django/usuarios/correos/`)
       .then((response) => response.json())
       .then((data) => {
         // Compureba si el correo se encuentra en el array de los correos registrados

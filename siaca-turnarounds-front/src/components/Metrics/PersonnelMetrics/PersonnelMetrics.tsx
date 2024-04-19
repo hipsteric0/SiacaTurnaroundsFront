@@ -107,7 +107,7 @@ const PersonnelMetrics: React.FC<PageProps> = ({ setStep }) => {
 
   const handleButtonClickSearch = () => {
     fetch(
-      `http://127.0.0.1:8000/metricas/personal/${dayStart}/${dayFinal}/?token=` +
+      `https://testing.siaca.aero/django/metricas/personal/${dayStart}/${dayFinal}/?token=` +
         localStorage.getItem("userToken")
     )
       .then((response) => response.json())

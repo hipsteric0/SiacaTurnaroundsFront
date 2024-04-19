@@ -71,7 +71,7 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep }) => {
     }
 
     fetch(
-      "http://127.0.0.1:8000/aerolineas/?token=" +
+      "https://testing.siaca.aero/django/aerolineas/?token=" +
         localStorage.getItem("userToken"),
       {
         method: "POST",

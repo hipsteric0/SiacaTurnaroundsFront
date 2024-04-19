@@ -228,7 +228,7 @@ const SLAMetricsFlights: React.FC<PageProps> = ({ setStep }) => {
 
   const handleButtonClickStart = () => {
     fetch(
-      `http://127.0.0.1:8000/metricas/vuelos-on-time/?token=` +
+      `https://testing.siaca.aero/django/metricas/vuelos-on-time/?token=` +
         localStorage.getItem("userToken")
     )
       .then((response) => response.json())

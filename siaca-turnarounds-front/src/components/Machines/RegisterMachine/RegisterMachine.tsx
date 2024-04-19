@@ -98,7 +98,7 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep }) => {
     }
 
     fetch(
-      "http://127.0.0.1:8000/maquinarias/?token=" +
+      "https://testing.siaca.aero/django/maquinarias/?token=" +
         localStorage.getItem("userToken"),
       {
         method: "POST",

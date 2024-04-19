@@ -227,7 +227,7 @@ const SLAMetricsTemplate: React.FC<PageProps> = ({ setStep }) => {
 
   const handleButtonClickStart = () => {
     fetch(
-      `http://127.0.0.1:8000/metricas/tiempo-vuelos-hora-inicio/${code}/${date}/?token=` +
+      `https://testing.siaca.aero/django/metricas/tiempo-vuelos-hora-inicio/${code}/${date}/?token=` +
         localStorage.getItem("userToken")
     )
       .then((response) => response.json())
@@ -237,7 +237,7 @@ const SLAMetricsTemplate: React.FC<PageProps> = ({ setStep }) => {
 
   const handleButtonClickStartFinish = () => {
     fetch(
-      `http://127.0.0.1:8000/metricas/tiempo-vuelos-hora-inicio-fin/${code}/${date}/?token=` +
+      `https://testing.siaca.aero/django/metricas/tiempo-vuelos-hora-inicio-fin/${code}/${date}/?token=` +
         localStorage.getItem("userToken")
     )
       .then((response) => response.json())

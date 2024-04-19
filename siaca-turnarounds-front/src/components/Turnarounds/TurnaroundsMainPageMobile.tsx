@@ -830,7 +830,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
     uploadData.append("fk_subtarea", subtaskID);
 
     fetch(
-      "http://127.0.0.1:8000/documentos/imagen/?token=" +
+      "https://testing.siaca.aero/django/documentos/imagen/?token=" +
         localStorage.getItem("userToken"),
       {
         method: "POST",
