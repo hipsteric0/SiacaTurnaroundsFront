@@ -78,7 +78,10 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep }) => {
         body: uploadData,
       }
     )
-      .then((res) => console.log(res))
+      .then((res) => {
+        console.log(res);
+        router.reload();
+      })
       .catch((error) => console.log(error));
   };
 
