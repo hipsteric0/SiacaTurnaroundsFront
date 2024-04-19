@@ -84,7 +84,7 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep }) => {
     await fetchData().catch(console.error);
   };
 
-  const newMachine = () => {
+  const newMachine = async () => {
     const uploadData = new FormData();
 
     uploadData.append("identificador", identificador);
@@ -98,7 +98,7 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep }) => {
       uploadData.append("imagen", imagen);
     }
 
-    fetch(
+    await fetch(
       "https://testing.siaca.aero/django/maquinarias/?token=" +
         localStorage.getItem("userToken"),
       {
@@ -106,14 +106,20 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep }) => {
         body: uploadData,
       }
     )
-      .then((res) => console.log(res))
-      .catch((error) => console.log(error));
+      .then((res) => {
+        console.log(res);
+        router.reload();
+      })
+      .catch((error) => {
+        console.log(error);
+        router.reload();
+      });
   };
 
-  const continueButton = () => {
+  const continueButton = async () => {
     setLoading(true);
-    newMachine();
-    router.reload();
+    await newMachine();
+    //router.reload();
   };
 
   const category = (id: number) => {
