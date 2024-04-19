@@ -69,6 +69,7 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep }) => {
           res.json().then((result) => {
             setArrayList3(Object.values(result));
             formatMachinesList(Object.values(result));
+            console.log(result);
             if (result?.[0]?.["status"] === 400) {
             } else {
             }
@@ -112,7 +113,7 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep }) => {
   const continueButton = () => {
     setLoading(true);
     newMachine();
-    router.reload();
+    //router.reload();
   };
 
   const category = (id: number) => {
