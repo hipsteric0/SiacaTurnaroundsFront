@@ -33,10 +33,9 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
   let validLogin = false;
   const validateLogin = () => {
     registerStep2requestSecond();
-
+    setLoading(true);
     setTimeout(() => {
       if (validLogin) {
-        setLoading(true);
         localStorage.setItem("userToken", token);
         localStorage.setItem("userFullName", userFullName);
         localStorage.setItem("userRole", role?.toString());

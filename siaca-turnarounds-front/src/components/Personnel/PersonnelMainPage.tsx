@@ -459,7 +459,6 @@ const PersonnelMainPage: React.FC = () => {
                       executableFunction={() => {
                         patchLateCode(clickID);
                         setRoleDialog(false);
-                        router.reload();
                       }}
                       buttonText="Aceptar"
                     />
@@ -828,7 +827,9 @@ const PersonnelMainPage: React.FC = () => {
           }),
         };
         const response = await fetch(url, requestOptions).then((res) =>
-          res.json().then((result) => {})
+          res.json().then((result) => {
+            router.reload();
+          })
         );
       } catch (error) {
         console.error("Error geting user", error);
