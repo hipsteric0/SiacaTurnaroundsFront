@@ -361,8 +361,8 @@ const AirlinesMainPage: React.FC<PageProps> = ({
             <img
               src={"https://testing.siaca.aero/django/" + index.imagen}
               alt="Logo"
-              width={50}
-              height={50}
+              width={100}
+              height={80}
             />
           </td>
           <td>{index.nombre}</td>

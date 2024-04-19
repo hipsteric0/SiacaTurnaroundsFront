@@ -3559,7 +3559,12 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
             <></>
           )}
           <div className={styles.imageContainer}>
-            {index?.fk_aerolinea?.nombre} image not found
+          <img
+              src={"https://testing.siaca.aero/django/" + index?.fk_vuelo?.fk_aerolinea?.imagen}
+              alt="Logo"
+              width={100}
+              height={80}
+            />
           </div>
           <div className={styles.column1Container}>
             <p>Vuelo:</p>

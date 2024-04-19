@@ -490,7 +490,13 @@ const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
             <p className={styles.openDetailContainerText}>Ver mas</p>
           </div>
           <div className={styles.imageContainer}>
-            {index?.fk_aerolinea?.nombre} image not found
+          <img
+              src={"https://testing.siaca.aero/django/" + index?.fk_aerolinea?.imagen}
+              alt="Logo"
+              width={100}
+              height={80}
+            />
+            <p>{index?.fk_aerolinea?.nombre}</p>
           </div>
           <div className={styles.column1Container}>
             <p>Vuelo:</p>

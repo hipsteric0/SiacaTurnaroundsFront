@@ -246,6 +246,13 @@ const MachinesMainPage: React.FC<PageProps> = ({ setStep, setmachineID }) => {
             </div>
           </div>
 
+          <img
+              src={"https://testing.siaca.aero/django/" + index.imagen}
+              alt="Imagen"
+              width={150}
+              height={150}
+            />
+
           <p className={styles.cardText}>MODELO: {index.modelo}</p>
           <p className={styles.cardText}>COMBUSTIBLE: {index.combustible}</p>
           <div className={styles.stateAndSwitchContainer}>
