@@ -112,7 +112,7 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep }) => {
   const continueButton = () => {
     setLoading(true);
     newMachine();
-    router.reload();
+    //router.reload();
   };
 
   const category = (id: number) => {
