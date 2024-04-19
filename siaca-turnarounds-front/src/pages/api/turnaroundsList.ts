@@ -164,6 +164,7 @@ export default async function handler(
       body?.["userToken"];
 
     // Make the actual request to backend
+    console.log(url, fetchOptions);
     const response = await fetch(url, fetchOptions);
 
     status = response.status;

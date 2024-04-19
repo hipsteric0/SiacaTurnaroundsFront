@@ -151,7 +151,7 @@ const PersonnelMetrics: React.FC<PageProps> = ({ setStep }) => {
           </div>
 
           <div className={styles.div3}>
-            <button onClick={Search}>Buscar maquinarias</button>
+            <button onClick={Search}>Buscar personal</button>
           </div>
         </div>
       </div>

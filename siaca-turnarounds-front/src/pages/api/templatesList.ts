@@ -154,7 +154,7 @@ export default async function handler(
 
     // Backend URL
     const url = `${BACKEND_BASE_URL}/plantillas/?token=` + body?.["userToken"];
-
+    console.log(url, fetchOptions);
     // Make the actual request to backend
     const response = await fetch(url, fetchOptions);
 

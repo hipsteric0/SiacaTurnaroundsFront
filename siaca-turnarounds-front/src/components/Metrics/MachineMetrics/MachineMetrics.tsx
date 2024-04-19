@@ -213,18 +213,21 @@ const MachineMetrics: React.FC<PageProps> = ({ setStep }) => {
     return y;
   };
 
-  const handleButtonClickSearch = () => {
-    fetch(
+  const handleButtonClickSearch = async () => {
+    await fetch(
       `https://testing.siaca.aero/django/metricas/maquinarias/${dayStart}/${dayFinal}/?token=` +
-        localStorage.getItem("userToken")
+        localStorage.getItem("userToken"),
+      {
+        headers: { "Access-Control-Allow-Origin": "*" },
+      }
     )
       .then((response) => response.json())
       .then((data) => setArrayList3(data))
       .catch((error) => console.error("Error fetching ", error));
   };
 
-  const Search = () => {
-    handleButtonClickSearch();
+  const Search = async () => {
+    await handleButtonClickSearch();
   };
 
   return (

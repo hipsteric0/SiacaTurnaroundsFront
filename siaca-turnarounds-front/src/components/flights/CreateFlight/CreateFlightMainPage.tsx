@@ -200,7 +200,12 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then(async (result) => {
-            registerTurnaround(result?.ETA_fecha, result?.ETA, result?.id, 1);
+            await registerTurnaround(
+              result?.ETA_fecha,
+              result?.ETA,
+              result?.id,
+              1
+            );
           })
         );
       } catch (error) {
