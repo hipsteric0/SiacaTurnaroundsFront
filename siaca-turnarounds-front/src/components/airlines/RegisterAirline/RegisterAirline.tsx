@@ -53,7 +53,7 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep }) => {
 
   let responseValue = false;
 
-  const newAirline = () => {
+  const newAirline = async () => {
     const uploadData = new FormData();
     uploadData.append("nombre", aerolinea);
     uploadData.append("correo", correoPrincipal);
@@ -70,7 +70,7 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep }) => {
       uploadData.append("imagen", imagen);
     }
 
-    fetch(
+    await fetch(
       "https://testing.siaca.aero/django/aerolineas/?token=" +
         localStorage.getItem("userToken"),
       {
@@ -88,9 +88,10 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep }) => {
       });
   };
 
-  const continueButton = () => {
-    newAirline();
+  const continueButton = async () => {
     setLoading(true);
+    await newAirline();
+
     //router.reload();
   };
 
