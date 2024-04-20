@@ -154,10 +154,10 @@ export default async function handler(
 
     // Backend URL body?.["machineID"]
     const url =
-      `${BACKEND_BASE_URL}/metricas/personal/` +
-      body?.["dayStart"] +
+      `${BACKEND_BASE_URL}metricas/tiempo-vuelos-hora-inicio-fin/` +
+      body?.["code"] +
       `/` +
-      body?.["dayFinal"] +
+      body?.["date"] +
       `/?token=` +
       body?.["userToken"];
 

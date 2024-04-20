@@ -154,7 +154,7 @@ export default async function handler(
 
     // Backend URL body?.["machineID"]
     const url =
-      `https://testing.siaca.aero/django/metricas/maquinarias/` +
+      `${BACKEND_BASE_URL}/metricas/maquinarias/` +
       body?.["dayStart"] +
       `/` +
       body?.["dayFinal"] +

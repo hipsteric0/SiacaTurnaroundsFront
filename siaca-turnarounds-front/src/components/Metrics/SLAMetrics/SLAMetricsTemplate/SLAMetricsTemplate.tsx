@@ -235,6 +235,31 @@ const SLAMetricsTemplate: React.FC<PageProps> = ({ setStep }) => {
       .catch((error) => console.error("Error fetching ", error));
   };
 
+  const handleButtonClickStart2 = async () => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/getFlightTimesMetricsOnlyStart";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+            code: code,
+            date: date,
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            setStart(Object.values(result));
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
   const handleButtonClickStartFinish = () => {
     fetch(
       `https://testing.siaca.aero/django/metricas/tiempo-vuelos-hora-inicio-fin/${code}/${date}/?token=` +
@@ -245,9 +270,34 @@ const SLAMetricsTemplate: React.FC<PageProps> = ({ setStep }) => {
       .catch((error) => console.error("Error fetching ", error));
   };
 
+  const handleButtonClickStartFinish2 = async () => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/getFlightTimesMetricsStartAndEnd";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+            code: code,
+            date: date,
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            setStartFinish(Object.values(result));
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
   const Times = () => {
-    handleButtonClickStart();
-    handleButtonClickStartFinish();
+    handleButtonClickStart2();
+    handleButtonClickStartFinish2();
   };
 
   return (
