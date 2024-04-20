@@ -115,8 +115,33 @@ const PersonnelMetrics: React.FC<PageProps> = ({ setStep }) => {
       .catch((error) => console.error("Error fetching ", error));
   };
 
+  const handleButtonClickSearch2 = async () => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/getPersonnelMetricsByDate";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+            dayFinal: dayFinal,
+            dayStart: dayStart,
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            setArrayList3(Object.values(result));
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
+  };
+
   const Search = () => {
-    handleButtonClickSearch();
+    handleButtonClickSearch2();
   };
 
   return (
