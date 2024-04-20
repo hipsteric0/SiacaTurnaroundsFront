@@ -54,7 +54,7 @@ const SLAMetricsFlights: React.FC<PageProps> = ({ setStep }) => {
   useEffect(() => {
     getTemplateStartAndFinish();
     getSLA();
-    handleButtonClickStart();
+    handleButtonClickStart2();
   }, []);
 
   useEffect(() => {
@@ -234,6 +234,28 @@ const SLAMetricsFlights: React.FC<PageProps> = ({ setStep }) => {
       .then((response) => response.json())
       .then((data) => setStart(data))
       .catch((error) => console.error("Error fetching ", error));
+  };
+  const handleButtonClickStart2 = async () => {
+    const fetchData = async () => {
+      try {
+        const url = "/api/getFlightTimesMetricsByLateCodes";
+        const requestOptions = {
+          method: "POST",
+          body: JSON.stringify({
+            userToken: localStorage.getItem("userToken"),
+          }),
+        };
+        const response = await fetch(url, requestOptions).then((res) =>
+          res.json().then((result) => {
+            setStart(Object.values(result));
+          })
+        );
+      } catch (error) {
+        console.error("Error geting user", error);
+        return;
+      }
+    };
+    await fetchData().catch(console.error);
   };
 
   const arrayPrinter2 = () => {
