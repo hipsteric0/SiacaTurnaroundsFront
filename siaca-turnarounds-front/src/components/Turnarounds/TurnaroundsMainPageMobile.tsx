@@ -130,6 +130,8 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
   const [flightID, setFlightID] = useState(-1);
   const [state1Overider, setState1Overider] = useState(false);
   const [tasksCompletionValues, setTasksCompletionValues] = useState([]);
+  const [tasksCompletionValuesOnlyImages, setTasksCompletionValuesOnlyImages] =
+    useState([]);
   const [manualHourDialog, setmanualHourDialog] = useState(false);
   const [manualHourDialogOnlyStart, setmanualHourDialogOnlyStart] =
     useState(false);
@@ -181,15 +183,26 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
     setArrayFilteredList3([]);
     const fetchData = async () => {
       try {
-        const url = "/api/turnaroundsList";
+        const url =
+          "https://testing.siaca.aero/django/turnarounds/" +
+          date.getFullYear().toString() +
+          `-` +
+          (date.getMonth() + 1).toString() +
+          `-` +
+          date.getDate().toString() +
+          `/?token=` +
+          localStorage.getItem("userToken");
         const requestOptions = {
-          method: "POST",
-          body: JSON.stringify({
-            userToken: localStorage.getItem("userToken"),
-            day: date.getDate().toString(),
-            month: (date.getMonth() + 1).toString(),
-            year: date.getFullYear().toString(),
-          }),
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json", // Add body content-type
+          },
+          // body: JSON.stringify({
+          //   userToken: localStorage.getItem("userToken"),
+          //   day: date.getDate().toString(),
+          //   month: (date.getMonth() + 1).toString(),
+          //   year: date.getFullYear().toString(),
+          // }),
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
@@ -212,13 +225,21 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
   const getPersonnelByTurnaround = async (turnaroundID: any) => {
     const fetchData = async () => {
       try {
-        const url = "/api/getPersonnelByTurnaround";
+        const url =
+          `https://testing.siaca.aero/django/usuarios/lista/` +
+          turnaroundID +
+          `/?token=` +
+          localStorage.getItem("userToken");
         const requestOptions = {
-          method: "POST",
-          body: JSON.stringify({
-            userToken: localStorage.getItem("userToken"),
-            turnaroundID: turnaroundID,
-          }),
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json", // Add body content-type
+          },
+          // body: JSON.stringify({
+          //   userToken: localStorage.getItem("userToken"),
+          //   turnaroundID: turnaroundID,
+
+          // }),
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
@@ -240,15 +261,23 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
   const getAssistanceByTurnaround = async (turnaroundID: any) => {
     const fetchData = async () => {
       try {
-        const url = "/api/getAssistanceByID";
+        const url =
+          `https://testing.siaca.aero/django/usuarios/asistencia/` +
+          turnaroundID +
+          `/` +
+          localStorage.getItem("cedula") +
+          `/?token=` +
+          localStorage.getItem("userToken");
         const requestOptions = {
-          method: "POST",
-
-          body: JSON.stringify({
-            userToken: localStorage.getItem("userToken"),
-            turnaroundID: turnaroundID,
-            cedula: localStorage.getItem("cedula"),
-          }),
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json", // Add body content-type
+          },
+          // body: JSON.stringify({
+          //   userToken: localStorage.getItem("userToken"),
+          //   turnaroundID: turnaroundID,
+          //   cedula: localStorage.getItem("cedula"),
+          // }),
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
@@ -266,12 +295,17 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
   const getPersonnelList = async () => {
     const fetchData = async () => {
       try {
-        const url = "/api/personnelList";
+        const url =
+          "https://testing.siaca.aero/django/usuarios/lista/?token=" +
+          localStorage.getItem("userToken");
         const requestOptions = {
-          method: "POST",
-          body: JSON.stringify({
-            userToken: localStorage.getItem("userToken"),
-          }),
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json", // Add body content-type
+          },
+          // body: JSON.stringify({
+          //   userToken: localStorage.getItem("userToken"),
+          // }),
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
@@ -289,14 +323,23 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
   const updatePresence = async (idTurnaround: any, CI: any) => {
     const fetchData = async () => {
       try {
-        const url = "/api/updatePresenceTurnaround";
+        const url =
+          `https://testing.siaca.aero/django/usuarios/asistencia/` +
+          idTurnaround +
+          `/` +
+          CI +
+          `/?token=` +
+          localStorage.getItem("userToken");
         const requestOptions = {
-          method: "POST",
-          body: JSON.stringify({
-            userToken: localStorage.getItem("userToken"),
-            turaroundID: idTurnaround,
-            CI: CI,
-          }),
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json", // Add body content-type
+          },
+          // body: JSON.stringify({
+          //   userToken: localStorage.getItem("userToken"),
+          //   turaroundID: idTurnaround,
+          //   CI: CI,
+          // }),
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {})
@@ -322,45 +365,33 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
     });
   };
 
-  const getMachinesList = async () => {
-    const fetchData = async () => {
-      try {
-        const url = "/api/machinesList";
-        const requestOptions = {
-          method: "POST",
-          body: JSON.stringify({
-            userToken: localStorage.getItem("userToken"),
-          }),
-        };
-        const response = await fetch(url, requestOptions).then((res) =>
-          res.json().then((result) => {
-            setMachinesarrayList(Object.values(result));
-            if (result?.[0]?.["status"] === 400) {
-            } else {
-            }
-          })
-        );
-      } catch (error) {
-        console.error("Error geting user", error);
-
-        return;
-      }
-    };
-    await fetchData().catch(console.error);
-  };
-
   const getMachinesReservationList = async (turnaroundDate: any) => {
     const fetchData = async () => {
       try {
-        const url = "/api/getMachinesReservationList";
+        const url =
+          `https://testing.siaca.aero/django/maquinarias/reserva/` +
+          turnaroundDate +
+          `/` +
+          horaInicio +
+          ":" +
+          minutosInicio +
+          `/` +
+          horaFin +
+          ":" +
+          minutosFin +
+          `/?token=` +
+          localStorage.getItem("userToken");
         const requestOptions = {
-          method: "POST",
-          body: JSON.stringify({
-            userToken: localStorage.getItem("userToken"),
-            fecha: turnaroundDate,
-            hora_inicio: horaInicio + ":" + minutosInicio,
-            hora_fin: horaFin + ":" + minutosFin,
-          }),
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json", // Add body content-type
+          },
+          // body: JSON.stringify({
+          //   userToken: localStorage.getItem("userToken"),
+          //   fecha: turnaroundDate,
+          //   hora_inicio: horaInicio + ":" + minutosInicio,
+          //   hora_fin: horaFin + ":" + minutosFin,
+          // }),
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
@@ -383,15 +414,30 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
   const getPersonnelReservationList = async (turnaroundDate: any) => {
     const fetchData = async () => {
       try {
-        const url = "/api/getPersonnelReservationList";
+        const url =
+          `https://testing.siaca.aero/django/usuarios/reserva/` +
+          turnaroundDate +
+          `/` +
+          horaInicioPersonnel +
+          ":" +
+          minutosInicioPersonnel +
+          `/` +
+          horaFinPersonnel +
+          ":" +
+          minutosFinPersonnel +
+          `/?token=` +
+          localStorage.getItem("userToken");
         const requestOptions = {
-          method: "POST",
-          body: JSON.stringify({
-            userToken: localStorage.getItem("userToken"),
-            fecha: turnaroundDate,
-            hora_inicio: horaInicioPersonnel + ":" + minutosInicioPersonnel,
-            hora_fin: horaFinPersonnel + ":" + minutosFinPersonnel,
-          }),
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json", // Add body content-type
+          },
+          // body: JSON.stringify({
+          //   userToken: localStorage.getItem("userToken"),
+          //   fecha: turnaroundDate,
+          //   hora_inicio: horaInicioPersonnel + ":" + minutosInicioPersonnel,
+          //   hora_fin: horaFinPersonnel + ":" + minutosFinPersonnel,
+          // }),
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
@@ -411,71 +457,23 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
     await fetchData().catch(console.error);
   };
 
-  const getPersonnelDepartments = async () => {
-    const fetchData = async () => {
-      try {
-        const url = "/api/getPersonnelDepartmentsList";
-        const requestOptions = {
-          method: "POST",
-          body: JSON.stringify({
-            userToken: localStorage.getItem("userToken"),
-          }),
-        };
-        const response = await fetch(url, requestOptions).then((res) =>
-          res.json().then((result) => {
-            setPersonnelDepartmentsarrayList(Object.values(result));
-            if (result?.[0]?.["status"] === 400) {
-            } else {
-            }
-          })
-        );
-      } catch (error) {
-        console.error("Error geting user", error);
-
-        return;
-      }
-    };
-    await fetchData().catch(console.error);
-  };
-
-  const getMachineryQuantityByTemplate = async (templateID: any) => {
-    const fetchData = async () => {
-      try {
-        const url = "/api/machineryQuantityByTemplate";
-        const requestOptions = {
-          method: "POST",
-          body: JSON.stringify({
-            userToken: localStorage.getItem("userToken"),
-            plantillaID: templateID,
-          }),
-        };
-        const response = await fetch(url, requestOptions).then((res) =>
-          res.json().then((result) => {
-            setMachinesQuantityByTemplatearrayList(Object.values(result));
-            if (result?.[0]?.["status"] === 400) {
-            } else {
-            }
-          })
-        );
-      } catch (error) {
-        console.error("Error geting user", error);
-
-        return;
-      }
-    };
-    await fetchData().catch(console.error);
-  };
-
   const getTemplateTasks = async (templateID: any) => {
     const fetchData = async () => {
       try {
-        const url = "/api/getTemplateTasks";
+        const url =
+          `https://testing.siaca.aero/django/plantillas/subtarea/` +
+          templateID +
+          `/?token=` +
+          localStorage.getItem("userToken");
         const requestOptions = {
-          method: "POST",
-          body: JSON.stringify({
-            userToken: localStorage.getItem("userToken"),
-            templateID: templateID,
-          }),
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json", // Add body content-type
+          },
+          // body: JSON.stringify({
+          //   userToken: localStorage.getItem("userToken"),
+          //   templateID: templateID,
+          // }),
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
@@ -497,13 +495,20 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
   const getMachinesByTurnaround = async (machineID: any) => {
     const fetchData = async () => {
       try {
-        const url = "/api/getMachinesByTurnaround";
+        const url =
+          `https://testing.siaca.aero/django/maquinarias/lista/` +
+          machineID +
+          `/?token=` +
+          localStorage.getItem("userToken");
         const requestOptions = {
-          method: "POST",
-          body: JSON.stringify({
-            userToken: localStorage.getItem("userToken"),
-            machineID: machineID,
-          }),
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json", // Add body content-type
+          },
+          // body: JSON.stringify({
+          //   userToken: localStorage.getItem("userToken"),
+          //   machineID: machineID,
+          // }),
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
@@ -525,9 +530,14 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
   const postPersonReservartion = async (personID: any) => {
     const fetchData = async () => {
       try {
-        const url = "/api/postPersonReservation";
+        const url =
+          `https://testing.siaca.aero/django/usuarios/reserva/?token=` +
+          localStorage.getItem("userToken");
         const requestOptions = {
           method: "POST",
+          headers: {
+            "Content-Type": "application/json", // Add body content-type
+          },
           body: JSON.stringify({
             userToken: localStorage.getItem("userToken"),
             hora_inicio: horaInicioPersonnel + ":" + minutosInicioPersonnel,
@@ -556,13 +566,20 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
   const updateFlightStateInProgress = async (flightIDvalue: any) => {
     const fetchData = async () => {
       try {
-        const url = "/api/updateFlightStateInProcess";
+        const url =
+          `https://testing.siaca.aero/django/vuelos/estado-proceso/` +
+          flightIDvalue +
+          `/?token=` +
+          localStorage.getItem("userToken");
         const requestOptions = {
-          method: "POST",
-          body: JSON.stringify({
-            userToken: localStorage.getItem("userToken"),
-            flightID: flightIDvalue,
-          }),
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json", // Add body content-type
+          },
+          // body: JSON.stringify({
+          //   userToken: localStorage.getItem("userToken"),
+          //   flightID: flightIDvalue,
+          // }),
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
@@ -583,16 +600,24 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
   const updateFlightStateFinalized = async (flightIDvalue: any) => {
     const fetchData = async () => {
       try {
-        const url = "/api/updateFlightStateInFinalized";
+        const url =
+          `https://testing.siaca.aero/django/vuelos/estado-finalizado/` +
+          flightIDvalue +
+          `/?token=` +
+          localStorage.getItem("userToken");
         const requestOptions = {
-          method: "POST",
-          body: JSON.stringify({
-            userToken: localStorage.getItem("userToken"),
-            flightID: flightIDvalue,
-          }),
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json", // Add body content-type
+          },
+          // body: JSON.stringify({
+          //   userToken: localStorage.getItem("userToken"),
+          //   flightID: flightIDvalue,
+          // }),
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
+            console.log(result);
             if (result?.[0]?.["status"] === 400) {
             } else {
             }
@@ -600,7 +625,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         );
       } catch (error) {
         console.error("Error geting user", error);
-
+        console.log("ERROR EN ESTADO");
         return;
       }
     };
@@ -610,11 +635,15 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
   const postMachineReservartion = async (machineryID: any) => {
     const fetchData = async () => {
       try {
-        const url = "/api/postMachineReservation";
+        const url =
+          `https://testing.siaca.aero/django/maquinarias/reserva/?token=` +
+          localStorage.getItem("userToken");
         const requestOptions = {
           method: "POST",
+          headers: {
+            "Content-Type": "application/json", // Add body content-type
+          },
           body: JSON.stringify({
-            userToken: localStorage.getItem("userToken"),
             hora_inicio: horaInicio + ":" + minutosInicio,
             hora_fin: horaFin + ":" + minutosFin,
             fecha: turnaroundDate,
@@ -645,11 +674,15 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
   ) => {
     const fetchData = async () => {
       try {
-        const url = "/api/postTaskResolutionComment";
+        const url =
+          `https://testing.siaca.aero/django/documentos/comentario/?token=` +
+          localStorage.getItem("userToken");
         const requestOptions = {
           method: "POST",
+          headers: {
+            "Content-Type": "application/json", // Add body content-type
+          },
           body: JSON.stringify({
-            userToken: localStorage.getItem("userToken"),
             comentario: commentText,
             fk_subtarea: subtaskID,
             fk_turnaround: turnaroundID,
@@ -678,11 +711,15 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
   ) => {
     const fetchData = async () => {
       try {
-        const url = "/api/postTaskResolutionSimpleCheck";
+        const url =
+          `https://testing.siaca.aero/django/documentos/horainicio/?token=` +
+          localStorage.getItem("userToken");
         const requestOptions = {
           method: "POST",
+          headers: {
+            "Content-Type": "application/json", // Add body content-type
+          },
           body: JSON.stringify({
-            userToken: localStorage.getItem("userToken"),
             hora_inicio: timestamp,
             fk_subtarea: subtaskID,
             fk_turnaround: turnaroundID,
@@ -712,11 +749,15 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
   ) => {
     const fetchData = async () => {
       try {
-        const url = "/api/postTaskResolutionDoubleCheck";
+        const url =
+          `https://testing.siaca.aero/django/documentos/horainiciofin/?token=` +
+          localStorage.getItem("userToken");
         const requestOptions = {
           method: "POST",
+          headers: {
+            "Content-Type": "application/json", // Add body content-type
+          },
           body: JSON.stringify({
-            userToken: localStorage.getItem("userToken"),
             hora_inicio: timestampStart,
             hora_fin: timestampEnd,
             fk_subtarea: subtaskID,
@@ -742,17 +783,25 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
   const getTasksCompletionsList = async (turnaroundID: any) => {
     const fetchData = async () => {
       try {
-        const url = "/api/getTasksCompletionList";
+        const url =
+          `https://testing.siaca.aero/django/documentos/turnarounds/` +
+          turnaroundID +
+          `/?token=` +
+          localStorage.getItem("userToken");
         const requestOptions = {
-          method: "POST",
-          body: JSON.stringify({
-            userToken: localStorage.getItem("userToken"),
-            turnaroundID: turnaroundID,
-          }),
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json", // Add body content-type
+          },
+          // body: JSON.stringify({
+          //   userToken: localStorage.getItem("userToken"),
+          //   turnaroundID: turnaroundID,
+          // }),
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
             formatTasksForPDFArray(result);
+            console.log("result", result);
           })
         );
       } catch (error) {
@@ -770,12 +819,17 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
   ) => {
     const fetchData = async () => {
       try {
-        const url = "/api/updateStartHourDateTurnaround";
+        const url =
+          `https://testing.siaca.aero/django/turnarounds/editar/` +
+          turnaroundID +
+          `/?token=` +
+          localStorage.getItem("userToken");
         const requestOptions = {
-          method: "POST",
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json", // Add body content-type
+          },
           body: JSON.stringify({
-            userToken: localStorage.getItem("userToken"),
-            turnaroundID: turnaroundID,
             hora_inicio: hour,
             fecha_inicio: date,
           }),
@@ -798,12 +852,17 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
   ) => {
     const fetchData = async () => {
       try {
-        const url = "/api/updateFinishHourDateTurnaround";
+        const url =
+          `https://testing.siaca.aero/django/turnarounds/editar/` +
+          turnaroundID +
+          `/?token=` +
+          localStorage.getItem("userToken");
         const requestOptions = {
-          method: "POST",
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json", // Add body content-type
+          },
           body: JSON.stringify({
-            userToken: localStorage.getItem("userToken"),
-            turnaroundID: turnaroundID,
             hora_fin: hour,
             fecha_fin: date,
           }),
@@ -894,12 +953,13 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
 
     await patchFinishHourDate(openDetailDialogID, currentTimestampString, x);
 
-    router.reload();
+    //await router.reload();
   };
 
   //ordenar y formatear el arreglo
   const formatTasksForPDFArray = (result: any) => {
     let y: any[] = [];
+    let onlyImagesArray: any[] = [];
 
     result?.comentarios.map((value: any) => {
       y.push({
@@ -927,10 +987,18 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
           value?.hora_fin,
       });
     });
+    result?.imagenes.map((value: any) => {
+      onlyImagesArray.push({
+        key: value?.fk_subtarea__id,
+        name: value?.fk_subtarea__titulo,
+        value: value?.imagen,
+      });
+    });
 
     let resultOfSorting: any[] = [];
     resultOfSorting = y.sort((a, b) => a.key - b.key);
     setTasksCompletionValues(resultOfSorting);
+    setTasksCompletionValuesOnlyImages(onlyImagesArray);
   };
 
   const ArrayPrinterTaskDataForSummary = () => {
@@ -943,6 +1011,28 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
           <div className={styles.taskDetailContainer}>
             <span className={styles.taskDetailTitleText}>{index?.name}:</span>
             <span className={styles.taskDetailText}> {index?.value}</span>
+          </div>
+        </>
+      );
+    });
+
+    return y;
+  };
+  const ArrayPrinterTaskDataForSummaryOnlyImages = () => {
+    let y: any = [];
+    let cont = 0;
+    tasksCompletionValuesOnlyImages.map((index: any) => {
+      cont++; //
+      y[index?.key] = (
+        <>
+          <div className={styles.taskDetailContainerOnlyImages}>
+            <span className={styles.taskDetailTitleText}>{index?.name}:</span>
+            <img
+              src={"https://testing.siaca.aero/django/media/" + index?.value}
+              alt="Logo"
+              width={320}
+              height={200}
+            />
           </div>
         </>
       );
@@ -994,13 +1084,20 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
   const flightMachine = async (flightID: number) => {
     const fetchData = async () => {
       try {
-        const url = "/api/deleteFlight";
+        const url =
+          `https://testing.siaca.aero/django/vuelos/` +
+          flightID +
+          `/?token=` +
+          localStorage.getItem("userToken");
         const requestOptions = {
-          method: "POST",
-          body: JSON.stringify({
-            userToken: localStorage.getItem("userToken"),
-            flightId: flightID,
-          }),
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json", // Add body content-type
+          },
+          // body: JSON.stringify({
+          //   userToken: localStorage.getItem("userToken"),
+          //   flightId: flightID,
+          // }),
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
@@ -2492,6 +2589,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                       Turnaround atendido exitosamente!
                     </p>
                     {ArrayPrinterTaskDataForSummary()}
+                    {ArrayPrinterTaskDataForSummaryOnlyImages()}
                     <p
                       className={styles.detailDialogInfoItemTitleWarningNotBold}
                     >
