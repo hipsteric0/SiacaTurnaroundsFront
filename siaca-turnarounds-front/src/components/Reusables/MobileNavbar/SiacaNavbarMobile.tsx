@@ -19,6 +19,8 @@ import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
+import LoadingScreen from "../../Reusables/LoadingScreen";
+
 interface PageProps {
   activeFlightsValue?: boolean;
   activeTurnaroundsValue?: boolean;
@@ -36,6 +38,7 @@ const SiacaNavbar: React.FC<PageProps> = ({
   const [activeFlights, setActiveFligths] = useState(false);
   const [activeTurnarounds, setActiveTurnarounds] = useState(false);
   const [open, setOpen] = React.useState(false);
+  const [loading, setLoading] = useState(false);
   const drawerWidth = "65%";
 
   const Main = styled("main", {
@@ -135,6 +138,7 @@ const SiacaNavbar: React.FC<PageProps> = ({
             }}
           >
             <p>Cerrar sesión</p>
+            {loading && <LoadingScreen />}
           </div>
         </Drawer>
       </Box>
@@ -163,13 +167,16 @@ const SiacaNavbar: React.FC<PageProps> = ({
 
   const Logout = async () => {
     const fetchData = async () => {
+      setLoading(true);
       try {
-        const url = "/api/logout";
+        const url = "https://testing.siaca.aero/django/usuarios/logout/?token="+localStorage.getItem("userToken");
         const requestOptions = {
-          method: "POST",
-          body: JSON.stringify({
-            userToken: localStorage.getItem("userToken"),
-          }),
+          method: "GET",
+          headers: {
+            // Include the regular headers
+            "Content-Type": "application/json", // Add body content-type
+            // Any additional headers here only related to request body...
+          },
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
