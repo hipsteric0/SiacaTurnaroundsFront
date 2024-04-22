@@ -64,7 +64,7 @@ const LoginMainPage: React.FC<PageProps> = ({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const url = "https://testing.siaca.aero/django/usuarios/listado/user?search=" + emailValue;
+        const url = "https://testing.siaca.aero/django/usuarios/listado/user/?search=" + emailValue;
         const requestOptions = {
           method: "GET",
           headers: {
@@ -93,7 +93,7 @@ const LoginMainPage: React.FC<PageProps> = ({
     console.log("USER ID", userID)
     const fetchData = async () => {
       try {
-        const url = "https://testing.siaca.aero/django/usuarios/registro2user2/" + userID;
+        const url = "https://testing.siaca.aero/django/usuarios/registro2user2/" + userID + '/';
         const requestOptions = {
           method: "PATCH",
           body: JSON.stringify({
@@ -240,14 +240,14 @@ const LoginMainPage: React.FC<PageProps> = ({
     //setEmailValue(email);
     //setPasswordValue(password);
     //registerStep2request();
-    //setLoading(true);
+    setLoading(true);
     let departmentID = 0;
     let jobPositionID = 0;
     departmentID = await getDepartmentFromArray(selectedDepartmentValue);
     jobPositionID = await getJobPositionFromArray(selectedPositionValue);
     await registerStep2requestFirst();
     await registerStep2requestSecond(departmentID, jobPositionID);
-    //await setStep(6);
+    await setStep(6);
   };
 
   const arrayPrinterDepartments = () => {

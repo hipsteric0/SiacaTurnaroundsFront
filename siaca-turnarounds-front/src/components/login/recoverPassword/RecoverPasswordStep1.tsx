@@ -20,12 +20,17 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
   const sendEmailRecoverPassword = () => {
     const fetchData = async () => {
       try {
-        const url = "/api/recoverPasswordStep1";
+        const url = "https://testing.siaca.aero/django/usuarios/password-reset/";
         const requestOptions = {
           method: "POST",
           body: JSON.stringify({
             email: email,
           }),
+          headers: {
+            // Include the regular headers
+            "Content-Type": "application/json", // Add body content-type
+            // Any additional headers here only related to request body...
+          },
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {})
