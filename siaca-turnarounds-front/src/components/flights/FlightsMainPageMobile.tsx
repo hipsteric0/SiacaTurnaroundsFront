@@ -64,15 +64,17 @@ const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
     setArrayFilteredList3([]);
     const fetchData = async () => {
       try {
-        const url = "/api/flightsList";
+        let day = date.getDate().toString()
+        let month = (date.getMonth() + 1).toString()
+        let year = date.getFullYear().toString()
+        const url = "https://testing.siaca.aero/django/vuelos/buscar/"+year+"-"+month+"-"+day+"/?token="+localStorage.getItem("userToken");
         const requestOptions = {
-          method: "POST",
-          body: JSON.stringify({
-            userToken: localStorage.getItem("userToken"),
-            day: date.getDate().toString(),
-            month: (date.getMonth() + 1).toString(),
-            year: date.getFullYear().toString(),
-          }),
+          method: "GET",
+          headers: {
+            // Include the regular headers
+            "Content-Type": "application/json", // Add body content-type
+            // Any additional headers here only related to request body...
+          },
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
@@ -119,13 +121,14 @@ const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
   const flightMachine = async (flightID: number) => {
     const fetchData = async () => {
       try {
-        const url = "/api/deleteFlight";
+        const url = "https://testing.siaca.aero/django/vuelos/"+flightID+"/?token="+localStorage.getItem("userToken");
         const requestOptions = {
-          method: "POST",
-          body: JSON.stringify({
-            userToken: localStorage.getItem("userToken"),
-            flightId: flightID,
-          }),
+          method: "DELETE",
+          headers: {
+            // Include the regular headers
+            "Content-Type": "application/json", // Add body content-type
+            // Any additional headers here only related to request body...
+          },
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
@@ -492,7 +495,12 @@ const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
           </div>
 
           <div className={styles.imageContainer}>
-            {index?.fk_aerolinea?.nombre} image not found
+          <img
+              src={"https://testing.siaca.aero/django/" + index?.fk_aerolinea?.imagen}
+              alt="Logo"
+              width={80}
+              height={60}
+            />
           </div>
           <div className={styles.column1Container}>
             <p>Vuelo:</p>
