@@ -52,16 +52,23 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
   const registerStep2requestSecond = () => {
     const fetchData = async () => {
       try {
-        const url = "/api/login";
+        const url = "https://testing.siaca.aero/django/usuarios/login/";
         const requestOptions = {
           method: "POST",
           body: JSON.stringify({
             username: email,
             password: password,
           }),
+          headers: {
+            // Include the regular headers
+            "Content-Type": "application/json", // Add body content-type
+            // Any additional headers here only related to request body...
+          },
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
+            console.log(result);
+
             validLogin = result?.value;
             token = result?.token;
             userFullName = result?.first_name + " " + result?.last_name;

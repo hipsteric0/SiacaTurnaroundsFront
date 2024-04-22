@@ -32,7 +32,7 @@ const LoginMainPage: React.FC<PageProps> = ({
   const registerStep1request = () => {
     const fetchData = async () => {
       try {
-        const url = "/api/register";
+        const url = " https://testing.siaca.aero/django/usuarios/registro/";
         const requestOptions = {
           method: "POST",
           body: JSON.stringify({
@@ -40,6 +40,11 @@ const LoginMainPage: React.FC<PageProps> = ({
             password: password,
             is_active: 0,
           }),
+          headers: {
+            // Include the regular headers
+            "Content-Type": "application/json", // Add body content-type
+            // Any additional headers here only related to request body...
+          },
         };
         const response = await fetch(url, requestOptions).then((value) => {
           if (value?.status === 400) {

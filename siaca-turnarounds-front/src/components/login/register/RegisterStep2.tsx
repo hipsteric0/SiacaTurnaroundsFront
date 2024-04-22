@@ -64,20 +64,25 @@ const LoginMainPage: React.FC<PageProps> = ({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const url = "/api/user";
+        const url = "https://testing.siaca.aero/django/usuarios/listado/user?search=" + emailValue;
         const requestOptions = {
-          method: "POST",
-          body: JSON.stringify({
-            searchValue: emailValue,
-          }),
+          method: "GET",
+          headers: {
+            // Include the regular headers
+            "Content-Type": "application/json", // Add body content-type
+            // Any additional headers here only related to request body...
+          },
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            setUserID(result[0].id);
+            setUserID(result[0]?.id);
+            console.log("RESULT", result)
+            
           })
         );
       } catch (error) {
         console.error("Error geting user", error);
+        console.log("ESTO DA ERRORRRRRR")
         return;
       }
     };
@@ -85,16 +90,21 @@ const LoginMainPage: React.FC<PageProps> = ({
   }, []);
 
   const registerStep2requestFirst = () => {
+    console.log("USER ID", userID)
     const fetchData = async () => {
       try {
-        const url = "/api/registerStep2Part1";
+        const url = "https://testing.siaca.aero/django/usuarios/registro2user2/" + userID;
         const requestOptions = {
-          method: "POST",
+          method: "PATCH",
           body: JSON.stringify({
-            searchValue: parseInt(userID),
             first_name: firstName,
             last_name: lastName,
           }),
+          headers: {
+            // Include the regular headers
+            "Content-Type": "application/json", // Add body content-type
+            // Any additional headers here only related to request body...
+          },
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
@@ -129,7 +139,7 @@ const LoginMainPage: React.FC<PageProps> = ({
   ) => {
     const fetchData = async () => {
       try {
-        const url = "/api/registerStep2Part2";
+        const url = "https://testing.siaca.aero/django/usuarios/registro2usuario/";
         const requestOptions = {
           method: "POST",
           body: JSON.stringify({
@@ -140,6 +150,11 @@ const LoginMainPage: React.FC<PageProps> = ({
             turno: selectedWorkshiftValue,
             fk_user: userID.toString(),
           }),
+          headers: {
+            // Include the regular headers
+            "Content-Type": "application/json", // Add body content-type
+            // Any additional headers here only related to request body...
+          },
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
@@ -157,12 +172,14 @@ const LoginMainPage: React.FC<PageProps> = ({
   const getDepartmentsList = async () => {
     const fetchData = async () => {
       try {
-        const url = "/api/getPersonnelDepartmentsList";
+        const url = "https://testing.siaca.aero/django/usuarios/departamentos/";
         const requestOptions = {
-          method: "POST",
-          body: JSON.stringify({
-            userToken: localStorage.getItem("userToken"),
-          }),
+          method: "GET",
+          headers: {
+            // Include the regular headers
+            "Content-Type": "application/json", // Add body content-type
+            // Any additional headers here only related to request body...
+          },
         };
 
         const response = await fetch(url, requestOptions).then((res) =>
@@ -181,12 +198,14 @@ const LoginMainPage: React.FC<PageProps> = ({
   const getJobPositionsList = async () => {
     const fetchData = async () => {
       try {
-        const url = "/api/getPersonnelJobPositionsList";
+        const url = "https://testing.siaca.aero/django/usuarios/cargos/";
         const requestOptions = {
-          method: "POST",
-          body: JSON.stringify({
-            userToken: localStorage.getItem("userToken"),
-          }),
+          method: "GET",
+          headers: {
+            // Include the regular headers
+            "Content-Type": "application/json", // Add body content-type
+            // Any additional headers here only related to request body...
+          },
         };
 
         const response = await fetch(url, requestOptions).then((res) =>
@@ -221,14 +240,14 @@ const LoginMainPage: React.FC<PageProps> = ({
     //setEmailValue(email);
     //setPasswordValue(password);
     //registerStep2request();
-    setLoading(true);
+    //setLoading(true);
     let departmentID = 0;
     let jobPositionID = 0;
     departmentID = await getDepartmentFromArray(selectedDepartmentValue);
     jobPositionID = await getJobPositionFromArray(selectedPositionValue);
     await registerStep2requestFirst();
     await registerStep2requestSecond(departmentID, jobPositionID);
-    await setStep(6);
+    //await setStep(6);
   };
 
   const arrayPrinterDepartments = () => {
