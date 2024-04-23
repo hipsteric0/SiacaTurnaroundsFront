@@ -208,7 +208,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
             setArrayList3(Object.values(result));
-
+            console.log(result);
             if (result?.[0]?.["status"] === 400) {
             } else {
             }
@@ -244,6 +244,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
+            console.log(result);
             setPersonneByTurnaroundArrayList(Object.values(result));
             if (result?.[0]?.["status"] === 400) {
             } else {
@@ -282,6 +283,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
+            console.log(result);
             setassistanceInTurnaround(result?.value);
           })
         );
@@ -310,6 +312,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
+            console.log(result);
             setPersonnelListArray(Object.values(result));
           })
         );
@@ -343,7 +346,9 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
           // }),
         };
         const response = await fetch(url, requestOptions).then((res) =>
-          res.json().then((result) => {})
+          res.json().then((result) => {
+            console.log(result);
+          })
         );
       } catch (error) {
         console.error("Error geting user", error);
@@ -397,7 +402,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
             setMachinesReservationsarrayList(Object.values(result));
-
+            console.log(result);
             if (result?.[0]?.["status"] === 400) {
             } else {
             }
@@ -442,8 +447,9 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
+            console.log(result);
             setPersonnelReservationsarrayList(Object.values(result));
-
+            console.log(result);
             if (result?.[0]?.["status"] === 400) {
             } else {
             }
@@ -478,6 +484,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
+            console.log(result);
             setTasksarrayList(Object.values(result));
             if (result?.[0]?.["status"] === 400) {
             } else {
@@ -513,6 +520,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
+            console.log(result);
             setMachinesByTurnaroundArrayList(Object.values(result));
             if (result?.[0]?.["status"] === 400) {
             } else {
@@ -550,6 +558,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
+            console.log(result);
             if (result?.[0]?.["status"] === 400) {
             } else {
             }
@@ -584,6 +593,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
+            console.log(result);
             if (result?.[0]?.["status"] === 400) {
             } else {
             }
@@ -654,6 +664,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
+            console.log(result);
             if (result?.[0]?.["status"] === 400) {
             } else {
             }
@@ -691,6 +702,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
+            console.log(result);
             if (result?.[0]?.["status"] === 400) {
             } else {
             }
@@ -728,6 +740,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
+            console.log(result);
             if (result?.[0]?.["status"] === 400) {
             } else {
             }
@@ -767,6 +780,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
+            console.log(result);
             if (result?.[0]?.["status"] === 400) {
             } else {
             }
@@ -836,7 +850,9 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
           }),
         };
         const response = await fetch(url, requestOptions).then((res) =>
-          res.json().then((result) => {})
+          res.json().then((result) => {
+            console.log(result);
+          })
         );
       } catch (error) {
         console.error("Error geting user", error);
@@ -869,7 +885,9 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
           }),
         };
         const response = await fetch(url, requestOptions).then((res) =>
-          res.json().then((result) => {})
+          res.json().then((result) => {
+            console.log(result);
+          })
         );
       } catch (error) {
         console.error("Error geting user", error);
@@ -954,7 +972,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
 
     await patchFinishHourDate(openDetailDialogID, currentTimestampString, x);
 
-    await router.refresh();
+    await setOpenDetailDialog(false);
   };
 
   //ordenar y formatear el arreglo
@@ -1102,7 +1120,8 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            router.refresh();
+            console.log(result);
+            setOpenDetailDialog(false);
           })
         );
       } catch (error) {
@@ -2331,7 +2350,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                     <div className={styles.dialogDetailStartTurnaround}>
                       <div
                         className={styles.closeIconDialog}
-                        onClick={() => router.refresh()}
+                        onClick={() => setOpenDetailDialog(false)}
                       >
                         <CloseRoundedIcon htmlColor="#4d4e56" />
                       </div>
@@ -2419,7 +2438,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                       <div className={styles.containerConfirmAssistanceMobile}>
                         <div
                           className={styles.closeIconDialog}
-                          onClick={() => router.refresh()}
+                          onClick={() => setOpenDetailDialog(false)}
                         >
                           <CloseRoundedIcon htmlColor="#4d4e56" />
                         </div>
@@ -2446,7 +2465,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                       <div className={styles.dialogDetail}>
                         <div
                           className={styles.closeIconDialog}
-                          onClick={() => router.refresh()}
+                          onClick={() => setOpenDetailDialog(false)}
                         >
                           <CloseRoundedIcon htmlColor="#4d4e56" />
                         </div>
@@ -2530,7 +2549,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                           <div className={styles.redButton}>
                             <RedButton2
                               executableFunction={() => {
-                                router.refresh();
+                                setOpenDetailDialog(false);
                               }}
                               buttonText={"Cerrar"}
                             />
@@ -2544,7 +2563,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                         >
                           <div
                             className={styles.closeIconDialog}
-                            onClick={() => router.refresh()}
+                            onClick={() => setOpenDetailDialog(false)}
                           >
                             <CloseRoundedIcon htmlColor="#4d4e56" />
                           </div>
@@ -2575,7 +2594,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                   <div className={styles.attendedTurnaroundContainer}>
                     <div
                       className={styles.closeIconDialog}
-                      onClick={() => router.refresh()}
+                      onClick={() => setOpenDetailDialog(false)}
                     >
                       <CloseRoundedIcon htmlColor="#4d4e56" />
                     </div>
@@ -2595,7 +2614,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                       <div className={styles.redButton}>
                         <RedButton2
                           executableFunction={() => {
-                            router.refresh();
+                            setOpenDetailDialog(false);
                           }}
                           buttonText={"Cerrar"}
                         />
@@ -2606,7 +2625,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                   <div className={styles.attendedTurnaroundContainer}>
                     <div
                       className={styles.closeIconDialog}
-                      onClick={() => router.refresh()}
+                      onClick={() => setOpenDetailDialog(false)}
                     >
                       <CloseRoundedIcon htmlColor="#4d4e56" />
                     </div>
@@ -2615,7 +2634,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                       <div className={styles.redButton}>
                         <RedButton2
                           executableFunction={() => {
-                            router.refresh();
+                            setOpenDetailDialog(false);
                           }}
                           buttonText={"Cerrar"}
                         />
@@ -2807,7 +2826,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                       <GreenButton2
                         executableFunction={async () => {
                           await handleSaveData();
-                          router.refresh();
+                          setOpenDetailDialog(false);
                         }}
                         buttonText={"Guardar"}
                       />
@@ -2818,7 +2837,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                       <RedButton2
                         executableFunction={() => {
                           //setOpenAssignDialog(false);
-                          router.refresh();
+                          setOpenDetailDialog(false);
                         }}
                         buttonText={"Cerrar"}
                       />
@@ -3007,5 +3026,4 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
 
 export default TurnaroundsMainPageMobile;
 
-let machineryArrayAux: any = [];
 let machineryQuantityArrayAux: any = [];
