@@ -14,7 +14,10 @@ const Camera = ({ onPhoto }) => {
 
   const startCamera = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      const constraints = {
+        video: { facingMode: "environment" } // This will prioritize the rear camera
+      };
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
       videoRef.current.srcObject = stream;
       videoRef.current.play();
       setIsCameraStarted(true);

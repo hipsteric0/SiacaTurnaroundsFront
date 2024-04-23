@@ -29,18 +29,25 @@ const BarcodeScanner = ({ onQR }) => {
         console.error(err);
       });
   }, []);
+  
 
   const setupDevices = (videoInputDevices) => {
     const sourceSelect = document.getElementById("sourceSelect");
-
-    // selects first device
-    setSelectedDeviceId(videoInputDevices[0].deviceId);
-
+  
+    // find the rear camera
+    const rearCamera = videoInputDevices.find(
+      (device) => device.label.toLowerCase().includes("back") || device.label.toLowerCase().includes("environment")
+    );
+  
+    // select the rear camera if it exists, otherwise select the first device
+    setSelectedDeviceId(rearCamera ? rearCamera.deviceId : videoInputDevices[0].deviceId);
+  
     // setup devices dropdown
     if (videoInputDevices.length >= 1) {
       setVideoInputDevices(videoInputDevices);
     }
   };
+
 
   const resetClick = () => {
     codeReader.current.reset();
