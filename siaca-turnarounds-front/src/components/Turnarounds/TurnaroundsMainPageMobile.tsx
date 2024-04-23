@@ -953,7 +953,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
 
     await patchFinishHourDate(openDetailDialogID, currentTimestampString, x);
 
-    //await router.reload();
+    await router.reload();
   };
 
   //ordenar y formatear el arreglo
@@ -2239,19 +2239,12 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
               <div>
                 {
                   <Camera
-                    onPhoto={(e: any) => {
+                    onPhoto={(e : any) => {
                       SetTaskArrayImages(index?.id, e);
+                      console.log("texto", e)
                     }}
                   />
                 }
-                <input
-                  type="file"
-                  name="Archivos"
-                  className={styles.imageInputContainer}
-                  onChange={(e: any) => {
-                    SetTaskArrayImages(index?.id, e.target.files[0]);
-                  }}
-                />
               </div>
             )}
           </div>

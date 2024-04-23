@@ -1,95 +1,66 @@
 import React, { useState, useEffect, useRef } from "react";
-import {
-  BrowserQRCodeReader,
-  NotFoundException,
-  ChecksumException,
-  FormatException,
-} from "@zxing/library";
-import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
-import RestartAltIcon from "@mui/icons-material/RestartAlt";
-import NoPhotographyIcon from "@mui/icons-material/NoPhotography";
 import styles from "./BarcodeScanner.style.module.css";
+import jsQR from "jsqr";
 
 const BarcodeScanner = ({ onQR }) => {
-  const [selectedDeviceId, setSelectedDeviceId] = useState("");
-  const [code, setCode] = useState("");
-  const [videoInputDevices, setVideoInputDevices] = useState([]);
-  const [isCameraActive, setIsCameraActive] = useState(false);
-
-  const codeReader = useRef(new BrowserQRCodeReader());
   const videoRef = useRef(null);
+  const [code, setCode] = useState("");
 
   useEffect(() => {
-    codeReader.current
-      .getVideoInputDevices()
-      .then((videoInputDevices) => {
-        setupDevices(videoInputDevices);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, []);
+    const constraints = { video: { facingMode: "environment" } };
 
-  const setupDevices = (videoInputDevices) => {
-    const sourceSelect = document.getElementById("sourceSelect");
+    const handleSuccess = (stream) => {
+      videoRef.current.srcObject = stream;
+      videoRef.current.play();
+    };
 
-    // selects first device
-    setSelectedDeviceId(videoInputDevices[0].deviceId);
+    const handleError = (error) => {
+      console.error("Error accessing camera:", error);
+    };
 
-    // setup devices dropdown
-    if (videoInputDevices.length >= 1) {
-      setVideoInputDevices(videoInputDevices);
-    }
-  };
+    navigator.mediaDevices.getUserMedia(constraints)
+      .then(handleSuccess)
+      .catch(handleError);
 
-  const resetClick = () => {
-    codeReader.current.reset();
+    const scanQRCode = () => {
+      if (!videoRef.current || !videoRef.current.videoWidth || !videoRef.current.videoHeight) {
+        // Si las dimensiones del video aún no están disponibles, esperamos y volvemos a intentarlo
+        requestAnimationFrame(scanQRCode);
+        return;
+      }
+
+      const canvas = document.createElement("canvas");
+      canvas.width = videoRef.current.videoWidth;
+      canvas.height = videoRef.current.videoHeight;
+      const context = canvas.getContext("2d");
+      context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+      const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+      const qrCode = jsQR(imageData.data, imageData.width, imageData.height);
+      if (qrCode) {
+        setCode(qrCode.data);
+        onQR(qrCode.data);
+      }
+      requestAnimationFrame(scanQRCode); // Llamada recursiva para escanear continuamente
+    };
+
+    videoRef.current.addEventListener("loadedmetadata", scanQRCode);
+
+    return () => {
+      videoRef.current.removeEventListener("loadedmetadata", scanQRCode);
+    };
+  }, [onQR]);
+
+  const resetCode = () => {
     setCode("");
-    onQR("");
-    setIsCameraActive(false);
+    onQR(""); // También reiniciamos el valor en el componente padre
   };
-
-  const startCamera = () => {
-    setIsCameraActive(true);
-  };
-
-  const stopCamera = () => {
-    codeReader.current.reset();
-    setIsCameraActive(false);
-  };
-
-  useEffect(() => {
-    if (selectedDeviceId && isCameraActive) {
-      const decodeFromInputDevice = async () => {
-        try {
-          const result = await codeReader.current.decodeFromInputVideoDevice(
-            selectedDeviceId,
-            videoRef.current
-          );
-          setCode(result.text);
-          onQR(result.text);
-        } catch (err) {
-          if (
-            err instanceof NotFoundException ||
-            err instanceof ChecksumException ||
-            err instanceof FormatException
-          ) {
-          } else {
-            console.error(err);
-          }
-        }
-      };
-
-      decodeFromInputDevice();
-    }
-  }, [selectedDeviceId, isCameraActive]);
 
   return (
     <div id="sourceSelectPanel">
       <p className={styles.scanQRtitleText}>Registrar por código QR</p>
       <center>
         <div>
-          <video ref={videoRef} id="video" width="300" height="200" />
+          <video ref={videoRef} id="video" width="300" height="200" playsInline />
         </div>
       </center>
 
@@ -100,36 +71,9 @@ const BarcodeScanner = ({ onQR }) => {
         </code>
       </pre>
 
-      <div>
-        <center>
-          <div className={styles.icono}>
-            {code != "" && (
-              <RestartAltIcon
-                fontSize="large"
-                id="resetButton"
-                onClick={resetClick}
-              />
-            )}
-          </div>
-          <div className={styles.icono}>
-            {!isCameraActive && (
-              <QrCodeScannerIcon
-                fontSize="large"
-                id="startCameraButton"
-                onClick={startCamera}
-              />
-            )}
-          </div>
-
-          {/*
-        <div className={styles.icono}>
-        {isCameraActive && (
-          <NoPhotographyIcon fontSize ="large" id="stopCameraButton" onClick={stopCamera} />
-        )}
-        </div>
-        */}
-        </center>
-      </div>
+      <center>
+        <button onClick={resetCode}>Reset</button>
+      </center>
     </div>
   );
 };
