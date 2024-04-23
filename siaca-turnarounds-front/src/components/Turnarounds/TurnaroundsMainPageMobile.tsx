@@ -181,7 +181,8 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
   let filterValues: any[] = [];
   const getList = async () => {
     setIsFilteredResults(false);
-    setArrayFilteredList3([]);
+
+    setArrayOfCheckedHoursStartEnd([]);
     const fetchData = async () => {
       try {
         const url =
@@ -1673,7 +1674,9 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
     let x = auxiliaryArray.find((o) => o.key === idSubtarea);
     //encuentra la tarea
     let result = arrayOfCheckedHours.filter((item) => item?.key == idSubtarea);
-
+    console.log("arrayOfCheckedHours", arrayOfCheckedHours);
+    console.log("arrayOfComments", arrayOfComments);
+    console.log("arrayOfCheckedHoursStartEnd", arrayOfCheckedHoursStartEnd);
     if (result.length === 0) {
       return (
         <>
@@ -2465,7 +2468,12 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                       <div className={styles.dialogDetail}>
                         <div
                           className={styles.closeIconDialog}
-                          onClick={() => setOpenDetailDialog(false)}
+                          onClick={() => {
+                            setArrayOfCheckedHoursStartEnd([]);
+                            setArrayOfCheckedHours([]);
+                            setArrayOfComments([]);
+                            setOpenDetailDialog(false);
+                          }}
                         >
                           <CloseRoundedIcon htmlColor="#4d4e56" />
                         </div>
@@ -2549,6 +2557,9 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                           <div className={styles.redButton}>
                             <RedButton2
                               executableFunction={() => {
+                                setArrayOfCheckedHoursStartEnd([]);
+                                setArrayOfCheckedHours([]);
+                                setArrayOfComments([]);
                                 setOpenDetailDialog(false);
                               }}
                               buttonText={"Cerrar"}
@@ -2594,7 +2605,12 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                   <div className={styles.attendedTurnaroundContainer}>
                     <div
                       className={styles.closeIconDialog}
-                      onClick={() => setOpenDetailDialog(false)}
+                      onClick={() => {
+                        setArrayOfCheckedHoursStartEnd([]);
+                        setArrayOfCheckedHours([]);
+                        setArrayOfComments([]);
+                        setOpenDetailDialog(false);
+                      }}
                     >
                       <CloseRoundedIcon htmlColor="#4d4e56" />
                     </div>
@@ -2625,7 +2641,12 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                   <div className={styles.attendedTurnaroundContainer}>
                     <div
                       className={styles.closeIconDialog}
-                      onClick={() => setOpenDetailDialog(false)}
+                      onClick={() => {
+                        setArrayOfCheckedHoursStartEnd([]);
+                        setArrayOfCheckedHours([]);
+                        setArrayOfComments([]);
+                        setOpenDetailDialog(false);
+                      }}
                     >
                       <CloseRoundedIcon htmlColor="#4d4e56" />
                     </div>

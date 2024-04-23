@@ -211,10 +211,11 @@ const SiacaNavbar: React.FC<PageProps> = ({
       <div className={styles.siacaNavbarContainer}>
         <MenuRoundedIcon htmlColor="#fff" onClick={() => setOpen(true)} />
         {GetTitle()}
-        <ReplayRoundedIcon
+        {/* <ReplayRoundedIcon
           htmlColor="#fff"
-          onClick={() => /*router.push("/Turnarounds")*/ location.reload()}
-        />
+          onClick={() =>  location.reload()}
+        /> */}
+        <div></div>
       </div>
     </>
   );
