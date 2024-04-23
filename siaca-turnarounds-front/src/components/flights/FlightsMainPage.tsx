@@ -496,7 +496,6 @@ const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
               width={100}
               height={80}
             />
-            <p>{index?.fk_aerolinea?.nombre}</p>
           </div>
           <div className={styles.column1Container}>
             <p>Vuelo:</p>
