@@ -6,7 +6,7 @@ import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRigh
 import { log } from "console";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import React, { useEffect, useState } from "react";
-import router, { Router } from "next/router";
+import { useRouter } from "next/navigation";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Table, Spacer } from "@nextui-org/react";
 import { TableBody, Dialog, Input, TextField, setRef } from "@mui/material";
@@ -60,6 +60,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
       setRoleID(parseInt(role));
     }
   }, []);
+  const router = useRouter();
 
   const [roleID, setRoleID] = useState(-1);
   const [arrayList3, setArrayList3] = useState([]);
@@ -953,7 +954,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
 
     await patchFinishHourDate(openDetailDialogID, currentTimestampString, x);
 
-    await router.reload();
+    await router.refresh();
   };
 
   //ordenar y formatear el arreglo
@@ -1101,7 +1102,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
         };
         const response = await fetch(url, requestOptions).then((res) =>
           res.json().then((result) => {
-            router.reload();
+            router.refresh();
           })
         );
       } catch (error) {
@@ -2239,9 +2240,9 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
               <div>
                 {
                   <Camera
-                    onPhoto={(e : any) => {
+                    onPhoto={(e: any) => {
                       SetTaskArrayImages(index?.id, e);
-                      console.log("texto", e)
+                      console.log("texto", e);
                     }}
                   />
                 }
@@ -2330,7 +2331,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                     <div className={styles.dialogDetailStartTurnaround}>
                       <div
                         className={styles.closeIconDialog}
-                        onClick={() => router.reload()}
+                        onClick={() => router.refresh()}
                       >
                         <CloseRoundedIcon htmlColor="#4d4e56" />
                       </div>
@@ -2418,7 +2419,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                       <div className={styles.containerConfirmAssistanceMobile}>
                         <div
                           className={styles.closeIconDialog}
-                          onClick={() => router.reload()}
+                          onClick={() => router.refresh()}
                         >
                           <CloseRoundedIcon htmlColor="#4d4e56" />
                         </div>
@@ -2445,7 +2446,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                       <div className={styles.dialogDetail}>
                         <div
                           className={styles.closeIconDialog}
-                          onClick={() => router.reload()}
+                          onClick={() => router.refresh()}
                         >
                           <CloseRoundedIcon htmlColor="#4d4e56" />
                         </div>
@@ -2529,7 +2530,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                           <div className={styles.redButton}>
                             <RedButton2
                               executableFunction={() => {
-                                router.reload();
+                                router.refresh();
                               }}
                               buttonText={"Cerrar"}
                             />
@@ -2543,7 +2544,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                         >
                           <div
                             className={styles.closeIconDialog}
-                            onClick={() => router.reload()}
+                            onClick={() => router.refresh()}
                           >
                             <CloseRoundedIcon htmlColor="#4d4e56" />
                           </div>
@@ -2574,7 +2575,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                   <div className={styles.attendedTurnaroundContainer}>
                     <div
                       className={styles.closeIconDialog}
-                      onClick={() => router.reload()}
+                      onClick={() => router.refresh()}
                     >
                       <CloseRoundedIcon htmlColor="#4d4e56" />
                     </div>
@@ -2594,7 +2595,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                       <div className={styles.redButton}>
                         <RedButton2
                           executableFunction={() => {
-                            router.reload();
+                            router.refresh();
                           }}
                           buttonText={"Cerrar"}
                         />
@@ -2605,7 +2606,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                   <div className={styles.attendedTurnaroundContainer}>
                     <div
                       className={styles.closeIconDialog}
-                      onClick={() => router.reload()}
+                      onClick={() => router.refresh()}
                     >
                       <CloseRoundedIcon htmlColor="#4d4e56" />
                     </div>
@@ -2614,7 +2615,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                       <div className={styles.redButton}>
                         <RedButton2
                           executableFunction={() => {
-                            router.reload();
+                            router.refresh();
                           }}
                           buttonText={"Cerrar"}
                         />
@@ -2806,7 +2807,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                       <GreenButton2
                         executableFunction={async () => {
                           await handleSaveData();
-                          router.reload();
+                          router.refresh();
                         }}
                         buttonText={"Guardar"}
                       />
@@ -2817,7 +2818,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                       <RedButton2
                         executableFunction={() => {
                           //setOpenAssignDialog(false);
-                          router.reload();
+                          router.refresh();
                         }}
                         buttonText={"Cerrar"}
                       />
@@ -2906,8 +2907,11 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
           </div>
 
           <div className={styles.imageContainer}>
-          <img
-              src={"https://testing.siaca.aero/django/" + index?.fk_vuelo?.fk_aerolinea?.imagen}
+            <img
+              src={
+                "https://testing.siaca.aero/django/" +
+                index?.fk_vuelo?.fk_aerolinea?.imagen
+              }
               alt="Logo"
               width={80}
               height={60}

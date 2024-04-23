@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./SiacaNavbarMobile.style.module.css";
 import SiacaLogo from "../../../images/logos/siacaLogo.png";
 import Image from "next/image";
-import router from "next/router";
+import { useRouter } from "next/navigation";
 import FlightLandRoundedIcon from "@mui/icons-material/FlightLandRounded";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import ReplayRoundedIcon from "@mui/icons-material/ReplayRounded";
@@ -34,7 +34,7 @@ const SiacaNavbar: React.FC<PageProps> = ({
     if (activeFlightsValue) setActiveFligths(activeFlightsValue);
     if (activeTurnaroundsValue) setActiveTurnarounds(activeTurnaroundsValue);
   }, []); // If nothing on dependencies, this will run only first render
-
+  const router = useRouter();
   const [activeFlights, setActiveFligths] = useState(false);
   const [activeTurnarounds, setActiveTurnarounds] = useState(false);
   const [open, setOpen] = React.useState(false);
@@ -169,7 +169,9 @@ const SiacaNavbar: React.FC<PageProps> = ({
     const fetchData = async () => {
       setLoading(true);
       try {
-        const url = "https://testing.siaca.aero/django/usuarios/logout/?token="+localStorage.getItem("userToken");
+        const url =
+          "https://testing.siaca.aero/django/usuarios/logout/?token=" +
+          localStorage.getItem("userToken");
         const requestOptions = {
           method: "GET",
           headers: {
@@ -209,7 +211,7 @@ const SiacaNavbar: React.FC<PageProps> = ({
       <div className={styles.siacaNavbarContainer}>
         <MenuRoundedIcon htmlColor="#fff" onClick={() => setOpen(true)} />
         {GetTitle()}
-        <ReplayRoundedIcon htmlColor="#fff" onClick={() => router.reload()} />
+        <ReplayRoundedIcon htmlColor="#fff" onClick={() => router.refresh()} />
       </div>
     </>
   );
