@@ -41,6 +41,10 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep, flightID }) => {
   const [arrayList, setArrayList] = useState([]);
   let responseValue = false;
 
+  const [preview, setPreview] = useState("");
+
+  const [imagen, setImagen] = useState(null);
+
   const [loading, setLoading] = useState(false);
 
   const getList = async () => {
@@ -82,51 +86,51 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep, flightID }) => {
     await fetchData().catch(console.error);
   };
 
-  const registerAirlines = () => {
-    const fetchData = async () => {
-      try {
-        const url = "/api/updateAirline";
-        const requestOptions = {
-          method: "POST",
-          body: JSON.stringify({
-            nombre: aerolinea,
-            correo: correoPrincipal,
-            correo_secundario: correoSecundario,
-            telefono: telefonoPrincipal,
-            telefono_secundario: telefonoSecundario,
-            codigo: codigo,
-            pais: pais,
-            ciudad: ciudad,
-            codigo_OACI: codigoOACI,
-            userToken: localStorage.getItem("userToken"),
-            flightID: flightID,
-          }),
-        };
-        const response = await fetch(url, requestOptions).then((value) => {
-          if (value?.status === 400) {
-            responseValue = false;
-          } else {
-            responseValue = true;
-          }
-          return true;
-        });
-        if (!response) {
-          responseValue = false;
 
-          throw new Error("Error in response registering user");
-        }
-      } catch (error) {
-        responseValue = false;
-        //mostrar mensaje de no se pudo validasr usuario, ya existe o su conexion es limitada
+  const updateAirline = async () => {
+    const uploadData = new FormData();
+    uploadData.append("nombre", aerolinea);
+    uploadData.append("correo", correoPrincipal);
+    uploadData.append("correo_secundario", correoSecundario);
+    uploadData.append("telefono", telefonoPrincipal);
+    uploadData.append("telefono_secundario", telefonoSecundario);
+    uploadData.append("codigo", codigo);
+    uploadData.append("pais", pais);
+    uploadData.append("ciudad", ciudad);
+    uploadData.append("codigo_OACI", codigoOACI);
+
+    // Agregar el campo "imagen" solo si hay una imagen seleccionada
+    if (imagen !== null) {
+      uploadData.append("imagen", imagen);
+    }
+
+    await fetch(
+      "https://testing.siaca.aero/django/aerolineas/"+flightID+"/?token=" +
+        localStorage.getItem("userToken"),
+      {
+        method: "PATCH",
+        body: uploadData,
       }
-    };
-    fetchData().catch(console.error);
+    )
+      .then((res) => {
+        console.log(res);
+        router.reload();
+      })
+      .catch((error) => {
+        console.log(error);
+        router.reload();
+      });
   };
 
+  const subirArchivo = (e: any) => {
+    setImagen(e.target.files[0]);
+    setPreview(URL.createObjectURL(e.target.files[0]));
+  };
+
+
   const continueButton = () => {
-    registerAirlines();
     setLoading(true);
-    router.reload();
+    updateAirline();
   };
 
   const Back = () => {
@@ -147,13 +151,19 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep, flightID }) => {
       <div className={styles.airlinesListContainer}>
         <span className={styles.titleText}>Logo</span>
         <div className={styles.inputsListImage}>
-          <div className={styles.uploadContainer}>
-            <DriveFolderUploadRoundedIcon fontSize="inherit" />
-            <div className={styles.uploadCancelButtons}>
-              <FileUploadRoundedIcon htmlColor="#08a75a" />
-              <CloseRoundedIcon htmlColor="red" />
-            </div>
-          </div>
+        <input
+            type="file"
+            name="Archivos"
+            onChange={(e: any) => subirArchivo(e)}
+          />
+
+        {preview && (
+              <div>
+                <center>
+                  <img src={preview} alt="Preview" width={300} height={300} />
+                </center>
+              </div>
+            )}
         </div>
         <span className={styles.titleText}>Datos</span>
         <div className={styles.inputsList}>

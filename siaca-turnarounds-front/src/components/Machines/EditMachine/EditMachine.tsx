@@ -63,6 +63,7 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep, machineID }) => {
             setCombustible(result?.combustible);
             setEstado(result?.estado);
             setFkCategoria(result?.fkcategoria);
+            setImagen(result?.imagen)
 
             if (result?.[0]?.["status"] === 400) {
             } else {
@@ -148,13 +149,11 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep, machineID }) => {
       <div className={styles.machinesListContainer}>
         <span className={styles.titleTextImagen}>Imagen</span>
         <div className={styles.inputsListImage}>
-          <div className={styles.uploadContainer}>
-            <DriveFolderUploadRoundedIcon fontSize="inherit" />
-            <div className={styles.uploadCancelButtons}>
-              <FileUploadRoundedIcon htmlColor="#08a75a" />
-              <CloseRoundedIcon htmlColor="red" />
-            </div>
-          </div>
+        <div>
+                <center>
+                  <img src={"https://testing.siaca.aero/django"+imagen} alt="Preview" width={300} height={300} />
+                </center>
+              </div>
         </div>
         <span className={styles.titleTextDates}>Datos</span>
         <div className={styles.inputsList}>
