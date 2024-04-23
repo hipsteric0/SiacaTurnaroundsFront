@@ -14,7 +14,10 @@ const Camera = ({ onPhoto }) => {
 
   const startCamera = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      const constraints = {
+        video: { facingMode: "environment" } // This will prioritize the rear camera
+      };
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
       videoRef.current.srcObject = stream;
       videoRef.current.play();
       setIsCameraStarted(true);
@@ -54,13 +57,6 @@ const Camera = ({ onPhoto }) => {
     }, "image/jpeg");
   };
 
-  const savePhoto = () => {
-    const a = document.createElement("a");
-    a.href = photoData;
-    a.download = "photo.jpg";
-    a.click();
-    setDownloadedImage(photoData);
-  };
 
   return (
     <div>
@@ -84,11 +80,7 @@ const Camera = ({ onPhoto }) => {
           <div>
             <p>Foto capturada:</p>
             <img src={photoData} alt="Captured" style={{ width: "100%", maxWidth: "400px", marginTop: "10px" }} />
-            <button onClick={savePhoto}>Guardar foto</button>
           </div>
-        )}
-        {downloadedImage && (
-          <p>Foto guardada:</p>
         )}
       </div>
     </div>
