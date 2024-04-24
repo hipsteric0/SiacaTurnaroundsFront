@@ -130,6 +130,8 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
   const [flightID, setFlightID] = useState(-1);
   const [state1Overider, setState1Overider] = useState(false);
   const [tasksCompletionValues, setTasksCompletionValues] = useState([]);
+  const [tasksCompletionValuesOnlyImages, setTasksCompletionValuesOnlyImages] =
+    useState([]);
   const [manualHourDialog, setmanualHourDialog] = useState(false);
   const [manualHourDialogOnlyStart, setmanualHourDialogOnlyStart] =
     useState(false);
@@ -900,6 +902,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
   //ordenar y formatear el arreglo
   const formatTasksForPDFArray = (result: any) => {
     let y: any[] = [];
+    let onlyImagesArray: any[] = [];
 
     result?.comentarios.map((value: any) => {
       y.push({
@@ -927,10 +930,18 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
           value?.hora_fin,
       });
     });
+    result?.imagenes.map((value: any) => {
+      onlyImagesArray.push({
+        key: value?.fk_subtarea__id,
+        name: value?.fk_subtarea__titulo,
+        value: value?.imagen,
+      });
+    });
 
     let resultOfSorting: any[] = [];
     resultOfSorting = y.sort((a, b) => a.key - b.key);
     setTasksCompletionValues(resultOfSorting);
+    setTasksCompletionValuesOnlyImages(onlyImagesArray);
   };
 
   const ArrayPrinterTaskDataForSummary = () => {
@@ -943,6 +954,29 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
           <div className={styles.taskDetailContainer}>
             <span className={styles.taskDetailTitleText}>{index?.name}:</span>
             <span className={styles.taskDetailText}> {index?.value}</span>
+          </div>
+        </>
+      );
+    });
+
+    return y;
+  };
+
+  const ArrayPrinterTaskDataForSummaryOnlyImages = () => {
+    let y: any = [];
+    let cont = 0;
+    tasksCompletionValuesOnlyImages.map((index: any) => {
+      cont++; //
+      y[index?.key] = (
+        <>
+          <div className={styles.taskDetailContainerOnlyImages}>
+            <span className={styles.taskDetailTitleText}>{index?.name}:</span>
+            <img
+              src={"https://testing.siaca.aero/django/media/" + index?.value}
+              alt="Logo"
+              width={320}
+              height={200}
+            />
           </div>
         </>
       );
@@ -2492,6 +2526,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                       Turnaround atendido exitosamente!
                     </p>
                     {ArrayPrinterTaskDataForSummary()}
+                    {ArrayPrinterTaskDataForSummaryOnlyImages()}
                     <p
                       className={styles.detailDialogInfoItemTitleWarningNotBold}
                     >
@@ -2815,8 +2850,11 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
           </div>
 
           <div className={styles.imageContainer}>
-          <img
-              src={"https://testing.siaca.aero/django/" + index?.fk_vuelo?.fk_aerolinea?.imagen}
+            <img
+              src={
+                "https://testing.siaca.aero/django/" +
+                index?.fk_vuelo?.fk_aerolinea?.imagen
+              }
               alt="Logo"
               width={80}
               height={60}

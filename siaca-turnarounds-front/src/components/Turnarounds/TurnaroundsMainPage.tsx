@@ -106,6 +106,8 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
     useState(false);
   const [personnelDateTimeSelected, setPersonnelDateTimeSelected] =
     useState(false);
+  const [tasksCompletionValuesOnlyImages, setTasksCompletionValuesOnlyImages] =
+    useState([]);
   const [aux, setAux] = useState(false);
   const [ETA, setETA] = useState("");
   const [horaInicio, setHoraInicio] = useState("");
@@ -1378,6 +1380,7 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
 
   const formatTasksForPDFArray = (result: any) => {
     let y: any[] = [];
+    let onlyImagesArray: any[] = [];
 
     //comentario === id =1
     //hora inicio === id =2
@@ -1415,10 +1418,18 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
         idForEdition: value?.id,
       });
     });
+    result?.imagenes.map((value: any) => {
+      onlyImagesArray.push({
+        key: value?.fk_subtarea__id,
+        name: value?.fk_subtarea__titulo,
+        value: value?.imagen,
+      });
+    });
 
     let resultOfSorting: any[] = [];
     resultOfSorting = y.sort((a, b) => a.key - b.key);
     setTasksCompletionValues(resultOfSorting);
+    setTasksCompletionValuesOnlyImages(onlyImagesArray);
   };
 
   const arrayPrinterSelectedMachinesForCategory = (category: any) => {
@@ -1435,6 +1446,31 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
     });
     //setMachinesToPostArray(machinesToPostArray);
     //getMachinesList();
+    return y;
+  };
+
+  const ArrayPrinterTaskDataForSummaryOnlyImages = () => {
+    let y: any = [];
+    let cont = 0;
+    tasksCompletionValuesOnlyImages.map((index: any) => {
+      cont++; //
+      y[index?.key] = (
+        <>
+          <div className={styles.taskDetailContainerOnlyImages}>
+            <span className={styles.taskDetailTitleText}>
+              <strong>{index?.name}: </strong>
+            </span>
+            <img
+              src={"https://testing.siaca.aero/django/media/" + index?.value}
+              alt="Logo"
+              width={320}
+              height={200}
+            />
+          </div>
+        </>
+      );
+    });
+
     return y;
   };
 
@@ -3156,6 +3192,7 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
                         </p>
                         <div className={styles.rowOfTurnaroundDataContainer}>
                           {tasksCompletionValuesArrayPrinter()}
+                          {ArrayPrinterTaskDataForSummaryOnlyImages()}
                           {roleID == 1 ? (
                             <>
                               <div
@@ -3559,8 +3596,11 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
             <></>
           )}
           <div className={styles.imageContainer}>
-          <img
-              src={"https://testing.siaca.aero/django/" + index?.fk_vuelo?.fk_aerolinea?.imagen}
+            <img
+              src={
+                "https://testing.siaca.aero/django/" +
+                index?.fk_vuelo?.fk_aerolinea?.imagen
+              }
               alt="Logo"
               width={100}
               height={80}

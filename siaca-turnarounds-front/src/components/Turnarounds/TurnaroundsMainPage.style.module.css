@@ -502,3 +502,8 @@
   color: #bbb;
   margin-left: 20px;
 }
+.taskDetailContainerOnlyImages {
+  display: flex;
+  justify-content: start;
+  gap: 20px;
+}
