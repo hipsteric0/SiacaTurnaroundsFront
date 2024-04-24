@@ -2815,7 +2815,12 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
           </div>
 
           <div className={styles.imageContainer}>
-            {index?.fk_vuelo?.fk_aerolinea?.nombre} image not found
+          <img
+              src={"https://testing.siaca.aero/django/" + index?.fk_vuelo?.fk_aerolinea?.imagen}
+              alt="Logo"
+              width={80}
+              height={60}
+            />
           </div>
           <div className={styles.column1Container}>
             <p>Vuelo:</p>
