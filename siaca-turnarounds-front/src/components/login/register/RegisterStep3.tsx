@@ -31,7 +31,7 @@ const LoginMainPage: React.FC <PageProps> = ({setStep}) => {
   >
     <CheckCircleOutlineIcon sx={{ fontSize: 150 }}></CheckCircleOutlineIcon>
     <strong>
-     <center> <p className={styles.welcomeBackText}>Tu registro se ha realizado correctamente ya puedes hacer login </p> </center>
+     <center> <p className={styles.welcomeBackText}>Tu registro se ha realizado correctamente, espere a que el administrador active su usuario</p> </center>
     </strong>
     <Spacer y={2} />
     <button className={styles.ingresarButton} onClick={() => Continue()}>
