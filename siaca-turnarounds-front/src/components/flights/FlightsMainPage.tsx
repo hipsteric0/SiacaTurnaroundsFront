@@ -493,7 +493,7 @@ const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
           <img
               src={"https://testing.siaca.aero/django/" + index?.fk_aerolinea?.imagen}
               alt="Logo"
-              width={100}
+              width={150}
               height={80}
             />
           </div>
