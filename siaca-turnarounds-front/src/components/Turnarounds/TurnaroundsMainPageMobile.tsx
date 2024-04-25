@@ -163,12 +163,32 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
     currentTimestamp.getMinutes().toString() +
     ":" +
     currentTimestamp.getSeconds().toString();
+
   let currentTodaysDateString =
     currentTimestamp.getFullYear() +
     "-" +
     (currentTimestamp.getMonth() + 1) +
     "-" +
     currentTimestamp.getDate();
+
+  let currentTimestampForTomorrow = new Date();
+  currentTimestampForTomorrow.setDate(currentTimestamp.getDate() + 1);
+  let tomorrowsDateString =
+    currentTimestampForTomorrow.getFullYear() +
+    "-" +
+    (currentTimestampForTomorrow.getMonth() + 1) +
+    "-" +
+    currentTimestampForTomorrow.getDate();
+
+  let currentTimestampForYesterday = new Date();
+  currentTimestampForYesterday.setDate(currentTimestamp.getDate() - 1);
+  let yesterdaysDateString =
+    currentTimestampForYesterday.getFullYear() +
+    "-" +
+    (currentTimestampForYesterday.getMonth() + 1) +
+    "-" +
+    currentTimestampForYesterday.getDate();
+
   const handleScanSuccess = (e: any) => {
     setResult(e);
   };
@@ -2223,6 +2243,7 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
       : (arrayList3aux = arrayList3);
 
     arrayList3aux.map((index: any) => {
+      console.log(index);
       y[index.id] = (
         <div
           key={index.id}
@@ -2348,7 +2369,10 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
                             }}
                             buttonText="Comenzar turnaround"
                             disabled={
-                              currentTurnaroundDate != currentTodaysDateString
+                              currentTurnaroundDate !=
+                                currentTodaysDateString &&
+                              currentTurnaroundDate != tomorrowsDateString &&
+                              currentTurnaroundDate != yesterdaysDateString
                             }
                           />
                         </div>
@@ -2893,7 +2917,14 @@ const TurnaroundsMainPageMobile: React.FC<PageProps> = ({ setStep }) => {
             </p>
           </div>
           <div className={styles.column4Container}>
+            <p>
+              <strong>Inicio:</strong>
+            </p>
             <p>{index?.hora_inicio}</p>
+            <p>
+              <strong>Fin:</strong>
+            </p>
+            <p>{index?.hora_fin}</p>
           </div>
         </div>
       );
