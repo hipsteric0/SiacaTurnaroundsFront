@@ -71,10 +71,12 @@ const AirlinesMainPage: React.FC<PageProps> = ({
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    //trae los datos cuando se entra a la pagina airlines
     getList();
     getCitiesList();
   }, []);
 
+  //traer lista de aerolineas
   const getList = async () => {
     const fetchData = async () => {
       try {
@@ -98,6 +100,7 @@ const AirlinesMainPage: React.FC<PageProps> = ({
     await fetchData().catch(console.error);
   };
 
+  //borrar aerolinea
   const deleteAirline = async (airlineID: number) => {
     const fetchData = async () => {
       try {
@@ -147,6 +150,7 @@ const AirlinesMainPage: React.FC<PageProps> = ({
     await fetchData().catch(console.error);
   };
 
+  //traer lista de ciudades
   const getCitiesList = async () => {
     const fetchData = async () => {
       try {
@@ -220,6 +224,7 @@ const AirlinesMainPage: React.FC<PageProps> = ({
     getAirline(airlineID);
   };
 
+  //imprime la lista de aerolineas y devuelve un html dinamico
   const arrayPrinter = () => {
     let y: any = [];
 
@@ -456,6 +461,7 @@ const AirlinesMainPage: React.FC<PageProps> = ({
     return y;
   };
 
+  //imprime la lista de ciudades y devuelve un html dinamico
   const arrayPrinter2 = () => {
     let y: any = [];
 
@@ -570,11 +576,13 @@ const AirlinesMainPage: React.FC<PageProps> = ({
     return y;
   };
 
+  //cambia el html para mostrar ciudades
   const Load = () => {
     setLoading(true);
     setStep(1);
   };
 
+  //html principal
   return (
     <main className={styles.containerAirlinesMainPage}>
       <div className={styles.registerbuttoncontainer}>

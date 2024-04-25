@@ -29,14 +29,15 @@ interface PageProps {
 }
 
 const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
+  //al entrar a la pagina consigue la fecha aactual
   useEffect(() => {
     getDateForCalendar();
   }, []);
-
+  //al entrar a la pagina consigue la lista de vuelos
   useEffect(() => {
     getList();
   }, []);
-
+  //al hacer login llega a esta pagina y setea el rol del usuario para esconder o mostrar cosas especificas de este
   useEffect(() => {
     let role = localStorage.getItem("userRole");
     if (role != null) {
@@ -59,6 +60,8 @@ const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
   const [deleteDialog, setDeleteDialog] = useState(false);
 
   let filterValues: any[] = [];
+  //trae los vuelos y los setea en un arreglo de estados
+  //si se filtra los arreglos se seteara mas tarde en un arreglo distinto
   const getList = async () => {
     setIsFilteredResults(false);
     setArrayFilteredList3([]);
@@ -91,6 +94,7 @@ const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
     await fetchData().catch(console.error);
   };
 
+  //consigue la fecha para de hoy el calendario
   const getDateForCalendar = () => {
     let x =
       date.getDate().toString() +
@@ -102,6 +106,7 @@ const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
     return <></>;
   };
 
+  //funcion de boton de atras del calendario, convierte la fecha a un dia atras del que esta actualmente
   const backDateButton = async () => {
     await setdateCounter(dateCounter - 1);
     date = new Date(new Date().setDate(new Date().getDate() + dateCounter - 1));
@@ -109,6 +114,7 @@ const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
     getList();
   };
 
+  //funcion de boton de adelante del calendario, convierte la fecha a un dia siguiente del que esta actualmente
   const frontDateButton = async () => {
     await setdateCounter(dateCounter + 1);
     date = new Date(new Date().setDate(new Date().getDate() + dateCounter + 1));
@@ -116,6 +122,7 @@ const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
     getList();
   };
 
+  //borra el vuelo9, turnaround asignaciones y todo lo asociado a este
   const flightMachine = async (flightID: number) => {
     const fetchData = async () => {
       try {
@@ -140,14 +147,21 @@ const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
     await fetchData().catch(console.error);
   };
 
+  //funcion para manejar borra vuelo
   const handleDeleteFlight = async (flightID: number) => {
     flightMachine(flightID);
   };
+
+  //funcion para editar vuelo
   const handleEditFlight = async (flightID: number) => {
     await setflightID(flightID);
     await setStep(2);
   };
 
+  //devuelve html dinamico con las tarjetas de los vuelos
+  //las tarjetas contienen un dialogo que se abre cuando se hace click en ver mas
+  //el dialogo tiene todos los datos especificos al vuelo cliqueado y un embebido de adbs exchange
+  //cambiar el icaohex en el vuelo cambia el embebido a apuntar al vuelo especifico
   const arrayPrinter = () => {
     let y: any = [];
     let arrayList3aux: any = [];
@@ -492,8 +506,11 @@ const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
           </div>
 
           <div className={styles.imageContainer}>
-          <img
-              src={"https://testing.siaca.aero/django/" + index?.fk_aerolinea?.imagen}
+            <img
+              src={
+                "https://testing.siaca.aero/django/" +
+                index?.fk_aerolinea?.imagen
+              }
               alt="Logo"
               width={80}
               height={60}
@@ -540,6 +557,7 @@ const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
     return y;
   };
 
+  //funcion que filtra el arreglo
   const setFilterValues = () => {
     arrayList3.map((value: any) => {
       if (filterValues.indexOf(value?.fk_aerolinea?.nombre)) {
@@ -555,6 +573,7 @@ const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
     setArrayFilteredList3(filteredUsers);
   };
 
+  //html principal
   return (
     <main className={styles.mainFlightsContainer}>
       <div className={styles.upperSection}>

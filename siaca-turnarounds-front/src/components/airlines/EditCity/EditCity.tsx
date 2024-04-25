@@ -39,6 +39,7 @@ const RegisterCity: React.FC<PageProps> = ({ setStep, cityID }) => {
 
   let responseValue = false;
 
+  //consulta una ciudad por id
   const getList = async () => {
     const fetchData = async () => {
       try {
@@ -74,6 +75,7 @@ const RegisterCity: React.FC<PageProps> = ({ setStep, cityID }) => {
     await fetchData().catch(console.error);
   };
 
+  //consulta para actualizar una ciudad
   const registerCities = () => {
     const fetchData = async () => {
       try {
@@ -111,17 +113,20 @@ const RegisterCity: React.FC<PageProps> = ({ setStep, cityID }) => {
     fetchData().catch(console.error);
   };
 
+  //funcion para actualizar ciudad
   const continueButton = () => {
     registerCities();
     setLoading(true);
     router.reload();
   };
 
+  //volver a la pagina principal
   const Back = () => {
     setLoading(true);
     router.reload();
   };
 
+  //html principal
   return (
     <main className={styles.RegisterAirlineContainer}>
       <div className={styles.backArrowIcon}>

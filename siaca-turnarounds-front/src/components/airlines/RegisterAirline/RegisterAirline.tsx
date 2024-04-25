@@ -53,6 +53,7 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep }) => {
 
   let responseValue = false;
 
+  //consulta que registra una nueva aerolinea
   const newAirline = async () => {
     const uploadData = new FormData();
     uploadData.append("nombre", aerolinea);
@@ -88,6 +89,7 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep }) => {
       });
   };
 
+  //registra una nueva aerolinea
   const continueButton = async () => {
     setLoading(true);
     await newAirline();
@@ -95,11 +97,13 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep }) => {
     //router.reload();
   };
 
+  //manejador de imagenes
   const subirArchivo = (e: any) => {
     setImagen(e.target.files[0]);
     setPreview(URL.createObjectURL(e.target.files[0]));
   };
 
+  //volver a la pagina princippal
   const Back = () => {
     setLoading(true);
     router.reload();
@@ -111,6 +115,7 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep }) => {
   const [emailError, setEmailError] = useState("");
   const [emailError2, setEmailError2] = useState("");
 
+  //manejador de cambio de email
   const handleEmailPrincipalChange = (e) => {
     const inputEmail = e.target.value;
     setCorreoPrincipal(inputEmail);
@@ -122,6 +127,7 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep }) => {
     }
   };
 
+  //manejador de cambio de email secundario
   const handleEmailSecundarioChange = (e) => {
     const inputEmail = e.target.value;
     setCorreoSecundario(inputEmail);
@@ -133,6 +139,7 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep }) => {
     }
   };
 
+  //html principal
   return (
     <main className={styles.RegisterAirlineContainer}>
       <div className={styles.backArrowIcon}>

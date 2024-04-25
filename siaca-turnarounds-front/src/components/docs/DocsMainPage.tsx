@@ -10,7 +10,11 @@ import FlightData4 from "../../../build/contracts/FlightData4.json";
 import router from "next/router";
 import { Provider } from "web3/providers";
 interface PageProps {}
-
+//esta pagina contiene los datos del alojamiento por blockchain
+//Actualmente esta en la red etherum sepolia, que es una red de prueba de blockchain
+//el funcionamiento de esta es identico al de una red verdadera de blockchain
+//con la diferencia de que las monedas se pueden conseguir en un faucet gratuitamente
+//Los datos de la wallet se encuentran en el archivo truffle.config, asi como en el env
 const DocsMainPage: React.FC<PageProps> = ({}) => {
   //if token exists show regular html else show not signed in screen
   const isMobile = useMediaQuery("(max-width: 1270px)");
@@ -43,6 +47,8 @@ const DocsMainPage: React.FC<PageProps> = ({}) => {
   const [card4opened, setcard4opened] = useState(false);
 
   let envData2;
+
+  //consulta para traer datos encriptados que se encuentran en el .env
   const getEnv = async () => {
     const fetchData = async () => {
       try {
@@ -67,6 +73,7 @@ const DocsMainPage: React.FC<PageProps> = ({}) => {
     await fetchData().catch(console.error);
   };
 
+  //al entrar a la pagina, consulta la blockchain y consigue los datos almacenados en el contrato de slot 1
   useEffect(() => {
     getEnv();
     const provider = new Web3.providers.HttpProvider("https://rpc.sepolia.org");
@@ -95,6 +102,8 @@ const DocsMainPage: React.FC<PageProps> = ({}) => {
     }
     provider && template();
   }, []);
+
+  //al entrar a la pagina, consulta la blockchain y consigue los datos almacenados en el contrato de slot 2
 
   useEffect(() => {
     getEnv();
@@ -125,6 +134,8 @@ const DocsMainPage: React.FC<PageProps> = ({}) => {
     provider && template();
   }, []);
 
+  //al entrar a la pagina, consulta la blockchain y consigue los datos almacenados en el contrato de slot 3
+
   useEffect(() => {
     getEnv();
     const provider = new Web3.providers.HttpProvider("https://rpc.sepolia.org");
@@ -153,6 +164,8 @@ const DocsMainPage: React.FC<PageProps> = ({}) => {
     }
     provider && template();
   }, []);
+
+  //al entrar a la pagina, consulta la blockchain y consigue los datos almacenados en el contrato de slot 4
 
   useEffect(() => {
     getEnv();
@@ -183,6 +196,7 @@ const DocsMainPage: React.FC<PageProps> = ({}) => {
     provider && template();
   }, []);
 
+  //funcion para introducir datos en la blockchain a un slot
   async function writeData() {
     const { contract } = contractState;
     try {
@@ -209,6 +223,7 @@ const DocsMainPage: React.FC<PageProps> = ({}) => {
     router.reload();
   }
 
+  //imprime nombre y valor, sera usado ciclicamente para imprimir data de blockchain y devolver htmls
   const arrayPrinterTasks = (namesArray: any, valuesArray: any) => {
     let y: any = [];
     let cont = 0;
@@ -226,6 +241,7 @@ const DocsMainPage: React.FC<PageProps> = ({}) => {
     return y;
   };
 
+  //html principal
   return (
     <main className={styles.docsMainPage}>
       <p>

@@ -32,6 +32,7 @@ const RegisterCity: React.FC<PageProps> = ({ setStep }) => {
 
   let responseValue = false;
 
+  //consulta para registrar una ciudad
   const registerCities = () => {
     const fetchData = async () => {
       try {
@@ -68,17 +69,20 @@ const RegisterCity: React.FC<PageProps> = ({ setStep }) => {
     fetchData().catch(console.error);
   };
 
+  //manda a registrar
   const continueButton = () => {
     registerCities();
     setLoading(true);
     router.reload();
   };
 
+  //vuelve a pagina principal
   const Back = () => {
     setLoading(true);
     router.reload();
   };
 
+  //html principal
   return (
     <main className={styles.RegisterAirlineContainer}>
       <div className={styles.backArrowIcon}>

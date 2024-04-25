@@ -47,6 +47,7 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep, flightID }) => {
 
   const [loading, setLoading] = useState(false);
 
+  //get aerolinea especifica por ID
   const getList = async () => {
     const fetchData = async () => {
       try {
@@ -86,7 +87,7 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep, flightID }) => {
     await fetchData().catch(console.error);
   };
 
-
+  //consulta para actualizar la aerolinea
   const updateAirline = async () => {
     const uploadData = new FormData();
     uploadData.append("nombre", aerolinea);
@@ -105,7 +106,9 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep, flightID }) => {
     }
 
     await fetch(
-      "https://testing.siaca.aero/django/aerolineas/"+flightID+"/?token=" +
+      "https://testing.siaca.aero/django/aerolineas/" +
+        flightID +
+        "/?token=" +
         localStorage.getItem("userToken"),
       {
         method: "PATCH",
@@ -122,22 +125,25 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep, flightID }) => {
       });
   };
 
+  //manejar subir imagen
   const subirArchivo = (e: any) => {
     setImagen(e.target.files[0]);
     setPreview(URL.createObjectURL(e.target.files[0]));
   };
 
-
+  //funcion para actualizar aerolinea
   const continueButton = () => {
     setLoading(true);
     updateAirline();
   };
 
+  //volver a la pagina principal
   const Back = () => {
     setLoading(true);
     router.reload();
   };
 
+  //html principal
   return (
     <main className={styles.RegisterAirlineContainer}>
       <div className={styles.backArrowIcon}>
@@ -151,19 +157,19 @@ const RegisterAirline: React.FC<PageProps> = ({ setStep, flightID }) => {
       <div className={styles.airlinesListContainer}>
         <span className={styles.titleText}>Logo</span>
         <div className={styles.inputsListImage}>
-        <input
+          <input
             type="file"
             name="Archivos"
             onChange={(e: any) => subirArchivo(e)}
           />
 
-        {preview && (
-              <div>
-                <center>
-                  <img src={preview} alt="Preview" width={300} height={300} />
-                </center>
-              </div>
-            )}
+          {preview && (
+            <div>
+              <center>
+                <img src={preview} alt="Preview" width={300} height={300} />
+              </center>
+            </div>
+          )}
         </div>
         <span className={styles.titleText}>Datos</span>
         <div className={styles.inputsList}>
