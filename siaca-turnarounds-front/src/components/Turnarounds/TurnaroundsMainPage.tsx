@@ -3602,7 +3602,7 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
                 index?.fk_vuelo?.fk_aerolinea?.imagen
               }
               alt="Logo"
-              width={100}
+              width={150}
               height={80}
             />
           </div>
