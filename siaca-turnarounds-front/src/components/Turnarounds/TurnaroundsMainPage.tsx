@@ -3639,7 +3639,14 @@ const TurnaroundsMainPage: React.FC<PageProps> = ({ setStep }) => {
             </p>
           </div>
           <div className={styles.column4Container}>
+            <p>
+              <strong>Inicio:</strong>
+            </p>
             <p>{index?.hora_inicio}</p>
+            <p>
+              <strong>Fin:</strong>
+            </p>
+            <p>{index?.hora_fin}</p>
           </div>
         </div>
       );

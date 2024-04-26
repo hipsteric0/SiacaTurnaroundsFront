@@ -27,6 +27,7 @@ interface PageProps {
   setStep: (value: number) => void;
   setflightID: (value: number) => void;
 }
+//componente de la pagina principal de vuelos, solo mobile
 
 const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
   //al entrar a la pagina consigue la fecha aactual

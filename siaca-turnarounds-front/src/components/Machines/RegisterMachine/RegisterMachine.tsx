@@ -44,6 +44,7 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep }) => {
 
   let responseValue = false;
 
+  //setear opciones de maquinarias
   const formatMachinesList = async (result: any[]) => {
     if (machinesOptionsArray.length === 0) {
       result?.map((index: any) => {
@@ -54,7 +55,7 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep }) => {
       });
     }
   };
-
+  //request para traer las categorias de las maquinarias
   const getList = async () => {
     const fetchData = async () => {
       try {
@@ -83,7 +84,7 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep }) => {
     };
     await fetchData().catch(console.error);
   };
-
+  //request para subir una nueva maquinaria
   const newMachine = async () => {
     const uploadData = new FormData();
 
@@ -115,35 +116,35 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep }) => {
         router.reload();
       });
   };
-
+  //manejador de boton continuar
   const continueButton = async () => {
     setLoading(true);
     await newMachine();
     //router.reload();
   };
-
+  //setea la categoria seleccionada
   const category = (id: number) => {
     setFkCategoria(id.toString());
   };
-
+  //setea el estado seleccionado
   const state = (id: number) => {
     setEstado(id.toString());
   };
-
+  //setea el tipo de combustible seleccionado
   const fuel = (id: number) => {
     setCombustible(fuelArray[id]?.name);
   };
-
+  //setea la imagen seleccionada
   const subirArchivo = (e: any) => {
     setImagen(e.target.files[0]);
     setPreview(URL.createObjectURL(e.target.files[0]));
   };
-
+  //manejador del boton de atras
   const Back = () => {
     setLoading(true);
     router.reload();
   };
-
+  //html principal
   return (
     <main className={styles.RegisterMachineContainer}>
       <div className={styles.backArrowIcon}>

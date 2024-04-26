@@ -27,7 +27,7 @@ interface PageProps {
   setStep: (value: number) => void;
   setmachineID: (value: number) => void;
 }
-
+//pagina principal de maquinarias
 const MachinesMainPage: React.FC<PageProps> = ({ setStep, setmachineID }) => {
   //if token exists show regular html else show not signed in screen
   useEffect(() => {
@@ -50,7 +50,7 @@ const MachinesMainPage: React.FC<PageProps> = ({ setStep, setmachineID }) => {
   useEffect(() => {
     getList();
   }, []);
-
+  //request de traer la lista de maquianrias
   const getList = async () => {
     const fetchData = async () => {
       try {
@@ -73,7 +73,8 @@ const MachinesMainPage: React.FC<PageProps> = ({ setStep, setmachineID }) => {
     };
     await fetchData().catch(console.error);
   };
-
+  //cambia el estado de las maquinarias a OPERATIVO o NO OPERATIVO
+  //si una maquinaria no esta operativa, no podra ser asignadas a los turnarounds
   const changeMachineryState = async (machineID: number) => {
     const fetchData = async () => {
       try {
@@ -97,7 +98,7 @@ const MachinesMainPage: React.FC<PageProps> = ({ setStep, setmachineID }) => {
     };
     await fetchData().catch(console.error);
   };
-
+  //reuqest para eliminar maquinaria
   const deleteMachine = async (machineID: number) => {
     const fetchData = async () => {
       try {
@@ -121,11 +122,11 @@ const MachinesMainPage: React.FC<PageProps> = ({ setStep, setmachineID }) => {
     };
     await fetchData().catch(console.error);
   };
-
+  //manejador para borrar maquinaria
   const handleDeleteMachine = async (machineID: number) => {
     deleteMachine(machineID);
   };
-
+  //imprime dinamicamente las maquinarias
   const arrayPrinter = (category: string) => {
     let y: any = [];
     let arrayAux: any = [];
@@ -247,11 +248,11 @@ const MachinesMainPage: React.FC<PageProps> = ({ setStep, setmachineID }) => {
           </div>
 
           <img
-              src={"https://testing.siaca.aero/django/" + index.imagen}
-              alt="Imagen"
-              width={200}
-              height={200}
-            />
+            src={"https://testing.siaca.aero/django/" + index.imagen}
+            alt="Imagen"
+            width={200}
+            height={200}
+          />
 
           <p className={styles.cardText}>MODELO: {index.modelo}</p>
           <p className={styles.cardText}>COMBUSTIBLE: {index.combustible}</p>
@@ -281,12 +282,12 @@ const MachinesMainPage: React.FC<PageProps> = ({ setStep, setmachineID }) => {
 
     return y;
   };
-
+  //te lleva a la pantalla de crear maquinaria
   const NewMachine = () => {
     setLoading(true);
     setStep(1);
   };
-
+  //html principal
   return (
     <main className={styles.containerMachineMainPage}>
       {roleID == 1 && (

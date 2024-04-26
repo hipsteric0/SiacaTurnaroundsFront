@@ -93,6 +93,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
     (currentTimestamp.getMonth() + 1) +
     "-" +
     currentTimestamp.getDate();
+  //hace todas las requests de todos los datos necesarios apenas entra a la pagina
   useEffect(() => {
     const fetchData = async () => {
       await getcitiesListDestination();
@@ -105,7 +106,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
     };
     fetchData().catch(console.error);
   }, []);
-
+  //setea los datos para el acreg
   const setACRegListDropdown = async (ACRegsListArray: []) => {
     if (acregOptionsArray.length === 0) {
       ACRegsListArray.map((index: any) => {
@@ -116,6 +117,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
       });
     }
   };
+  //request para el acereg
   const getACRegList = async () => {
     const fetchData = async () => {
       try {
@@ -140,7 +142,8 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
     };
     await fetchData().catch(console.error);
   };
-
+  //request para registrar turnaround
+  //por cada vuelo, se registra un turnaround nuevo asociado a este
   const registerTurnaround = async (
     fecha_inicioValue: string,
     hora_inicioValue: string,
@@ -170,7 +173,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
     };
     await fetchData().catch(console.error);
   };
-
+  //registrar vuelo
   const registerFlight = async (ETADateValue: string) => {
     const fetchData = async () => {
       try {
@@ -215,7 +218,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
     };
     await fetchData().catch(console.error);
   };
-
+  //setear el arreglo de opciones para el combobox deplantillas
   const setTemplatesForDropdown = async (TemplatesListArray: []) => {
     TemplatesListArray.map((index: any) => {
       templatesOptionsArray.push({
@@ -224,6 +227,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
       });
     });
   };
+  //request para traer las plantillas
   const getTemplatesList = async () => {
     const fetchData = async () => {
       try {
@@ -248,7 +252,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
     };
     await fetchData().catch(console.error);
   };
-
+  //setear el arreglo de opciones para el combobox de tipos de vuelo
   const setFlightTypesForDropdown = async (flightTypesListArray: []) => {
     flightTypesListArray.map((index: any) => {
       flightTypesOptionsArray.push({
@@ -257,6 +261,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
       });
     });
   };
+  //request para traer los tipos de vuelo
   const getFlightTypesList = async () => {
     const fetchData = async () => {
       try {
@@ -281,7 +286,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
     };
     await fetchData().catch(console.error);
   };
-
+  ////setear el arreglo de opciones para el combobox de aerolineas
   const setAirlinesForDropdown = async (airlinesArray: []) => {
     await airlinesArray.map((index: any) => {
       airlinesOptionsArray.push({
@@ -290,6 +295,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
       });
     });
   };
+  //request para traer la lista de aerolineas
   const getAirlinesList = async () => {
     const fetchData = async () => {
       try {
@@ -313,7 +319,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
     };
     await fetchData().catch(console.error);
   };
-
+  //setear el arreglo de opciones para el combobox de aerolineas
   const setCitiesListDepartureForDropdown = async (citiesListArray: []) => {
     citiesListArray.map((index: any) => {
       CitiesOptionsArray.push({
@@ -322,6 +328,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
       });
     });
   };
+  //request para traer la lista de ciudades de salida
   const getcitiesListDeparture = async () => {
     const fetchData = async () => {
       try {
@@ -345,7 +352,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
     };
     await fetchData().catch(console.error);
   };
-
+  //setear el arreglo de opciones para el combobox de tipo de servicio
   const setFlightServiceTypesForDropdown = async (servicesListArray: []) => {
     servicesListArray.map((index: any) => {
       FlightServicesOptionsArray.push({
@@ -354,7 +361,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
       });
     });
   };
-
+  //request para traer tipos de servicios
   const getFlightServiceTypes = async () => {
     const fetchData = async () => {
       try {
@@ -379,6 +386,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
     await fetchData().catch(console.error);
   };
 
+  //setear el arreglo de opciones para el combobox de ciudades destino
   const setCitiesListDestinationCodeForDropdown = async (
     citiesListArray: []
   ) => {
@@ -389,7 +397,7 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
       });
     });
   };
-
+  //request para traer ciudades destino
   const getcitiesListDestination = async () => {
     const fetchData = async () => {
       try {
@@ -414,14 +422,12 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
     await fetchData().catch(console.error);
   };
 
-  const setOptionsInTareasArray = (
-    taskPosition: number,
-    subtaskPosition: number,
-    typeValue: number
-  ) => {
-    tasksArray[taskPosition].subtasks[subtaskPosition].type = typeValue;
-  };
+  //manejador del boton registrar
+  //aca se creara uno por uno los vuelos, y para cada uno de ellos un turnaround
+  //si es vuelo recurrente recorre fecha por fecha hasta llegar a la deseada, validando los dias de la semana seleccionados
+  //si es vuelo unico simplemente crea un vuelo e en la fecha especificada
   const handleRegisterButton = async () => {
+    setLoading(true);
     if (recurrentFlight === true) {
       //vuelo recurrente
       let initialDate = new Date(dateETAday);
@@ -493,11 +499,11 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
     } else {
       //vuelo unico
       await registerFlight(dateETAday);
-      setLoading(true);
+
       router.reload();
     }
   };
-
+  //esta funcion deshabilita el boton de registrar hasta que haya llenado todos los campos necesarios
   const checkDisabledRegisterButton = () => {
     //checks if register button should be disabled by asking that every fillable item is filled
     if (
@@ -536,13 +542,12 @@ const CreateFlightMainPage: React.FC<PageProps> = ({ setStep }) => {
     return false;
   };
 
-  const formatAutocompleteArray = () => {};
-
+  //manejador de boton de atras
   const Back = () => {
     setLoading(true);
     router.reload();
   };
-
+  //html principal
   return (
     <>
       <Suspense fallback={<>loadig</>}>

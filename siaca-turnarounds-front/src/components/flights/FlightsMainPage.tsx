@@ -27,21 +27,24 @@ import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 
 import LoadingScreen from "../Reusables/LoadingScreen";
-
+//componente de la pagina principal de vuelos, solo desktop
 interface PageProps {
   setStep: (value: number) => void;
   setflightID: (value: number) => void;
 }
 
 const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
+  //set de la fecha de calendario
   useEffect(() => {
     getDateForCalendar();
   }, []);
 
+  //consultar los datos para las tarjetas de vuelos
   useEffect(() => {
     getList();
   }, []);
 
+  //setear el rol para saber que mostrar
   useEffect(() => {
     let role = localStorage.getItem("userRole");
     if (role != null) {
@@ -66,6 +69,7 @@ const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
   const [loading, setLoading] = useState(false);
 
   let filterValues: any[] = [];
+  //consulta para traer los datos de los vuelos
   const getList = async () => {
     setIsFilteredResults(false);
     setArrayFilteredList3([]);
@@ -98,6 +102,7 @@ const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
     await fetchData().catch(console.error);
   };
 
+  //setear la fecha de hoy
   const getDateForCalendar = () => {
     let x =
       date.getDate().toString() +
@@ -110,6 +115,7 @@ const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
     return <></>;
   };
 
+  //logica para moverse hacia el pasado en el calendario
   const backDateButton = async () => {
     await setdateCounter(dateCounter - 1);
     date = new Date(new Date().setDate(new Date().getDate() + dateCounter - 1));
@@ -117,6 +123,7 @@ const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
     getList();
   };
 
+  //logica para moverse hacia el futuro en el calendario
   const frontDateButton = async () => {
     await setdateCounter(dateCounter + 1);
     date = new Date(new Date().setDate(new Date().getDate() + dateCounter + 1));
@@ -124,6 +131,7 @@ const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
     getList();
   };
 
+  //borrrar un vuelo
   const flightMachine = async (flightID: number) => {
     const fetchData = async () => {
       try {
@@ -148,14 +156,18 @@ const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
     await fetchData().catch(console.error);
   };
 
+  //manejador de borrar vuelo
   const handleDeleteFlight = async (flightID: number) => {
     flightMachine(flightID);
   };
+
+  //manejador de editar vuelo
   const handleEditFlight = async (flightID: number) => {
     await setflightID(flightID);
     await setStep(2);
   };
 
+  //imprime dinamicamente las tarjetas de los vuelos y todo lo que estas contienen (incluyendo dialogos)
   const arrayPrinter = () => {
     let y: any = [];
     let arrayList3aux: any = [];
@@ -490,8 +502,11 @@ const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
             <p className={styles.openDetailContainerText}>Ver mas</p>
           </div>
           <div className={styles.imageContainer}>
-          <img
-              src={"https://testing.siaca.aero/django/" + index?.fk_aerolinea?.imagen}
+            <img
+              src={
+                "https://testing.siaca.aero/django/" +
+                index?.fk_aerolinea?.imagen
+              }
               alt="Logo"
               width={150}
               height={80}
@@ -538,6 +553,7 @@ const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
     return y;
   };
 
+  //manejador del filtro de tarjetas de vuelos
   const setFilterValues = () => {
     arrayList3.map((value: any) => {
       if (filterValues.indexOf(value?.fk_aerolinea?.nombre)) {
@@ -546,6 +562,7 @@ const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
     });
   };
 
+  //setter del filtro de arreglos
   const filterArray = (filtername: string) => {
     let filteredUsers = arrayList3.filter((user) => {
       return user["fk_aerolinea"]["nombre"] === filtername;
@@ -553,11 +570,13 @@ const FlightsMainPage: React.FC<PageProps> = ({ setStep, setflightID }) => {
     setArrayFilteredList3(filteredUsers);
   };
 
+  //cambia el estado para mostrar el html de la pagina de crear vuelos
   const NewFlight = () => {
     setLoading(true);
     setStep(1);
   };
 
+  //html principal
   return (
     <main className={styles.mainFlightsContainer}>
       <div className={styles.upperSection}>

@@ -26,7 +26,7 @@ interface PageProps {
   setStep: (value: number) => void;
   flightID: number;
 }
-
+//componente con un vuelo especifico para ser editado
 const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
   //if token exists show regular html else show not signed in screen
   const isMobile = useMediaQuery("(max-width: 1270px)");
@@ -104,6 +104,7 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
     getList();
   }, []);
 
+  //request para traer el vuelo especifico que se quiera editar
   const getList = async () => {
     const fetchData = async () => {
       try {
@@ -163,7 +164,7 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
     };
     await fetchData().catch(console.error);
   };
-
+  //consulta para actualizar el vuelo que ya fue editado
   const registerFlight = async () => {
     const fetchData = async () => {
       try {
@@ -203,7 +204,7 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
     };
     await fetchData().catch(console.error);
   };
-
+  //set del arreglo que tendra la lista de plantillas
   const setTemplatesForDropdown = async (TemplatesListArray: []) => {
     TemplatesListArray.map((index: any) => {
       templatesOptionsArray.push({
@@ -212,6 +213,7 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
       });
     });
   };
+  //request para traer la lista de plantillas
   const getTemplatesList = async () => {
     const fetchData = async () => {
       try {
@@ -236,7 +238,7 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
     };
     await fetchData().catch(console.error);
   };
-
+  //request para el combobox de los tipos de vuelo
   const setFlightTypesForDropdown = async (flightTypesListArray: []) => {
     flightTypesListArray.map((index: any) => {
       flightTypesOptionsArray.push({
@@ -245,6 +247,7 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
       });
     });
   };
+  //request para traer los tipos de vuelo
   const getFlightTypesList = async () => {
     const fetchData = async () => {
       try {
@@ -278,6 +281,7 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
       });
     });
   };
+  //request para traer la lista de aerolineas
   const getAirlinesList = async () => {
     const fetchData = async () => {
       try {
@@ -301,7 +305,7 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
     };
     await fetchData().catch(console.error);
   };
-
+  //set de la lista de valores de ciudades que iran al combobox
   const setCitiesListDepartureForDropdown = async (citiesListArray: []) => {
     citiesListArray.map((index: any) => {
       CitiesOptionsArray.push({
@@ -310,6 +314,7 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
       });
     });
   };
+  //request para traer la lista de ciudades de salida
   const getcitiesListDeparture = async () => {
     const fetchData = async () => {
       try {
@@ -333,7 +338,7 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
     };
     await fetchData().catch(console.error);
   };
-
+  //setear la opcion del combobox de STN
   const setCitiesListDestinationCodeForDropdown = async (
     citiesListArray: []
   ) => {
@@ -344,7 +349,7 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
       });
     });
   };
-
+  //request para traer las lista de ciudades de salida
   const getcitiesListDestination = async () => {
     const fetchData = async () => {
       try {
@@ -368,7 +373,7 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
     };
     await fetchData().catch(console.error);
   };
-
+  //setea las opciones para el combobox de lso tipos de vuelo
   const setFlightServiceTypesForDropdown = async (servicesListArray: []) => {
     servicesListArray.map((index: any) => {
       FlightServicesOptionsArray.push({
@@ -378,6 +383,7 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
     });
   };
 
+  //request para consiltar los tipos de vuelo
   const getFlightServiceTypes = async () => {
     const fetchData = async () => {
       try {
@@ -402,16 +408,7 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
     await fetchData().catch(console.error);
   };
 
-  const setOptionsInTareasArray = (
-    taskPosition: number,
-    subtaskPosition: number,
-    typeValue: number
-  ) => {
-    tasksArray[taskPosition].subtasks[subtaskPosition].type = typeValue;
-  };
-
-  const consolePrueba = async () => {};
-
+  //manejador del boton de registrar
   const handleRegisterButton = async () => {
     //vuelo unico
     await registerFlight();
@@ -419,11 +416,12 @@ const EditFlight: React.FC<PageProps> = ({ setStep, flightID }) => {
     router.reload();
   };
 
+  //manejador del boton de volver
   const Back = () => {
     setLoading(true);
     router.reload();
   };
-
+  //html principal
   return (
     <>
       <Suspense fallback={<>loadig</>}>

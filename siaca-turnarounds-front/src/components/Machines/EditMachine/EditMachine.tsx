@@ -42,7 +42,7 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep, machineID }) => {
   const [loading, setLoading] = useState(false);
 
   let responseValue = false;
-
+  //request que trae los datos de una maquinaria especifica por id
   const getList = async () => {
     const fetchData = async () => {
       try {
@@ -63,7 +63,7 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep, machineID }) => {
             setCombustible(result?.combustible);
             setEstado(result?.estado);
             setFkCategoria(result?.fkcategoria);
-            setImagen(result?.imagen)
+            setImagen(result?.imagen);
 
             if (result?.[0]?.["status"] === 400) {
             } else {
@@ -78,7 +78,7 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep, machineID }) => {
     };
     await fetchData().catch(console.error);
   };
-
+  //request que hace un patch a la maquinaria,actualizando sus datos
   const registerMachines = () => {
     const fetchData = async () => {
       try {
@@ -112,25 +112,25 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep, machineID }) => {
     };
     fetchData().catch(console.error);
   };
-
+  //manejador del boton de guardar
   const continueButton = () => {
     registerMachines();
     setLoading(true);
     router.reload();
   };
-
+  //set la categoria seleccionada (no esta en uso)
   const category = (id: number) => {
     setFkCategoria(id.toString());
   };
-
+  //set el estado seleccionado (no esta en uso)
   const state = (id: number) => {
     setEstado(id.toString());
   };
-
+  //set el combustible seleccionado (no esta en uso)
   const fuel = (id: number) => {
     setCombustible(fuelArray[id].name);
   };
-
+  //manejador del boton de atras
   const Back = () => {
     setLoading(true);
     router.reload();
@@ -149,11 +149,16 @@ const RegisterMachine: React.FC<PageProps> = ({ setStep, machineID }) => {
       <div className={styles.machinesListContainer}>
         <span className={styles.titleTextImagen}>Imagen</span>
         <div className={styles.inputsListImage}>
-        <div>
-                <center>
-                  <img src={"https://testing.siaca.aero/django"+imagen} alt="Preview" width={300} height={300} />
-                </center>
-              </div>
+          <div>
+            <center>
+              <img
+                src={"https://testing.siaca.aero/django" + imagen}
+                alt="Preview"
+                width={300}
+                height={300}
+              />
+            </center>
+          </div>
         </div>
         <span className={styles.titleTextDates}>Datos</span>
         <div className={styles.inputsList}>

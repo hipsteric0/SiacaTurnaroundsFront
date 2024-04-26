@@ -12,7 +12,9 @@ interface PageProps {
   setEmailValue: (value: string) => void;
   setPasswordValue: (value: string) => void;
 }
-
+//pagina del paso 1 de registrar
+//son dos pasos de registro por que en el paso 1 se llena la tabla auth_user de django
+//y en el paso 2 se llena la tabla api_usuario
 const LoginMainPage: React.FC<PageProps> = ({
   setStep,
   setEmailValue,
@@ -28,7 +30,7 @@ const LoginMainPage: React.FC<PageProps> = ({
   const [loading, setLoading] = useState(false);
 
   let responseValue = false;
-
+  //consulta para registrar los primeros datos del usuario
   const registerStep1request = () => {
     const fetchData = async () => {
       try {
@@ -61,7 +63,7 @@ const LoginMainPage: React.FC<PageProps> = ({
     };
     fetchData().catch(console.error);
   };
-
+  //deshabilita el boton de continuar si no estan llenos los campos o las contrasenas no coinciden
   const validateContinueButton = () => {
     if ((email && password && confirmPassword) === "") {
       if (allowContinue === true) setAllowContinue(false);
@@ -74,6 +76,7 @@ const LoginMainPage: React.FC<PageProps> = ({
     }
     return <></>;
   };
+  //funcion para pasar al paso 2
   const continueButton = () => {
     setLoading(true);
     setEmailValue(email);
@@ -93,9 +96,11 @@ const LoginMainPage: React.FC<PageProps> = ({
       }
     }, 5000);
   };
-
+  //is mobile se usa para validar en un mismo archivo si se trata de un telefono movil o un monitor
+  //la resolucion minima se planteo como 1270px antes de pasar a la version mobile
   const isMobile = useMediaQuery("(max-width: 1270px)");
 
+  //valida si el correo esta ya registrado
   const handleCheckEmail = (e: any) => {
     e.preventDefault();
     const inputEmail = e.target.value;
@@ -108,12 +113,12 @@ const LoginMainPage: React.FC<PageProps> = ({
       })
       .catch((error) => console.error("Error fetching ", error));
   };
-
+  //manejador del boton de atras
   const Back = () => {
     setLoading(true);
     setStep(0);
   };
-
+  //html principal
   return (
     <div
       className={

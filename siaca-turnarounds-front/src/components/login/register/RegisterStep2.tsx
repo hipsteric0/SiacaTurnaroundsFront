@@ -14,12 +14,13 @@ interface PageProps {
   emailValue: string;
   passwordValue: string;
 }
-
+//step 2 de registrar usuario
 const LoginMainPage: React.FC<PageProps> = ({
   setStep,
   emailValue, //el email que introdujo el user en el paso anterior
   passwordValue, //el password  que introdujo el user en el paso anterior
 }) => {
+  //el usuario seleccionara su cargo, para ello nos traemos las listas de cargos y departamentos
   useEffect(() => {
     getJobPositionsList();
     getDepartmentsList();
@@ -60,7 +61,7 @@ const LoginMainPage: React.FC<PageProps> = ({
   const [userID, setUserID] = useState("");
   const [loading, setLoading] = useState(false);
   let userIDValue;
-
+  //se busca en la BD el usuario llenado en el paso anterior para asociarlo a estos datos que seran llenados en este paso
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -83,7 +84,7 @@ const LoginMainPage: React.FC<PageProps> = ({
     };
     fetchData().catch(console.error);
   }, []);
-
+  //request para registrar los datos del paso 2
   const registerStep2requestFirst = () => {
     const fetchData = async () => {
       try {
@@ -108,21 +109,21 @@ const LoginMainPage: React.FC<PageProps> = ({
     };
     fetchData().catch(console.error);
   };
-
+  //selecciona el departamento especifico del arreglo de departamentos
   const getDepartmentFromArray = (departmentName: string) => {
     let result = arrayDepartmentsList.find(
       (o) => o.nombre === departmentName
     )?.id;
     return result;
   };
-
+  //selecciona el cargo especifico del arreglo de cargos
   const getJobPositionFromArray = (jobPositionName: any) => {
     let result = arrayJobPositionsList.find(
       (o) => o.nombre === jobPositionName
     )?.id;
     return result;
   };
-
+  //segundo registro de los datos llenados en esta consulta
   const registerStep2requestSecond = (
     departmentID: number,
     jobPositionID: number
@@ -153,7 +154,7 @@ const LoginMainPage: React.FC<PageProps> = ({
     };
     fetchData().catch(console.error);
   };
-
+  //request para conseguir lista d e departamentos
   const getDepartmentsList = async () => {
     const fetchData = async () => {
       try {
@@ -177,7 +178,7 @@ const LoginMainPage: React.FC<PageProps> = ({
     };
     await fetchData().catch(console.error);
   };
-
+  //request para traer lista de cargos
   const getJobPositionsList = async () => {
     const fetchData = async () => {
       try {
@@ -201,7 +202,7 @@ const LoginMainPage: React.FC<PageProps> = ({
     };
     await fetchData().catch(console.error);
   };
-
+  //deshabilita el boton de continuar si hacen falta datos por llenar
   const validateContinueButton = () => {
     if ((firstName && lastName && cedula && phoneNumber) === "") {
       if (allowContinue === true) setAllowContinue(false);
@@ -216,7 +217,7 @@ const LoginMainPage: React.FC<PageProps> = ({
     }
     return <></>;
   };
-
+  //manejador de funciones del boton continuar
   const continueButton = async () => {
     //setEmailValue(email);
     //setPasswordValue(password);
@@ -230,7 +231,7 @@ const LoginMainPage: React.FC<PageProps> = ({
     await registerStep2requestSecond(departmentID, jobPositionID);
     await setStep(6);
   };
-
+  //imprime dinamicamente todos los departamentos en el combobox
   const arrayPrinterDepartments = () => {
     let y: any = [];
 
@@ -244,7 +245,7 @@ const LoginMainPage: React.FC<PageProps> = ({
 
     return y;
   };
-
+  //imprime dinamicamente los cargos consultados
   const arrayPrinterJobPositions = () => {
     let y: any = [];
 
@@ -299,7 +300,7 @@ const LoginMainPage: React.FC<PageProps> = ({
       e.preventDefault();
     }
   };
-
+  //html principal
   return (
     <div
       className={

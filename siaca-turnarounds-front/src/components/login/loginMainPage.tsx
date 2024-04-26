@@ -17,7 +17,7 @@ import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 interface PageProps {
   setStep: (value: number) => void;
 }
-
+// la pagina de login valida tus credenciales y ofrece un dialogo de error si no son correctos o no estas activo
 const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
   const isMobile = useMediaQuery("(max-width: 1270px)");
   const [email, setEmail] = useState("");
@@ -49,6 +49,8 @@ const LoginMainPage: React.FC<PageProps> = ({ setStep }) => {
     }, 5000);
   };
 
+  //hace el login y si es correcto te ingresa en el sistema
+  //tus datos seran guardados en el localstorage, asi como el token y tu rol
   const registerStep2requestSecond = () => {
     const fetchData = async () => {
       try {
